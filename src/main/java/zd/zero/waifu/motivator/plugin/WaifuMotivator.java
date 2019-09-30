@@ -35,9 +35,10 @@ public class WaifuMotivator implements ProjectComponent {
                 NotificationType.INFORMATION
         ), project );
 
-        InputStream soundStream = getClass().getClassLoader().getResourceAsStream( "sound/Tuturuu...Mayushii Desu!.wav" );
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream( soundStream );
+        try ( InputStream soundStream = getClass().getClassLoader()
+                .getResourceAsStream( "sound/Tuturuu...Mayushii Desu!.wav" );
+              AudioInputStream audioInputStream = AudioSystem.getAudioInputStream( soundStream ) ) {
+
             Clip clip = AudioSystem.getClip();
             clip.open( audioInputStream );
 
