@@ -20,4 +20,9 @@
     <actions>
         <!-- Add your actions here -->
     </actions>
+    <project-components>
+        <component>
+            <implementation-class>zd.zero.waifu.motivator.plugin.WaifuMotivator</implementation-class>
+        </component>
+    </project-components>
 </idea-plugin>
