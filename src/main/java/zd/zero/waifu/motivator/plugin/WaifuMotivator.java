@@ -6,12 +6,16 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class WaifuMotivator implements ProjectComponent {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger( WaifuMotivator.class );
 
     private static final String WM_TITLE = "Waifu Motivator";
 
@@ -50,7 +54,7 @@ public class WaifuMotivator implements ProjectComponent {
                 }
             } );
         } catch ( IOException | LineUnavailableException | UnsupportedAudioFileException e ) {
-            e.printStackTrace();
+            LOGGER.error( e.getMessage(), e );
         }
 
     }
