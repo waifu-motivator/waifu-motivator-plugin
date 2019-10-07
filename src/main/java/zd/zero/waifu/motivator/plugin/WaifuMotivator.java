@@ -1,8 +1,7 @@
 package zd.zero.waifu.motivator.plugin;
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
+import com.intellij.notification.NotificationDisplayType;
+import com.intellij.notification.NotificationGroup;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
@@ -28,12 +27,11 @@ public class WaifuMotivator implements ProjectComponent {
     @Override
     public void projectOpened() {
 
-        Notifications.Bus.notify( new Notification(
-                WM_TITLE,
-                "Mayushi",
-                "Tuturuuu...Mayushii Desu!",
-                NotificationType.INFORMATION
-        ), project );
+        NotificationGroup notificationGroup = new NotificationGroup( WM_TITLE, NotificationDisplayType.BALLOON, false );
+        notificationGroup.createNotification()
+                .setTitle( "Mayushi" )
+                .setContent( "Tuturuuu...Mayushii Desu!" )
+                .notify( project );
 
         try ( InputStream soundStream = getClass().getClassLoader()
                 .getResourceAsStream( "sound/Tuturuu...Mayushii Desu!.wav" );
