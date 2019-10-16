@@ -111,3 +111,7 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 .DS_Store
+
+# SonarLint Plugin
+.idea/sonarlint/
+.idea/sonarlint/issuestore/
