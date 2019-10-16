@@ -14,7 +14,10 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <applicationService
+                serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginSettings"/>
+        <applicationConfigurable
+                instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
     </extensions>
 
     <actions>
@@ -22,7 +25,7 @@
     </actions>
     <project-components>
         <component>
-            <implementation-class>zd.zero.waifu.motivator.plugin.WaifuMotivator</implementation-class>
+            <implementation-class>zd.zero.waifu.motivator.plugin.WaifuMotivatorProjectComponent</implementation-class>
         </component>
     </project-components>
 </idea-plugin>
