@@ -3,10 +3,9 @@ package zd.zero.waifu.motivator.plugin;
 import com.intellij.notification.NotificationDisplayType;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginSettings;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
@@ -16,11 +15,9 @@ import java.io.InputStream;
 
 public class WaifuMotivatorProjectComponent implements ProjectComponent {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger( WaifuMotivatorProjectComponent.class );
+    private static final Logger LOGGER = Logger.getInstance( WaifuMotivatorProjectComponent.class );
 
     private Project project;
-
-    private WaifuMotivatorPluginSettings settings;
 
     private WaifuMotivatorState pluginState;
 
