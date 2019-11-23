@@ -3,7 +3,6 @@ package zd.zero.waifu.motivator.plugin.alert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 public class WaifuMotivatorAlertTest {
@@ -74,7 +73,7 @@ public class WaifuMotivatorAlertTest {
         when( motivatorAlert.isSoundAlertEnabled() ).thenReturn( false );
         motivatorAlert.alert();
 
-        verify( motivatorAlert, never() ).displayNotification();
+        verify( motivatorAlert, times( 1 ) ).displayNotification();
     }
 
     @Test
@@ -84,7 +83,7 @@ public class WaifuMotivatorAlertTest {
         when( motivatorAlert.isSoundAlertEnabled() ).thenReturn( true );
         motivatorAlert.alert();
 
-        verify( motivatorAlert, never() ).soundAlert();
+        verify( motivatorAlert, times( 1 ) ).soundAlert();
     }
 
     @Test
