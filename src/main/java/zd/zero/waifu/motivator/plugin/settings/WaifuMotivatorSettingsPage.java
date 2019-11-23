@@ -17,6 +17,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JCheckBox enableStartupMotivation;
 
+    private JCheckBox enableUnitTesterMotivation;
+
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginSettings.getInstance().getState();
     }
@@ -37,22 +39,26 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     @Override
     public JComponent createComponent() {
         this.enableStartupMotivation.setSelected( this.state.isStartupMotivationEnabled() );
+        this.enableUnitTesterMotivation.setSelected( this.state.isUnitTesterMotivationEnabled() );
         return rootPanel;
     }
 
     @Override
     public boolean isModified() {
-        return enableStartupMotivation.isSelected() != this.state.isStartupMotivationEnabled();
+        return enableStartupMotivation.isSelected() != this.state.isStartupMotivationEnabled() ||
+                enableUnitTesterMotivation.isSelected() != this.state.isUnitTesterMotivationEnabled();
     }
 
     @Override
     public void reset() {
         this.enableStartupMotivation.setSelected( this.state.isStartupMotivationEnabled() );
+        this.enableUnitTesterMotivation.setSelected( this.state.isUnitTesterMotivationEnabled() );
     }
 
     @Override
     public void apply() {
         this.state.setStartupMotivationEnabled( enableStartupMotivation.isSelected() );
+        this.state.setUnitTesterMotivationEnabled( enableUnitTesterMotivation.isSelected() );
     }
 
 }
