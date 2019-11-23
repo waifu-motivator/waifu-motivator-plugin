@@ -1,15 +1,14 @@
 package zd.zero.waifu.motivator.plugin.settings;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class WaifuMotivatorState {
 
     private boolean isStartupMotivationEnabled = true;
 
-    public boolean isStartupMotivationEnabled() {
-        return this.isStartupMotivationEnabled;
-    }
-
-    public void setStartupMotivationEnabled( boolean startupMotivationEnabled ) {
-        this.isStartupMotivationEnabled = startupMotivationEnabled;
-    }
+    private boolean isUnitTesterMotivationEnabled = true;
 
 }
