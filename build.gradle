@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'zd.zero'
-version '1.0-SNAPSHOT'
+version '0.1.0'
 
 sourceCompatibility = 1.8
 
@@ -25,7 +25,5 @@ intellij {
 }
 
 patchPluginXml {
-    changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+    changeNotes """Waifu Motivator v0.1.0 <br>Currently for testing"""
 }
