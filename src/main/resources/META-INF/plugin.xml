@@ -21,8 +21,18 @@
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
+        <group id="zd.zero.waifu.motivator.WaifuMotivatorGroup" text="Waifu Motivator" popup="true">
+            <action id="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
+                    class="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
+                    text="Motivate Me"
+                    description="My waifu please motivate me.">
+                <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
+            </action>
+
+            <add-to-group group-id="MainMenu" relative-to-action="HelpMenu" anchor="before"/>
+        </group>
     </actions>
+
     <project-components>
         <component>
             <implementation-class>zd.zero.waifu.motivator.plugin.WaifuMotivatorProjectComponent</implementation-class>
