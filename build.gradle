@@ -4,8 +4,8 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '3.2.0'
 }
 
-group 'zd.zero'
-version '0.1.0'
+group pluginGroup
+version pluginVersion
 
 sourceCompatibility = 1.8
 
@@ -21,9 +21,11 @@ dependencies {
 }
 
 intellij {
-    version '2019.2.3'
+    version ideaVersion
+    println "Building for IntelliJ version: ${version}"
 }
 
 patchPluginXml {
-    changeNotes """Waifu Motivator v0.1.0 <br>Currently for testing"""
+    pluginDescription(file(descriptionFile).text)
+    changeNotes(file(changesFile).text)
 }

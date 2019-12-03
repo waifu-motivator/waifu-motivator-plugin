@@ -4,7 +4,6 @@ import com.intellij.execution.testframework.TestsUIUtil;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.notification.NotificationsAdapter;
 import com.intellij.util.messages.MessageBusConnection;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,16 +20,16 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
 
     @Override
     public void init() {
-        busConnection.subscribe( Notifications.TOPIC, new NotificationsAdapter() {
+        busConnection.subscribe( Notifications.TOPIC, new Notifications() {
             @Override
             public void notify( @NotNull Notification notification ) {
-                invokeListener( notification );
+                invokeListener( notification, TestsUIUtil.NOTIFICATION_GROUP.getDisplayId() );
             }
         } );
     }
 
-    void invokeListener( Notification notification ) {
-        if ( notification.getGroupId().equals( TestsUIUtil.NOTIFICATION_GROUP.getDisplayId() ) ) {
+    void invokeListener( Notification notification, final String NOTIFICATION_GROUP_DISPLAY_ID ) {
+        if ( notification.getGroupId().equals( NOTIFICATION_GROUP_DISPLAY_ID ) ) {
             if ( notification.getType() == NotificationType.ERROR ) {
                 listener.onUnitTestFailed();
             } else {
