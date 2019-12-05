@@ -2,7 +2,7 @@ package zd.zero.waifu.motivator.plugin.alert.notification;
 
 import com.intellij.openapi.project.Project;
 
-public class WaifuMotivatorNotifierImpl implements WaifuMotivatorNotifier {
+public class DefaultWaifuMotivatorNotifier implements WaifuMotivatorNotifier {
 
     private final Project project;
 
@@ -10,7 +10,7 @@ public class WaifuMotivatorNotifierImpl implements WaifuMotivatorNotifier {
 
     private final String content;
 
-    public WaifuMotivatorNotifierImpl( Project project, String title, String content ) {
+    public DefaultWaifuMotivatorNotifier( Project project, String title, String content ) {
         this.project = project;
         this.title = title;
         this.content = content;

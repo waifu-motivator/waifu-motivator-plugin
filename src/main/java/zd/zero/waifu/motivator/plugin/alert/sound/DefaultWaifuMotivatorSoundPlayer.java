@@ -8,13 +8,13 @@ import java.io.InputStream;
 
 import static zd.zero.waifu.motivator.plugin.WaifuMotivator.SOUND_DIR;
 
-public class WaifuMotivatorSoundPlayerImpl implements WaifuMotivatorSoundPlayer {
+public class DefaultWaifuMotivatorSoundPlayer implements WaifuMotivatorSoundPlayer {
 
-    private static final Logger LOGGER = Logger.getInstance( WaifuMotivatorSoundPlayerImpl.class );
+    private static final Logger LOGGER = Logger.getInstance( DefaultWaifuMotivatorSoundPlayer.class );
 
     private String soundFileName;
 
-    public WaifuMotivatorSoundPlayerImpl( String soundFileName ) {
+    public DefaultWaifuMotivatorSoundPlayer( String soundFileName ) {
         this.soundFileName = SOUND_DIR + soundFileName;
     }
 
