@@ -1,12 +1,11 @@
 package zd.zero.waifu.motivator.plugin.listeners;
 
 import com.intellij.openapi.project.Project;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertImpl;
+import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlert;
+import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertFactory;
+import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAsset;
+import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAssetType;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
-import zd.zero.waifu.motivator.plugin.alert.notification.WaifuMotivatorNotifier;
-import zd.zero.waifu.motivator.plugin.alert.notification.WaifuMotivatorNotifierImpl;
-import zd.zero.waifu.motivator.plugin.alert.sound.WaifuMotivatorSoundPlayer;
-import zd.zero.waifu.motivator.plugin.alert.sound.WaifuMotivatorSoundPlayerImpl;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginSettings;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
@@ -26,17 +25,15 @@ public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
 
     @Override
     public void onUnitTestPassed() {
-        WaifuMotivatorNotifier notifier = new WaifuMotivatorNotifierImpl( project, "Yay!", "Nice nice nice nice nice nice!" );
-        WaifuMotivatorSoundPlayer player = new WaifuMotivatorSoundPlayerImpl( "nice nice nice nice.wav" );
-        WaifuMotivatorAlertImpl passedAlert = new WaifuMotivatorAlertImpl( notifier, player, getUnitTesterConfiguration() );
-        passedAlert.alert();
+        WaifuMotivatorAlert failedAlert = WaifuMotivatorAlertFactory.createAlert( project,
+                WaifuMotivatorAsset.getRandomAssetByType( WaifuMotivatorAssetType.POSITIVE ), getUnitTesterConfiguration() );
+        failedAlert.alert();
     }
 
     @Override
     public void onUnitTestFailed() {
-        WaifuMotivatorNotifier notifier = new WaifuMotivatorNotifierImpl( project, "Awww", "Ganbatte Onii-chan!" );
-        WaifuMotivatorSoundPlayer player = new WaifuMotivatorSoundPlayerImpl( "Ganbatte Onii-chan!.wav" );
-        WaifuMotivatorAlertImpl failedAlert = new WaifuMotivatorAlertImpl( notifier, player, getUnitTesterConfiguration() );
+        WaifuMotivatorAlert failedAlert = WaifuMotivatorAlertFactory.createAlert( project,
+                WaifuMotivatorAsset.getRandomAssetByType( WaifuMotivatorAssetType.NEGATIVE ), getUnitTesterConfiguration() );
         failedAlert.alert();
     }
 
