@@ -3,6 +3,7 @@ package zd.zero.waifu.motivator.plugin;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupManager;
+import com.intellij.openapi.wm.ToolWindowManager;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlert;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertFactory;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAsset;
@@ -32,6 +33,7 @@ public class WaifuMotivatorProjectComponent implements ProjectComponent {
     public void projectOpened() {
         unitTestListener.init();
         initializeStartupMotivator();
+        registerToolWindow();
     }
 
     @Override
@@ -53,6 +55,11 @@ public class WaifuMotivatorProjectComponent implements ProjectComponent {
         } else {
             motivatorAlert.alert();
         }
+    }
+
+    private void registerToolWindow() {
+        ToolWindowManager toolWindowManager = ToolWindowManager.getInstance( project );
+
     }
 
 }

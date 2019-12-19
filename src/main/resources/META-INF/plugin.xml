@@ -14,6 +14,11 @@
                 serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginSettings"/>
         <applicationConfigurable
                 instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
+        <toolWindow
+                id="Waifu Motivator"
+                anchor="left"
+                factoryClass="zd.zero.waifu.motivator.plugin.window.WaifuMotivatorToolWindowFactory"
+        />
     </extensions>
 
     <actions>
