@@ -3,10 +3,10 @@ package zd.zero.waifu.motivator.plugin.actions;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
+import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlert;
+import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertFactory;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAsset;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAssetType;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
 
 public class MotivateMeAction extends AnAction {
@@ -20,7 +20,7 @@ public class MotivateMeAction extends AnAction {
                 .build();
 
         WaifuMotivatorAlert motivatorAlert = WaifuMotivatorAlertFactory.createAlert( e.getProject(),
-                WaifuMotivatorAsset.getRandomAssetByType( WaifuMotivatorAssetType.POSITIVE ), config );
+                AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ), config );
         motivatorAlert.alert();
     }
 

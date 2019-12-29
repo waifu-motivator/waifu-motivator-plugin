@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class WaifuMotivatorState {
 
+    private boolean isWaifuOfTheDayEnabled = true;
+
     private boolean isStartupMotivationEnabled = true;
 
     private boolean isUnitTesterMotivationEnabled = true;
