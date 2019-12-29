@@ -1,37 +1,44 @@
 <idea-plugin>
-    <id>zd.zero.waifu-motivator-plugin</id>
-    <name>Waifu Motivator</name>
-    <vendor email="zaerald.zd@gmail.com" url="https://github.com/zd-zero">zd-zero</vendor>
+  <id>zd.zero.waifu-motivator-plugin</id>
+  <name>Waifu Motivator</name>
+  <vendor email="zaerald.zd@gmail.com" url="https://github.com/zd-zero">zd-zero</vendor>
 
-    <description><![CDATA[
+  <description><![CDATA[
         Open Sourced <i>Waifu</i> Motivator Plugin to help boost your motivation while coding!
     ]]></description>
 
-    <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.platform</depends>
 
-    <extensions defaultExtensionNs="com.intellij">
-        <applicationService
-                serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginSettings"/>
-        <applicationConfigurable
-                instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
-    </extensions>
+  <extensions defaultExtensionNs="com.intellij">
+    <applicationService
+        serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState"/>
+    <applicationConfigurable
+        instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
+    <postStartupActivity id="WaifuOfTheDayStartupActivity"
+                         implementation="zd.zero.waifu.motivator.plugin.WaifuOfTheDayStartupActivity"/>
+  </extensions>
 
-    <actions>
-        <group id="zd.zero.waifu.motivator.WaifuMotivatorGroup" text="Waifu Motivator" popup="true">
-            <action id="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
-                    class="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
-                    text="Motivate Me"
-                    description="My waifu please motivate me.">
-                <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
-            </action>
+  <actions>
+    <group id="zd.zero.waifu.motivator.WaifuMotivatorGroup" text="Waifu Motivator" popup="true">
+      <action id="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
+              class="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
+              text="Motivate Me"
+              description="My waifu please motivate me.">
+        <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
+      </action>
+      <action id="zd.zero.waifu.motivator.plugin.actions.ShowWaifuOfTheDayAction"
+              class="zd.zero.waifu.motivator.plugin.actions.ShowWaifuOfTheDayAction"
+              text="Waifu of the Day"
+              description="Show me today's Waifu.">
+      </action>
 
-            <add-to-group group-id="MainMenu" relative-to-action="HelpMenu" anchor="before"/>
-        </group>
-    </actions>
+      <add-to-group group-id="MainMenu" relative-to-action="HelpMenu" anchor="before"/>
+    </group>
+  </actions>
 
-    <project-components>
-        <component>
-            <implementation-class>zd.zero.waifu.motivator.plugin.WaifuMotivatorProjectComponent</implementation-class>
-        </component>
-    </project-components>
+  <project-components>
+    <component>
+      <implementation-class>zd.zero.waifu.motivator.plugin.WaifuMotivatorProjectComponent</implementation-class>
+    </component>
+  </project-components>
 </idea-plugin>

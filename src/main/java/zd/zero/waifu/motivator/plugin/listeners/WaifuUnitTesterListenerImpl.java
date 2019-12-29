@@ -1,12 +1,12 @@
 package zd.zero.waifu.motivator.plugin.listeners;
 
 import com.intellij.openapi.project.Project;
+import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlert;
+import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertFactory;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAsset;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAssetType;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
-import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginSettings;
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 import java.util.Objects;
@@ -20,20 +20,20 @@ public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
 
     public WaifuUnitTesterListenerImpl( Project project ) {
         this.project = project;
-        this.pluginState = WaifuMotivatorPluginSettings.getInstance().getState();
+        this.pluginState = WaifuMotivatorPluginState.getInstance().getState();
     }
 
     @Override
     public void onUnitTestPassed() {
         WaifuMotivatorAlert failedAlert = WaifuMotivatorAlertFactory.createAlert( project,
-                WaifuMotivatorAsset.getRandomAssetByType( WaifuMotivatorAssetType.POSITIVE ), getUnitTesterConfiguration() );
+                AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.POSITIVE ), getUnitTesterConfiguration() );
         failedAlert.alert();
     }
 
     @Override
     public void onUnitTestFailed() {
         WaifuMotivatorAlert failedAlert = WaifuMotivatorAlertFactory.createAlert( project,
-                WaifuMotivatorAsset.getRandomAssetByType( WaifuMotivatorAssetType.NEGATIVE ), getUnitTesterConfiguration() );
+                AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEGATIVE ), getUnitTesterConfiguration() );
         failedAlert.alert();
     }
 

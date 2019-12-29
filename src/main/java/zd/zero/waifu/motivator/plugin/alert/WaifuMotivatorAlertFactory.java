@@ -7,10 +7,10 @@ import zd.zero.waifu.motivator.plugin.alert.sound.DefaultWaifuMotivatorSoundPlay
 
 public interface WaifuMotivatorAlertFactory {
 
-    static WaifuMotivatorAlert createAlert( Project project, WaifuMotivatorAsset asset, AlertConfiguration config ) {
+    static WaifuMotivatorAlert createAlert( Project project, WaifuMotivatorAlertAsset asset, AlertConfiguration config ) {
         return new WaifuMotivatorAlertImpl(
                 new DefaultWaifuMotivatorNotifier( project, asset.getTitle(), asset.getMessage() ),
-                new DefaultWaifuMotivatorSoundPlayer( asset.getValue() ),
+                new DefaultWaifuMotivatorSoundPlayer( asset.getSound() ),
                 config
         );
     }

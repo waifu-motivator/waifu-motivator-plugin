@@ -1,5 +1,6 @@
 package zd.zero.waifu.motivator.plugin.settings;
 
+import com.intellij.ide.GeneralSettings;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
 import org.jetbrains.annotations.Nls;
@@ -19,8 +20,10 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JCheckBox enableUnitTesterMotivation;
 
+    private JCheckBox enableWaifuOfTheDay;
+
     public WaifuMotivatorSettingsPage() {
-        this.state = WaifuMotivatorPluginSettings.getInstance().getState();
+        this.state = WaifuMotivatorPluginState.getPluginState();
     }
 
     @NotNull
@@ -38,6 +41,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     @Nullable
     @Override
     public JComponent createComponent() {
+        this.enableWaifuOfTheDay.setSelected( this.state.isWaifuOfTheDayEnabled() );
         this.enableStartupMotivation.setSelected( this.state.isStartupMotivationEnabled() );
         this.enableUnitTesterMotivation.setSelected( this.state.isUnitTesterMotivationEnabled() );
         return rootPanel;
@@ -45,12 +49,14 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     @Override
     public boolean isModified() {
-        return enableStartupMotivation.isSelected() != this.state.isStartupMotivationEnabled() ||
+        return enableWaifuOfTheDay.isSelected() != this.state.isWaifuOfTheDayEnabled() ||
+                enableStartupMotivation.isSelected() != this.state.isStartupMotivationEnabled() ||
                 enableUnitTesterMotivation.isSelected() != this.state.isUnitTesterMotivationEnabled();
     }
 
     @Override
     public void reset() {
+        this.enableWaifuOfTheDay.setSelected( this.state.isWaifuOfTheDayEnabled() );
         this.enableStartupMotivation.setSelected( this.state.isStartupMotivationEnabled() );
         this.enableUnitTesterMotivation.setSelected( this.state.isUnitTesterMotivationEnabled() );
     }
@@ -59,6 +65,9 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     public void apply() {
         this.state.setStartupMotivationEnabled( enableStartupMotivation.isSelected() );
         this.state.setUnitTesterMotivationEnabled( enableUnitTesterMotivation.isSelected() );
+
+        this.state.setWaifuOfTheDayEnabled( enableWaifuOfTheDay.isSelected() );
+        GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
     }
 
 }

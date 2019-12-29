@@ -11,12 +11,16 @@ import org.jetbrains.annotations.Nullable;
         name = "WaifuMotivatorPluginSettings",
         storages = @Storage( "waifu-motivator-plugin.xml" )
 )
-public class WaifuMotivatorPluginSettings implements PersistentStateComponent<WaifuMotivatorState> {
+public class WaifuMotivatorPluginState implements PersistentStateComponent<WaifuMotivatorState> {
 
     private WaifuMotivatorState state = new WaifuMotivatorState();
 
-    public static WaifuMotivatorPluginSettings getInstance() {
-        return ServiceManager.getService( WaifuMotivatorPluginSettings.class );
+    public static WaifuMotivatorPluginState getInstance() {
+        return ServiceManager.getService( WaifuMotivatorPluginState.class );
+    }
+
+    public static WaifuMotivatorState getPluginState() {
+        return getInstance().getState();
     }
 
     @Nullable
