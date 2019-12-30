@@ -12,6 +12,8 @@ public interface WaifuMotivatorAlert {
 
     boolean isAlertEnabled();
 
+    void onAlertClosed();
+
     default void alert() {
         if ( isAlertEnabled() ) {
             if ( isDisplayNotificationEnabled() )
@@ -22,5 +24,6 @@ public interface WaifuMotivatorAlert {
 
         }
     }
+
 
 }

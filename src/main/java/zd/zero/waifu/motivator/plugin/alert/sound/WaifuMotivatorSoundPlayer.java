@@ -4,4 +4,6 @@ public interface WaifuMotivatorSoundPlayer {
 
     void play();
 
+    void stop();
+
 }
