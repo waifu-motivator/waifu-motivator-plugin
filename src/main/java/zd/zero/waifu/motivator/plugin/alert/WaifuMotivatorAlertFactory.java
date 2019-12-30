@@ -9,8 +9,9 @@ public interface WaifuMotivatorAlertFactory {
 
     static WaifuMotivatorAlert createAlert( Project project, WaifuMotivatorAlertAsset asset, AlertConfiguration config ) {
         return new WaifuMotivatorAlertImpl(
-                new DefaultWaifuMotivatorNotifier( project, asset.getTitle(), asset.getMessage() ),
-                new DefaultWaifuMotivatorSoundPlayer( asset.getSound() ),
+                DefaultWaifuMotivatorNotifier.builder().project( project )
+                        .title( asset.getTitle() ).content( asset.getMessage() ).build(),
+                DefaultWaifuMotivatorSoundPlayer.ofFile( asset.getSound() ),
                 config
         );
     }

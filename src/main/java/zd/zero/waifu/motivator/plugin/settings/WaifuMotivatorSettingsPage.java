@@ -22,6 +22,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JCheckBox enableWaifuOfTheDay;
 
+    private JCheckBox enableSayonara;
+
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
     }
@@ -44,6 +46,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.enableWaifuOfTheDay.setSelected( this.state.isWaifuOfTheDayEnabled() );
         this.enableStartupMotivation.setSelected( this.state.isStartupMotivationEnabled() );
         this.enableUnitTesterMotivation.setSelected( this.state.isUnitTesterMotivationEnabled() );
+        this.enableSayonara.setSelected( this.state.isSayonaraEnabled() );
         return rootPanel;
     }
 
@@ -51,7 +54,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     public boolean isModified() {
         return enableWaifuOfTheDay.isSelected() != this.state.isWaifuOfTheDayEnabled() ||
                 enableStartupMotivation.isSelected() != this.state.isStartupMotivationEnabled() ||
-                enableUnitTesterMotivation.isSelected() != this.state.isUnitTesterMotivationEnabled();
+                enableUnitTesterMotivation.isSelected() != this.state.isUnitTesterMotivationEnabled() ||
+                enableSayonara.isSelected() != this.state.isSayonaraEnabled();
     }
 
     @Override
@@ -59,12 +63,14 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.enableWaifuOfTheDay.setSelected( this.state.isWaifuOfTheDayEnabled() );
         this.enableStartupMotivation.setSelected( this.state.isStartupMotivationEnabled() );
         this.enableUnitTesterMotivation.setSelected( this.state.isUnitTesterMotivationEnabled() );
+        this.enableSayonara.setSelected( this.state.isSayonaraEnabled() );
     }
 
     @Override
     public void apply() {
         this.state.setStartupMotivationEnabled( enableStartupMotivation.isSelected() );
         this.state.setUnitTesterMotivationEnabled( enableUnitTesterMotivation.isSelected() );
+        this.state.setSayonaraEnabled( enableSayonara.isSelected() );
 
         this.state.setWaifuOfTheDayEnabled( enableWaifuOfTheDay.isSelected() );
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );

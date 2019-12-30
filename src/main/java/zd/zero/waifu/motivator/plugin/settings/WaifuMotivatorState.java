@@ -13,4 +13,6 @@ public class WaifuMotivatorState {
 
     private boolean isUnitTesterMotivationEnabled = true;
 
+    private boolean isSayonaraEnabled = true;
+
 }
