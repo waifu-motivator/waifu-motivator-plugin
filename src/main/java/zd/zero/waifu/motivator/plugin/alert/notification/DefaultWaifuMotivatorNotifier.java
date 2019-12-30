@@ -1,7 +1,9 @@
 package zd.zero.waifu.motivator.plugin.alert.notification;
 
 import com.intellij.openapi.project.Project;
+import lombok.Builder;
 
+@Builder
 public class DefaultWaifuMotivatorNotifier implements WaifuMotivatorNotifier {
 
     private final Project project;
@@ -9,12 +11,6 @@ public class DefaultWaifuMotivatorNotifier implements WaifuMotivatorNotifier {
     private final String title;
 
     private final String content;
-
-    public DefaultWaifuMotivatorNotifier( Project project, String title, String content ) {
-        this.project = project;
-        this.title = title;
-        this.content = content;
-    }
 
     @Override
     public Project getProject() {

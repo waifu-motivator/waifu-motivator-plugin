@@ -2,9 +2,12 @@ package zd.zero.waifu.motivator.plugin.alert.sound;
 
 import com.intellij.openapi.diagnostic.Logger;
 
-import javax.sound.sampled.*;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.Consumer;
 
 import static zd.zero.waifu.motivator.plugin.WaifuMotivator.SOUND_DIR;
 
@@ -12,32 +15,39 @@ public class DefaultWaifuMotivatorSoundPlayer implements WaifuMotivatorSoundPlay
 
     private static final Logger LOGGER = Logger.getInstance( DefaultWaifuMotivatorSoundPlayer.class );
 
-    private String soundFileName;
+    private String fileName;
 
-    public DefaultWaifuMotivatorSoundPlayer( String soundFileName ) {
-        this.soundFileName = SOUND_DIR + soundFileName;
+    private DefaultWaifuMotivatorSoundPlayer( String fileName ) {
+        this.fileName = SOUND_DIR + fileName;
+    }
+
+    public static DefaultWaifuMotivatorSoundPlayer ofFile( String fileName ) {
+        return new DefaultWaifuMotivatorSoundPlayer( fileName );
     }
 
     @Override
     public void play() {
-        try ( InputStream soundStream = getClass().getClassLoader()
-                .getResourceAsStream( soundFileName ) ) {
+        playClip( Clip::start );
+    }
+
+    public void playAndWait() {
+        playClip( clip -> {
+            try {
+                clip.start();
+                Thread.sleep( clip.getMicrosecondLength() / 1000 );
+            } catch ( InterruptedException e ) {
+                LOGGER.error( e.getMessage(), e );
+            }
+        } );
+    }
+
+    private void playClip( Consumer<Clip> clipConsumer ) {
+        try ( InputStream soundStream = getClass().getClassLoader().getResourceAsStream( fileName ) ) {
 
             if ( soundStream == null ) {
-                throw new IllegalArgumentException( "Could not create stream for " + soundFileName );
+                throw new IllegalArgumentException( "Could not create stream for " + fileName );
             }
-
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream( soundStream );
-
-            Clip clip = AudioSystem.getClip();
-            clip.open( audioInputStream );
-            clip.start();
-
-            clip.addLineListener( event -> {
-                if ( event.getType() == LineEvent.Type.STOP ) {
-                    clip.close();
-                }
-            } );
+            SoundClipUtil.openClip( soundStream, clipConsumer );
         } catch ( IOException | LineUnavailableException | UnsupportedAudioFileException e ) {
             LOGGER.error( e.getMessage(), e );
         }
