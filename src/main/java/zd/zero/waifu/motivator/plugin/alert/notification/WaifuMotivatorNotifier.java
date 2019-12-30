@@ -1,5 +1,6 @@
 package zd.zero.waifu.motivator.plugin.alert.notification;
 
+import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationDisplayType;
 import com.intellij.notification.NotificationGroup;
 import com.intellij.openapi.project.Project;
@@ -13,14 +14,17 @@ public interface WaifuMotivatorNotifier {
 
     String getContent();
 
-    default void invokeNotify() {
+    default Notification createNotification() {
         NotificationGroup notificationGroup = new NotificationGroup(
                 WaifuMotivator.PLUGIN_ID, NotificationDisplayType.BALLOON, false
         );
-        notificationGroup.createNotification()
+
+        return notificationGroup.createNotification()
                 .setTitle( getTitle() )
-                .setContent( getContent() )
-                .notify( getProject() );
+                .setContent( getContent() );
     }
 
+    default void invokeNotification( Notification notification ) {
+        notification.notify( getProject() );
+    }
 }
