@@ -17,6 +17,7 @@ import com.intellij.util.ui.JBUI;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import zd.zero.waifu.motivator.plugin.providers.UniqueValueProvider;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
@@ -48,6 +49,8 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
 
     private static final String WAIFU_OF_THE_DAY_CONTENT = "waifu.json";
 
+    private static final String USED_WAIFU_OF_THE_DAY = "WMP_USED_WAIFU_OF_THE_DAY";
+
     private static final int DEFAULT_WIDTH = 600;
 
     private static final int DEFAULT_HEIGHT = 700;
@@ -63,6 +66,10 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
     private JScrollPane scrollPane;
 
     private JEditorPane browser;
+
+    private UniqueValueProvider<WaifuOfTheDay> uniqueValueProvider;
+
+    private Random random;
 
     public WaifuOfTheDayDialog( @NotNull final Window parent ) {
         super( parent, true );
@@ -158,7 +165,6 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
                 }
 
                 ObjectMapper mapper = new ObjectMapper();
-
                 waifuOfTheDays = mapper.readValue( resource, WaifuOfTheDay[].class );
             }
         }
@@ -167,9 +173,25 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
     }
 
     private WaifuOfTheDay getWaifuOfTheDayRandom() throws IOException {
-        WaifuOfTheDay[] waifuOfTheDay = getWaifuOfTheDay();
-        int randomIndex = new Random().nextInt( waifuOfTheDay.length );
-        return waifuOfTheDay[randomIndex];
+        if ( uniqueValueProvider == null ) {
+            uniqueValueProvider = new UniqueValueProvider<>( USED_WAIFU_OF_THE_DAY, getWaifuOfTheDay() );
+        }
+
+        WaifuOfTheDay[] waifuOfTheDays = uniqueValueProvider.getUniqueValues( WaifuOfTheDay::getName )
+                .toArray( new WaifuOfTheDay[0] );
+
+        WaifuOfTheDay theDay;
+        if ( waifuOfTheDays.length == 1 ) {
+            theDay = waifuOfTheDays[0];
+        } else {
+            random = random == null ? new Random() : random;
+            int randomIndex = random.nextInt( waifuOfTheDays.length );
+            theDay = waifuOfTheDays[randomIndex];
+        }
+
+        uniqueValueProvider.addToSeenValues( theDay.getName() );
+
+        return theDay;
     }
 
     private WaifuOfTheDay getWaifuOfTheDayByName( String name ) throws IOException {
