@@ -12,17 +12,18 @@ public class UniqueValueProvider<T> {
 
     private final String PROPERTY_KEY;
 
-    private T[] initialValues;
-
     private String lastSeenValue = "";
 
-    public UniqueValueProvider( final String PROPERTY_KEY, T[] initialValues ) {
+    public UniqueValueProvider( final String PROPERTY_KEY ) {
         this.PROPERTY_KEY = PROPERTY_KEY;
-        this.initialValues = initialValues;
     }
 
-    public List<T> getUniqueValues( Function<T, String> function ) {
-        String[] usedKeyValues = getValue().split( "\\|" );
+    public List<T> getUniqueValues( T[] initialValues, Function<T, String> function ) {
+        if ( initialValues.length <= 1 ) {
+            return Arrays.asList( initialValues );
+        }
+
+        String[] usedKeyValues = getSourceValue().split( "\\|" );
 
         List<T> filteredValues = Arrays.stream( initialValues )
                 .filter( v -> !Arrays.asList( usedKeyValues ).contains( function.apply( v ) ) ).collect( toList() );
@@ -30,7 +31,7 @@ public class UniqueValueProvider<T> {
         if ( filteredValues.isEmpty() ) {
             filteredValues = Arrays.stream( initialValues )
                     .filter( v -> !function.apply( v ).equals( lastSeenValue ) ).collect( toList() );
-            PropertiesComponent.getInstance().setValue( PROPERTY_KEY, "" );
+            updateSourceValue( "" );
         }
 
         return filteredValues;
@@ -38,10 +39,14 @@ public class UniqueValueProvider<T> {
 
     public void addToSeenValues( String seenValue ) {
         this.lastSeenValue = seenValue;
-        PropertiesComponent.getInstance().setValue( PROPERTY_KEY, getValue() + "|" + seenValue );
+        updateSourceValue( getSourceValue() + "|" + seenValue );
     }
 
-    private String getValue() {
+    void updateSourceValue( String value ) {
+        PropertiesComponent.getInstance().setValue( PROPERTY_KEY, value );
+    }
+
+    String getSourceValue() {
         return PropertiesComponent.getInstance().getValue( PROPERTY_KEY, "" );
     }
 }

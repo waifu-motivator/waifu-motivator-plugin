@@ -174,11 +174,11 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
 
     private WaifuOfTheDay getWaifuOfTheDayRandom() throws IOException {
         if ( uniqueValueProvider == null ) {
-            uniqueValueProvider = new UniqueValueProvider<>( USED_WAIFU_OF_THE_DAY, getWaifuOfTheDay() );
+            uniqueValueProvider = new UniqueValueProvider<>( USED_WAIFU_OF_THE_DAY );
         }
 
-        WaifuOfTheDay[] waifuOfTheDays = uniqueValueProvider.getUniqueValues( WaifuOfTheDay::getName )
-                .toArray( new WaifuOfTheDay[0] );
+        WaifuOfTheDay[] waifuOfTheDays = uniqueValueProvider
+                .getUniqueValues( getWaifuOfTheDay(), WaifuOfTheDay::getName ).toArray( new WaifuOfTheDay[0] );
 
         WaifuOfTheDay theDay;
         if ( waifuOfTheDays.length == 1 ) {
