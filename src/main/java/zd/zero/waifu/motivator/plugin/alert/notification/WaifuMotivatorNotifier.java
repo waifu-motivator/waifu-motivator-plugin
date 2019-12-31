@@ -16,7 +16,7 @@ public interface WaifuMotivatorNotifier {
 
     default Notification createNotification() {
         NotificationGroup notificationGroup = new NotificationGroup(
-                WaifuMotivator.PLUGIN_ID, NotificationDisplayType.BALLOON, false
+                WaifuMotivator.PLUGIN_NAME, NotificationDisplayType.BALLOON, false
         );
 
         return notificationGroup.createNotification()

@@ -1,5 +1,7 @@
 package zd.zero.waifu.motivator.plugin.alert;
 
+import com.intellij.notification.Notification;
+
 public interface WaifuMotivatorAlert {
 
     boolean isDisplayNotificationEnabled();
@@ -12,7 +14,7 @@ public interface WaifuMotivatorAlert {
 
     boolean isAlertEnabled();
 
-    void onAlertClosed();
+    void onAlertClosed( Notification notification );
 
     default void alert() {
         if ( isAlertEnabled() ) {
