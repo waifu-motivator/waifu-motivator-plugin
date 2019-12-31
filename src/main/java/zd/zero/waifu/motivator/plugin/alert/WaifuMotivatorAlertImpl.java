@@ -33,8 +33,12 @@ public class WaifuMotivatorAlertImpl implements WaifuMotivatorAlert {
     }
 
     @Override
-    public void onAlertClosed() {
-        player.stop();
+    public void onAlertClosed( Notification notification ) {
+        long duration = System.currentTimeMillis() - notification.getTimestamp();
+        boolean isExpired = ( duration / 1000 ) >= 10;
+        if ( !isExpired ) {
+            player.stop();
+        }
     }
 
     @Override
@@ -47,7 +51,7 @@ public class WaifuMotivatorAlertImpl implements WaifuMotivatorAlert {
             balloon.addListener( new JBPopupListener() {
                 @Override
                 public void onClosed( @NotNull LightweightWindowEvent event ) {
-                    onAlertClosed();
+                    onAlertClosed( notification );
                 }
             } );
         }
