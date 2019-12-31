@@ -37,9 +37,10 @@ public class AlertAssetProvider {
         }
 
         if ( uniqueProvider == null ) {
-            uniqueProvider = new UniqueValueProvider<>( USED_ALERTS, assets );
+            uniqueProvider = new UniqueValueProvider<>( USED_ALERTS );
         }
-        WaifuMotivatorAlertAsset[] filteredAlerts = uniqueProvider.getUniqueValues( WaifuMotivatorAlertAsset::getTitle ).toArray( new WaifuMotivatorAlertAsset[0] );
+        WaifuMotivatorAlertAsset[] filteredAlerts = uniqueProvider
+                .getUniqueValues( assets, WaifuMotivatorAlertAsset::getTitle ).toArray( new WaifuMotivatorAlertAsset[0] );
 
         WaifuMotivatorAlertAsset asset;
         if ( filteredAlerts.length == 1 ) {
