@@ -16,13 +16,6 @@
 
 > *Waifu* is a term for a fictional character, usually in anime or related media, that someone has great, and sometimes romantic, affection for.
 
-
-## Coming up features:
-* Waifu of the day
-* Waifu motivator on demand
-* Waifu Dashboard
-
-
 ## Getting Started
 If you'd like to test it or run it to your local machine for development, please see the following sections.
 
