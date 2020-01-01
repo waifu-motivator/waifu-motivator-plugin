@@ -146,7 +146,7 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
                     .replace( "{{sourceUrl}}", StringUtils.defaultIfEmpty( currentWaifuOfTheDay.getSourceUrl(), "#" ) )
                     .replace( "{{style}}", "<style type=\"text/css\">" + getCssContent() + "</style>" )
                     .replace( "{{description}}", StringUtils.defaultString( currentWaifuOfTheDay.getDescription() )
-                            .replace( "\n", "<br/>" ) );
+                            .replace( "\n", "<br>" ) );
 
             this.browser.setText( content );
             this.browser.setCaretPosition( 0 ); // resets scroll back to top
