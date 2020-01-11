@@ -18,7 +18,7 @@ import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class WaifuMotivatorProjectComponent implements ProjectComponent, Disposable {
 
@@ -61,7 +61,8 @@ public class WaifuMotivatorProjectComponent implements ProjectComponent, Disposa
             public void applicationExiting() {
                 final String[] sayonara = { "ara_ara_sayonara.wav", "sayonara_bye_bye.wav", "sayonara_senpai.wav" };
                 DefaultWaifuMotivatorSoundPlayer
-                        .ofFile( sayonara[new Random().nextInt( sayonara.length )] ).playAndWait();
+                        .ofFile( sayonara[ThreadLocalRandom.current().nextInt( sayonara.length )] )
+                        .playAndWait();
             }
         };
         ApplicationManager.getApplication().addApplicationListener( applicationListener, this );

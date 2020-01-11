@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 public class AlertAssetProvider {
@@ -46,7 +47,7 @@ public class AlertAssetProvider {
         if ( filteredAlerts.length == 1 ) {
             asset = filteredAlerts[0];
         } else {
-            random = random == null ? new Random() : random;
+            random = random == null ? ThreadLocalRandom.current() : random;
             int randomIndex = random.nextInt( filteredAlerts.length );
             asset = filteredAlerts[randomIndex];
         }
