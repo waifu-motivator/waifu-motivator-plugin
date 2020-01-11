@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class WaifuOfTheDayDialog extends DialogWrapper {
 
@@ -184,7 +185,7 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
         if ( waifuOfTheDays.length == 1 ) {
             theDay = waifuOfTheDays[0];
         } else {
-            random = random == null ? new Random() : random;
+            random = random == null ? ThreadLocalRandom.current() : random;
             int randomIndex = random.nextInt( waifuOfTheDays.length );
             theDay = waifuOfTheDays[randomIndex];
         }
