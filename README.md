@@ -14,7 +14,7 @@
 
 <p align="center">Simple and open-sourced Jetbrains IDE plugin that your waifu motivates you and helps you work on your coding challenges.</p>
 
-> *Waifu* is a term for a fictional character, usually in anime or related media, that someone has great, and sometimes romantic, affection for. [source](https://www.dictionary.com/e/fictional-characters/waifu/)
+> *Waifu* is a term for a fictional character, usually in anime or related media, that someone has great, and sometimes romantic, affection for. [sauce](https://www.dictionary.com/e/fictional-characters/waifu/)
 
 
 ## Waifu of the Day
