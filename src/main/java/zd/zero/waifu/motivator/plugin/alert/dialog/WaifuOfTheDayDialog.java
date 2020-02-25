@@ -137,23 +137,28 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
                 PropertiesComponent.getInstance().setValue( KEY_RECENT_WAIFU, currentWaifuOfTheDay.getName() );
             }
 
-            URL imageResource = ResourceUtil.getResource( getClass().getClassLoader(),
-                    WAIFU_OF_THE_DAY_IMAGE_PATH, currentWaifuOfTheDay.getImage() );
-
-            String content = getTemplateContent()
-                    .replace( "{{name}}", StringUtils.defaultString( currentWaifuOfTheDay.getName() ) )
-                    .replace( "{{anime}}", StringUtils.defaultString( currentWaifuOfTheDay.getAnime() ) )
-                    .replace( "{{image}}", imageResource.toExternalForm() )
-                    .replace( "{{sourceUrl}}", StringUtils.defaultIfEmpty( currentWaifuOfTheDay.getSourceUrl(), "#" ) )
-                    .replace( "{{style}}", "<style type=\"text/css\">" + getCssContent() + "</style>" )
-                    .replace( "{{description}}", StringUtils.defaultString( currentWaifuOfTheDay.getDescription() )
-                            .replace( "\n", "<br>" ) );
-
-            this.browser.setText( content );
+            this.browser.setText( getUpdatedTemplateContent() );
             this.browser.setCaretPosition( 0 ); // resets scroll back to top
         } catch ( IOException e ) {
             LOGGER.error( e.getMessage(), e );
         }
+    }
+
+    @NotNull
+    private String getUpdatedTemplateContent() throws IOException {
+        return getTemplateContent()
+                .replace( "{{name}}", StringUtils.defaultString( currentWaifuOfTheDay.getName() ) )
+                .replace( "{{anime}}", StringUtils.defaultString( currentWaifuOfTheDay.getAnime() ) )
+                .replace( "{{image}}", getImageResource().toExternalForm() )
+                .replace( "{{sourceUrl}}", StringUtils.defaultIfEmpty( currentWaifuOfTheDay.getSourceUrl(), "#" ) )
+                .replace( "{{style}}", "<style type=\"text/css\">" + getCssContent() + "</style>" )
+                .replace( "{{description}}", StringUtils.defaultString( currentWaifuOfTheDay.getDescription() )
+                        .replace( "\n", "<br>" ) );
+    }
+
+    private URL getImageResource() {
+        return ResourceUtil.getResource( getClass().getClassLoader(),
+                WAIFU_OF_THE_DAY_IMAGE_PATH, currentWaifuOfTheDay.getImage() );
     }
 
     private WaifuOfTheDay[] getWaifuOfTheDay() throws IOException {
