@@ -17,6 +17,7 @@ import com.intellij.util.ui.JBUI;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import zd.zero.waifu.motivator.plugin.MessageBundle;
 import zd.zero.waifu.motivator.plugin.providers.UniqueValueProvider;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
@@ -78,7 +79,7 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
         initializeContent();
 
         setModal( false );
-        setTitle( "Waifu of the Day" );
+        setTitle( MessageBundle.message( "title.tip.waifu.of.the.day" ) );
         setCancelButtonText( CommonBundle.getCloseButtonText() );
         setDoNotAskOption( new DialogTipPanel() );
 
@@ -246,7 +247,7 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
     private AbstractAction getViewAnimeAction() {
         return new AbstractAction() {
             {
-                putValue( Action.NAME, "View &Anime" );
+                putValue( Action.NAME, MessageBundle.message( "action.view.anime" ) );
             }
 
             @Override
