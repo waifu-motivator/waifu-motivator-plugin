@@ -21,7 +21,7 @@
           <forms/>
         </constraints>
         <properties>
-          <text value="Enable Startup Motivation"/>
+          <text resource-bundle="messages/MessageBundle" key="settings.enable.startup.motivation"/>
         </properties>
       </component>
       <component id="b8976" class="javax.swing.JCheckBox" binding="enableUnitTesterMotivation">
@@ -30,7 +30,7 @@
           <forms/>
         </constraints>
         <properties>
-          <text value="Enable Unit Tester Motivation"/>
+          <text resource-bundle="messages/MessageBundle" key="settings.enable.unit.tester.motivation"/>
         </properties>
       </component>
       <component id="196ab" class="javax.swing.JCheckBox" binding="enableWaifuOfTheDay">
@@ -39,7 +39,7 @@
           <forms/>
         </constraints>
         <properties>
-          <text value="Enable Waifu of the Day and replace Tip of the Day"/>
+          <text resource-bundle="messages/MessageBundle" key="settings.enable.waifu.of.the.day.and.replace.tip.of.the.day"/>
         </properties>
       </component>
       <component id="77db" class="javax.swing.JCheckBox" binding="enableSayonara">
@@ -48,7 +48,7 @@
           <forms/>
         </constraints>
         <properties>
-          <text value="Enable Sayonara (play sound on project exit)"/>
+          <text resource-bundle="messages/MessageBundle" key="settings.enable.sayonara.play.sound.on.project.exit"/>
         </properties>
       </component>
     </children>
