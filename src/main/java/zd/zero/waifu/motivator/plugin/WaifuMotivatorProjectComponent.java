@@ -7,6 +7,7 @@ import com.intellij.openapi.application.ApplicationListener;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.startup.StartupManager;
 import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlert;
@@ -59,6 +60,9 @@ public class WaifuMotivatorProjectComponent implements ProjectComponent, Disposa
         this.applicationListener = new ApplicationListener() {
             @Override
             public void applicationExiting() {
+                Project[] openProjects = ProjectManager.getInstance().getOpenProjects();
+                if ( openProjects.length > 0 ) return;
+
                 final String[] sayonara = { "ara_ara_sayonara.wav", "sayonara_bye_bye.wav", "sayonara_senpai.wav" };
                 DefaultWaifuMotivatorSoundPlayer
                         .ofFile( sayonara[ThreadLocalRandom.current().nextInt( sayonara.length )] )
