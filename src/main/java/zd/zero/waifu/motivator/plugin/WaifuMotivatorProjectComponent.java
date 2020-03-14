@@ -14,8 +14,8 @@ import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlert;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertFactory;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
-import zd.zero.waifu.motivator.plugin.alert.sound.DefaultWaifuMotivatorSoundPlayer;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
+import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
@@ -64,9 +64,8 @@ public class WaifuMotivatorProjectComponent implements ProjectComponent, Disposa
                 if ( openProjects.length > 0 ) return;
 
                 final String[] sayonara = { "ara_ara_sayonara.wav", "sayonara_bye_bye.wav", "sayonara_senpai.wav" };
-                DefaultWaifuMotivatorSoundPlayer
-                        .ofFile( sayonara[ThreadLocalRandom.current().nextInt( sayonara.length )] )
-                        .playAndWait();
+                String file = sayonara[ThreadLocalRandom.current().nextInt( sayonara.length )];
+                WaifuSoundPlayerFactory.createPlayer( file ).playAndWait();
             }
         };
         ApplicationManager.getApplication().addApplicationListener( applicationListener, this );
