@@ -2,6 +2,7 @@ package zd.zero.waifu.motivator.plugin.alert;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.ResourceUtil;
 import org.jetbrains.annotations.NonNls;
 import zd.zero.waifu.motivator.plugin.providers.UniqueValueProvider;
@@ -14,6 +15,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 public class AlertAssetProvider {
+
+    private static final Logger LOGGER = Logger.getInstance( AlertAssetProvider.class );
 
     private static final String USED_ALERTS = "WMP_USED_ALERTS";
 
@@ -41,7 +44,8 @@ public class AlertAssetProvider {
             uniqueProvider = new UniqueValueProvider<>( USED_ALERTS );
         }
         WaifuMotivatorAlertAsset[] filteredAlerts = uniqueProvider
-                .getUniqueValues( assets, WaifuMotivatorAlertAsset::getTitle ).toArray( new WaifuMotivatorAlertAsset[0] );
+                .getUniqueValues( assets, WaifuMotivatorAlertAsset::getTitle )
+                .toArray( new WaifuMotivatorAlertAsset[0] );
 
         WaifuMotivatorAlertAsset asset;
         if ( filteredAlerts.length == 1 ) {
@@ -71,6 +75,7 @@ public class AlertAssetProvider {
                 alertAssets = mapper.readValue( resource, WaifuMotivatorAlertAsset[].class );
             } catch ( IOException e ) {
                 alertAssets = new WaifuMotivatorAlertAsset[0];
+                LOGGER.error( "Unable to parse sound source file.", e );
             }
         }
 

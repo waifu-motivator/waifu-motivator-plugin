@@ -8,7 +8,7 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.alert.notification.WaifuMotivatorNotifier;
-import zd.zero.waifu.motivator.plugin.alert.sound.WaifuMotivatorSoundPlayer;
+import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayer;
 
 public class WaifuMotivatorAlertImpl implements WaifuMotivatorAlert {
 
@@ -16,12 +16,12 @@ public class WaifuMotivatorAlertImpl implements WaifuMotivatorAlert {
     private WaifuMotivatorNotifier notifier;
 
     @Getter
-    private WaifuMotivatorSoundPlayer player;
+    private WaifuSoundPlayer player;
 
     @Getter
     private AlertConfiguration config;
 
-    public WaifuMotivatorAlertImpl( WaifuMotivatorNotifier notifier, WaifuMotivatorSoundPlayer player, AlertConfiguration config ) {
+    public WaifuMotivatorAlertImpl( WaifuMotivatorNotifier notifier, WaifuSoundPlayer player, AlertConfiguration config ) {
         this.notifier = notifier;
         this.player = player;
         this.config = config;

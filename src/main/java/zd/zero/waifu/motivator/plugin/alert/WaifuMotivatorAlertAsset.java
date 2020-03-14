@@ -1,5 +1,6 @@
 package zd.zero.waifu.motivator.plugin.alert;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.Builder;
@@ -10,13 +11,14 @@ import lombok.Value;
 @Builder
 public class WaifuMotivatorAlertAsset {
 
-    private final String title;
+    String title;
 
-    private final String message;
+    String message;
 
-    private final String sound;
+    @JsonProperty( "sound" )
+    String soundFileName;
 
-    private final WaifuMotivatorAlertAssetCategory[] categories;
+    WaifuMotivatorAlertAssetCategory[] categories;
 
     @JsonPOJOBuilder( withPrefix = "" )
     public static class WaifuMotivatorAlertAssetBuilder {

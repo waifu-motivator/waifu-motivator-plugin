@@ -1,4 +1,4 @@
-package zd.zero.waifu.motivator.plugin.alert.sound;
+package zd.zero.waifu.motivator.plugin.player;
 
 import com.intellij.openapi.diagnostic.Logger;
 
@@ -10,27 +10,27 @@ import java.io.InputStream;
 
 import static zd.zero.waifu.motivator.plugin.WaifuMotivator.SOUND_DIR;
 
-public class DefaultWaifuMotivatorSoundPlayer implements WaifuMotivatorSoundPlayer {
+public final class DefaultWaifuSoundPlayer implements WaifuSoundPlayer {
 
-    private static final Logger LOGGER = Logger.getInstance( DefaultWaifuMotivatorSoundPlayer.class );
+    private static final Logger LOGGER = Logger.getInstance( DefaultWaifuSoundPlayer.class );
 
     private String fileName;
 
     private Clip clip;
 
-    private DefaultWaifuMotivatorSoundPlayer( String fileName ) {
+    private DefaultWaifuSoundPlayer( String fileName ) {
         this.fileName = SOUND_DIR + fileName;
     }
 
-    public static DefaultWaifuMotivatorSoundPlayer ofFile( String fileName ) {
-        return new DefaultWaifuMotivatorSoundPlayer( fileName );
+    public static DefaultWaifuSoundPlayer ofFile( String fileName ) {
+        return new DefaultWaifuSoundPlayer( fileName );
     }
 
     @Override
     public void play() {
         try ( InputStream soundStream = getClass().getClassLoader().getResourceAsStream( fileName ) ) {
             if ( soundStream == null ) {
-                throw new IllegalArgumentException( "Could not create stream for " + fileName );
+                throw new IllegalArgumentException( "Could not create a stream for " + fileName );
             }
             clip = SoundClipUtil.openClip( soundStream );
             clip.start();

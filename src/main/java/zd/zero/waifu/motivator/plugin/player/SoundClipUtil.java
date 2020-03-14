@@ -1,4 +1,4 @@
-package zd.zero.waifu.motivator.plugin.alert.sound;
+package zd.zero.waifu.motivator.plugin.player;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
