@@ -33,7 +33,7 @@ Your waifu motivates you whenever a test passes or fails.
 *When a test passes it'll rejoice with you together with their voice/sound.*
 
 **Test Fails**
-![Test Fails](screenshot/test_fails.png)
+![Test Fails](screenshot/test_fail.png)
 
 *When a test fails it'll cheer you up for you to not get demotivated*
 
