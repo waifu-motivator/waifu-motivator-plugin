@@ -11,5 +11,9 @@
         <module name="waifu-motivator-plugin.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="waifu-motivator-plugin.main" target="1.8" />
+      <module name="waifu-motivator-plugin.test" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
