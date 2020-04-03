@@ -66,5 +66,38 @@
     "categories": [
       "positive"
     ]
+  },
+  {
+    "title": "Nyaaan",
+    "message": "(ﾐㆁ ﻌ ㆁﾐ)∫",
+    "sound": "nyaan.mp3",
+    "categories": [
+      "neutral",
+      "negative"
+    ]
+  },
+  {
+    "title": "Wwwwwwaaaaaaaaaaaaaaaaaaaaah",
+    "message": "\t(๑•́ ヮ •̀๑)",
+    "sound": "waaaah.mp3",
+    "categories": [
+      "positive",
+      "negative"
+    ]
+  },
+  {
+    "title": "Wwwwaaaaaooowww",
+    "sound": "waoow.mp3",
+    "categories": [
+      "positive"
+    ]
+  },
+  {
+    "title": "OH MY GAH!",
+    "message": "(o´Д`) (o´Д`) (o´Д`)",
+    "sound": "ohmygah.mp3",
+    "categories": [
+      "negative"
+    ]
   }
 ]

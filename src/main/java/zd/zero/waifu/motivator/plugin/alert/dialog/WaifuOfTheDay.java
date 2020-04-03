@@ -10,17 +10,17 @@ import lombok.Value;
 @Builder
 public class WaifuOfTheDay {
 
-    private String name;
+    String name;
 
-    private String anime;
+    String anime;
 
-    private String description;
+    String description;
 
-    private String image;
+    String image;
 
-    private String sourceUrl;
+    String sourceUrl;
 
-    private String animeUrl;
+    String animeUrl;
 
     @JsonPOJOBuilder( withPrefix = "" )
     public static class WaifuOfTheDayBuilder {
