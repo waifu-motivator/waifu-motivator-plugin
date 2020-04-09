@@ -8,6 +8,16 @@
     <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
     <colspec value="fill:d:grow"/>
     <constraints>
       <xy x="20" y="20" width="500" height="400"/>
@@ -17,38 +27,83 @@
     <children>
       <component id="b0f98" class="javax.swing.JCheckBox" binding="enableStartupMotivation">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
-        </constraints>
-        <properties>
-          <text value="Enable Startup Motivation"/>
-        </properties>
-      </component>
-      <component id="b8976" class="javax.swing.JCheckBox" binding="enableUnitTesterMotivation">
-        <constraints>
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
-          <text value="Enable Unit Tester Motivation"/>
+          <text resource-bundle="settingsMenu" key="enable.startup.motivation"/>
+        </properties>
+      </component>
+      <component id="b8976" class="javax.swing.JCheckBox" binding="enableUnitTesterMotivation">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text resource-bundle="settingsMenu" key="enable.unit.tester.motivation"/>
         </properties>
       </component>
       <component id="196ab" class="javax.swing.JCheckBox" binding="enableWaifuOfTheDay">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
-          <text value="Enable Waifu of the Day and replace Tip of the Day"/>
+          <text resource-bundle="settingsMenu" key="enable.waifu.of.the.day.and.replace.tip.of.the.day"/>
         </properties>
       </component>
       <component id="77db" class="javax.swing.JCheckBox" binding="enableSayonara">
         <constraints>
-          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
-          <text value="Enable Sayonara (play sound on project exit)"/>
+          <text resource-bundle="settingsMenu" key="enable.sayonara.play.sound.on.project.exit"/>
+        </properties>
+      </component>
+      <component id="d2932" class="javax.swing.JCheckBox" binding="enableMotivateMeSound">
+        <constraints>
+          <grid row="16" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text resource-bundle="settingsMenu" key="enable.sound.on.motivateme"/>
+        </properties>
+      </component>
+      <component id="46af5" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text resource-bundle="settingsMenu" key="actions"/>
+        </properties>
+      </component>
+      <component id="66dd" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text resource-bundle="settingsMenu" key="sounds"/>
+        </properties>
+      </component>
+      <component id="68d69" class="javax.swing.JCheckBox" binding="enableStartupMotivationSound">
+        <constraints>
+          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text resource-bundle="settingsMenu" key="enable.startup.motivation.sound"/>
+        </properties>
+      </component>
+      <component id="6f2eb" class="javax.swing.JCheckBox" binding="enableUnitTesterMotivationSound">
+        <constraints>
+          <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text resource-bundle="settingsMenu" key="enable.unit.tester.motivation.sound"/>
         </properties>
       </component>
     </children>

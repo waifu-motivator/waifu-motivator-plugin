@@ -41,7 +41,7 @@ public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
         return AlertConfiguration.builder()
                 .isAlertEnabled( Objects.requireNonNull( pluginState ).isUnitTesterMotivationEnabled() )
                 .isDisplayNotificationEnabled( true )
-                .isSoundAlertEnabled( true )
+                .isSoundAlertEnabled( Objects.requireNonNull( pluginState ).isUnitTesterMotivationSoundEnabled() )
                 .build();
     }
 }
