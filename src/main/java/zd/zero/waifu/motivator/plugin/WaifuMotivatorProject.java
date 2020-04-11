@@ -1,13 +1,13 @@
 package zd.zero.waifu.motivator.plugin;
 
-import com.intellij.ide.AppLifecycleListener;
 import com.intellij.ide.GeneralSettings;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.startup.StartupManager;
+import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlert;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
@@ -20,7 +20,7 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class WaifuMotivatorProjectComponent implements ProjectComponent, Disposable {
+public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
     private static final String IS_INITIAL_PLATFORM_TIP_UPDATED = "WAIFU_UPDATE_TIP";
 
@@ -28,45 +28,35 @@ public class WaifuMotivatorProjectComponent implements ProjectComponent, Disposa
 
     private WaifuMotivatorState pluginState;
 
-    private AppLifecycleListener applicationListener;
-
     private WaifuUnitTester unitTestListener;
 
-    public WaifuMotivatorProjectComponent( Project project ) {
+    @Override
+    public void projectOpened( @NotNull Project project ) {
         this.project = project;
         this.pluginState = WaifuMotivatorPluginState.getPluginState();
         this.unitTestListener = WaifuUnitTester.ofDefault( project );
-    }
 
-    @Override
-    public void projectOpened() {
         updatePlatformStartupConfig();
         initializeListeners();
         initializeStartupMotivator();
     }
 
     @Override
+    public void projectClosing( @NotNull Project project ) {
+        if ( !pluginState.isSayonaraEnabled() || ProjectManager.getInstance().getOpenProjects().length > 1 ) return;
+
+        final String[] sayonara = { "ara_ara_sayonara.wav", "sayonara_bye_bye.wav", "sayonara_senpai.wav" };
+        String file = sayonara[ThreadLocalRandom.current().nextInt( sayonara.length )];
+        WaifuSoundPlayerFactory.createPlayer( file ).playAndWait();
+    }
+
+    @Override
     public void dispose() {
         this.unitTestListener.stop();
-        if ( pluginState.isSayonaraEnabled() ) {
-            applicationListener.appClosing();
-        }
     }
 
     private void initializeListeners() {
-        unitTestListener.init();
-
-        this.applicationListener = new AppLifecycleListener() {
-            @Override
-            public void appClosing() {
-                Project[] openProjects = ProjectManager.getInstance().getOpenProjects();
-                if ( openProjects.length > 0 ) return;
-
-                final String[] sayonara = { "ara_ara_sayonara.wav", "sayonara_bye_bye.wav", "sayonara_senpai.wav" };
-                String file = sayonara[ThreadLocalRandom.current().nextInt( sayonara.length )];
-                WaifuSoundPlayerFactory.createPlayer( file ).playAndWait();
-            }
-        };
+        this.unitTestListener.init();
     }
 
     private void updatePlatformStartupConfig() {
@@ -93,5 +83,4 @@ public class WaifuMotivatorProjectComponent implements ProjectComponent, Disposa
             motivatorAlert.alert();
         }
     }
-
 }

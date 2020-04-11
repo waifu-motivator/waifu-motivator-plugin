@@ -4,6 +4,7 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 )
 public class WaifuMotivatorPluginState implements PersistentStateComponent<WaifuMotivatorState> {
 
-    private WaifuMotivatorState state = new WaifuMotivatorState();
+    private final WaifuMotivatorState state = new WaifuMotivatorState();
 
     public static WaifuMotivatorPluginState getInstance() {
         return ServiceManager.getService( WaifuMotivatorPluginState.class );
@@ -31,7 +32,7 @@ public class WaifuMotivatorPluginState implements PersistentStateComponent<Waifu
 
     @Override
     public void loadState( @NotNull WaifuMotivatorState state ) {
-        this.state = state;
+        XmlSerializerUtil.copyBean( state, this );
     }
 
 }
