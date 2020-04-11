@@ -11,7 +11,13 @@ public class WaifuMotivatorState {
 
     private boolean isStartupMotivationEnabled = true;
 
+    private boolean isStartupMotivationSoundEnabled = true;
+
     private boolean isUnitTesterMotivationEnabled = true;
+
+    private boolean isUnitTesterMotivationSoundEnabled = true;
+
+    private boolean isMotivateMeSoundEnabled = true;
 
     private boolean isSayonaraEnabled = true;
 
