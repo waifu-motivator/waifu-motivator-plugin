@@ -1,10 +1,9 @@
 package zd.zero.waifu.motivator.plugin;
 
+import com.intellij.ide.AppLifecycleListener;
 import com.intellij.ide.GeneralSettings;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationListener;
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
@@ -29,7 +28,7 @@ public class WaifuMotivatorProjectComponent implements ProjectComponent, Disposa
 
     private WaifuMotivatorState pluginState;
 
-    private ApplicationListener applicationListener;
+    private AppLifecycleListener applicationListener;
 
     private WaifuUnitTester unitTestListener;
 
@@ -50,16 +49,16 @@ public class WaifuMotivatorProjectComponent implements ProjectComponent, Disposa
     public void dispose() {
         this.unitTestListener.stop();
         if ( pluginState.isSayonaraEnabled() ) {
-            applicationListener.applicationExiting();
+            applicationListener.appClosing();
         }
     }
 
     private void initializeListeners() {
         unitTestListener.init();
 
-        this.applicationListener = new ApplicationListener() {
+        this.applicationListener = new AppLifecycleListener() {
             @Override
-            public void applicationExiting() {
+            public void appClosing() {
                 Project[] openProjects = ProjectManager.getInstance().getOpenProjects();
                 if ( openProjects.length > 0 ) return;
 
@@ -68,7 +67,6 @@ public class WaifuMotivatorProjectComponent implements ProjectComponent, Disposa
                 WaifuSoundPlayerFactory.createPlayer( file ).playAndWait();
             }
         };
-        ApplicationManager.getApplication().addApplicationListener( applicationListener, this );
     }
 
     private void updatePlatformStartupConfig() {
