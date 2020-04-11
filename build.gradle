@@ -29,6 +29,9 @@ intellij {
 }
 
 patchPluginXml {
+    sinceBuild sinceBuildVersion
+    untilBuild untilBuildVersion
+
     pluginDescription(file(descriptionFile).text)
     changeNotes(file(changesFile).text)
 }
