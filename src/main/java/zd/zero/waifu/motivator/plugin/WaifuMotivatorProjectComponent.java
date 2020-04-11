@@ -84,7 +84,7 @@ public class WaifuMotivatorProjectComponent implements ProjectComponent, Disposa
         AlertConfiguration config = AlertConfiguration.builder()
                 .isAlertEnabled( pluginState.isStartupMotivationEnabled() )
                 .isDisplayNotificationEnabled( true )
-                .isSoundAlertEnabled( true )
+                .isSoundAlertEnabled( pluginState.isStartupMotivationSoundEnabled() )
                 .build();
         WaifuMotivatorAlert motivatorAlert = WaifuMotivatorAlertFactory.createAlert(
                 project, AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ), config );

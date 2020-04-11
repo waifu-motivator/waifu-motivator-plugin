@@ -8,15 +8,19 @@ import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlert;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertFactory;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 public class MotivateMeAction extends AnAction {
 
     @Override
     public void actionPerformed( @NotNull AnActionEvent e ) {
+        WaifuMotivatorState pluginState = WaifuMotivatorPluginState.getPluginState();
+
         AlertConfiguration config = AlertConfiguration.builder()
                 .isAlertEnabled( true )
                 .isDisplayNotificationEnabled( true )
-                .isSoundAlertEnabled( true )
+                .isSoundAlertEnabled( pluginState.isMotivateMeSoundEnabled() )
                 .build();
 
         WaifuMotivatorAlert motivatorAlert = WaifuMotivatorAlertFactory.createAlert( e.getProject(),
