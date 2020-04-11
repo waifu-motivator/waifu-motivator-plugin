@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin url="https://github.com/zd-zero/waifu-motivator-plugin">
   <id>zd.zero.waifu-motivator-plugin</id>
   <name>Waifu Motivator</name>
   <vendor email="zaerald.zd@gmail.com" url="https://github.com/zd-zero">zd-zero</vendor>
@@ -36,9 +36,9 @@
     </group>
   </actions>
 
-  <project-components>
-    <component>
-      <implementation-class>zd.zero.waifu.motivator.plugin.WaifuMotivatorProjectComponent</implementation-class>
-    </component>
-  </project-components>
+  <projectListeners>
+    <listener class="zd.zero.waifu.motivator.plugin.WaifuMotivatorProject"
+              topic="com.intellij.openapi.project.ProjectManagerListener"/>
+  </projectListeners>
+
 </idea-plugin>
