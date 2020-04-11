@@ -14,6 +14,7 @@ import com.intellij.util.ResourceUtil;
 import com.intellij.util.text.DateFormatUtil;
 import com.intellij.util.ui.JBDimension;
 import com.intellij.util.ui.JBUI;
+import com.intellij.util.ui.StartupUiUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -46,8 +47,6 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
     private static final String WAIFU_OF_THE_DAY_IMAGE_PATH = WAIFU_OF_THE_DAY_BASE_PATH + "images/";
 
     private static final String WAIFU_OF_THE_DAY_TEMPLATE = "WaifuOfTheDayTemplate.html";
-
-    private static final String WAIFU_OF_THE_DAY_STYLE = "style.css";
 
     private static final String WAIFU_OF_THE_DAY_CONTENT = "waifu.json";
 
@@ -229,7 +228,8 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
 
 
     private String getCssContent() throws IOException {
-        return getContent( WAIFU_OF_THE_DAY_STYLE );
+        String style = StartupUiUtil.isUnderDarcula() ? "darcula_style.css" : "style.css";
+        return getContent( style );
     }
 
     @Nullable

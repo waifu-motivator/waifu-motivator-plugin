@@ -1,0 +1,42 @@
+body {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #bbbbbb;
+}
+
+h1, h2, h3,
+h4, h5, h6,
+p, a {
+    margin: 8px 0 0;
+    padding: 0;
+}
+
+a {
+    display: inline-block;
+    margin-top: 50px;
+    text-decoration: none;
+}
+
+a,
+a:link,
+a:visited,
+a:hover,
+a:active {
+    color: #1565C0;
+}
+
+.waifu-image {
+    text-align: center;
+}
+
+.waifu-image img {
+    display: inline-block;
+    width: 100px;
+}
+
+.title, .subtitle {
+    text-align: center;
+}
+
+.subtitle {
+    margin: 4px 0 8px;
+}
