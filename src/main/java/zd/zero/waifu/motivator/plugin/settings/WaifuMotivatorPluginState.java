@@ -32,7 +32,7 @@ public class WaifuMotivatorPluginState implements PersistentStateComponent<Waifu
 
     @Override
     public void loadState( @NotNull WaifuMotivatorState state ) {
-        XmlSerializerUtil.copyBean( state, this );
+        XmlSerializerUtil.copyBean( state, this.state );
     }
 
 }
