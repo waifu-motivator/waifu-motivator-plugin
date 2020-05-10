@@ -18,8 +18,8 @@ public class MotivateMeAction extends AnAction {
         WaifuMotivatorState pluginState = WaifuMotivatorPluginState.getPluginState();
 
         AlertConfiguration config = AlertConfiguration.builder()
-                .isAlertEnabled( true )
-                .isDisplayNotificationEnabled( true )
+                .isAlertEnabled( pluginState.isMotivateMeEnabled() || pluginState.isMotivateMeSoundEnabled() )
+                .isDisplayNotificationEnabled( pluginState.isMotivateMeEnabled() )
                 .isSoundAlertEnabled( pluginState.isMotivateMeSoundEnabled() )
                 .build();
 

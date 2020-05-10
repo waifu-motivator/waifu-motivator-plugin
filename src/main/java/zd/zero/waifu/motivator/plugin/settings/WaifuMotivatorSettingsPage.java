@@ -16,11 +16,13 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JPanel rootPanel;
 
+    private JCheckBox enableWaifuOfTheDay;
+
     private JCheckBox enableStartupMotivation;
 
     private JCheckBox enableUnitTesterMotivation;
 
-    private JCheckBox enableWaifuOfTheDay;
+    private JCheckBox enableMotivateMe;
 
     private JCheckBox enableSayonara;
 
@@ -57,11 +59,12 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     public boolean isModified() {
         return enableWaifuOfTheDay.isSelected() != this.state.isWaifuOfTheDayEnabled() ||
                 enableStartupMotivation.isSelected() != this.state.isStartupMotivationEnabled() ||
-                enableUnitTesterMotivation.isSelected() != this.state.isUnitTesterMotivationEnabled() ||
-                enableSayonara.isSelected() != this.state.isSayonaraEnabled() ||
                 enableStartupMotivationSound.isSelected() != this.state.isStartupMotivationSoundEnabled() ||
+                enableUnitTesterMotivation.isSelected() != this.state.isUnitTesterMotivationEnabled() ||
                 enableUnitTesterMotivationSound.isSelected() != this.state.isUnitTesterMotivationSoundEnabled() ||
-                enableMotivateMeSound.isSelected() != this.state.isMotivateMeSoundEnabled();
+                enableMotivateMe.isSelected() != this.state.isMotivateMeEnabled() ||
+                enableMotivateMeSound.isSelected() != this.state.isMotivateMeSoundEnabled() ||
+                enableSayonara.isSelected() != this.state.isSayonaraEnabled();
     }
 
     @Override
@@ -71,14 +74,16 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     @Override
     public void apply() {
+        this.state.setWaifuOfTheDayEnabled( enableWaifuOfTheDay.isSelected() );
         this.state.setStartupMotivationEnabled( enableStartupMotivation.isSelected() );
+        this.state.setStartupMotivationSoundEnabled( enableStartupMotivationSound.isSelected() );
         this.state.setUnitTesterMotivationEnabled( enableUnitTesterMotivation.isSelected() );
+        this.state.setUnitTesterMotivationSoundEnabled( enableUnitTesterMotivationSound.isSelected() );
+        this.state.setMotivateMeEnabled( enableMotivateMe.isSelected() );
+        this.state.setMotivateMeSoundEnabled( enableMotivateMeSound.isSelected() );
         this.state.setSayonaraEnabled( enableSayonara.isSelected() );
 
-        this.state.setWaifuOfTheDayEnabled( enableWaifuOfTheDay.isSelected() );
-        this.state.setStartupMotivationSoundEnabled( enableStartupMotivationSound.isSelected() );
-        this.state.setUnitTesterMotivationSoundEnabled( enableUnitTesterMotivationSound.isSelected() );
-        this.state.setMotivateMeSoundEnabled( enableMotivateMeSound.isSelected() );
+        // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
     }
 
@@ -86,6 +91,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.enableWaifuOfTheDay.setSelected( this.state.isWaifuOfTheDayEnabled() );
         this.enableStartupMotivation.setSelected( this.state.isStartupMotivationEnabled() );
         this.enableUnitTesterMotivation.setSelected( this.state.isUnitTesterMotivationEnabled() );
+        this.enableMotivateMe.setSelected( this.state.isMotivateMeEnabled() );
         this.enableSayonara.setSelected( this.state.isSayonaraEnabled() );
         this.enableStartupMotivationSound.setSelected( this.state.isStartupMotivationSoundEnabled() );
         this.enableUnitTesterMotivationSound.setSelected( this.state.isUnitTesterMotivationSoundEnabled() );
