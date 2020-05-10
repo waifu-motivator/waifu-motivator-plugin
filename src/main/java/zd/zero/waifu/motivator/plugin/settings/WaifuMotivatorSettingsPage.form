@@ -32,6 +32,7 @@
         </constraints>
         <properties>
           <text resource-bundle="messages/MessageBundle" key="settings.enable.startup.motivation"/>
+          <toolTipText resource-bundle="messages/MessageBundle" key="settings.enable.startup.motivation.tooltip"/>
         </properties>
       </component>
       <component id="b8976" class="javax.swing.JCheckBox" binding="enableUnitTesterMotivation">
@@ -41,6 +42,7 @@
         </constraints>
         <properties>
           <text resource-bundle="messages/MessageBundle" key="settings.enable.unit.tester.motivation"/>
+          <toolTipText resource-bundle="messages/MessageBundle" key="settings.enable.unit.tester.motivation.tooltip"/>
         </properties>
       </component>
       <component id="196ab" class="javax.swing.JCheckBox" binding="enableWaifuOfTheDay">
@@ -50,6 +52,7 @@
         </constraints>
         <properties>
           <text resource-bundle="messages/MessageBundle" key="settings.enable.waifu.of.the.day.and.replace.tip.of.the.day"/>
+          <toolTipText resource-bundle="messages/MessageBundle" key="settings.enable.waifu.of.the.day.and.replace.tip.of.the.day.tooltip"/>
         </properties>
       </component>
       <component id="d2932" class="javax.swing.JCheckBox" binding="enableMotivateMeSound">
@@ -58,7 +61,8 @@
           <forms/>
         </constraints>
         <properties>
-          <text resource-bundle="messages/MessageBundle" key="settings.enable.sound.on.motivateme"/>
+          <text resource-bundle="messages/MessageBundle" key="settings.enable.sound.on.motivate.me"/>
+          <toolTipText resource-bundle="messages/MessageBundle" key="settings.enable.sound.on.motivate.me.tooltip"/>
         </properties>
       </component>
       <component id="46af5" class="javax.swing.JLabel">
@@ -86,6 +90,7 @@
         </constraints>
         <properties>
           <text resource-bundle="messages/MessageBundle" key="settings.enable.startup.motivation.sound"/>
+          <toolTipText resource-bundle="messages/MessageBundle" key="settings.enable.startup.motivation.sound.tooltip"/>
         </properties>
       </component>
       <component id="6f2eb" class="javax.swing.JCheckBox" binding="enableUnitTesterMotivationSound">
@@ -95,6 +100,7 @@
         </constraints>
         <properties>
           <text resource-bundle="messages/MessageBundle" key="settings.enable.unit.tester.motivation.sound"/>
+          <toolTipText resource-bundle="messages/MessageBundle" key="settings.enable.unit.tester.motivation.sound.tooltip"/>
         </properties>
       </component>
       <component id="77db" class="javax.swing.JCheckBox" binding="enableSayonara">
@@ -104,6 +110,7 @@
         </constraints>
         <properties>
           <text resource-bundle="messages/MessageBundle" key="settings.enable.sayonara.play.sound.on.project.exit"/>
+          <toolTipText resource-bundle="messages/MessageBundle" key="settings.enable.sayonara.play.sound.on.project.exit.tooltip"/>
         </properties>
       </component>
     </children>
