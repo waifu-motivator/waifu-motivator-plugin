@@ -13,13 +13,13 @@ import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayer;
 public class WaifuMotivatorAlertImpl implements WaifuMotivatorAlert {
 
     @Getter
-    private WaifuMotivatorNotifier notifier;
+    private final WaifuMotivatorNotifier notifier;
 
     @Getter
-    private WaifuSoundPlayer player;
+    private final WaifuSoundPlayer player;
 
     @Getter
-    private AlertConfiguration config;
+    private final AlertConfiguration config;
 
     public WaifuMotivatorAlertImpl( WaifuMotivatorNotifier notifier, WaifuSoundPlayer player, AlertConfiguration config ) {
         this.notifier = notifier;
