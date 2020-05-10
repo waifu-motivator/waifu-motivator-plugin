@@ -36,7 +36,7 @@ public class WaifuMotivatorAlertImpl implements WaifuMotivatorAlert {
     public void onAlertClosed( Notification notification ) {
         long duration = System.currentTimeMillis() - notification.getTimestamp();
         boolean isExpired = ( duration / 1000 ) >= 10;
-        if ( !isExpired ) {
+        if ( !isExpired && config.isSoundAlertEnabled() ) {
             player.stop();
         }
     }

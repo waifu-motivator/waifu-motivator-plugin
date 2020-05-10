@@ -70,8 +70,8 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     private void initializeStartupMotivator() {
         AlertConfiguration config = AlertConfiguration.builder()
-                .isAlertEnabled( pluginState.isStartupMotivationEnabled() )
-                .isDisplayNotificationEnabled( true )
+                .isAlertEnabled( pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled())
+                .isDisplayNotificationEnabled( pluginState.isStartupMotivationEnabled() )
                 .isSoundAlertEnabled( pluginState.isStartupMotivationSoundEnabled() )
                 .build();
         WaifuMotivatorAlert motivatorAlert = WaifuMotivatorAlertFactory.createAlert(
