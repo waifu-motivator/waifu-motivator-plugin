@@ -9,14 +9,12 @@ import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
-import java.util.Objects;
-
 
 public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
 
     private final Project project;
 
-    private WaifuMotivatorState pluginState;
+    private final WaifuMotivatorState pluginState;
 
     public WaifuUnitTesterListenerImpl( Project project ) {
         this.project = project;
@@ -39,9 +37,9 @@ public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
 
     private AlertConfiguration getUnitTesterConfiguration() {
         return AlertConfiguration.builder()
-                .isAlertEnabled( Objects.requireNonNull( pluginState ).isUnitTesterMotivationEnabled() )
-                .isDisplayNotificationEnabled( true )
-                .isSoundAlertEnabled( Objects.requireNonNull( pluginState ).isUnitTesterMotivationSoundEnabled() )
+                .isAlertEnabled( pluginState.isUnitTesterMotivationEnabled() || pluginState.isUnitTesterMotivationSoundEnabled())
+                .isDisplayNotificationEnabled( pluginState.isUnitTesterMotivationEnabled() )
+                .isSoundAlertEnabled( pluginState.isUnitTesterMotivationSoundEnabled() )
                 .build();
     }
 }
