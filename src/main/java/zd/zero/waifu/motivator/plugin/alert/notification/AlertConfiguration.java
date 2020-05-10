@@ -7,10 +7,10 @@ import lombok.Getter;
 @Builder
 public class AlertConfiguration {
 
-    private boolean isAlertEnabled;
+    private final boolean isAlertEnabled;
 
-    private boolean isDisplayNotificationEnabled;
+    private final boolean isDisplayNotificationEnabled;
 
-    private boolean isSoundAlertEnabled;
+    private final boolean isSoundAlertEnabled;
 
 }
