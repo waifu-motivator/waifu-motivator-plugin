@@ -1,5 +1,6 @@
 
-<h2 align="center">Waifu Motivator</h2> 
+<p align="center"><img src="images/wmp_logo.png" height="424px" alt="Waifu Motivator Plugin Logo"></p>
+<h2 align="center">Waifu Motivator Plugin</h2> 
 
 <!--suppress HtmlDeprecatedAttribute, HtmlRequiredAltAttribute -->
 <p align="center">
@@ -20,7 +21,9 @@
 ## Waifu of the Day
 Why need a Tip of the day when you can have Waifu of the Day. This feature replaces the out of the box Tip of the Day of Intellij and shows some waifu!
 
-![Waifu of the Day](screenshot/waifu_of_the_day.png)
+<p align="center">
+  <img src="screenshot/waifu_of_the_day.png" alt="Waifu of the Day">
+</p>
 
 *It only shows up once a day at the project startup and you can view it at the 'Waifu Motivator' tool menu.*
 
@@ -40,7 +43,9 @@ Your waifu motivates you whenever a test passes or fails.
 ## Waifu Motivation On-demand
 Whenever you feel demotivated on your task, you can request a motivation that randomly plays a sound and a notification to cheer you up.
 
-![Waifu Motivation On-demand](screenshot/motivate_me.png)
+<p align="center">
+  <img src="screenshot/motivate_me.png" alt="Waifu Motivation On-demandy">
+</p>
 
 ## Waifu Settings
 Of course, not all the time you're okay with your waifu, there are bad times after all and sometimes you'll get annoyed by them and not wanting to hear anything from them. You can configure it through the settings (`Settings > Other Settings > Waifu Motivator`).
@@ -67,6 +72,11 @@ Execute the `intellij/runIde` task from gradle.
 ./gradlew runIde
 ```
 This will open up a new Intellij IDE that the plugin is installed.
+
+### Plugin Image
+<img src="images/wmp_logo.png" height="144px" alt="Waifu Motivator Plugin Logo">
+
+Art by [@gweninja](https://www.instagram.com/gweninja/)
 
 ## License
 This project is licensed under MIT License - see [LICENSE](./LICENSE) file for details.
