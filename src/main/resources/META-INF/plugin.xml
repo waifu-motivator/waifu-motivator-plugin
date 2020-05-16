@@ -19,7 +19,9 @@
   </extensions>
 
   <actions>
-    <group id="zd.zero.waifu.motivator.WaifuMotivatorGroup" text="Waifu Motivator" popup="true">
+    <group id="zd.zero.waifu.motivator.WaifuMotivatorGroup"
+           text="Waifu Motivator" popup="true"
+           icon="WaifuMotivatorIcons.MENU">
       <action id="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
               class="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
               text="Motivate Me"
@@ -33,11 +35,12 @@
       </action>
       <action id="zd.zero.waifu.motivator.plugin.actions.PluginSettingsAction"
               class="zd.zero.waifu.motivator.plugin.actions.PluginSettingsAction"
+              icon="AllIcons.General.Settings"
               text="Settings"
               description="Show me how to handle my Waifu.">
       </action>
 
-      <add-to-group group-id="MainMenu" relative-to-action="HelpMenu" anchor="before"/>
+      <add-to-group group-id="HelpMenu" anchor="last"/>
     </group>
   </actions>
 
