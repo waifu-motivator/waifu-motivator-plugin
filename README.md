@@ -56,7 +56,7 @@ Of course, not all the time you're okay with your waifu, there are bad times aft
 If you'd like to use it to your Intellij IDE or run it to your local machine for development, please see the following sections.
 
 ## Usage
-<iframe frameborder="none" width="384px" height="319px" src="https://plugins.jetbrains.com/embeddable/install/13381"></iframe>
+![asd](https://plugins.jetbrains.com/embeddable/install/13381)
 
 To install the plugin, go to `Settings > Plugins > Marketplace Tab > Search for 'Waifu Motivator'`.
 ![Waifu Motivation On-demand](screenshot/plugin_installation.png)
