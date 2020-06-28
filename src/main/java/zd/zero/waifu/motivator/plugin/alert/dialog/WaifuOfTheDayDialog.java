@@ -42,9 +42,9 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
 
     private static final String KEY_RECENT_WAIFU = "WMP_KEY_RECENT_WAIFU";
 
-    private static final String WAIFU_OF_THE_DAY_BASE_PATH = "/waifu_of_the_day/";
+    private static final String WAIFU_OF_THE_DAY_BASE_PATH = "/waifu_of_the_day";
 
-    private static final String WAIFU_OF_THE_DAY_IMAGE_PATH = WAIFU_OF_THE_DAY_BASE_PATH + "images/";
+    private static final String WAIFU_OF_THE_DAY_IMAGE_PATH = WAIFU_OF_THE_DAY_BASE_PATH + "/images";
 
     private static final String WAIFU_OF_THE_DAY_TEMPLATE = "WaifuOfTheDayTemplate.html";
 
@@ -58,9 +58,9 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
 
     private static WaifuOfTheDayDialog waifuOfTheDayDialog;
 
-    private static WaifuOfTheDay[] waifuOfTheDays;
+    private WaifuOfTheDay[] waifuOfTheDays;
 
-    private static WaifuOfTheDay currentWaifuOfTheDay;
+    private WaifuOfTheDay currentWaifuOfTheDay;
 
     private JPanel rootPanel;
 
@@ -115,6 +115,23 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
         }
     }
 
+    private WaifuOfTheDay[] getWaifuOfTheDay() throws IOException {
+        if ( waifuOfTheDays == null ) {
+            ClassLoader classLoader = WaifuOfTheDayDialog.class.getClassLoader();
+            try ( InputStream resource = ResourceUtil.getResourceAsStream( classLoader,
+                    WAIFU_OF_THE_DAY_BASE_PATH, WAIFU_OF_THE_DAY_CONTENT ) ) {
+                if ( resource == null ) {
+                    throw new IOException( "Cannot find the waifu content." );
+                }
+
+                ObjectMapper mapper = new ObjectMapper();
+                waifuOfTheDays = mapper.readValue( resource, WaifuOfTheDay[].class );
+            }
+        }
+
+        return waifuOfTheDays;
+    }
+
     private void initializeComponents() {
         scrollPane.setBorder( JBUI.Borders.customLine( new JBColor( 0xd9d9d9, 0x515151 ),
                 0, 0, 1, 0 ) );
@@ -161,38 +178,21 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
                 WAIFU_OF_THE_DAY_IMAGE_PATH, currentWaifuOfTheDay.getImage() );
     }
 
-    private WaifuOfTheDay[] getWaifuOfTheDay() throws IOException {
-        if ( waifuOfTheDays == null ) {
-            ClassLoader classLoader = getClass().getClassLoader();
-            try ( InputStream resource = ResourceUtil.getResourceAsStream( classLoader,
-                    WAIFU_OF_THE_DAY_BASE_PATH, WAIFU_OF_THE_DAY_CONTENT ) ) {
-                if ( resource == null ) {
-                    throw new IOException( "Cannot find the waifu content." );
-                }
-
-                ObjectMapper mapper = new ObjectMapper();
-                waifuOfTheDays = mapper.readValue( resource, WaifuOfTheDay[].class );
-            }
-        }
-
-        return waifuOfTheDays;
-    }
-
     private WaifuOfTheDay getWaifuOfTheDayRandom() throws IOException {
         if ( uniqueValueProvider == null ) {
             uniqueValueProvider = new UniqueValueProvider<>( USED_WAIFU_OF_THE_DAY );
         }
 
-        WaifuOfTheDay[] waifuOfTheDays = uniqueValueProvider
+        WaifuOfTheDay[] providedWaifus = uniqueValueProvider
                 .getUniqueValues( getWaifuOfTheDay(), WaifuOfTheDay::getName ).toArray( new WaifuOfTheDay[0] );
 
         WaifuOfTheDay theDay;
-        if ( waifuOfTheDays.length == 1 ) {
-            theDay = waifuOfTheDays[0];
+        if ( providedWaifus.length == 1 ) {
+            theDay = providedWaifus[0];
         } else {
             random = random == null ? ThreadLocalRandom.current() : random;
-            int randomIndex = random.nextInt( waifuOfTheDays.length );
-            theDay = waifuOfTheDays[randomIndex];
+            int randomIndex = random.nextInt( providedWaifus.length );
+            theDay = providedWaifus[randomIndex];
         }
 
         uniqueValueProvider.addToSeenValues( theDay.getName() );
@@ -252,8 +252,10 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
 
             @Override
             public void actionPerformed( ActionEvent e ) {
+                if ( currentWaifuOfTheDay == null ) return;
+
                 String url = currentWaifuOfTheDay.getAnimeUrl();
-                if ( currentWaifuOfTheDay != null && StringUtils.isNotEmpty( url ) ) {
+                if ( StringUtils.isNotEmpty( url ) ) {
                     BrowserUtil.browse( url );
                 } else {
                     throw new WaifuMotivatorViewAnimeException(
