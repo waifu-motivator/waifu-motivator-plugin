@@ -17,12 +17,18 @@
 > *Waifu* is a term for a fictional character, usually in anime or related media, that someone has great, and sometimes romantic, affection for. [source](https://www.dictionary.com/e/fictional-characters/waifu/)
 
 
+## Usage
+To install the plugin, go to `Settings | Plugins | Marketplace Tab | Search for 'Waifu Motivator'`. Or you can install it from [here](https://plugins.jetbrains.com/plugin/13381-waifu-motivator).
+
+![Waifu Motivation On-demand](screenshot/plugin_installation.png)
+
+
 ## Waifu of the Day
-Why need a Tip of the day when you can have Waifu of the Day. This feature replaces the out of the box Tip of the Day of Intellij and shows some waifu!
+Why need a Tip of the day when you can have Waifu of the Day. This feature replaces the out of the box Tip of the Day of IntelliJ and shows some waifu!
 
 ![Waifu of the Day](screenshot/waifu_of_the_day.png)
 
-*It only shows up once a day at the project startup and you can view it at the 'Waifu Motivator' tool menu.*
+*It only shows up once a day at the project startup, and you can view it at the 'Waifu Motivator' tool menu.*
 
 ## Waifu Unit Tester
 Your waifu motivates you whenever a test passes or fails. 
@@ -38,7 +44,7 @@ Your waifu motivates you whenever a test passes or fails.
 *When a test fails it'll cheer you up for you to not get demotivated*
 
 ## Waifu Motivation On-demand
-Whenever you feel demotivated on your task, you can request a motivation that randomly plays a sound and a notification to cheer you up.
+Whenever you feel demotivated on your task, you can request a motivation that randomly plays a sound, and notification to cheer you up.
 
 ![Waifu Motivation On-demand](screenshot/motivate_me.png)
 
@@ -48,29 +54,24 @@ Of course, not all the time you're okay with your waifu, there are bad times aft
 ![Waifu Settings](screenshot/waifu_motivator_settings.png)
 
 # Getting Started
-If you'd like to use it to your Intellij IDE or run it to your local machine for development, please see the following sections.
-
-## Usage
-To install the plugin, go to `Settings > Plugins > Marketplace Tab > Search for 'Waifu Motivator'`.
-![Waifu Motivation On-demand](screenshot/plugin_installation.png)
+If you'd like to use it to your IntelliJ IDE or run it to your local machine for development, please see the following sections.
 
 ## Contributing
 ### Prerequisites
 * JDK 8+
-* Intellij IDEA
-* Plugin DevKit 
+* IntelliJ IDEA
+* Plugin DevKit
 * Lombok Plugin
 
 ### Running
-Execute the `intellij/runIde` task from gradle. 
+Execute the `intellij/runIde` task from Gradle. 
 ```
 ./gradlew runIde
 ```
-This will open up a new Intellij IDE that the plugin is installed.
+This will fire up a new IntelliJ IDE instance with the plugin already installed.
 
 ## License
-This project is licensed under MIT License - see [LICENSE](./LICENSE) file for details.
+The license of this project is under MIT License - see [LICENSE](./LICENSE) file for details.
 
 ## Disclaimer
-There are resources used in the [sound](./src/main/resources/sound) directory that is pulled from the internet randomly and most of it is clipped, if you own it please email me so that I could remove it here.
-
+There are resources used in the [sound](./src/main/resources/sound) directory that is pulled randomly from the internet, I do *not* own it as they are clipped/trimmed, if you own it please contact me so that I could remove it from here.
