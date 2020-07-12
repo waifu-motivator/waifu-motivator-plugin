@@ -12,11 +12,13 @@ import javax.swing.*;
 
 public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Configurable.NoScroll {
 
-    private WaifuMotivatorState state;
+    private final WaifuMotivatorState state;
 
     private JPanel rootPanel;
 
     private JCheckBox enableWaifuOfTheDay;
+
+    private JCheckBox disableInDistractionFreeMode;
 
     private JCheckBox enableStartupMotivation;
 
@@ -58,6 +60,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     @Override
     public boolean isModified() {
         return enableWaifuOfTheDay.isSelected() != this.state.isWaifuOfTheDayEnabled() ||
+                disableInDistractionFreeMode.isSelected() != this.state.isDisableInDistractionFreeMode() ||
                 enableStartupMotivation.isSelected() != this.state.isStartupMotivationEnabled() ||
                 enableStartupMotivationSound.isSelected() != this.state.isStartupMotivationSoundEnabled() ||
                 enableUnitTesterMotivation.isSelected() != this.state.isUnitTesterMotivationEnabled() ||
@@ -75,6 +78,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     @Override
     public void apply() {
         this.state.setWaifuOfTheDayEnabled( enableWaifuOfTheDay.isSelected() );
+        this.state.setDisableInDistractionFreeMode( disableInDistractionFreeMode.isSelected() );
         this.state.setStartupMotivationEnabled( enableStartupMotivation.isSelected() );
         this.state.setStartupMotivationSoundEnabled( enableStartupMotivationSound.isSelected() );
         this.state.setUnitTesterMotivationEnabled( enableUnitTesterMotivation.isSelected() );
@@ -89,6 +93,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private void setFieldsFromState() {
         this.enableWaifuOfTheDay.setSelected( this.state.isWaifuOfTheDayEnabled() );
+        this.disableInDistractionFreeMode.setSelected( this.state.isDisableInDistractionFreeMode() );
         this.enableStartupMotivation.setSelected( this.state.isStartupMotivationEnabled() );
         this.enableUnitTesterMotivation.setSelected( this.state.isUnitTesterMotivationEnabled() );
         this.enableMotivateMe.setSelected( this.state.isMotivateMeEnabled() );

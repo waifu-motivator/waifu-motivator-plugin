@@ -34,7 +34,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     public void projectOpened( @NotNull Project project ) {
         this.project = project;
         this.pluginState = WaifuMotivatorPluginState.getPluginState();
-        this.unitTestListener = WaifuUnitTester.ofDefault( project );
+        this.unitTestListener = WaifuUnitTester.newInstance( project );
 
         updatePlatformStartupConfig();
         initializeListeners();

@@ -23,4 +23,6 @@ public class WaifuMotivatorState {
 
     private boolean isSayonaraEnabled = true;
 
+    private boolean disableInDistractionFreeMode = true;
+
 }
