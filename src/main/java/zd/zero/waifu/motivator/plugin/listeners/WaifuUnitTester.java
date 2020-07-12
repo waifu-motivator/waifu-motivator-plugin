@@ -4,7 +4,7 @@ import com.intellij.openapi.project.Project;
 
 public interface WaifuUnitTester {
 
-    static WaifuUnitTester ofDefault( Project project ) {
+    static WaifuUnitTester newInstance( Project project ) {
         return new WaifuUnitTesterImpl( project.getMessageBus().connect(),
                 new WaifuUnitTesterListenerImpl( project ) );
     }

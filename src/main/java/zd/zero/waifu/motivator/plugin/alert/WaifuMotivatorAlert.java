@@ -14,10 +14,12 @@ public interface WaifuMotivatorAlert {
 
     boolean isAlertEnabled();
 
+    boolean isDistractionAllowed();
+
     void onAlertClosed( Notification notification );
 
     default void alert() {
-        if ( isAlertEnabled() ) {
+        if ( isAlertEnabled() && isDistractionAllowed() ) {
             if ( isDisplayNotificationEnabled() )
                 displayNotification();
 

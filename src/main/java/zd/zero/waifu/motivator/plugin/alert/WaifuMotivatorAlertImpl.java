@@ -1,16 +1,21 @@
 package zd.zero.waifu.motivator.plugin.alert;
 
+import com.intellij.ide.ui.UISettings;
 import com.intellij.notification.Notification;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.JBPopupListener;
 import com.intellij.openapi.ui.popup.LightweightWindowEvent;
+import com.intellij.openapi.util.registry.Registry;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.alert.notification.WaifuMotivatorNotifier;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayer;
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 
 public class WaifuMotivatorAlertImpl implements WaifuMotivatorAlert {
+
+    private static final String KEY_DISTRACTION_FREE_MODE = "editor.distraction.free.mode";
 
     @Getter
     private final WaifuMotivatorNotifier notifier;
@@ -30,6 +35,13 @@ public class WaifuMotivatorAlertImpl implements WaifuMotivatorAlert {
     @Override
     public boolean isAlertEnabled() {
         return config.isAlertEnabled();
+    }
+
+    @Override
+    public boolean isDistractionAllowed() {
+        return !( WaifuMotivatorPluginState.getPluginState().isDisableInDistractionFreeMode()
+                && ( Registry.get( KEY_DISTRACTION_FREE_MODE ).asBoolean()
+                || UISettings.getInstance().getPresentationMode() ) );
     }
 
     @Override
