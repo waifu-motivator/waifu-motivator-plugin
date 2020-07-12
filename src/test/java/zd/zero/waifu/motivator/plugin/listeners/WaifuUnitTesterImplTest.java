@@ -10,11 +10,11 @@ import static org.mockito.Mockito.*;
 
 public class WaifuUnitTesterImplTest {
 
-    private MessageBusConnection busConnection = Mockito.mock( MessageBusConnection.class );
+    private final MessageBusConnection busConnection = Mockito.mock( MessageBusConnection.class );
 
     private static final String MOCK_NOTIFICATION_GROUP_ID = "MOCK_JETBRAINS_NOTIFICATION_GROUP_ID";
 
-    private WaifuUnitTester.Listener listener = Mockito.mock( WaifuUnitTester.Listener.class );
+    private final WaifuUnitTester.Listener listener = Mockito.mock( WaifuUnitTester.Listener.class );
 
     @Test
     public void Should_DisplayPassedNotification_When_NotificationTypeIsNotError() {

@@ -11,7 +11,7 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
 
     private final MessageBusConnection busConnection;
 
-    private WaifuUnitTester.Listener listener;
+    private final WaifuUnitTester.Listener listener;
 
     public WaifuUnitTesterImpl( MessageBusConnection busConnection, WaifuUnitTester.Listener listener ) {
         this.busConnection = busConnection;

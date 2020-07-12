@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 
 public class WaifuMotivatorAlertTest {
 
-    private WaifuMotivatorAlert motivatorAlert = mock( WaifuMotivatorAlert.class );
+    private final WaifuMotivatorAlert motivatorAlert = mock( WaifuMotivatorAlert.class );
 
     @Before
     public void setup() {
@@ -18,6 +18,7 @@ public class WaifuMotivatorAlertTest {
         when( motivatorAlert.isAlertEnabled() ).thenReturn( false );
         when( motivatorAlert.isDisplayNotificationEnabled() ).thenReturn( false );
         when( motivatorAlert.isSoundAlertEnabled() ).thenReturn( false );
+        when( motivatorAlert.isDistractionAllowed() ).thenReturn( true );
     }
 
     @Test
@@ -92,6 +93,27 @@ public class WaifuMotivatorAlertTest {
         motivatorAlert.alert();
 
         verify( motivatorAlert, never() ).displayNotification();
+    }
+
+    @Test
+    public void Should_Alert_WhenDistractionIsAllowed() {
+        when( motivatorAlert.isDistractionAllowed() ).thenReturn( true );
+        when( motivatorAlert.isAlertEnabled() ).thenReturn( true );
+        when( motivatorAlert.isDisplayNotificationEnabled() ).thenReturn( true );
+        when( motivatorAlert.isSoundAlertEnabled() ).thenReturn( true );
+        motivatorAlert.alert();
+
+        verify( motivatorAlert, times(1) ).displayNotification();
+        verify( motivatorAlert, times(1) ).soundAlert();
+    }
+
+    @Test
+    public void Should_NotAlert_WhenDistractionIsNotAllowed() {
+        when( motivatorAlert.isDistractionAllowed() ).thenReturn( false );
+        motivatorAlert.alert();
+
+        verify( motivatorAlert, never() ).displayNotification();
+        verify( motivatorAlert, never() ).soundAlert();
     }
 
 }

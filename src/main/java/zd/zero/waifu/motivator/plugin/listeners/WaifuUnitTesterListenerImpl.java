@@ -23,9 +23,9 @@ public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
 
     @Override
     public void onUnitTestPassed() {
-        WaifuMotivatorAlert failedAlert = WaifuMotivatorAlertFactory.createAlert( project,
+        WaifuMotivatorAlert passedAlert = WaifuMotivatorAlertFactory.createAlert( project,
                 AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.POSITIVE ), getUnitTesterConfiguration() );
-        failedAlert.alert();
+        passedAlert.alert();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
 
     private AlertConfiguration getUnitTesterConfiguration() {
         return AlertConfiguration.builder()
-                .isAlertEnabled( pluginState.isUnitTesterMotivationEnabled() || pluginState.isUnitTesterMotivationSoundEnabled())
+                .isAlertEnabled( pluginState.isUnitTesterMotivationEnabled() || pluginState.isUnitTesterMotivationSoundEnabled() )
                 .isDisplayNotificationEnabled( pluginState.isUnitTesterMotivationEnabled() )
                 .isSoundAlertEnabled( pluginState.isUnitTesterMotivationSoundEnabled() )
                 .build();
