@@ -13,11 +13,11 @@ import java.awt.Point
 val UPDATE_MESSAGE: String = """
       What's New?<br>
       <ul>
-        <li>Added Stuff</li>
+        <li>More settings customization.</li>
       </ul>
       <br>Please see the <a href="https://github.com/zd-zero/waifu-motivator-plugin/blob/master/CHANGELOG.md">changelog</a> for more details.
       <br><br>
-      Missing your Wafiu?<br>
+      Is your Waifu missing?<br>
       Make a request for her to be featured in the <a href="https://github.com/zd-zero/waifu-motivator-plugin/projects/3">Waifu of the Day!</a>
       <br><br>
       Want more of your Waifu?<br>
@@ -48,13 +48,6 @@ object UpdateNotification {
     showNotification(project, updateNotification)
   }
 
-  /**
-  * Show a notification using the Balloon API instead of the bus
-  * Credit to @vladsch
-  *
-  * @param project      the project to display into
-  * @param notification the notification to display
-  */
   private fun showNotification(
     project: Project,
     updateNotification: Notification
