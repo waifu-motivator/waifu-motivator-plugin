@@ -39,7 +39,7 @@ public class WaifuMotivatorAlertImpl implements WaifuMotivatorAlert {
 
     @Override
     public boolean isDistractionAllowed() {
-        return !( WaifuMotivatorPluginState.getPluginState().isDisableInDistractionFreeMode()
+        return !( WaifuMotivatorPluginState.getPluginState().getDisableInDistractionFreeMode()
                 && ( Registry.get( KEY_DISTRACTION_FREE_MODE ).asBoolean()
                 || UISettings.getInstance().getPresentationMode() ) );
     }

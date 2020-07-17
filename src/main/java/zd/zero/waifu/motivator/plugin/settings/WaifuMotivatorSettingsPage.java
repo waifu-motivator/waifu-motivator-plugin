@@ -60,7 +60,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     @Override
     public boolean isModified() {
         return enableWaifuOfTheDay.isSelected() != this.state.isWaifuOfTheDayEnabled() ||
-                disableInDistractionFreeMode.isSelected() != this.state.isDisableInDistractionFreeMode() ||
+                disableInDistractionFreeMode.isSelected() != this.state.getDisableInDistractionFreeMode() ||
                 enableStartupMotivation.isSelected() != this.state.isStartupMotivationEnabled() ||
                 enableStartupMotivationSound.isSelected() != this.state.isStartupMotivationSoundEnabled() ||
                 enableUnitTesterMotivation.isSelected() != this.state.isUnitTesterMotivationEnabled() ||
@@ -93,7 +93,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private void setFieldsFromState() {
         this.enableWaifuOfTheDay.setSelected( this.state.isWaifuOfTheDayEnabled() );
-        this.disableInDistractionFreeMode.setSelected( this.state.isDisableInDistractionFreeMode() );
+        this.disableInDistractionFreeMode.setSelected( this.state.getDisableInDistractionFreeMode() );
         this.enableStartupMotivation.setSelected( this.state.isStartupMotivationEnabled() );
         this.enableUnitTesterMotivation.setSelected( this.state.isUnitTesterMotivationEnabled() );
         this.enableMotivateMe.setSelected( this.state.isMotivateMeEnabled() );
