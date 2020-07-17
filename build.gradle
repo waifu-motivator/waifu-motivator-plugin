@@ -49,7 +49,6 @@ compileTestKotlin {
 }
 
 patchPluginXml {
-    sinceBuild sinceBuildVersion
     untilBuild untilBuildVersion
 
     pluginDescription(file(descriptionFile).text)
