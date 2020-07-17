@@ -138,7 +138,7 @@
           <toolTipText resource-bundle="messages/MessageBundle" key="settings.enable.motivate.me.tooltip"/>
         </properties>
       </component>
-      <component id="d7633" class="javax.swing.JCheckBox" binding="disableInDistractionFreeMode">
+      <component id="d7633" class="javax.swing.JCheckBox" binding="disabledInDistractionFreeMode">
         <constraints>
           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
           <forms/>

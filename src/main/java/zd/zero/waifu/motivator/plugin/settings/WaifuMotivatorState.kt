@@ -18,5 +18,5 @@ class WaifuMotivatorState {
 
     var isSayonaraEnabled = true
 
-    var disableInDistractionFreeMode = true
+    var isDisabledInDistractionFreeMode = true
 }

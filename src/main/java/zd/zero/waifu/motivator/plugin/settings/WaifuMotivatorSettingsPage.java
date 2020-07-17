@@ -18,7 +18,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JCheckBox enableWaifuOfTheDay;
 
-    private JCheckBox disableInDistractionFreeMode;
+    private JCheckBox disabledInDistractionFreeMode;
 
     private JCheckBox enableStartupMotivation;
 
@@ -60,7 +60,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     @Override
     public boolean isModified() {
         return enableWaifuOfTheDay.isSelected() != this.state.isWaifuOfTheDayEnabled() ||
-                disableInDistractionFreeMode.isSelected() != this.state.getDisableInDistractionFreeMode() ||
+                disabledInDistractionFreeMode.isSelected() != this.state.isDisabledInDistractionFreeMode() ||
                 enableStartupMotivation.isSelected() != this.state.isStartupMotivationEnabled() ||
                 enableStartupMotivationSound.isSelected() != this.state.isStartupMotivationSoundEnabled() ||
                 enableUnitTesterMotivation.isSelected() != this.state.isUnitTesterMotivationEnabled() ||
@@ -78,7 +78,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     @Override
     public void apply() {
         this.state.setWaifuOfTheDayEnabled( enableWaifuOfTheDay.isSelected() );
-        this.state.setDisableInDistractionFreeMode( disableInDistractionFreeMode.isSelected() );
+        this.state.setDisabledInDistractionFreeMode( disabledInDistractionFreeMode.isSelected() );
         this.state.setStartupMotivationEnabled( enableStartupMotivation.isSelected() );
         this.state.setStartupMotivationSoundEnabled( enableStartupMotivationSound.isSelected() );
         this.state.setUnitTesterMotivationEnabled( enableUnitTesterMotivation.isSelected() );
@@ -93,7 +93,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private void setFieldsFromState() {
         this.enableWaifuOfTheDay.setSelected( this.state.isWaifuOfTheDayEnabled() );
-        this.disableInDistractionFreeMode.setSelected( this.state.getDisableInDistractionFreeMode() );
+        this.disabledInDistractionFreeMode.setSelected( this.state.isDisabledInDistractionFreeMode() );
         this.enableStartupMotivation.setSelected( this.state.isStartupMotivationEnabled() );
         this.enableUnitTesterMotivation.setSelected( this.state.isUnitTesterMotivationEnabled() );
         this.enableMotivateMe.setSelected( this.state.isMotivateMeEnabled() );
