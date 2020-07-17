@@ -26,47 +26,47 @@ val UPDATE_MESSAGE: String = """
 
 object UpdateNotification {
 
-  private const val UPDATE_CHANNEL_NAME = "$PLUGIN_NAME Updates"
-  private val notificationGroup = NotificationGroup(
-    UPDATE_CHANNEL_NAME,
-    NotificationDisplayType.STICKY_BALLOON,
-    false,
-    UPDATE_CHANNEL_NAME
-  )
-
-  fun display(
-    project: Project,
-    newVersion: String
-  ) {
-    val updateNotification = notificationGroup.createNotification(
-      "$PLUGIN_NAME updated to v$newVersion",
-      UPDATE_MESSAGE,
-      NotificationType.INFORMATION
+    private const val UPDATE_CHANNEL_NAME = "$PLUGIN_NAME Updates"
+    private val notificationGroup = NotificationGroup(
+        UPDATE_CHANNEL_NAME,
+        NotificationDisplayType.STICKY_BALLOON,
+        false,
+        UPDATE_CHANNEL_NAME
     )
-      .setListener(NotificationListener.URL_OPENING_LISTENER)
 
-    showNotification(project, updateNotification)
-  }
+    fun display(
+        project: Project,
+        newVersion: String
+    ) {
+        val updateNotification = notificationGroup.createNotification(
+            "$PLUGIN_NAME updated to v$newVersion",
+            UPDATE_MESSAGE,
+            NotificationType.INFORMATION
+        )
+            .setListener(NotificationListener.URL_OPENING_LISTENER)
 
-  private fun showNotification(
-    project: Project,
-    updateNotification: Notification
-  ) {
-    try {
-      val ideFrame =
-        WindowManager.getInstance().getIdeFrame(project) ?: WindowManager.getInstance().allProjectFrames.first()
-      val frameBounds = ideFrame.component.bounds
-      val notificationPosition = RelativePoint(ideFrame.component, Point(frameBounds.x + frameBounds.width, 20))
-      val balloon = NotificationsManagerImpl.createBalloon(
-        ideFrame,
-        updateNotification,
-        true,
-        true,
-        BalloonLayoutData.fullContent()
-      ) {}
-      balloon.show(notificationPosition, Balloon.Position.atLeft)
-    } catch (e: Throwable) {
-      updateNotification.notify(project)
+        showNotification(project, updateNotification)
     }
-  }
+
+    private fun showNotification(
+        project: Project,
+        updateNotification: Notification
+    ) {
+        try {
+            val ideFrame =
+                WindowManager.getInstance().getIdeFrame(project) ?: WindowManager.getInstance().allProjectFrames.first()
+            val frameBounds = ideFrame.component.bounds
+            val notificationPosition = RelativePoint(ideFrame.component, Point(frameBounds.x + frameBounds.width, 20))
+            val balloon = NotificationsManagerImpl.createBalloon(
+                ideFrame,
+                updateNotification,
+                true,
+                true,
+                BalloonLayoutData.fullContent()
+            ) {}
+            balloon.show(notificationPosition, Balloon.Position.atLeft)
+        } catch (e: Throwable) {
+            updateNotification.notify(project)
+        }
+    }
 }

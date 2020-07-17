@@ -10,17 +10,17 @@ import java.util.*
 
 object UserOnboarding {
 
-  fun attemptToShowUpdateNotification() {
-    getVersion()
-      .filter { it != WaifuMotivatorPluginState.getPluginState().version }
-      .ifPresent { newVersion ->
-        WaifuMotivatorPluginState.getPluginState().version = newVersion
-        UpdateNotification.display(ProjectManager.getInstance().defaultProject, newVersion)
-      }
-  }
+    fun attemptToShowUpdateNotification() {
+        getVersion()
+            .filter { it != WaifuMotivatorPluginState.getPluginState().version }
+            .ifPresent { newVersion ->
+                WaifuMotivatorPluginState.getPluginState().version = newVersion
+                UpdateNotification.display(ProjectManager.getInstance().defaultProject, newVersion)
+            }
+    }
 
-  private fun getVersion(): Optional<String> =
-    PluginManagerCore.getPlugin(PluginId.getId(WaifuMotivator.PLUGIN_ID))
-      .toOptional()
-      .map { it.version }
+    private fun getVersion(): Optional<String> =
+        PluginManagerCore.getPlugin(PluginId.getId(WaifuMotivator.PLUGIN_ID))
+            .toOptional()
+            .map { it.version }
 }
