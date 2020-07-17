@@ -9,7 +9,11 @@
 
   <depends>com.intellij.modules.platform</depends>
 
-  <extensions defaultExtensionNs="com.intellij">
+   <!--    Leave this in here so the IDE gives you feedback on-->
+   <!--    What APIs are available-->
+   <idea-version since-build="201.3803.71"/>
+
+    <extensions defaultExtensionNs="com.intellij">
     <applicationService
         serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState"/>
     <applicationConfigurable
