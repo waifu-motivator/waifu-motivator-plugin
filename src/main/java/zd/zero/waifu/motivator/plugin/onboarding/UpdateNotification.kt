@@ -61,7 +61,7 @@ object UpdateNotification {
                 ideFrame,
                 updateNotification,
                 true,
-                true,
+                false,
                 BalloonLayoutData.fullContent()
             ) {}
             balloon.show(notificationPosition, Balloon.Position.atLeft)
