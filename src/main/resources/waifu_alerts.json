@@ -4,7 +4,7 @@
     "message": "Ganbatte Onii-chan!",
     "sound": "ganbatte_onii_chan.wav",
     "categories": [
-      "negative"
+      "NEGATIVE"
     ]
   },
   {
@@ -12,7 +12,7 @@
     "message": "Nice nice nice nice nice nice!",
     "sound": "nice_nice_nice_nice.wav",
     "categories": [
-      "positive"
+      "POSITIVE"
     ]
   },
   {
@@ -20,8 +20,8 @@
     "message": "Tuturuuu...Mayushii Desu!",
     "sound": "tuturuu_mayushi_desu.wav",
     "categories": [
-      "neutral",
-      "positive"
+      "NEUTRAL",
+      "POSITIVE"
     ]
   },
   {
@@ -29,8 +29,8 @@
     "message": "My name is Megumin! I am a user of the finest magic crimson demons possess and I command explosion magic. Behold my power! Explosiiiioooonnn!",
     "sound": "megumin_explosion.wav",
     "categories": [
-      "neutral",
-      "positive"
+      "NEUTRAL",
+      "POSITIVE"
     ]
   },
   {
@@ -38,8 +38,8 @@
     "message": "Hashire sori yo Kaze no you ni Tsukimihara wo Padoru padoruuu!",
     "sound": "padoru_padoru.wav",
     "categories": [
-      "neutral",
-      "positive"
+      "NEUTRAL",
+      "POSITIVE"
     ]
   },
   {
@@ -47,8 +47,8 @@
     "message": "Nico Nico-nii~ Anata no Heart ni Nico Nico-nii~",
     "sound": "nico_nico_nii.wav",
     "categories": [
-      "neutral",
-      "positive"
+      "NEUTRAL",
+      "POSITIVE"
     ]
   },
   {
@@ -56,7 +56,7 @@
     "message": "Waaaaaaahh, Sugoi Sugoi~",
     "sound": "sugoi_sugoi.wav",
     "categories": [
-      "positive"
+      "POSITIVE"
     ]
   },
   {
@@ -64,7 +64,7 @@
     "message": ";)",
     "sound": "good_job.wav",
     "categories": [
-      "positive"
+      "POSITIVE"
     ]
   },
   {
@@ -72,8 +72,8 @@
     "message": "(ﾐㆁ ﻌ ㆁﾐ)∫",
     "sound": "nyaan.mp3",
     "categories": [
-      "neutral",
-      "negative"
+      "NEUTRAL",
+      "NEGATIVE"
     ]
   },
   {
@@ -81,15 +81,15 @@
     "message": "\t(๑•́ ヮ •̀๑)",
     "sound": "waaaah.mp3",
     "categories": [
-      "positive",
-      "negative"
+      "POSITIVE",
+      "NEGATIVE"
     ]
   },
   {
     "title": "Wwwwaaaaaooowww",
     "sound": "waoow.mp3",
     "categories": [
-      "positive"
+      "POSITIVE"
     ]
   },
   {
@@ -97,7 +97,7 @@
     "message": "(o´Д`) (o´Д`) (o´Д`)",
     "sound": "ohmygah.mp3",
     "categories": [
-      "negative"
+      "NEGATIVE"
     ]
   }
 ]

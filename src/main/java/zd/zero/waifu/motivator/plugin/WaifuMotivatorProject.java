@@ -9,8 +9,9 @@ import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.startup.StartupManager;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlert;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertFactory;
+import zd.zero.waifu.motivator.plugin.alert.TextualMotivationFactory;
+import zd.zero.waifu.motivator.plugin.alert.WaifuMotivation;
+import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
 import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
@@ -19,8 +20,6 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 import java.util.concurrent.ThreadLocalRandom;
-
-import static zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory.NEUTRAL;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
@@ -77,21 +76,21 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
         if ( isMultipleProjectsOpened() ) return;
 
         AlertConfiguration config = AlertConfiguration.builder()
-            .isAlertEnabled( pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled() )
-            .isDisplayNotificationEnabled( pluginState.isStartupMotivationEnabled() )
-            .isSoundAlertEnabled( pluginState.isStartupMotivationSoundEnabled() )
-            .build();
-        WaifuMotivatorAlert motivatorAlert = WaifuMotivatorAlertFactory
-            .createAlert(
+                .isAlertEnabled( pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled() )
+                .isDisplayNotificationEnabled( pluginState.isStartupMotivationEnabled() )
+                .isSoundAlertEnabled( pluginState.isStartupMotivationSoundEnabled() )
+                .build();
+        WaifuMotivation waifuMotivation = TextualMotivationFactory.getInstance()
+            .constructMotivation(
                 project,
-                AlertAssetProvider.getRandomAssetByCategory( NEUTRAL ),
+                AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ),
                 config
             );
 
         if ( !project.isInitialized() ) {
-            StartupManager.getInstance( project ).registerPostStartupActivity( motivatorAlert::alert );
+            StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );
         } else {
-            motivatorAlert.alert();
+            waifuMotivation.motivate();
         }
     }
 

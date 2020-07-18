@@ -1,5 +1,12 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
+    <JavaCodeStyleSettings>
+      <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="999" />
+      <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="999" />
+      <option name="PACKAGES_TO_USE_IMPORT_ON_DEMAND">
+        <value />
+      </option>
+    </JavaCodeStyleSettings>
     <codeStyleSettings language="JAVA">
       <option name="BLANK_LINES_AROUND_FIELD" value="1" />
       <option name="BLANK_LINES_AROUND_FIELD_IN_INTERFACE" value="1" />

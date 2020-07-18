@@ -2,6 +2,7 @@ package zd.zero.waifu.motivator.plugin.alert;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.ResourceUtil;
 import org.jetbrains.annotations.NonNls;
@@ -9,6 +10,7 @@ import zd.zero.waifu.motivator.plugin.providers.UniqueValueProvider;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -20,9 +22,9 @@ public class AlertAssetProvider {
 
     private static final String USED_ALERTS = "WMP_USED_ALERTS";
 
-    private static WaifuMotivatorAlertAsset[] alertAssets;
+    private static MotivationAsset[] alertAssets;
 
-    private static UniqueValueProvider<WaifuMotivatorAlertAsset> uniqueProvider;
+    private static UniqueValueProvider<MotivationAsset> uniqueProvider;
 
     private static Random random;
 
@@ -30,24 +32,24 @@ public class AlertAssetProvider {
         throw new AssertionError( "Never instantiate." );
     }
 
-    public static WaifuMotivatorAlertAsset getRandomAssetByCategory(
+    public static MotivationAsset getRandomAssetByCategory(
             @NonNls final WaifuMotivatorAlertAssetCategory category ) {
 
-        WaifuMotivatorAlertAsset[] assets = getWaifuMotivatorAlertAssets();
+        MotivationAsset[] assets = getWaifuMotivatorAlertAssets();
         if ( !category.equals( WaifuMotivatorAlertAssetCategory.ALL ) ) {
             assets = Stream.of( assets )
                     .filter( a -> Arrays.asList( a.getCategories() ).contains( category ) )
-                    .toArray( WaifuMotivatorAlertAsset[]::new );
+                    .toArray( MotivationAsset[]::new );
         }
 
         if ( uniqueProvider == null ) {
             uniqueProvider = new UniqueValueProvider<>( USED_ALERTS );
         }
-        WaifuMotivatorAlertAsset[] filteredAlerts = uniqueProvider
-                .getUniqueValues( assets, WaifuMotivatorAlertAsset::getTitle )
-                .toArray( new WaifuMotivatorAlertAsset[0] );
+        MotivationAsset[] filteredAlerts = uniqueProvider
+                .getUniqueValues( assets, MotivationAsset::getTitle )
+                .toArray( new MotivationAsset[0] );
 
-        WaifuMotivatorAlertAsset asset;
+        MotivationAsset asset;
         if ( filteredAlerts.length == 1 ) {
             asset = filteredAlerts[0];
         } else {
@@ -60,7 +62,7 @@ public class AlertAssetProvider {
         return asset;
     }
 
-    private static WaifuMotivatorAlertAsset[] getWaifuMotivatorAlertAssets() {
+    private static MotivationAsset[] getWaifuMotivatorAlertAssets() {
         if ( alertAssets == null ) {
             ClassLoader classLoader = AlertAssetProvider.class.getClassLoader();
             try ( InputStream resource = ResourceUtil.getResourceAsStream( classLoader,
@@ -69,12 +71,12 @@ public class AlertAssetProvider {
                     throw new IOException( "Cannot find the waifu alerts." );
                 }
 
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.enable( MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS );
+                Gson gson = new Gson();
 
-                alertAssets = mapper.readValue( resource, WaifuMotivatorAlertAsset[].class );
+                // todo: figure out case insensitive enums
+                alertAssets = gson.fromJson( new InputStreamReader( resource ), MotivationAsset[].class );
             } catch ( IOException e ) {
-                alertAssets = new WaifuMotivatorAlertAsset[0];
+                alertAssets = new MotivationAsset[0];
                 LOGGER.error( "Unable to parse sound source file.", e );
             }
         }

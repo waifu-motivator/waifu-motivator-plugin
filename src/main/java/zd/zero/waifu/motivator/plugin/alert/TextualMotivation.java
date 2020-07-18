@@ -13,7 +13,7 @@ import zd.zero.waifu.motivator.plugin.alert.notification.WaifuMotivatorNotifier;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayer;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 
-public class WaifuMotivatorAlertImpl implements WaifuMotivatorAlert {
+public class TextualMotivation extends BaseMotivation {
 
     private static final String KEY_DISTRACTION_FREE_MODE = "editor.distraction.free.mode";
 
@@ -26,7 +26,7 @@ public class WaifuMotivatorAlertImpl implements WaifuMotivatorAlert {
     @Getter
     private final AlertConfiguration config;
 
-    public WaifuMotivatorAlertImpl( WaifuMotivatorNotifier notifier, WaifuSoundPlayer player, AlertConfiguration config ) {
+    public TextualMotivation( WaifuMotivatorNotifier notifier, WaifuSoundPlayer player, AlertConfiguration config ) {
         this.notifier = notifier;
         this.player = player;
         this.config = config;
