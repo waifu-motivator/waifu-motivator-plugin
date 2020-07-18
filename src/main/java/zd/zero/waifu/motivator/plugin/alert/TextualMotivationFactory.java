@@ -4,7 +4,6 @@ import com.intellij.openapi.project.Project;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
-import zd.zero.waifu.motivator.plugin.alert.notification.DefaultWaifuMotivatorNotifier;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
 
 public class TextualMotivationFactory implements WaifuMotivationFactory {
@@ -22,13 +21,12 @@ public class TextualMotivationFactory implements WaifuMotivationFactory {
     @Override
     public WaifuMotivation constructMotivation( Project project, MotivationAsset motivation, AlertConfiguration config ) {
         return new TextualMotivation(
-            DefaultWaifuMotivatorNotifier.builder().project( project )
-                .title( motivation.getTitle() )
-                .content( StringUtils.defaultIfEmpty( motivation.getMessage(), "" ) )
-                .build(),
+            new TextualWaifuNotification(
+                motivation,
+                project
+            ),
             WaifuSoundPlayerFactory.createPlayer( motivation.getSoundFileName() ),
             config
         );
-
     }
 }

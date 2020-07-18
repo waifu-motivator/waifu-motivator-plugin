@@ -4,6 +4,7 @@ import com.intellij.notification.*
 import com.intellij.notification.impl.NotificationsManagerImpl
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.Balloon
+import com.intellij.openapi.wm.IdeFrame
 import com.intellij.openapi.wm.WindowManager
 import com.intellij.ui.BalloonLayoutData
 import com.intellij.ui.awt.RelativePoint
@@ -53,10 +54,7 @@ object UpdateNotification {
         updateNotification: Notification
     ) {
         try {
-            val ideFrame =
-                WindowManager.getInstance().getIdeFrame(project) ?: WindowManager.getInstance().allProjectFrames.first()
-            val frameBounds = ideFrame.component.bounds
-            val notificationPosition = RelativePoint(ideFrame.component, Point(frameBounds.x + frameBounds.width, 20))
+            val (ideFrame, notificationPosition) = fetchBalloonParameters(project)
             val balloon = NotificationsManagerImpl.createBalloon(
                 ideFrame,
                 updateNotification,
@@ -69,4 +67,13 @@ object UpdateNotification {
             updateNotification.notify(project)
         }
     }
+
+}
+
+fun fetchBalloonParameters(project: Project): Pair<IdeFrame, RelativePoint> {
+    val ideFrame =
+        WindowManager.getInstance().getIdeFrame(project) ?: WindowManager.getInstance().allProjectFrames.first()
+    val frameBounds = ideFrame.component.bounds
+    val notificationPosition = RelativePoint(ideFrame.component, Point(frameBounds.x + frameBounds.width, 20))
+    return Pair(ideFrame, notificationPosition)
 }

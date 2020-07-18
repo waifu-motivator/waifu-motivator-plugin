@@ -4,7 +4,6 @@ import com.intellij.openapi.project.Project
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory
 
-
 object VisualMotivationFactory : WaifuMotivationFactory {
     override fun constructMotivation(
         project: Project,
@@ -12,6 +11,7 @@ object VisualMotivationFactory : WaifuMotivationFactory {
         config: AlertConfiguration
     ): WaifuMotivation =
         VisualMotivation(
+            VisualWaifuNotification(motivationAsset, project),
             WaifuSoundPlayerFactory.createPlayer(motivationAsset.soundFileName),
             config
         )
