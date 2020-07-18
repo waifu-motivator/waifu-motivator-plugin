@@ -43,7 +43,7 @@ object UpdateNotification {
             UPDATE_MESSAGE,
             NotificationType.INFORMATION
         )
-            .setListener(NotificationListener.URL_OPENING_LISTENER)
+            .setListener(NotificationListener.UrlOpeningListener(false))
 
         showNotification(project, updateNotification)
     }
