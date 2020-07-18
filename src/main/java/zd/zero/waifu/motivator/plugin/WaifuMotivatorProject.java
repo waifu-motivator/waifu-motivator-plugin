@@ -75,17 +75,14 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     private void initializeStartupMotivator() {
         if ( isMultipleProjectsOpened() ) return;
 
-        AlertConfiguration config = AlertConfiguration.builder()
-                .isAlertEnabled( pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled() )
-                .isDisplayNotificationEnabled( pluginState.isStartupMotivationEnabled() )
-                .isSoundAlertEnabled( pluginState.isStartupMotivationSoundEnabled() )
-                .build();
-        WaifuMotivation waifuMotivation = TextualMotivationFactory.getInstance()
-            .constructMotivation(
-                project,
-                AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ),
-                config
-            );
+        AlertConfiguration config = new AlertConfiguration(
+                 pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled(),
+                 pluginState.isStartupMotivationEnabled() ,
+                 pluginState.isStartupMotivationSoundEnabled()
+        );
+
+        WaifuMotivation waifuMotivation = TextualMotivationFactory.getInstance().constructMotivation(
+                project, AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ), config );
 
         if ( !project.isInitialized() ) {
             StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );

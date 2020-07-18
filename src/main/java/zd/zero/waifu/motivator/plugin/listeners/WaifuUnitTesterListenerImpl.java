@@ -34,16 +34,16 @@ public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
     @Override
     public void onUnitTestFailed() {
         WaifuMotivation keepGoingMotivation = TextualMotivationFactory.getInstance().constructMotivation( project,
-                AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEGATIVE ), 
+                AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEGATIVE ),
             getUnitTesterConfiguration() );
         keepGoingMotivation.motivate();
     }
 
     private AlertConfiguration getUnitTesterConfiguration() {
-        return AlertConfiguration.builder()
-                .isAlertEnabled( pluginState.isUnitTesterMotivationEnabled() || pluginState.isUnitTesterMotivationSoundEnabled() )
-                .isDisplayNotificationEnabled( pluginState.isUnitTesterMotivationEnabled() )
-                .isSoundAlertEnabled( pluginState.isUnitTesterMotivationSoundEnabled() )
-                .build();
+        return new AlertConfiguration(
+            pluginState.isUnitTesterMotivationEnabled() || pluginState.isUnitTesterMotivationSoundEnabled(),
+            pluginState.isUnitTesterMotivationEnabled(),
+            pluginState.isUnitTesterMotivationSoundEnabled()
+        );
     }
 }

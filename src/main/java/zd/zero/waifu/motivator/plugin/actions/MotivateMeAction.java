@@ -17,11 +17,10 @@ public class MotivateMeAction extends AnAction {
     public void actionPerformed( @NotNull AnActionEvent e ) {
         WaifuMotivatorState pluginState = WaifuMotivatorPluginState.getPluginState();
 
-        AlertConfiguration config = AlertConfiguration.builder()
-                .isAlertEnabled( pluginState.isMotivateMeEnabled() || pluginState.isMotivateMeSoundEnabled() )
-                .isDisplayNotificationEnabled( pluginState.isMotivateMeEnabled() )
-                .isSoundAlertEnabled( pluginState.isMotivateMeSoundEnabled() )
-                .build();
+        AlertConfiguration config = new AlertConfiguration(
+            pluginState.isMotivateMeEnabled() || pluginState.isMotivateMeSoundEnabled(),
+            pluginState.isMotivateMeEnabled(),
+            pluginState.isMotivateMeSoundEnabled() );
 
         WaifuMotivation waifuMotivation = TextualMotivationFactory.getInstance().constructMotivation( e.getProject(),
                 AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ), config );
