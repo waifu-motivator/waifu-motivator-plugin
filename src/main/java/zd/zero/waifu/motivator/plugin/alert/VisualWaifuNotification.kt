@@ -5,7 +5,7 @@ import com.intellij.notification.impl.NotificationsManagerImpl
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.Balloon
 import com.intellij.ui.BalloonLayoutData
-import zd.zero.waifu.motivator.plugin.onboarding.fetchBalloonParameters
+import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParameters
 
 class VisualWaifuNotification(
         motivationAsset: MotivationAsset,
@@ -20,7 +20,7 @@ class VisualWaifuNotification(
                 ideFrame,
                 updateNotification,
                 true,
-                false,
+                true,
                     BalloonLayoutData.fullContent()
             ) {}
             balloon.show(notificationPosition, Balloon.Position.atLeft)

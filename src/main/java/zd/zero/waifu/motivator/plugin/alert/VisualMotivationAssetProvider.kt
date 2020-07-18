@@ -9,9 +9,18 @@ object VisualMotivationAssetProvider: AssetProvider {
             POSITIVE -> MotivationAsset(
                 "Title",
                 """
-                    
+                 <img src='https://media.tenor.com/images/bec891420a83ef648656a290e8c52e63/tenor.gif' width='256' />
+                 <br>
+                 <br>
+                 <br>
+                 <br>
+                 <br>
+                 <br>
+                 <br>
+                 <br>
+                 <p style='opacity: 0'>aoeu</p>
                 """.trimIndent(),
-                "",
+                "waoow.mp3",
                 arrayOf()
             )
             else -> throw NotImplementedError("You can't use $category here.")
