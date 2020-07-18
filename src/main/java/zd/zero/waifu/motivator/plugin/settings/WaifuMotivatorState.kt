@@ -19,4 +19,6 @@ class WaifuMotivatorState {
     var isSayonaraEnabled = true
 
     var isDisabledInDistractionFreeMode = true
+
+    var version = "v0.0.0"
 }

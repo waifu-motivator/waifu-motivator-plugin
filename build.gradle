@@ -29,7 +29,9 @@ intellij {
     version ideaVersion
     type System.getenv().getOrDefault("INTELLIJ_TYPE", "IC")
     println "Building for IntelliJ version: ${version}"
+
 }
+
 
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
@@ -40,7 +42,6 @@ compileTestKotlin {
 }
 
 patchPluginXml {
-    sinceBuild sinceBuildVersion
     untilBuild untilBuildVersion
 
     pluginDescription(file(descriptionFile).text)

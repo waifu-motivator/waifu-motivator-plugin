@@ -14,6 +14,7 @@ import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertFactory;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
+import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
@@ -39,6 +40,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
         updatePlatformStartupConfig();
         initializeListeners();
         initializeStartupMotivator();
+        UserOnboarding.INSTANCE.attemptToShowUpdateNotification();
     }
 
     @Override
