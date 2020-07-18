@@ -1,4 +1,4 @@
-name: Java CI
+name: Pre-Merge Checks
 
 on: [push, pull_request]
 
