@@ -9,15 +9,15 @@
 
   <depends>com.intellij.modules.platform</depends>
 
-   <!--    Leave this in here so the IDE gives you feedback on-->
-   <!--    What APIs are available-->
-   <idea-version since-build="201.3803.71"/>
+  <!--    Leave this in here so the IDE gives you feedback on-->
+  <!--    What APIs are available-->
+  <idea-version since-build="201.3803.71"/>
 
-    <extensions defaultExtensionNs="com.intellij">
+  <extensions defaultExtensionNs="com.intellij">
     <applicationService
-        serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState"/>
+      serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState"/>
     <applicationConfigurable
-        instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
+      instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
     <postStartupActivity id="WaifuOfTheDayStartupActivity"
                          implementation="zd.zero.waifu.motivator.plugin.WaifuOfTheDayStartupActivity"/>
   </extensions>
