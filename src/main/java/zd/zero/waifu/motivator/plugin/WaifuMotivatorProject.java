@@ -32,10 +32,12 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     private WaifuUnitTester unitTestListener;
 
     @Override
-    public void projectOpened( @NotNull Project project ) {
-        this.project = project;
+    public void projectOpened( @NotNull Project projectOpened ) {
+        if ( this.project != null ) return;
+
+        this.project = projectOpened;
         this.pluginState = WaifuMotivatorPluginState.getPluginState();
-        this.unitTestListener = WaifuUnitTester.newInstance( project );
+        this.unitTestListener = WaifuUnitTester.newInstance( projectOpened );
 
         updatePlatformStartupConfig();
         initializeListeners();
@@ -63,7 +65,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     private void updatePlatformStartupConfig() {
         boolean isInitialPlatformTipUpdated = Boolean.parseBoolean( PropertiesComponent.getInstance()
-                .getValue( IS_INITIAL_PLATFORM_TIP_UPDATED, "" ) );
+            .getValue( IS_INITIAL_PLATFORM_TIP_UPDATED, "" ) );
         if ( !isInitialPlatformTipUpdated ) {
             PropertiesComponent.getInstance().setValue( IS_INITIAL_PLATFORM_TIP_UPDATED, true );
             GeneralSettings.getInstance().setShowTipsOnStartup( !pluginState.isWaifuOfTheDayEnabled() );
@@ -72,12 +74,12 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     private void initializeStartupMotivator() {
         AlertConfiguration config = AlertConfiguration.builder()
-                .isAlertEnabled( pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled())
-                .isDisplayNotificationEnabled( pluginState.isStartupMotivationEnabled() )
-                .isSoundAlertEnabled( pluginState.isStartupMotivationSoundEnabled() )
-                .build();
+            .isAlertEnabled( pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled() )
+            .isDisplayNotificationEnabled( pluginState.isStartupMotivationEnabled() )
+            .isSoundAlertEnabled( pluginState.isStartupMotivationSoundEnabled() )
+            .build();
         WaifuMotivatorAlert motivatorAlert = WaifuMotivatorAlertFactory.createAlert(
-                project, AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ), config );
+            project, AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ), config );
 
         if ( !project.isInitialized() ) {
             StartupManager.getInstance( project ).registerPostStartupActivity( motivatorAlert::alert );
