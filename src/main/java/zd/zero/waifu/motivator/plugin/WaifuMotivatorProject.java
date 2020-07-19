@@ -10,7 +10,6 @@ import com.intellij.openapi.startup.StartupManager;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlert;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertFactory;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
@@ -20,6 +19,8 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 import java.util.concurrent.ThreadLocalRandom;
+
+import static zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory.NEUTRAL;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
@@ -47,7 +48,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void projectClosing( @NotNull Project project ) {
-        if ( !pluginState.isSayonaraEnabled() || ProjectManager.getInstance().getOpenProjects().length > 1 ) return;
+        if ( !pluginState.isSayonaraEnabled() || isMultipleProjectsOpened() ) return;
 
         final String[] sayonara = { "ara_ara_sayonara.wav", "sayonara_bye_bye.wav", "sayonara_senpai.wav" };
         String file = sayonara[ThreadLocalRandom.current().nextInt( sayonara.length )];
@@ -73,13 +74,19 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     }
 
     private void initializeStartupMotivator() {
+        if ( isMultipleProjectsOpened() ) return;
+
         AlertConfiguration config = AlertConfiguration.builder()
             .isAlertEnabled( pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled() )
             .isDisplayNotificationEnabled( pluginState.isStartupMotivationEnabled() )
             .isSoundAlertEnabled( pluginState.isStartupMotivationSoundEnabled() )
             .build();
-        WaifuMotivatorAlert motivatorAlert = WaifuMotivatorAlertFactory.createAlert(
-            project, AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ), config );
+        WaifuMotivatorAlert motivatorAlert = WaifuMotivatorAlertFactory
+            .createAlert(
+                project,
+                AlertAssetProvider.getRandomAssetByCategory( NEUTRAL ),
+                config
+            );
 
         if ( !project.isInitialized() ) {
             StartupManager.getInstance( project ).registerPostStartupActivity( motivatorAlert::alert );
@@ -87,4 +94,9 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             motivatorAlert.alert();
         }
     }
+
+    private boolean isMultipleProjectsOpened() {
+        return ProjectManager.getInstance().getOpenProjects().length > 1;
+    }
+
 }
