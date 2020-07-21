@@ -1,11 +1,11 @@
 package zd.zero.waifu.motivator.plugin.alert
 
 import com.intellij.openapi.diagnostic.Logger
-import io.unthrottled.doki.util.readAllTheBytes
-import io.unthrottled.doki.util.toOptional
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
+import zd.zero.waifu.motivator.plugin.tools.readAllTheBytes
+import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.util.Optional
 import java.util.concurrent.TimeUnit
 
@@ -35,7 +35,7 @@ object RestClient {
 
   private fun createGetRequest(remoteUrl: String): HttpGet {
     val remoteAssetRequest = HttpGet(remoteUrl)
-    remoteAssetRequest.addHeader("User-Agent", "Doki-Theme-Jetbrains")
+    remoteAssetRequest.addHeader("User-Agent", "Waifu-Motivation-Plugin")
     remoteAssetRequest.config = RequestConfig.custom()
       .setConnectTimeout(TimeUnit.MILLISECONDS.convert(5L, TimeUnit.SECONDS).toInt())
       .build()

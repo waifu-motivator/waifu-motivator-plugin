@@ -27,7 +27,15 @@ object AssetDefinitionService {
     }
 
     private fun getCelebrationVisualAssets(): List<VisualMotivationAssetDefinition> {
-        TODO("Not yet implemented")
+        // todo: fetch from remote
+        return listOf(
+            VisualMotivationAssetDefinition("caramelldansen.gif", "Caramelldansen", arrayOf(
+                WaifuAssetCategory.CELEBRATION
+            )),
+            VisualMotivationAssetDefinition("kill-la-kill-caramelldansen.gif", "Caramelldansen", arrayOf(
+                WaifuAssetCategory.CELEBRATION
+            ))
+        )
     }
 
 }
