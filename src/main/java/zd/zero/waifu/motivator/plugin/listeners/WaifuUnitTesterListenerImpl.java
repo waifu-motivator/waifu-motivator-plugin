@@ -5,6 +5,7 @@ import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
 import zd.zero.waifu.motivator.plugin.alert.TextualMotivationFactory;
 import zd.zero.waifu.motivator.plugin.alert.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.alert.VisualMotivationFactory;
+import zd.zero.waifu.motivator.plugin.alert.WaifuAssetCategory;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivation;
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
@@ -26,7 +27,7 @@ public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
     @Override
     public void onUnitTestPassed() {
         WaifuMotivation successMotivation = VisualMotivationFactory.INSTANCE.constructMotivation( project,
-            VisualMotivationAssetProvider.INSTANCE.pickRandomByCategory( WaifuMotivatorAlertAssetCategory.POSITIVE ),
+            VisualMotivationAssetProvider.INSTANCE.createAssetByCategory( WaifuAssetCategory.CELEBRATION ),
             getUnitTesterConfiguration() );
         successMotivation.motivate();
     }
