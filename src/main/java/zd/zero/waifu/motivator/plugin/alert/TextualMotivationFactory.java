@@ -1,7 +1,6 @@
 package zd.zero.waifu.motivator.plugin.alert;
 
 import com.intellij.openapi.project.Project;
-import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;

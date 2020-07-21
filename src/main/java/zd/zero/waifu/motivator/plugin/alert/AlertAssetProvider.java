@@ -1,7 +1,5 @@
 package zd.zero.waifu.motivator.plugin.alert;
 
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.ResourceUtil;

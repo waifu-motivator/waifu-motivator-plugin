@@ -39,7 +39,7 @@ abstract class BaseMotivation(
     }
 
     override fun isDistractionAllowed(): Boolean =
-        !(WaifuMotivatorPluginState.getPluginState().isDisabledInDistractionFreeMode
+        !(WaifuMotivatorPluginState.getInstance().state?.isDisabledInDistractionFreeMode ?: true
             && (Registry.get(KEY_DISTRACTION_FREE_MODE).asBoolean()
             || UISettings.instance.presentationMode))
 

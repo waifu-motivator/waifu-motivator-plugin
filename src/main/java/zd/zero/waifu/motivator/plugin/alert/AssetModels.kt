@@ -1,7 +1,5 @@
 package zd.zero.waifu.motivator.plugin.alert
 
-import com.intellij.diagnostic.LogMessage
-
 interface AssetDefinition {
     val categories: Array<WaifuAssetCategory>
 }

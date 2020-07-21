@@ -1,7 +1,10 @@
 package zd.zero.waifu.motivator.plugin.alert
 
 enum class WaifuAssetCategory {
-    CELEBRATION, MOTIVATION, ENCOURAGEMENT, DISAPPOINTMENT
+    CELEBRATION,
+    MOTIVATION,
+    ENCOURAGEMENT,
+    DISAPPOINTMENT // you don't want to disappoint your waifu
 }
 
 object VisualMotivationAssetProvider {

@@ -22,7 +22,6 @@ private enum class AssetChangedStatus {
     SAME, DIFFERENT, LUL_DUNNO
 }
 
-
 object AssetManager {
     private const val ASSETS_SOURCE = "https://waifu-motivation-assets.s3.amazonaws.com"
 

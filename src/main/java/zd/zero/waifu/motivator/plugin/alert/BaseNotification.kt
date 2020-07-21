@@ -17,5 +17,4 @@ abstract class BaseNotification(
             .setTitle(motivationAsset.title.ifEmpty { "" })
             .setContent(motivationAsset.message.ifEmpty { "" })
     }
-
 }
