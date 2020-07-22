@@ -23,7 +23,8 @@ private enum class AssetChangedStatus {
 }
 
 object AssetManager {
-    private const val ASSETS_SOURCE = "https://waifu-motivation-assets.s3.amazonaws.com"
+    const val ASSETS_SOURCE = "https://waifu-motivation-assets.s3.amazonaws.com"
+    const val VISUAL_ASSET_DIRECTORY = "visuals"
 
     private val httpClient = HttpClients.custom()
         .setUserAgent(ApplicationInfoEx.getInstance().fullApplicationName)
@@ -33,12 +34,11 @@ object AssetManager {
 
 
     fun getVisualAsset(visualAsset: VisualMotivationAssetDefinition): VisualMotivationAssetDefinition {
-        val assetCategory = "visuals"
         val remoteAssetUrl = constructRemoteAssetUrl(
-            assetCategory, visualAsset.imagePath
+            VISUAL_ASSET_DIRECTORY, visualAsset.imagePath
         )
         val assetUrl =
-            constructLocalAssetPath(assetCategory, visualAsset.imagePath)
+            constructLocalAssetPath(VISUAL_ASSET_DIRECTORY, visualAsset.imagePath)
                 .flatMap {
                     resolveAssetUrl(it, remoteAssetUrl)
                 }.orElse(remoteAssetUrl)
