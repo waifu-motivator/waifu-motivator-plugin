@@ -1,14 +1,9 @@
 package zd.zero.waifu.motivator.plugin.alert
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import zd.zero.waifu.motivator.plugin.alert.AssetManager.ASSETS_SOURCE
-import zd.zero.waifu.motivator.plugin.alert.AssetManager.VISUAL_ASSET_DIRECTORY
-
 object AssetDefinitionService {
     fun getRandomCelebrationVisualAsset(): VisualMotivationAssetDefinition {
         val celebrationAsset = getCelebrationVisualAssets().random()
-        return AssetManager.getVisualAsset(celebrationAsset)
+        return VisualAssetManager.getAsset(celebrationAsset)
     }
 
     fun getRandomCelebrationAudibleAsset(): AudibleMotivationAssetDefinition {
@@ -32,44 +27,8 @@ object AssetDefinitionService {
     }
 
     private fun getCelebrationVisualAssets(): List<VisualMotivationAssetDefinition> {
-        return VisualAssetSupplier.supplyVisualAssets().filter {
+        return VisualAssetManager.supplyAssetDefinitions().filter {
             it.categories.contains(WaifuAssetCategory.CELEBRATION)
         }
     }
-
-}
-
-object VisualAssetSupplier {
-
-    private lateinit var remoteAssets: List<VisualMotivationAssetDefinition>
-
-    fun supplyVisualAssets(): List<VisualMotivationAssetDefinition> =
-        if (this::remoteAssets.isInitialized) {
-            remoteAssets
-        } else {
-            remoteAssets = RestClient.performGet("$ASSETS_SOURCE/$VISUAL_ASSET_DIRECTORY/assets.json")
-                .map {
-                    Gson().fromJson<List<VisualMotivationAssetDefinition>>(
-                        it, object : TypeToken<List<VisualMotivationAssetDefinition>>() {}.type
-                    )
-                }.orElseGet {
-                    listOf(
-                        VisualMotivationAssetDefinition(
-                            "caramelldansen.gif",
-                            "Caramelldansen",
-                            arrayOf(
-                                WaifuAssetCategory.CELEBRATION
-                            )
-                        ),
-                        VisualMotivationAssetDefinition(
-                            "kill-la-kill-caramelldansen.gif",
-                            "Caramelldansen",
-                            arrayOf(
-                                WaifuAssetCategory.CELEBRATION
-                            )
-                        )
-                    )
-                }
-            remoteAssets
-        }
 }

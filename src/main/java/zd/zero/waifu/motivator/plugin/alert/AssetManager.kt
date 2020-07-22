@@ -33,36 +33,18 @@ object AssetManager {
     private val log = Logger.getInstance(this::class.java)
 
 
-    fun getVisualAsset(visualAsset: VisualMotivationAssetDefinition): VisualMotivationAssetDefinition {
-        val remoteAssetUrl = constructRemoteAssetUrl(
-            VISUAL_ASSET_DIRECTORY, visualAsset.imagePath
-        )
-        val assetUrl =
-            constructLocalAssetPath(VISUAL_ASSET_DIRECTORY, visualAsset.imagePath)
-                .flatMap {
-                    resolveAssetUrl(it, remoteAssetUrl)
-                }.orElse(remoteAssetUrl)
-
-        return visualAsset.copy(imagePath = assetUrl)
-    }
-
-    private fun constructRemoteAssetUrl(
-        assetCategory: String,
-        assetPath: String
-    ): String = "$ASSETS_SOURCE/$assetCategory/$assetPath"
-
-    private fun resolveAssetUrl(localStickerPath: Path, remoteAssetUrl: String): Optional<String> {
+    fun resolveAssetUrl(localAssetPath: Path, remoteAssetUrl: String): Optional<String> {
         return canWriteAssetsLocally()
             .flatMap {
-                if(hasAssetChanged(localStickerPath, remoteAssetUrl)) {
-                    downloadAsset(localStickerPath, remoteAssetUrl)
+                if(hasAssetChanged(localAssetPath, remoteAssetUrl)) {
+                    downloadAsset(localAssetPath, remoteAssetUrl)
                 } else {
-                    localStickerPath.toOptional()
+                    localAssetPath.toOptional()
                 }
             }.map { it.toUri().toString() }
     }
 
-    private fun constructLocalAssetPath(
+    fun constructLocalAssetPath(
         assetCategory: String,
         assetPath: String
     ): Optional<Path> =
