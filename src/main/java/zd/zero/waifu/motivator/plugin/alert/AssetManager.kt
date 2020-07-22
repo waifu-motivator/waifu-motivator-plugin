@@ -1,5 +1,7 @@
 package zd.zero.waifu.motivator.plugin.alert
 
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.application.ex.ApplicationInfoEx
 import com.intellij.openapi.diagnostic.Logger
@@ -10,11 +12,14 @@ import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.io.IOException
+import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -30,13 +35,34 @@ object AssetManager {
         .setUserAgent(ApplicationInfoEx.getInstance().fullApplicationName)
         .build()
 
+    private val gson = GsonBuilder().setPrettyPrinting().create()
     private val log = Logger.getInstance(this::class.java)
+    private val assetChecks: MutableMap<String, Instant> = getAssetChecks()
+
+    private fun getAssetChecks(): MutableMap<String, Instant> = try {
+        getAssetChecksFile()
+            .filter { Files.exists(it) }
+            .map {
+                Files.newBufferedReader(it).use { reader ->
+                    gson.fromJson<Map<String, Instant>>(
+                        reader,
+                        object : TypeToken<Map<String, Instant>>() {}.type
+                    )
+                }.toMutableMap()
+            }.orElseGet { mutableMapOf() }
+
+    } catch (e: Throwable) {
+        mutableMapOf()
+    }
+
+    private fun getAssetChecksFile() = getLocalAssetDirectory()
+        .map { Paths.get(it, "assetChecks.json") }
 
 
     fun resolveAssetUrl(localAssetPath: Path, remoteAssetUrl: String): Optional<String> {
         return canWriteAssetsLocally()
             .flatMap {
-                if(hasAssetChanged(localAssetPath, remoteAssetUrl)) {
+                if (hasAssetChanged(localAssetPath, remoteAssetUrl)) {
                     downloadAsset(localAssetPath, remoteAssetUrl)
                 } else {
                     localAssetPath.toOptional()
@@ -51,25 +77,26 @@ object AssetManager {
         getLocalAssetDirectory()
             .map { localInstallDirectory ->
                 Paths.get(
-                        localInstallDirectory, assetCategory, assetPath
+                    localInstallDirectory, assetCategory, assetPath
                 ).normalize().toAbsolutePath()
             }
 
     private fun hasAssetChanged(
-            localInstallPath: Path,
-            remoteAssetUrl: String
+        localInstallPath: Path,
+        remoteAssetUrl: String
     ): Boolean =
         !Files.exists(localInstallPath) ||
             (!hasBeenCheckedToday(localInstallPath) &&
                 isLocalDifferentFromRemote(localInstallPath, remoteAssetUrl) == AssetChangedStatus.DIFFERENT)
 
     private fun hasBeenCheckedToday(localInstallPath: Path): Boolean {
-        return false // todo:
+        return assetChecks[getAssetCheckKey(localInstallPath)]?.truncatedTo(ChronoUnit.DAYS) ==
+            Instant.now().truncatedTo(ChronoUnit.DAYS)
     }
 
     private fun downloadAsset(
-            localAssetPath: Path,
-            remoteAssetUrl: String
+        localAssetPath: Path,
+        remoteAssetUrl: String
     ): Optional<Path> {
         createDirectories(localAssetPath)
         return downloadRemoteAsset(localAssetPath, remoteAssetUrl)
@@ -82,11 +109,12 @@ object AssetManager {
             .map { true }
 
     private fun isLocalDifferentFromRemote(
-            localInstallPath: Path,
-            remoteAssetUrl: String
+        localInstallPath: Path,
+        remoteAssetUrl: String
     ): AssetChangedStatus =
         getRemoteAssetChecksum(remoteAssetUrl)
             .map {
+                writeCheckedDate(localInstallPath)
                 val onDiskCheckSum = getOnDiskCheckSum(localInstallPath)
                 if (it == onDiskCheckSum) {
                     AssetChangedStatus.SAME
@@ -101,6 +129,21 @@ object AssetManager {
                 }
             }.orElseGet { AssetChangedStatus.LUL_DUNNO }
 
+    private fun writeCheckedDate(localInstallPath: Path) {
+        assetChecks[getAssetCheckKey(localInstallPath)] = Instant.now()
+        getAssetChecksFile()
+            .ifPresent {
+                createDirectories(it)
+                Files.newBufferedWriter(
+                    it, Charset.defaultCharset(),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING
+                ).use {
+                    it.write(gson.toJson(assetChecks))
+                }
+            }
+    }
+
     private fun getOnDiskCheckSum(localAssetPath: Path): String =
         computeCheckSum(Files.readAllBytes(localAssetPath))
 
@@ -111,11 +154,11 @@ object AssetManager {
     }
 
     private fun getRemoteAssetChecksum(remoteAssetUrl: String): Optional<String> =
-            RestClient.performGet("$remoteAssetUrl.checksum.txt")
+        RestClient.performGet("$remoteAssetUrl.checksum.txt")
 
     private fun downloadRemoteAsset(
-            localAssetPath: Path,
-            remoteAssetPath: String
+        localAssetPath: Path,
+        remoteAssetPath: String
     ): Optional<Path> = try {
         log.warn("Attempting to download asset $remoteAssetPath")
         val remoteAssetRequest = createGetRequest(remoteAssetPath)
@@ -123,9 +166,9 @@ object AssetManager {
         if (remoteAssetResponse.statusLine.statusCode == 200) {
             remoteAssetResponse.entity.content.use { inputStream ->
                 Files.newOutputStream(
-                        localAssetPath,
-                        StandardOpenOption.CREATE,
-                        StandardOpenOption.TRUNCATE_EXISTING
+                    localAssetPath,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING
                 ).use { bufferedWriter ->
                     IOUtils.copy(inputStream, bufferedWriter)
                 }
@@ -157,8 +200,10 @@ object AssetManager {
 
     private fun getLocalAssetDirectory(): Optional<String> =
         Optional.ofNullable(
-                PathManager.getConfigPath()
+            PathManager.getConfigPath()
         ).map {
             Paths.get(it, "waifuMotivatorAssets").toAbsolutePath().toString()
         }
+
+    private fun getAssetCheckKey(localInstallPath: Path) = localInstallPath.toAbsolutePath().toString()
 }
