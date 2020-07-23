@@ -1,6 +1,7 @@
 package zd.zero.waifu.motivator.plugin.alert;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.ResourceUtil;
 import org.jetbrains.annotations.NonNls;
@@ -69,9 +70,11 @@ public class AlertAssetProvider {
                     throw new IOException( "Cannot find the waifu alerts." );
                 }
 
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder().registerTypeAdapter(
+                    WaifuMotivatorAlertAssetCategory.class,
+                    new WaifuMotivatorAlertAssetCategoryDeserializer()
+                ).create();
 
-                // todo: figure out case insensitive enums
                 alertAssets = gson.fromJson( new InputStreamReader( resource ), MotivationAsset[].class );
             } catch ( IOException e ) {
                 alertAssets = new MotivationAsset[0];
