@@ -13,6 +13,7 @@ import org.apache.http.impl.client.HttpClients
 import zd.zero.waifu.motivator.plugin.remote.RestClient
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.io.IOException
+import java.net.URI
 import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Path
@@ -28,9 +29,12 @@ private enum class AssetChangedStatus {
     SAME, DIFFERENT, LUL_DUNNO
 }
 
+enum class AssetCategory(val category: String) {
+    VISUAL("visuals")
+}
+
 object AssetManager {
-    const val ASSETS_SOURCE = "https://waifu-motivation-assets.s3.amazonaws.com"
-    const val VISUAL_ASSET_DIRECTORY = "visuals"
+    private const val ASSETS_SOURCE = "https://waifu-motivation-assets.s3.amazonaws.com"
 
     private val httpClient = HttpClients.custom()
         .setUserAgent(ApplicationInfoEx.getInstance().fullApplicationName)
@@ -38,7 +42,41 @@ object AssetManager {
 
     private val gson = GsonBuilder().setPrettyPrinting().create()
     private val log = Logger.getInstance(this::class.java)
+
     private val assetChecks: MutableMap<String, Instant> = getAssetChecks()
+
+    fun resolveAssetUrl(assetCategory: AssetCategory, assetPath: String): String {
+        val remoteAssetUrl = constructRemoteAssetUrl(
+            assetCategory, assetPath
+        )
+        return constructLocalAssetPath(assetCategory, assetPath)
+            .flatMap {
+                resolveTheAssetUrl(it, remoteAssetUrl)
+            }.orElse(remoteAssetUrl)
+    }
+
+    private fun constructRemoteAssetUrl(
+        assetCategory: AssetCategory,
+        assetPath: String
+    ): String = "${ASSETS_SOURCE}/${assetCategory.category}/$assetPath"
+
+    private fun resolveTheAssetUrl(localAssetPath: Path, remoteAssetUrl: String): Optional<String> =
+        if (hasAssetChanged(localAssetPath, remoteAssetUrl)) {
+            downloadAsset(localAssetPath, remoteAssetUrl)
+        } else {
+            localAssetPath.toOptional()
+        }.map { it.toUri().toString() }
+
+    private fun constructLocalAssetPath(
+        assetCategory: AssetCategory,
+        assetPath: String
+    ): Optional<Path> =
+        getLocalAssetDirectory()
+            .map { localInstallDirectory ->
+                Paths.get(
+                    localInstallDirectory, assetCategory.category, assetPath
+                ).normalize().toAbsolutePath()
+            }
 
     private fun getAssetChecks(): MutableMap<String, Instant> = try {
         getAssetChecksFile()
@@ -53,34 +91,12 @@ object AssetManager {
             }.orElseGet { mutableMapOf() }
 
     } catch (e: Throwable) {
+        log.warn("Unable to get local asset checks for raisins", e)
         mutableMapOf()
     }
 
     private fun getAssetChecksFile() = getLocalAssetDirectory()
         .map { Paths.get(it, "assetChecks.json") }
-
-
-    fun resolveAssetUrl(localAssetPath: Path, remoteAssetUrl: String): Optional<String> {
-        return canWriteAssetsLocally()
-            .flatMap {
-                if (hasAssetChanged(localAssetPath, remoteAssetUrl)) {
-                    downloadAsset(localAssetPath, remoteAssetUrl)
-                } else {
-                    localAssetPath.toOptional()
-                }
-            }.map { it.toUri().toString() }
-    }
-
-    fun constructLocalAssetPath(
-        assetCategory: String,
-        assetPath: String
-    ): Optional<Path> =
-        getLocalAssetDirectory()
-            .map { localInstallDirectory ->
-                Paths.get(
-                    localInstallDirectory, assetCategory, assetPath
-                ).normalize().toAbsolutePath()
-            }
 
     private fun hasAssetChanged(
         localInstallPath: Path,
@@ -90,10 +106,9 @@ object AssetManager {
             (!hasBeenCheckedToday(localInstallPath) &&
                 isLocalDifferentFromRemote(localInstallPath, remoteAssetUrl) == AssetChangedStatus.DIFFERENT)
 
-    private fun hasBeenCheckedToday(localInstallPath: Path): Boolean {
-        return assetChecks[getAssetCheckKey(localInstallPath)]?.truncatedTo(ChronoUnit.DAYS) ==
+    private fun hasBeenCheckedToday(localInstallPath: Path): Boolean =
+        assetChecks[getAssetCheckKey(localInstallPath)]?.truncatedTo(ChronoUnit.DAYS) ==
             Instant.now().truncatedTo(ChronoUnit.DAYS)
-    }
 
     private fun downloadAsset(
         localAssetPath: Path,
@@ -102,12 +117,6 @@ object AssetManager {
         createDirectories(localAssetPath)
         return downloadRemoteAsset(localAssetPath, remoteAssetUrl)
     }
-
-    private fun canWriteAssetsLocally(): Optional<Boolean> =
-        getLocalAssetDirectory()
-            .map { Paths.get(it) }
-            .filter { Files.isWritable(it.parent) }
-            .map { true }
 
     private fun isLocalDifferentFromRemote(
         localInstallPath: Path,
@@ -121,11 +130,11 @@ object AssetManager {
                     AssetChangedStatus.SAME
                 } else {
                     log.warn("""
-            Local asset: $localInstallPath
-            is different from remote asset $remoteAssetUrl
-            Local Checksum: $onDiskCheckSum
-            Remote Checksum: $it
-          """.trimIndent())
+                      Local asset: $localInstallPath
+                      is different from remote asset $remoteAssetUrl
+                      Local Checksum: $onDiskCheckSum
+                      Remote Checksum: $it
+                    """.trimIndent())
                     AssetChangedStatus.DIFFERENT
                 }
             }.orElseGet { AssetChangedStatus.LUL_DUNNO }
@@ -139,8 +148,8 @@ object AssetManager {
                     it, Charset.defaultCharset(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING
-                ).use {
-                    it.write(gson.toJson(assetChecks))
+                ).use { writer ->
+                    writer.write(gson.toJson(assetChecks))
                 }
             }
     }
@@ -174,14 +183,14 @@ object AssetManager {
                     IOUtils.copy(inputStream, bufferedWriter)
                 }
             }
+            localAssetPath.toOptional()
         } else {
             log.warn("Asset request for $remoteAssetPath responded with $remoteAssetResponse")
+            Paths.get(URI(remoteAssetPath)).toOptional() // todo: test this
         }
-        localAssetPath.toOptional()
-    } catch (e: Exception) {
-        // todo: return remote url on failure
+    } catch (e: Throwable) {
         log.error("Unable to get remote remote asset $remoteAssetPath for raisins", e)
-        localAssetPath.toOptional()
+        Paths.get(URI(remoteAssetPath)).toOptional()
     }
 
     private fun createGetRequest(remoteUrl: String): HttpGet {
@@ -204,8 +213,9 @@ object AssetManager {
         Optional.ofNullable(
             PathManager.getConfigPath()
         ).map {
-            Paths.get(it, "waifuMotivatorAssets").toAbsolutePath().toString()
+            Paths.get(it, "waifuMotivationAssets").toAbsolutePath().toString()
         }
 
-    private fun getAssetCheckKey(localInstallPath: Path) = localInstallPath.toAbsolutePath().toString()
+    private fun getAssetCheckKey(localInstallPath: Path) =
+        localInstallPath.toAbsolutePath().toString()
 }

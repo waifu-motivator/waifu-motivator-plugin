@@ -2,6 +2,8 @@ package zd.zero.waifu.motivator.plugin.assets
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import zd.zero.waifu.motivator.plugin.assets.AssetCategory.VISUAL
+import zd.zero.waifu.motivator.plugin.assets.AssetManager.resolveAssetUrl
 import zd.zero.waifu.motivator.plugin.remote.RestClient
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.net.URI
@@ -16,64 +18,56 @@ object VisualAssetManager {
         if (this::remoteAssets.isInitialized) {
             remoteAssets
         } else {
-            val remoteAssetUrl = constructRemoteAssetUrl(
-                AssetManager.VISUAL_ASSET_DIRECTORY, "assets.json"
-            )
-            val assetUrl =
-                AssetManager.constructLocalAssetPath(AssetManager.VISUAL_ASSET_DIRECTORY, "assets.json")
-                    .flatMap {
-                        AssetManager.resolveAssetUrl(it, remoteAssetUrl)
-                    }.orElse(remoteAssetUrl)
-
-
-            remoteAssets =
-                if(assetUrl.startsWith("file://")) {
-                    Files.readAllBytes(Paths.get(URI(assetUrl))).toOptional()
-                        .map { String(it, Charsets.UTF_8) }
-                } else {
-                    RestClient.performGet(assetUrl)
-                }
-                .map {
-                    Gson().fromJson<List<VisualMotivationAssetDefinition>>(
-                        it, object : TypeToken<List<VisualMotivationAssetDefinition>>() {}.type
-                    )
-                }.orElseGet {
-                    listOf(
-                        VisualMotivationAssetDefinition(
-                            "caramelldansen.gif",
-                            "Caramelldansen",
-                            arrayOf(
-                                WaifuAssetCategory.CELEBRATION
-                            )
-                        ),
-                        VisualMotivationAssetDefinition(
-                            "kill-la-kill-caramelldansen.gif",
-                            "Caramelldansen",
-                            arrayOf(
-                                WaifuAssetCategory.CELEBRATION
-                            )
-                        )
-                    )
-                }
+            val assetUrl = resolveAssetUrl(VISUAL, "assets.json")
+            remoteAssets = initializeRemoteAssets(assetUrl)
             remoteAssets
         }
 
-
-    fun getAsset(visualAsset: VisualMotivationAssetDefinition): VisualMotivationAssetDefinition {
-        val remoteAssetUrl = constructRemoteAssetUrl(
-            AssetManager.VISUAL_ASSET_DIRECTORY, visualAsset.imagePath
-        )
-        val assetUrl =
-            AssetManager.constructLocalAssetPath(AssetManager.VISUAL_ASSET_DIRECTORY, visualAsset.imagePath)
-                .flatMap {
-                    AssetManager.resolveAssetUrl(it, remoteAssetUrl)
-                }.orElse(remoteAssetUrl)
-
+    fun resolveAsset(visualAsset: VisualMotivationAssetDefinition): VisualMotivationAssetDefinition {
+        val assetPath = visualAsset.imagePath
+        val assetCategory = VISUAL
+        val assetUrl = resolveAssetUrl(assetCategory, assetPath)
         return visualAsset.copy(imagePath = assetUrl)
     }
 
-    private fun constructRemoteAssetUrl(
-        assetCategory: String,
-        assetPath: String
-    ): String = "${AssetManager.ASSETS_SOURCE}/$assetCategory/$assetPath"
+    private fun initializeRemoteAssets(assetUrl: String): List<VisualMotivationAssetDefinition> =
+        try {
+            if (assetUrl.startsWith("file://")) {
+                readLocalFile(assetUrl)
+            } else {
+                RestClient.performGet(assetUrl)
+            }.map {
+                convertToDefinitions(it)
+            }.orElseGet {
+                backupAssets
+            }
+        } catch (e: Throwable) {
+            backupAssets
+        }
+
+    private fun convertToDefinitions(defJson: String): List<VisualMotivationAssetDefinition> =
+        Gson().fromJson<List<VisualMotivationAssetDefinition>>(
+            defJson, object : TypeToken<List<VisualMotivationAssetDefinition>>() {}.type
+        )
+
+    private fun readLocalFile(assetUrl: String) =
+        Files.readAllBytes(Paths.get(URI(assetUrl))).toOptional()
+            .map { String(it, Charsets.UTF_8) }
+
+    private val backupAssets = listOf(
+        VisualMotivationAssetDefinition(
+            "caramelldansen.gif",
+            "Caramelldansen",
+            arrayOf(
+                WaifuAssetCategory.CELEBRATION
+            )
+        ),
+        VisualMotivationAssetDefinition(
+            "kill-la-kill-caramelldansen.gif",
+            "Caramelldansen",
+            arrayOf(
+                WaifuAssetCategory.CELEBRATION
+            )
+        )
+    )
 }

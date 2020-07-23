@@ -19,10 +19,11 @@ public class TextualMotivationFactory implements WaifuMotivationFactory {
         return ourInstance;
     }
 
+    @NotNull
     @Override
-    public WaifuMotivation constructMotivation( Project project,
-                                                MotivationAsset motivation,
-                                                AlertConfiguration config ) {
+    public WaifuMotivation constructMotivation( @NotNull Project project,
+                                                @NotNull MotivationAsset motivation,
+                                                @NotNull AlertConfiguration config ) {
         return new TextualMotivation(
             new TextualWaifuNotification(
                 motivation,

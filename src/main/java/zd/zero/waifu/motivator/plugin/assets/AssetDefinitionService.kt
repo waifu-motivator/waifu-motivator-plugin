@@ -1,9 +1,13 @@
 package zd.zero.waifu.motivator.plugin.assets
 
 object AssetDefinitionService {
+
     fun getRandomCelebrationVisualAsset(): VisualMotivationAssetDefinition {
-        val celebrationAsset = getCelebrationVisualAssets().random()
-        return VisualAssetManager.getAsset(celebrationAsset)
+        val celebrationAsset = VisualAssetManager.supplyAssetDefinitions()
+            .filter {
+                it.categories.contains(WaifuAssetCategory.CELEBRATION)
+            }.random()
+        return VisualAssetManager.resolveAsset(celebrationAsset)
     }
 
     fun getRandomCelebrationAudibleAsset(): AudibleMotivationAssetDefinition {
@@ -24,11 +28,5 @@ object AssetDefinitionService {
             messages.random(),
             arrayOf(WaifuAssetCategory.CELEBRATION)
         )
-    }
-
-    private fun getCelebrationVisualAssets(): List<VisualMotivationAssetDefinition> {
-        return VisualAssetManager.supplyAssetDefinitions().filter {
-            it.categories.contains(WaifuAssetCategory.CELEBRATION)
-        }
     }
 }

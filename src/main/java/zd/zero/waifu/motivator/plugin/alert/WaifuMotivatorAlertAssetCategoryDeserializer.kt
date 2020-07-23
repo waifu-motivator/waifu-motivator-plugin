@@ -12,5 +12,4 @@ class WaifuMotivatorAlertAssetCategoryDeserializer : JsonDeserializer<WaifuMotiv
             jsonDeserializationContext: JsonDeserializationContext
     ): WaifuMotivatorAlertAssetCategory =
         WaifuMotivatorAlertAssetCategory.valueOf(jsonElement.asString.toUpperCase())
-
 }
