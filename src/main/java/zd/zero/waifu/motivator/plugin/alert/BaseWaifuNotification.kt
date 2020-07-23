@@ -8,7 +8,7 @@ import zd.zero.waifu.motivator.plugin.assets.MotivationAsset
 
 abstract class BaseWaifuNotification(
     private val motivationAsset: MotivationAsset
-): WaifuNotification {
+) : WaifuNotification {
 
     protected fun buildNotification(): Notification {
         val notificationGroup = NotificationGroup(

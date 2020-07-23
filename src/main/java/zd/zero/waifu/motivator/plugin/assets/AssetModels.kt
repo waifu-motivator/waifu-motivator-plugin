@@ -7,15 +7,15 @@ data class VisualMotivationAssetDefinition(
     val imagePath: String,
     val imageAlt: String,
     override val categories: Array<WaifuAssetCategory>
-): AssetDefinition
+) : AssetDefinition
 
 data class AudibleMotivationAssetDefinition(
     val soundFile: String,
     override val categories: Array<WaifuAssetCategory>
-): AssetDefinition
+) : AssetDefinition
 
 data class TextualMotivationAssetDefinition(
     val title: String,
     val message: String,
     override val categories: Array<WaifuAssetCategory>
-): AssetDefinition
+) : AssetDefinition

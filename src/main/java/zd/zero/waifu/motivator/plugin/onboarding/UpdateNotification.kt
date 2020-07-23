@@ -66,7 +66,4 @@ object UpdateNotification {
             updateNotification.notify(project)
         }
     }
-
 }
-
-

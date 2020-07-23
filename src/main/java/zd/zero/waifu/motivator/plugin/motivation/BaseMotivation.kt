@@ -40,9 +40,9 @@ abstract class BaseMotivation(
     }
 
     override fun isDistractionAllowed(): Boolean =
-        !(WaifuMotivatorPluginState.getInstance().state?.isDisabledInDistractionFreeMode ?: true
-            && (Registry.get(KEY_DISTRACTION_FREE_MODE).asBoolean()
-            || UISettings.instance.presentationMode))
+        !(WaifuMotivatorPluginState.getInstance().state?.isDisabledInDistractionFreeMode ?: true &&
+            (Registry.get(KEY_DISTRACTION_FREE_MODE).asBoolean() ||
+            UISettings.instance.presentationMode))
 
     override fun onAlertClosed(notification: Notification) {
         val duration = System.currentTimeMillis() - notification.timestamp
@@ -64,5 +64,4 @@ abstract class BaseMotivation(
 
     override fun isSoundAlertEnabled(): Boolean =
         config.isSoundAlertEnabled
-
 }

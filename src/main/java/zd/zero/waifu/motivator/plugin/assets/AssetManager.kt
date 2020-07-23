@@ -58,7 +58,7 @@ object AssetManager {
     private fun constructRemoteAssetUrl(
         assetCategory: AssetCategory,
         assetPath: String
-    ): String = "${ASSETS_SOURCE}/${assetCategory.category}/$assetPath"
+    ): String = "$ASSETS_SOURCE/${assetCategory.category}/$assetPath"
 
     private fun resolveTheAssetUrl(localAssetPath: Path, remoteAssetUrl: String): Optional<String> =
         if (hasAssetChanged(localAssetPath, remoteAssetUrl)) {
@@ -89,7 +89,6 @@ object AssetManager {
                     )
                 }.toMutableMap()
             }.orElseGet { mutableMapOf() }
-
     } catch (e: Throwable) {
         log.warn("Unable to get local asset checks for raisins", e)
         mutableMapOf()

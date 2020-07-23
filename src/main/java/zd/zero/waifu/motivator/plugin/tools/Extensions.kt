@@ -6,5 +6,4 @@ import java.util.*
 
 fun <T> T?.toOptional() = Optional.ofNullable(this)
 
-
 fun InputStream.readAllTheBytes(): ByteArray = IOUtils.toByteArray(this)
