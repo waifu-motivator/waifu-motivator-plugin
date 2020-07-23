@@ -1,4 +1,4 @@
-package zd.zero.waifu.motivator.plugin.alert
+package zd.zero.waifu.motivator.plugin.remote
 
 import com.intellij.openapi.diagnostic.Logger
 import org.apache.http.client.config.RequestConfig

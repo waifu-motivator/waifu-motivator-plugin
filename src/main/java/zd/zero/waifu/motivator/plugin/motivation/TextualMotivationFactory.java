@@ -1,8 +1,10 @@
-package zd.zero.waifu.motivator.plugin.alert;
+package zd.zero.waifu.motivator.plugin.motivation;
 
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
-import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
+import zd.zero.waifu.motivator.plugin.alert.TextualWaifuNotification;
+import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
+import zd.zero.waifu.motivator.plugin.assets.MotivationAsset;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
 
 public class TextualMotivationFactory implements WaifuMotivationFactory {

@@ -1,11 +1,12 @@
-package zd.zero.waifu.motivator.plugin.alert
+package zd.zero.waifu.motivator.plugin.motivation
 
 import com.intellij.ide.ui.UISettings
 import com.intellij.notification.Notification
 import com.intellij.openapi.ui.popup.JBPopupListener
 import com.intellij.openapi.ui.popup.LightweightWindowEvent
 import com.intellij.openapi.util.registry.Registry
-import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration
+import zd.zero.waifu.motivator.plugin.alert.WaifuNotification
+import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayer
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.tools.toOptional

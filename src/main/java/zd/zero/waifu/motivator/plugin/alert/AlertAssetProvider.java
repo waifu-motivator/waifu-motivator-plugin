@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.ResourceUtil;
 import org.jetbrains.annotations.NonNls;
+import zd.zero.waifu.motivator.plugin.assets.MotivationAsset;
 import zd.zero.waifu.motivator.plugin.providers.UniqueValueProvider;
 
 import java.io.IOException;

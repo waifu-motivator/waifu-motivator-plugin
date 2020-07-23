@@ -1,7 +1,8 @@
-package zd.zero.waifu.motivator.plugin.alert
+package zd.zero.waifu.motivator.plugin.assets
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import zd.zero.waifu.motivator.plugin.remote.RestClient
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.net.URI
 import java.nio.file.Files
@@ -16,7 +17,7 @@ object VisualAssetManager {
             remoteAssets
         } else {
             val remoteAssetUrl = constructRemoteAssetUrl(
-                    AssetManager.VISUAL_ASSET_DIRECTORY, "assets.json"
+                AssetManager.VISUAL_ASSET_DIRECTORY, "assets.json"
             )
             val assetUrl =
                 AssetManager.constructLocalAssetPath(AssetManager.VISUAL_ASSET_DIRECTORY, "assets.json")
@@ -38,20 +39,20 @@ object VisualAssetManager {
                     )
                 }.orElseGet {
                     listOf(
-                            VisualMotivationAssetDefinition(
-                                    "caramelldansen.gif",
-                                    "Caramelldansen",
-                                    arrayOf(
-                                            WaifuAssetCategory.CELEBRATION
-                                    )
-                            ),
-                            VisualMotivationAssetDefinition(
-                                    "kill-la-kill-caramelldansen.gif",
-                                    "Caramelldansen",
-                                    arrayOf(
-                                            WaifuAssetCategory.CELEBRATION
-                                    )
+                        VisualMotivationAssetDefinition(
+                            "caramelldansen.gif",
+                            "Caramelldansen",
+                            arrayOf(
+                                WaifuAssetCategory.CELEBRATION
                             )
+                        ),
+                        VisualMotivationAssetDefinition(
+                            "kill-la-kill-caramelldansen.gif",
+                            "Caramelldansen",
+                            arrayOf(
+                                WaifuAssetCategory.CELEBRATION
+                            )
+                        )
                     )
                 }
             remoteAssets
@@ -60,7 +61,7 @@ object VisualAssetManager {
 
     fun getAsset(visualAsset: VisualMotivationAssetDefinition): VisualMotivationAssetDefinition {
         val remoteAssetUrl = constructRemoteAssetUrl(
-                AssetManager.VISUAL_ASSET_DIRECTORY, visualAsset.imagePath
+            AssetManager.VISUAL_ASSET_DIRECTORY, visualAsset.imagePath
         )
         val assetUrl =
             AssetManager.constructLocalAssetPath(AssetManager.VISUAL_ASSET_DIRECTORY, visualAsset.imagePath)

@@ -1,4 +1,4 @@
-package zd.zero.waifu.motivator.plugin.alert
+package zd.zero.waifu.motivator.plugin.assets
 
 object AssetDefinitionService {
     fun getRandomCelebrationVisualAsset(): VisualMotivationAssetDefinition {

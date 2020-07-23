@@ -4,6 +4,7 @@ import com.intellij.notification.Notification
 import com.intellij.notification.NotificationDisplayType
 import com.intellij.notification.NotificationGroup
 import zd.zero.waifu.motivator.plugin.WaifuMotivator
+import zd.zero.waifu.motivator.plugin.assets.MotivationAsset
 
 abstract class BaseWaifuNotification(
     private val motivationAsset: MotivationAsset

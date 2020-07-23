@@ -5,6 +5,7 @@ import com.intellij.notification.impl.NotificationsManagerImpl
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.Balloon
 import com.intellij.ui.BalloonLayoutData
+import zd.zero.waifu.motivator.plugin.assets.MotivationAsset
 import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParameters
 import zd.zero.waifu.motivator.plugin.service.ApplicationService
 

@@ -1,4 +1,4 @@
-package zd.zero.waifu.motivator.plugin.alert;
+package zd.zero.waifu.motivator.plugin.motivation;
 
 import com.intellij.notification.Notification;
 

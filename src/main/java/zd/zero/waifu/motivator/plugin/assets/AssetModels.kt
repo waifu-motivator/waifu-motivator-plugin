@@ -1,4 +1,4 @@
-package zd.zero.waifu.motivator.plugin.alert
+package zd.zero.waifu.motivator.plugin.assets
 
 interface AssetDefinition {
     val categories: Array<WaifuAssetCategory>

@@ -2,6 +2,8 @@ package zd.zero.waifu.motivator.plugin.alert;
 
 import org.junit.Before;
 import org.junit.Test;
+import zd.zero.waifu.motivator.plugin.motivation.TextualMotivation;
+import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
 
 import static org.mockito.Mockito.*;
 

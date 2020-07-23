@@ -1,4 +1,4 @@
-package zd.zero.waifu.motivator.plugin.alert
+package zd.zero.waifu.motivator.plugin.assets
 
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
+import zd.zero.waifu.motivator.plugin.remote.RestClient
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.io.IOException
 import java.nio.charset.Charset

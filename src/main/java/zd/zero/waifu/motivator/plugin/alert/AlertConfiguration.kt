@@ -1,4 +1,4 @@
-package zd.zero.waifu.motivator.plugin.alert.notification
+package zd.zero.waifu.motivator.plugin.alert
 
 data class AlertConfiguration(
     val isAlertEnabled: Boolean = false,
