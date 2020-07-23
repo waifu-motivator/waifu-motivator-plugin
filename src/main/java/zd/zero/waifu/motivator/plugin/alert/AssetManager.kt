@@ -178,6 +178,7 @@ object AssetManager {
         }
         localAssetPath.toOptional()
     } catch (e: Exception) {
+        // todo: return remote url on failure
         log.error("Unable to get remote remote asset $remoteAssetPath for raisins", e)
         localAssetPath.toOptional()
     }

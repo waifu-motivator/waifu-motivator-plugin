@@ -7,6 +7,7 @@ import com.intellij.openapi.ui.popup.Balloon
 import com.intellij.ui.BalloonLayoutData
 import zd.zero.waifu.motivator.plugin.WaifuMotivator.PLUGIN_NAME
 import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParameters
+import zd.zero.waifu.motivator.plugin.service.ApplicationService
 
 val UPDATE_MESSAGE: String = """
       What's New?<br>
@@ -19,7 +20,7 @@ val UPDATE_MESSAGE: String = """
       Make a request for her to be featured in the <a href="https://github.com/zd-zero/waifu-motivator-plugin/projects/3">Waifu of the Day!</a>
       <br><br>
       Want more of your Waifu?<br>
-      Make a request for <a href="https://github.com/zd-zero/waifu-motivator-plugin/projects/3">more assets of your Waifu!</a 
+      Make a request for <a href="https://github.com/zd-zero/waifu-motivator-plugin/projects/3">more assets of your Waifu!</a
 """.trimIndent()
 
 object UpdateNotification {
@@ -57,8 +58,9 @@ object UpdateNotification {
                 updateNotification,
                 true,
                 false,
-                BalloonLayoutData.fullContent()
-            ) {}
+                BalloonLayoutData.fullContent(),
+                ApplicationService.instance
+            )
             balloon.show(notificationPosition, Balloon.Position.atLeft)
         } catch (e: Throwable) {
             updateNotification.notify(project)

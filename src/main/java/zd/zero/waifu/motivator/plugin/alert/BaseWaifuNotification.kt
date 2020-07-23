@@ -5,7 +5,7 @@ import com.intellij.notification.NotificationDisplayType
 import com.intellij.notification.NotificationGroup
 import zd.zero.waifu.motivator.plugin.WaifuMotivator
 
-abstract class BaseNotification(
+abstract class BaseWaifuNotification(
     private val motivationAsset: MotivationAsset
 ): WaifuNotification {
 

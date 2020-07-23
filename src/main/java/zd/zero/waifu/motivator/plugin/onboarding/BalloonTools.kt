@@ -14,5 +14,4 @@ object BalloonTools {
         val notificationPosition = RelativePoint(ideFrame.component, Point(frameBounds.x + frameBounds.width, 20))
         return Pair(ideFrame, notificationPosition)
     }
-
 }

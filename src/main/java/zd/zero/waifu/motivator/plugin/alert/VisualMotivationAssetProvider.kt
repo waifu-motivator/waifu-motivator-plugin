@@ -4,7 +4,7 @@ enum class WaifuAssetCategory {
     CELEBRATION,
     MOTIVATION,
     ENCOURAGEMENT,
-    DISAPPOINTMENT // you don't want to disappoint your waifu
+    DISAPPOINTMENT // you don't want to disappoint your waifu now do you?
 }
 
 object VisualMotivationAssetProvider {

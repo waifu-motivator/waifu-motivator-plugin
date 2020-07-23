@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 
 public class WaifuMotivationAssetTest {
 
-    private final WaifuMotivation motivatorAlert = mock( WaifuMotivation.class );
+    private final WaifuMotivation motivatorAlert = mock( TextualMotivation.class );
 
     @Before
     public void setup() {

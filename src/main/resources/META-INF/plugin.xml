@@ -20,6 +20,7 @@
       instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
     <postStartupActivity id="WaifuOfTheDayStartupActivity"
                          implementation="zd.zero.waifu.motivator.plugin.WaifuOfTheDayStartupActivity"/>
+    <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.ApplicationService"/>
   </extensions>
 
   <actions>
