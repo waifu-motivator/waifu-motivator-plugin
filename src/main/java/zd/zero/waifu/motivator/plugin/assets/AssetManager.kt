@@ -13,7 +13,6 @@ import org.apache.http.impl.client.HttpClients
 import zd.zero.waifu.motivator.plugin.remote.RestClient
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.io.IOException
-import java.net.URI
 import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Path
@@ -64,8 +63,8 @@ object AssetManager {
         if (hasAssetChanged(localAssetPath, remoteAssetUrl)) {
             downloadAsset(localAssetPath, remoteAssetUrl)
         } else {
-            localAssetPath.toOptional()
-        }.map { it.toUri().toString() }
+            localAssetPath.toUri().toString().toOptional()
+        }
 
     private fun constructLocalAssetPath(
         assetCategory: AssetCategory,
@@ -112,7 +111,7 @@ object AssetManager {
     private fun downloadAsset(
         localAssetPath: Path,
         remoteAssetUrl: String
-    ): Optional<Path> {
+    ): Optional<String> {
         createDirectories(localAssetPath)
         return downloadRemoteAsset(localAssetPath, remoteAssetUrl)
     }
@@ -168,7 +167,7 @@ object AssetManager {
     private fun downloadRemoteAsset(
         localAssetPath: Path,
         remoteAssetPath: String
-    ): Optional<Path> = try {
+    ): Optional<String> = try {
         log.warn("Attempting to download asset $remoteAssetPath")
         val remoteAssetRequest = createGetRequest(remoteAssetPath)
         val remoteAssetResponse = httpClient.execute(remoteAssetRequest)
@@ -182,14 +181,14 @@ object AssetManager {
                     IOUtils.copy(inputStream, bufferedWriter)
                 }
             }
-            localAssetPath.toOptional()
+            localAssetPath.toUri().toString().toOptional()
         } else {
             log.warn("Asset request for $remoteAssetPath responded with $remoteAssetResponse")
-            Paths.get(URI(remoteAssetPath)).toOptional() // todo: test this
+            remoteAssetPath.toOptional()
         }
     } catch (e: Throwable) {
         log.error("Unable to get remote remote asset $remoteAssetPath for raisins", e)
-        Paths.get(URI(remoteAssetPath)).toOptional()
+        remoteAssetPath.toOptional()
     }
 
     private fun createGetRequest(remoteUrl: String): HttpGet {
