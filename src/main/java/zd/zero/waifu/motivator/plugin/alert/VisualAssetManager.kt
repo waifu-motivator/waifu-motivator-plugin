@@ -27,7 +27,8 @@ object VisualAssetManager {
 
             remoteAssets =
                 if(assetUrl.startsWith("file://")) {
-                    Files.readString(Paths.get(URI(assetUrl))).toOptional()
+                    Files.readAllBytes(Paths.get(URI(assetUrl))).toOptional()
+                        .map { String(it, Charsets.UTF_8) }
                 } else {
                     RestClient.performGet(assetUrl)
                 }
