@@ -6,7 +6,9 @@ public interface WaifuUnitTester {
 
     static WaifuUnitTester newInstance( Project project ) {
         return new WaifuUnitTesterImpl( project.getMessageBus().connect(),
-                new WaifuUnitTesterListenerImpl( project ) );
+                new WaifuUnitTesterListenerImpl( project ),
+            new JetbrainsDebouncer( 250 )
+        );
     }
 
     void init();

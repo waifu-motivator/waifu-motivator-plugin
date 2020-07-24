@@ -13,9 +13,14 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
 
     private final WaifuUnitTester.Listener listener;
 
-    public WaifuUnitTesterImpl( MessageBusConnection busConnection, WaifuUnitTester.Listener listener ) {
+    private final Debouncer debouncer;
+
+    public WaifuUnitTesterImpl( MessageBusConnection busConnection,
+                                Listener listener,
+                                Debouncer debouncer ) {
         this.busConnection = busConnection;
         this.listener = listener;
+        this.debouncer = debouncer;
     }
 
     @Override
@@ -30,11 +35,13 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
 
     void invokeListener( Notification notification, final String NOTIFICATION_GROUP_DISPLAY_ID ) {
         if ( notification.getGroupId().equals( NOTIFICATION_GROUP_DISPLAY_ID ) ) {
-            if ( notification.getType() == NotificationType.ERROR ) {
-                listener.onUnitTestFailed();
-            } else {
-                listener.onUnitTestPassed();
-            }
+            debouncer.debounce( () -> {
+                if ( notification.getType() == NotificationType.ERROR ) {
+                    listener.onUnitTestFailed();
+                } else {
+                    listener.onUnitTestPassed();
+                }
+            } );
         }
     }
 

@@ -19,7 +19,7 @@ public class WaifuUnitTesterImplTest {
     @Test
     public void Should_DisplayPassedNotification_When_NotificationTypeIsNotError() {
         Notification notification = new Notification( MOCK_NOTIFICATION_GROUP_ID, null, NotificationType.INFORMATION );
-        WaifuUnitTesterImpl impl = new WaifuUnitTesterImpl( busConnection, listener );
+        WaifuUnitTesterImpl impl = new WaifuUnitTesterImpl( busConnection, listener, Runnable::run );
         impl.invokeListener( notification, MOCK_NOTIFICATION_GROUP_ID );
 
         verify( listener, times( 1 ) ).onUnitTestPassed();
@@ -28,7 +28,7 @@ public class WaifuUnitTesterImplTest {
     @Test
     public void Should_DisplayFailedNotification_When_NotificationTypeIsError() {
         Notification notification = new Notification( MOCK_NOTIFICATION_GROUP_ID, null, NotificationType.ERROR );
-        WaifuUnitTesterImpl impl = new WaifuUnitTesterImpl( busConnection, listener );
+        WaifuUnitTesterImpl impl = new WaifuUnitTesterImpl( busConnection, listener, Runnable::run );
         impl.invokeListener( notification, MOCK_NOTIFICATION_GROUP_ID );
 
         verify( listener, times( 1 ) ).onUnitTestFailed();
@@ -36,7 +36,7 @@ public class WaifuUnitTesterImplTest {
 
     @Test
     public void Should_NotDisplayNotification_When_NotificationGroupIsNotAboutTestRunner() {
-        WaifuUnitTesterImpl impl = new WaifuUnitTesterImpl( busConnection, listener );
+        WaifuUnitTesterImpl impl = new WaifuUnitTesterImpl( busConnection, listener, Runnable::run );
         Notification notification = new Notification( "SomeRandomNotificationGroup7143401368",
                 null, NotificationType.INFORMATION );
         impl.invokeListener( notification, MOCK_NOTIFICATION_GROUP_ID );
