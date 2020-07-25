@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
 import zd.zero.waifu.motivator.plugin.motivation.TextualMotivationFactory;
 import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
 import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
@@ -20,6 +19,8 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 import java.util.concurrent.ThreadLocalRandom;
+
+import static zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory.*;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
@@ -82,7 +83,10 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
         );
 
         WaifuMotivation waifuMotivation = TextualMotivationFactory.getInstance().constructMotivation(
-                project, AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ), config );
+            project,
+            AlertAssetProvider.getRandomAssetByCategory( NEUTRAL ),
+            config
+        );
 
         if ( !project.isInitialized() ) {
             StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );

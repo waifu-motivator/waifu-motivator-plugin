@@ -24,9 +24,7 @@ object VisualAssetManager {
         }
 
     fun resolveAsset(visualAsset: VisualMotivationAssetDefinition): VisualMotivationAssetDefinition {
-        val assetPath = visualAsset.imagePath
-        val assetCategory = VISUAL
-        val assetUrl = resolveAssetUrl(assetCategory, assetPath)
+        val assetUrl = resolveAssetUrl(VISUAL, visualAsset.imagePath)
         return visualAsset.copy(imagePath = assetUrl)
     }
 
