@@ -6,6 +6,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.util.messages.MessageBusConnection;
 import org.jetbrains.annotations.NotNull;
+import zd.zero.waifu.motivator.plugin.tools.Debouncer;
 
 public class WaifuUnitTesterImpl implements WaifuUnitTester {
 

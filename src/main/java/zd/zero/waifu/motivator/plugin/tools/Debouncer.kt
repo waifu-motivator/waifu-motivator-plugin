@@ -1,22 +1,25 @@
-package zd.zero.waifu.motivator.plugin.listeners
+package zd.zero.waifu.motivator.plugin.tools
 
 import com.intellij.util.Alarm
 
 interface Debouncer {
+    companion object {
+        const val DEFAULT_INTERVAL = 250
+    }
     fun debounce(toDebounce: Runnable)
 }
 
-class JetbrainsDebouncer(private val debounceInterval: Int) : Debouncer {
+class AlarmDebouncer(private val interval: Int) : Debouncer {
     private val alarm: Alarm = Alarm()
     @Volatile
     private var lastInvoked: Long = 0
 
     override fun debounce(toDebounce: Runnable) {
         val currentTime = System.currentTimeMillis()
-        if (lastInvoked + debounceInterval < currentTime) {
+        if (lastInvoked + interval < currentTime) {
             lastInvoked = currentTime
             alarm.cancelAllRequests()
-            alarm.addRequest(toDebounce, debounceInterval)
+            alarm.addRequest(toDebounce, interval)
         }
     }
 }
