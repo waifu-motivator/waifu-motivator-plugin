@@ -6,6 +6,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.util.messages.MessageBusConnection;
 import org.jetbrains.annotations.NotNull;
+import zd.zero.waifu.motivator.plugin.tools.Debouncer;
 
 public class WaifuUnitTesterImpl implements WaifuUnitTester {
 
@@ -13,9 +14,14 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
 
     private final WaifuUnitTester.Listener listener;
 
-    public WaifuUnitTesterImpl( MessageBusConnection busConnection, WaifuUnitTester.Listener listener ) {
+    private final Debouncer debouncer;
+
+    public WaifuUnitTesterImpl( MessageBusConnection busConnection,
+                                Listener listener,
+                                Debouncer debouncer ) {
         this.busConnection = busConnection;
         this.listener = listener;
+        this.debouncer = debouncer;
     }
 
     @Override
@@ -30,11 +36,13 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
 
     void invokeListener( Notification notification, final String NOTIFICATION_GROUP_DISPLAY_ID ) {
         if ( notification.getGroupId().equals( NOTIFICATION_GROUP_DISPLAY_ID ) ) {
-            if ( notification.getType() == NotificationType.ERROR ) {
-                listener.onUnitTestFailed();
-            } else {
-                listener.onUnitTestPassed();
-            }
+            debouncer.debounce( () -> {
+                if ( notification.getType() == NotificationType.ERROR ) {
+                    listener.onUnitTestFailed();
+                } else {
+                    listener.onUnitTestPassed();
+                }
+            } );
         }
     }
 
