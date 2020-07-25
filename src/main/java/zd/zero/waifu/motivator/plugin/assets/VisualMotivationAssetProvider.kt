@@ -26,7 +26,7 @@ object VisualMotivationAssetProvider {
             textualAssetDefinition.title,
             """
                  <img src='${visualAssetDefinition.imagePath}' alt='${visualAssetDefinition.imageAlt}' width='256' />
-                 <br><br><br><br><br><br><br><br>
+                 <br><br><br><br><br><br><br><br><br><br>
                  <p>${textualAssetDefinition.message}</p>
                 """.trimIndent(),
             audibleAssetDefinition.soundFile,

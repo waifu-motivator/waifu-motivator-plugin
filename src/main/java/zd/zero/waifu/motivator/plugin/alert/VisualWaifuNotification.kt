@@ -26,6 +26,7 @@ class VisualWaifuNotification(
                 BalloonLayoutData.fullContent(),
                 ApplicationService.instance
             )
+            balloon.setAnimationEnabled(true)
             balloon.show(notificationPosition, Balloon.Position.atLeft)
         } catch (e: Throwable) {
             updateNotification.notify(project)
