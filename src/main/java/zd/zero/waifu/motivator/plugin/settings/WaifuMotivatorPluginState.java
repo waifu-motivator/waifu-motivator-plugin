@@ -1,7 +1,7 @@
 package zd.zero.waifu.motivator.plugin.settings;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
@@ -17,7 +17,7 @@ public class WaifuMotivatorPluginState implements PersistentStateComponent<Waifu
     private final WaifuMotivatorState state = new WaifuMotivatorState();
 
     public static WaifuMotivatorPluginState getInstance() {
-        return ServiceManager.getService( WaifuMotivatorPluginState.class );
+        return ApplicationManager.getApplication().getService( WaifuMotivatorPluginState.class );
     }
 
     public static WaifuMotivatorState getPluginState() {
