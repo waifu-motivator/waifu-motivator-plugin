@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import zd.zero.waifu.motivator.plugin.assets.AssetCategory.VISUAL
 import zd.zero.waifu.motivator.plugin.assets.AssetManager.resolveAssetUrl
-import zd.zero.waifu.motivator.plugin.remote.RestClient
+import zd.zero.waifu.motivator.plugin.tools.RestClient
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.net.URI
 import java.nio.file.Files

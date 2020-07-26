@@ -7,6 +7,7 @@ import com.intellij.util.ResourceUtil;
 import org.jetbrains.annotations.NonNls;
 import zd.zero.waifu.motivator.plugin.assets.MotivationAsset;
 import zd.zero.waifu.motivator.plugin.providers.UniqueValueProvider;
+import zd.zero.waifu.motivator.plugin.tools.WaifuMotivatorAlertAssetCategoryDeserializer;
 
 import java.io.IOException;
 import java.io.InputStream;

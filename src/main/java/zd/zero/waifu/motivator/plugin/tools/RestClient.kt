@@ -1,11 +1,9 @@
-package zd.zero.waifu.motivator.plugin.remote
+package zd.zero.waifu.motivator.plugin.tools
 
 import com.intellij.openapi.diagnostic.Logger
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
-import zd.zero.waifu.motivator.plugin.tools.readAllTheBytes
-import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.util.*
 import java.util.concurrent.TimeUnit
 

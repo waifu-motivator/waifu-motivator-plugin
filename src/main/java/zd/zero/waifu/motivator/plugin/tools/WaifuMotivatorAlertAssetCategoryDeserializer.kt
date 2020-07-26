@@ -1,8 +1,9 @@
-package zd.zero.waifu.motivator.plugin.alert
+package zd.zero.waifu.motivator.plugin.tools
 
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
+import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory
 import java.lang.reflect.Type
 
 class WaifuMotivatorAlertAssetCategoryDeserializer : JsonDeserializer<WaifuMotivatorAlertAssetCategory> {

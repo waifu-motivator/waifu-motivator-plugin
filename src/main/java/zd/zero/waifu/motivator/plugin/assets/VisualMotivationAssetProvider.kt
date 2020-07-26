@@ -3,6 +3,8 @@ package zd.zero.waifu.motivator.plugin.assets
 enum class WaifuAssetCategory {
     CELEBRATION,
     MOTIVATION,
+    WELCOMING,
+    DEPARTURE,
     ENCOURAGEMENT,
     DISAPPOINTMENT // you don't want to disappoint your waifu now do you?
 }
