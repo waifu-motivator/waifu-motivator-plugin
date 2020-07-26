@@ -19,15 +19,14 @@ private enum class AssetChangedStatus {
     SAME, DIFFERENT, LUL_DUNNO
 }
 
-
 object LocalAssetService {
     private val log = Logger.getInstance(this::class.java)
     private val assetChecks: MutableMap<String, Instant> = readPreviousAssetChecks()
     private val gson = GsonBuilder().setPrettyPrinting().create()
 
     fun hasAssetChanged(
-            localInstallPath: Path,
-            remoteAssetUrl: String
+        localInstallPath: Path,
+        remoteAssetUrl: String
     ): Boolean =
         !Files.exists(localInstallPath) ||
             (!hasBeenCheckedToday(localInstallPath) &&
@@ -46,8 +45,8 @@ object LocalAssetService {
             RestClient.performGet("$remoteAssetUrl.checksum.txt")
 
     private fun isLocalDifferentFromRemote(
-            localInstallPath: Path,
-            remoteAssetUrl: String
+        localInstallPath: Path,
+        remoteAssetUrl: String
     ): AssetChangedStatus =
         getRemoteAssetChecksum(remoteAssetUrl)
             .map {
@@ -65,7 +64,6 @@ object LocalAssetService {
                     AssetChangedStatus.DIFFERENT
                 }
             }.orElseGet { AssetChangedStatus.LUL_DUNNO }
-
 
     private fun hasBeenCheckedToday(localInstallPath: Path): Boolean =
         assetChecks[getAssetCheckKey(localInstallPath)]?.truncatedTo(ChronoUnit.DAYS) ==
@@ -107,5 +105,4 @@ object LocalAssetService {
 
     private fun getAssetCheckKey(localInstallPath: Path) =
         localInstallPath.toAbsolutePath().toString()
-
 }

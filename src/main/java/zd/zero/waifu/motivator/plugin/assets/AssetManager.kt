@@ -17,7 +17,6 @@ import java.nio.file.StandardOpenOption
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-
 enum class AssetCategory(val category: String) {
     VISUAL("visuals")
 }
@@ -30,7 +29,6 @@ object AssetManager {
         .build()
 
     private val log = Logger.getInstance(this::class.java)
-
 
     /**
      * Will return a resolvable URL that can be used to reference an asset.
@@ -114,5 +112,4 @@ object AssetManager {
             .build()
         return remoteAssetRequest
     }
-
 }

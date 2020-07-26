@@ -25,5 +25,4 @@ object LocalStorageService {
         ).map {
             Paths.get(it, "waifuMotivationAssets").toAbsolutePath().toString()
         }
-
 }
