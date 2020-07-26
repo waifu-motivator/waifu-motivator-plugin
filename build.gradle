@@ -30,8 +30,6 @@ intellij {
     type System.getenv().getOrDefault("INTELLIJ_TYPE", "IC")
     println "Building for IntelliJ version: ${version}"
 
-    setPlugins('io.acari.DDLCTheme:9.0.3')
-
 }
 
 
