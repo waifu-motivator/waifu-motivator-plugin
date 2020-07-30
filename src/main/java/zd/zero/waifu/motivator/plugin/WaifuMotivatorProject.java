@@ -9,9 +9,9 @@ import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.startup.StartupManager;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlert;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertFactory;
-import zd.zero.waifu.motivator.plugin.alert.notification.AlertConfiguration;
+import zd.zero.waifu.motivator.plugin.motivation.TextualMotivationFactory;
+import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
+import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
 import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
@@ -20,7 +20,7 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory.NEUTRAL;
+import static zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory.*;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
@@ -76,22 +76,22 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     private void initializeStartupMotivator() {
         if ( isMultipleProjectsOpened() ) return;
 
-        AlertConfiguration config = AlertConfiguration.builder()
-            .isAlertEnabled( pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled() )
-            .isDisplayNotificationEnabled( pluginState.isStartupMotivationEnabled() )
-            .isSoundAlertEnabled( pluginState.isStartupMotivationSoundEnabled() )
-            .build();
-        WaifuMotivatorAlert motivatorAlert = WaifuMotivatorAlertFactory
-            .createAlert(
-                project,
-                AlertAssetProvider.getRandomAssetByCategory( NEUTRAL ),
-                config
-            );
+        AlertConfiguration config = new AlertConfiguration(
+                 pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled(),
+                 pluginState.isStartupMotivationEnabled() ,
+                 pluginState.isStartupMotivationSoundEnabled()
+        );
+
+        WaifuMotivation waifuMotivation = TextualMotivationFactory.getInstance().constructMotivation(
+            project,
+            AlertAssetProvider.getRandomAssetByCategory( NEUTRAL ),
+            config
+        );
 
         if ( !project.isInitialized() ) {
-            StartupManager.getInstance( project ).registerPostStartupActivity( motivatorAlert::alert );
+            StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );
         } else {
-            motivatorAlert.alert();
+            waifuMotivation.motivate();
         }
     }
 
