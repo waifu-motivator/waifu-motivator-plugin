@@ -34,8 +34,11 @@ public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
 
     @Override
     public void onUnitTestFailed() {
-        WaifuMotivation keepGoingMotivation = TextualMotivationFactory.getInstance().constructMotivation( project,
-                AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEGATIVE ),
+        WaifuMotivation keepGoingMotivation = VisualMotivationFactory.INSTANCE.constructMotivation( project,
+            VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
+                WaifuAssetCategory.DISAPPOINTMENT,
+                WaifuAssetCategory.ENCOURAGEMENT
+            ),
             getUnitTesterConfiguration() );
         keepGoingMotivation.motivate();
     }
