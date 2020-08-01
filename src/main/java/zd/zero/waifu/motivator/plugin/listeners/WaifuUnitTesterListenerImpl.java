@@ -27,7 +27,13 @@ public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
     @Override
     public void onUnitTestPassed() {
         WaifuMotivation successMotivation = VisualMotivationFactory.INSTANCE.constructMotivation( project,
-            VisualMotivationAssetProvider.INSTANCE.createAssetByCategory( WaifuAssetCategory.CELEBRATION ),
+            VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
+                WaifuAssetCategory.CELEBRATION
+//                ,
+//                WaifuAssetCategory.SMUG,
+//                WaifuAssetCategory.MOTIVATION,
+//                WaifuAssetCategory.ENCOURAGEMENT
+            ),
             getUnitTesterConfiguration() );
         successMotivation.motivate();
     }
@@ -36,8 +42,10 @@ public class WaifuUnitTesterListenerImpl implements WaifuUnitTester.Listener {
     public void onUnitTestFailed() {
         WaifuMotivation keepGoingMotivation = VisualMotivationFactory.INSTANCE.constructMotivation( project,
             VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
-                WaifuAssetCategory.DISAPPOINTMENT,
-                WaifuAssetCategory.ENCOURAGEMENT
+                WaifuAssetCategory.DISAPPOINTMENT
+//                ,
+//                WaifuAssetCategory.ENCOURAGEMENT,
+//                WaifuAssetCategory.MOTIVATION
             ),
             getUnitTesterConfiguration() );
         keepGoingMotivation.motivate();

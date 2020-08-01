@@ -7,6 +7,7 @@ enum class WaifuAssetCategory {
     WELCOMING,
     DEPARTURE,
     ENCOURAGEMENT,
+    TSUNDERE,
     DISAPPOINTMENT // you don't want to disappoint your waifu now do you?
 }
 
@@ -16,8 +17,11 @@ object VisualMotivationAssetProvider {
         category: WaifuAssetCategory
     ): MotivationAsset {
         return when (category) {
-            WaifuAssetCategory.CELEBRATION -> pickRandomCelebrationAsset()
-            WaifuAssetCategory.DISAPPOINTMENT -> pickRandomDisappointmentAsset()
+            WaifuAssetCategory.CELEBRATION,
+            WaifuAssetCategory.DISAPPOINTMENT
+            -> pickRandomAssetByCategory(
+                category
+            )
             else -> throw NotImplementedError("You can't use $category here.")
         }
     }
@@ -27,19 +31,11 @@ object VisualMotivationAssetProvider {
     ): MotivationAsset =
         createAssetByCategory(categories.random())
 
-
-    private fun pickRandomCelebrationAsset(): MotivationAsset =
+    private fun pickRandomAssetByCategory(category: WaifuAssetCategory): MotivationAsset =
         constructMotivation(
-            TextAssetDefinitionService.getRandomCelebrationTextualAsset(),
-            VisualAssetDefinitionService.getRandomCelebrationVisualAsset(),
-            AudibleAssetDefinitionService.getRandomCelebrationAudibleAsset()
-        )
-
-    private fun pickRandomDisappointmentAsset(): MotivationAsset =
-        constructMotivation(
-            TextAssetDefinitionService.getRandomCelebrationTextualAsset(),
-            VisualAssetDefinitionService.getRandomCelebrationVisualAsset(),
-            AudibleAssetDefinitionService.getRandomCelebrationAudibleAsset()
+            TextAssetDefinitionService.getRandomAssetByCategory(category),
+            VisualAssetDefinitionService.getRandomAssetByCategory(category),
+            AudibleAssetDefinitionService.getRandomAssetByCategory(category)
         )
 
     private fun constructMotivation(
