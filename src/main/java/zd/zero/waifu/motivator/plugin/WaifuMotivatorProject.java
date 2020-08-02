@@ -9,7 +9,10 @@ import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.startup.StartupManager;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
+import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
+import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
 import zd.zero.waifu.motivator.plugin.motivation.TextualMotivationFactory;
+import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
 import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
@@ -82,9 +85,11 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
                  pluginState.isStartupMotivationSoundEnabled()
         );
 
-        WaifuMotivation waifuMotivation = TextualMotivationFactory.getInstance().constructMotivation(
+        WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
             project,
-            AlertAssetProvider.getRandomAssetByCategory( NEUTRAL ),
+            VisualMotivationAssetProvider.INSTANCE.createAssetByCategory(
+                WaifuAssetCategory.WELCOMING
+            ),
             config
         );
 
