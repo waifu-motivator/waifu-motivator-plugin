@@ -7,7 +7,10 @@ object TextAssetDefinitionService {
             "Excellent!", "You did it!", "Way to go!", "Amazing work!", "You're the best!"),
         buildAssetDefinitions(WaifuAssetCategory.DISAPPOINTMENT,
             "Wwwwwwaaaaaaaaaaaaaaaaaaaaah", "OH MY GAH!",
-            "Oh No!", "How could you do this?", "Why?", "I'm not mad, I'm disappointed")
+            "Oh No!", "How could you do this?", "Why?", "I'm not mad, I'm disappointed"),
+        buildAssetDefinitions(WaifuAssetCategory.WELCOMING,
+            "Hey!", "What's Up?",
+            "Are you ready?!", "Nice to see you again!", "It was dark, don't leave again!")
     ).flatten()
 
     private fun buildAssetDefinitions(

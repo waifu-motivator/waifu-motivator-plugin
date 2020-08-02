@@ -18,7 +18,8 @@ object VisualMotivationAssetProvider {
     ): MotivationAsset {
         return when (category) {
             WaifuAssetCategory.CELEBRATION,
-            WaifuAssetCategory.DISAPPOINTMENT
+            WaifuAssetCategory.DISAPPOINTMENT,
+            WaifuAssetCategory.WELCOMING
             -> pickRandomAssetByCategory(
                 category
             )

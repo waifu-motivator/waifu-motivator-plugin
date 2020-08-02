@@ -6,7 +6,9 @@ object AudibleAssetDefinitionService {
         buildAssetDefinitions(WaifuAssetCategory.CELEBRATION,
             "nice_nice_nice_nice.wav", "good_job.wav", "waoow.mp3"),
         buildAssetDefinitions(WaifuAssetCategory.DISAPPOINTMENT,
-            "ganbatte_onii_chan.wav", "waaaah.mp3", "ohmygah.mp3")
+            "ganbatte_onii_chan.wav", "waaaah.mp3", "ohmygah.mp3"),
+        buildAssetDefinitions(WaifuAssetCategory.WELCOMING,
+            "tuturuu_mayushi_desu.wav", "waoow.mp3")
     ).flatten()
 
     private fun buildAssetDefinitions(
