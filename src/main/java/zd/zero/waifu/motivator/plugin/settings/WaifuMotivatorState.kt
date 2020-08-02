@@ -21,4 +21,6 @@ class WaifuMotivatorState {
     var isDisabledInDistractionFreeMode = true
 
     var version = "v0.0.0"
+
+    var userId = ""
 }

@@ -17,6 +17,10 @@ object UserOnboarding {
                 WaifuMotivatorPluginState.getPluginState().version = newVersion
                 UpdateNotification.display(ProjectManager.getInstance().defaultProject, newVersion)
             }
+
+        if (WaifuMotivatorPluginState.getPluginState().userId.isEmpty()) {
+            WaifuMotivatorPluginState.getPluginState().userId = UUID.randomUUID().toString()
+        }
     }
 
     private fun getVersion(): Optional<String> =
