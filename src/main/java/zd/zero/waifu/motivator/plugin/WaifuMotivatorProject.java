@@ -8,22 +8,18 @@ import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.startup.StartupManager;
 import org.jetbrains.annotations.NotNull;
-import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
+import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
-import zd.zero.waifu.motivator.plugin.motivation.TextualMotivationFactory;
+import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
 import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
 import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
-import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
-import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
 import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 import java.util.concurrent.ThreadLocalRandom;
-
-import static zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory.*;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 

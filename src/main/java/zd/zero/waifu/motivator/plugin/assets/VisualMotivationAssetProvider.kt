@@ -3,6 +3,7 @@ package zd.zero.waifu.motivator.plugin.assets
 enum class WaifuAssetCategory {
     CELEBRATION,
     SMUG,
+    WAITING,
     MOTIVATION,
     WELCOMING,
     DEPARTURE,
