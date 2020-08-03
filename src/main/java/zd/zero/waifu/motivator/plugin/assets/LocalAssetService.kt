@@ -21,8 +21,8 @@ private enum class AssetChangedStatus {
 
 object LocalAssetService {
     private val log = Logger.getInstance(this::class.java)
-    private val assetChecks: MutableMap<String, Instant> = readPreviousAssetChecks()
     private val gson = GsonBuilder().setPrettyPrinting().create()
+    private val assetChecks: MutableMap<String, Instant> = readPreviousAssetChecks()
 
     fun hasAssetChanged(
         localInstallPath: Path,
