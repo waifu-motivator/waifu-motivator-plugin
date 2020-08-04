@@ -19,7 +19,7 @@ object TextAssetDefinitionService {
             "Hurry quick fix it!"
         ),
         buildAssetDefinitions(WaifuAssetCategory.SMUG,
-            "Ohhhh yeaaahhh!!", "I meant to do that!",
+            "Ohhhh yeaaahhh!!", "You meant to do that!",
             "You're a pretty big deal..", "Ain't nothing but a thing.",
             "Too easy!", "Make it more difficult.",
             "Awww yessss!!", "Nothing but skill!", "Get rekt, problems.", "They call that talent."),

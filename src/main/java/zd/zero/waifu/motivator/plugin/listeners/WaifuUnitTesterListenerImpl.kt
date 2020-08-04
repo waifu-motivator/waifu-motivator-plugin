@@ -29,7 +29,7 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
     private fun getExtraTestPassCategories(): Array<WaifuAssetCategory> =
         when (lastStatus) {
             TestStatus.FAIL -> arrayOf(WaifuAssetCategory.SMUG, WaifuAssetCategory.SMUG, WaifuAssetCategory.SMUG)
-            else -> arrayOf(WaifuAssetCategory.CELEBRATION, WaifuAssetCategory.SMUG)
+            else -> arrayOf()
         }
 
     override fun onUnitTestFailed() {
