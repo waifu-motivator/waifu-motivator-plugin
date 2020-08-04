@@ -1,5 +1,7 @@
 package zd.zero.waifu.motivator.plugin.assets
 
+import kotlin.random.Random
+
 enum class WaifuAssetCategory {
     CELEBRATION,
     SMUG,
@@ -14,6 +16,8 @@ enum class WaifuAssetCategory {
 }
 
 object VisualMotivationAssetProvider {
+
+    private val ranbo = Random(System.currentTimeMillis())
 
     fun createAssetByCategory(
         category: WaifuAssetCategory
@@ -34,7 +38,7 @@ object VisualMotivationAssetProvider {
     fun pickAssetFromCategories(
         vararg categories: WaifuAssetCategory
     ): MotivationAsset =
-        createAssetByCategory(categories.random())
+        createAssetByCategory(categories.random(ranbo))
 
     private fun pickRandomAssetByCategory(category: WaifuAssetCategory): MotivationAsset =
         constructMotivation(
