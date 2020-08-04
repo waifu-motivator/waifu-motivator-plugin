@@ -8,9 +8,17 @@ object TextAssetDefinitionService {
         buildAssetDefinitions(WaifuAssetCategory.DISAPPOINTMENT,
             "Wwwwwwaaaaaaaaaaaaaaaaaaaaah", "OH MY GAH!",
             "Oh No!", "How could you do this?", "Why?", "I'm not mad, I'm disappointed"),
+        buildAssetDefinitions(WaifuAssetCategory.SHOCKED,
+            "Nani?!", "What the?!", "Oh No!", "Whyyy???"),
+        buildAssetDefinitions(WaifuAssetCategory.SMUG,
+            "Ohhhh yeaaahhh!!", "I meant to do that!",
+            "I'm a pretty big deal", "Ain't nothing but a thing.",
+            "Too easy!",
+            "Awww yessss!!", "Nothing but skill!", "Get rekt, problems.", "They call that talent."),
         buildAssetDefinitions(WaifuAssetCategory.WELCOMING,
-            "Hey!", "What's Up?",
-            "Are you ready?!", "Nice to see you again!", "It was dark, don't leave again!")
+            "Heyyy!", "Welcome Back!", "Are you ready?!", "Nice to see you again!",
+            "What's up?!", "Hiya!"
+        )
     ).flatten()
 
     private fun buildAssetDefinitions(

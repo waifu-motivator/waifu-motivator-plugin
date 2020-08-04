@@ -5,7 +5,11 @@ object AudibleAssetDefinitionService {
     private val assetDefinitions: List<AudibleMotivationAssetDefinition> = listOf(
         buildAssetDefinitions(WaifuAssetCategory.CELEBRATION,
             "nice_nice_nice_nice.wav", "good_job.wav", "waoow.mp3"),
+        buildAssetDefinitions(WaifuAssetCategory.SMUG,
+            "nice_nice_nice_nice.wav", "good_job.wav", "waoow.mp3"),
         buildAssetDefinitions(WaifuAssetCategory.DISAPPOINTMENT,
+            "ganbatte_onii_chan.wav", "waaaah.mp3", "ohmygah.mp3"),
+        buildAssetDefinitions(WaifuAssetCategory.SHOCKED,
             "ganbatte_onii_chan.wav", "waaaah.mp3", "ohmygah.mp3"),
         buildAssetDefinitions(WaifuAssetCategory.WELCOMING,
             "tuturuu_mayushi_desu.wav", "waoow.mp3")

@@ -9,6 +9,7 @@ enum class WaifuAssetCategory {
     DEPARTURE,
     ENCOURAGEMENT,
     TSUNDERE,
+    SHOCKED,
     DISAPPOINTMENT // you don't want to disappoint your waifu now do you?
 }
 
@@ -20,6 +21,8 @@ object VisualMotivationAssetProvider {
         return when (category) {
             WaifuAssetCategory.CELEBRATION,
             WaifuAssetCategory.DISAPPOINTMENT,
+            WaifuAssetCategory.SHOCKED,
+            WaifuAssetCategory.SMUG,
             WaifuAssetCategory.WELCOMING
             -> pickRandomAssetByCategory(
                 category
