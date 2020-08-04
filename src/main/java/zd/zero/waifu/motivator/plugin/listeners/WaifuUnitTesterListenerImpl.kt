@@ -52,5 +52,4 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
             pluginState.isUnitTesterMotivationSoundEnabled
         )
     }
-
 }
