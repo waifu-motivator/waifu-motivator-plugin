@@ -53,12 +53,12 @@ object VisualMotivationAssetProvider {
         audibleAssetDefinition: AudibleMotivationAssetDefinition
     ): MotivationAsset =
         MotivationAsset(
-            textualAssetDefinition.title,
+            "&nbsp;&nbsp;&nbsp;${textualAssetDefinition.title}",
             """
-                 <img src='${visualAssetDefinition.imagePath}' alt='${visualAssetDefinition.imageAlt}' width='96px' />
-                 <br>
-                 <p>${textualAssetDefinition.message}</p>
-                """.trimIndent(),
+                <div style="margin: 5px 5px 5px 10px">
+                    <img src='${visualAssetDefinition.imagePath}' alt='${visualAssetDefinition.imageAlt}'/>
+                </div>
+            """.trimIndent(),
             audibleAssetDefinition.soundFile,
             arrayOf()
         )
