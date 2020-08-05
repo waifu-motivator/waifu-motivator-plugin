@@ -1,30 +1,58 @@
 package zd.zero.waifu.motivator.plugin.assets
 
+import kotlin.random.Random
+
 enum class WaifuAssetCategory {
     CELEBRATION,
+    SMUG,
+    WAITING,
     MOTIVATION,
     WELCOMING,
     DEPARTURE,
     ENCOURAGEMENT,
+    TSUNDERE,
+    SHOCKED,
     DISAPPOINTMENT // you don't want to disappoint your waifu now do you?
 }
 
 object VisualMotivationAssetProvider {
 
+    private val random = Random(System.currentTimeMillis())
+
     fun createAssetByCategory(
         category: WaifuAssetCategory
     ): MotivationAsset {
         return when (category) {
-            WaifuAssetCategory.CELEBRATION -> pickRandomCelebrationAsset()
+            WaifuAssetCategory.CELEBRATION,
+            WaifuAssetCategory.DISAPPOINTMENT,
+            WaifuAssetCategory.SHOCKED,
+            WaifuAssetCategory.SMUG,
+            WaifuAssetCategory.WELCOMING
+            -> pickRandomAssetByCategory(
+                category
+            )
             else -> throw NotImplementedError("You can't use $category here.")
         }
     }
 
-    private fun pickRandomCelebrationAsset(): MotivationAsset {
-        val visualAssetDefinition = AssetDefinitionService.getRandomCelebrationVisualAsset()
-        val audibleAssetDefinition = AssetDefinitionService.getRandomCelebrationAudibleAsset()
-        val textualAssetDefinition = AssetDefinitionService.getRandomCelebrationTextualAsset()
-        return MotivationAsset(
+    fun pickAssetFromCategories(
+        vararg categories: WaifuAssetCategory
+    ): MotivationAsset =
+        createAssetByCategory(categories.random(random))
+
+    private fun pickRandomAssetByCategory(category: WaifuAssetCategory): MotivationAsset =
+        constructMotivation(
+            TextAssetDefinitionService.getRandomAssetByCategory(category),
+            VisualAssetDefinitionService.getRandomAssetByCategory(category),
+            AudibleAssetDefinitionService.getRandomAssetByCategory(category)
+        )
+
+    private fun constructMotivation(
+        textualAssetDefinition: TextualMotivationAssetDefinition,
+        visualAssetDefinition: VisualMotivationAssetDefinition,
+        audibleAssetDefinition: AudibleMotivationAssetDefinition
+    ): MotivationAsset =
+        MotivationAsset(
             textualAssetDefinition.title,
             """
                  <img src='${visualAssetDefinition.imagePath}' alt='${visualAssetDefinition.imageAlt}' width='256' />
@@ -34,5 +62,4 @@ object VisualMotivationAssetProvider {
             audibleAssetDefinition.soundFile,
             arrayOf()
         )
-    }
 }
