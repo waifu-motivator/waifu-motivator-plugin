@@ -4,7 +4,7 @@ import kotlin.random.Random
 
 object AudibleAssetDefinitionService {
 
-    private val ranbo = Random(System.currentTimeMillis())
+    private val random = Random(System.currentTimeMillis())
 
     private val assetDefinitions: List<AudibleMotivationAssetDefinition> = listOf(
         buildAssetDefinitions(WaifuAssetCategory.CELEBRATION,
@@ -30,5 +30,5 @@ object AudibleAssetDefinitionService {
 
     fun getRandomAssetByCategory(waifuAssetCategory: WaifuAssetCategory) =
         assetDefinitions.filter { it.categories.contains(waifuAssetCategory) }
-            .random(ranbo)
+            .random(random)
 }

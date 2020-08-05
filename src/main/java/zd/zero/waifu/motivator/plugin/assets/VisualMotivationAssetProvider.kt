@@ -17,7 +17,7 @@ enum class WaifuAssetCategory {
 
 object VisualMotivationAssetProvider {
 
-    private val ranbo = Random(System.currentTimeMillis())
+    private val random = Random(System.currentTimeMillis())
 
     fun createAssetByCategory(
         category: WaifuAssetCategory
@@ -38,7 +38,7 @@ object VisualMotivationAssetProvider {
     fun pickAssetFromCategories(
         vararg categories: WaifuAssetCategory
     ): MotivationAsset =
-        createAssetByCategory(categories.random(ranbo))
+        createAssetByCategory(categories.random(random))
 
     private fun pickRandomAssetByCategory(category: WaifuAssetCategory): MotivationAsset =
         constructMotivation(

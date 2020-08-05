@@ -4,7 +4,7 @@ import kotlin.random.Random
 
 object TextAssetDefinitionService {
 
-    private val ranbo = Random(System.currentTimeMillis())
+    private val random = Random(System.currentTimeMillis())
 
     private val assetDefinitions: List<TextualMotivationAssetDefinition> = listOf(
         buildAssetDefinitions(WaifuAssetCategory.CELEBRATION,
@@ -40,5 +40,5 @@ object TextAssetDefinitionService {
 
     fun getRandomAssetByCategory(waifuAssetCategory: WaifuAssetCategory): TextualMotivationAssetDefinition =
         assetDefinitions.filter { it.categories.contains(waifuAssetCategory) }
-            .random(ranbo)
+            .random(random)
 }
