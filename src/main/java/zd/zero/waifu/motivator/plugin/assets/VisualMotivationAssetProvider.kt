@@ -55,8 +55,8 @@ object VisualMotivationAssetProvider {
         MotivationAsset(
             textualAssetDefinition.title,
             """
-                 <img src='${visualAssetDefinition.imagePath}' alt='${visualAssetDefinition.imageAlt}' width='256' />
-                 <br><br><br><br><br><br><br><br><br><br>
+                 <img src='${visualAssetDefinition.imagePath}' alt='${visualAssetDefinition.imageAlt}' width='96px' />
+                 <br>
                  <p>${textualAssetDefinition.message}</p>
                 """.trimIndent(),
             audibleAssetDefinition.soundFile,
