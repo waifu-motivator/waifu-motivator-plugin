@@ -65,7 +65,7 @@ object VisualMotivationAssetProvider {
         )
 
     private fun getExtraStyles(imageDimensions: ImageDimension): String =
-        if (SystemInfo.isLinux) {
+        if (!SystemInfo.isMac) {
             "width: ${reduceSize(imageDimensions.width, 0.75)}px;" +
                 "height: ${reduceSize(imageDimensions.height, 0.85)}px"
         } else {
