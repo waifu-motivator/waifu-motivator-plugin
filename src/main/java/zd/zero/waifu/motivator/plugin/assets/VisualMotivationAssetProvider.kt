@@ -1,6 +1,7 @@
 package zd.zero.waifu.motivator.plugin.assets
 
 import kotlin.random.Random
+import com.intellij.openapi.util.SystemInfo
 
 enum class WaifuAssetCategory {
     CELEBRATION,
@@ -55,11 +56,22 @@ object VisualMotivationAssetProvider {
         MotivationAsset(
             "&nbsp;&nbsp;&nbsp;${textualAssetDefinition.title}",
             """
-                <div style="margin: 5px 5px 5px 10px">
+                <div style="margin: 5px 5px 5px 10px;${getExtraStyles(visualAssetDefinition.imageDimensions)}" >
                     <img src='${visualAssetDefinition.imagePath}' alt='${visualAssetDefinition.imageAlt}'/>
                 </div>
             """.trimIndent(),
             audibleAssetDefinition.soundFile,
             arrayOf()
         )
+
+    private fun getExtraStyles(imageDimensions: ImageDimension): String =
+        if (SystemInfo.isLinux) {
+            "width: ${reduceSize(imageDimensions.width, 0.75)}px;" +
+                "height: ${reduceSize(imageDimensions.height, 0.85)}px"
+        } else {
+            ""
+        }
+
+    private fun reduceSize(dimensionToReduce: Int, modifier: Double) =
+        (dimensionToReduce.toDouble() * modifier).toInt()
 }

@@ -56,6 +56,7 @@ object VisualAssetManager {
         VisualMotivationAssetDefinition(
             "caramelldansen.gif",
             "Caramelldansen",
+            ImageDimension(320, 240),
             arrayOf(
                 WaifuAssetCategory.CELEBRATION
             )
@@ -63,6 +64,7 @@ object VisualAssetManager {
         VisualMotivationAssetDefinition(
             "kill-la-kill-caramelldansen.gif",
             "Caramelldansen",
+            ImageDimension(250, 184),
             arrayOf(
                 WaifuAssetCategory.CELEBRATION
             )
