@@ -4,6 +4,7 @@ import com.intellij.notification.Notification
 import com.intellij.notification.impl.NotificationsManagerImpl
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.Balloon
+import com.intellij.openapi.util.Ref
 import com.intellij.ui.BalloonLayoutData
 import zd.zero.waifu.motivator.plugin.assets.MotivationAsset
 import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParameters
@@ -23,7 +24,7 @@ class VisualWaifuNotification(
                 updateNotification,
                 true,
                 true,
-                BalloonLayoutData.fullContent(),
+                createLayoutDataRef(),
                 ApplicationService.instance
             )
             balloon.setAnimationEnabled(true)
@@ -33,5 +34,13 @@ class VisualWaifuNotification(
         }
 
         return updateNotification
+    }
+
+    private fun createLayoutDataRef(): Ref<BalloonLayoutData> {
+        val balloonLayoutData = BalloonLayoutData.createEmpty()
+        balloonLayoutData.showFullContent = true
+        balloonLayoutData.showMinSize = false
+        balloonLayoutData.welcomeScreen = true
+        return Ref(balloonLayoutData)
     }
 }
