@@ -10,10 +10,13 @@ abstract class BaseWaifuNotification(
     private val motivationAsset: MotivationAsset
 ) : WaifuNotification {
 
-    protected fun buildNotification(): Notification {
+    companion object {
         val notificationGroup = NotificationGroup(
-                WaifuMotivator.PLUGIN_NAME, NotificationDisplayType.BALLOON, false
+            WaifuMotivator.PLUGIN_NAME, NotificationDisplayType.BALLOON, false
         )
+    }
+
+    protected fun buildNotification(): Notification {
         return notificationGroup.createNotification()
             .setTitle(motivationAsset.title.ifEmpty { "" })
             .setContent(motivationAsset.message.ifEmpty { "" })
