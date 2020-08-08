@@ -14,6 +14,7 @@
   <idea-version since-build="201.3803.71"/>
 
   <extensions defaultExtensionNs="com.intellij">
+    <externalSystemTaskNotificationListener implementation="zd.zero.waifu.motivator.plugin.listeners.TaskListener"/>
     <applicationService
       serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState"/>
     <applicationConfigurable
