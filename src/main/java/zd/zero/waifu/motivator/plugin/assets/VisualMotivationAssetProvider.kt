@@ -1,7 +1,6 @@
 package zd.zero.waifu.motivator.plugin.assets
 
 import kotlin.random.Random
-import com.intellij.openapi.util.SystemInfo
 
 enum class WaifuAssetCategory {
     CELEBRATION,
@@ -65,12 +64,8 @@ object VisualMotivationAssetProvider {
         )
 
     private fun getExtraStyles(imageDimensions: ImageDimension): String =
-        if (!SystemInfo.isMac) {
-            "width: ${reduceSize(imageDimensions.width, 0.75)}px;" +
-                "height: ${reduceSize(imageDimensions.height, 0.85)}px"
-        } else {
-            ""
-        }
+        "width: ${reduceSize(imageDimensions.width, 0.75)}px;" +
+            "height: ${reduceSize(imageDimensions.height, 0.85)}px"
 
     private fun reduceSize(dimensionToReduce: Int, modifier: Double) =
         (dimensionToReduce.toDouble() * modifier).toInt()
