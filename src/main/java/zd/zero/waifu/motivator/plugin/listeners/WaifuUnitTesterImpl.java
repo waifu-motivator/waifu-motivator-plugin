@@ -1,12 +1,10 @@
 package zd.zero.waifu.motivator.plugin.listeners;
 
-import com.intellij.execution.testframework.TestsUIUtil;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
+import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsAdapter;
+import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener;
+import com.intellij.execution.testframework.sm.runner.SMTestProxy;
 import com.intellij.util.messages.MessageBusConnection;
 import org.jetbrains.annotations.NotNull;
-import zd.zero.waifu.motivator.plugin.tools.Debouncer;
 
 public class WaifuUnitTesterImpl implements WaifuUnitTester {
 
@@ -14,36 +12,26 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
 
     private final WaifuUnitTester.Listener listener;
 
-    private final Debouncer debouncer;
-
     public WaifuUnitTesterImpl( MessageBusConnection busConnection,
-                                Listener listener,
-                                Debouncer debouncer ) {
+                                Listener listener ) {
         this.busConnection = busConnection;
         this.listener = listener;
-        this.debouncer = debouncer;
     }
 
     @Override
     public void init() {
-        busConnection.subscribe( Notifications.TOPIC, new Notifications() {
+        busConnection.subscribe( SMTRunnerEventsListener.TEST_STATUS, new SMTRunnerEventsAdapter() {
             @Override
-            public void notify( @NotNull Notification notification ) {
-                invokeListener( notification, TestsUIUtil.NOTIFICATION_GROUP.getDisplayId() );
+            public void onTestingFinished( @NotNull SMTestProxy.SMRootTestProxy testsRoot ) {
+                if ( testsRoot.wasTerminated() || testsRoot.isInterrupted() ) return;
+
+                if ( testsRoot.isPassed() ) {
+                    listener.onUnitTestPassed();
+                } else {
+                    listener.onUnitTestFailed();
+                }
             }
         } );
-    }
-
-    void invokeListener( Notification notification, final String NOTIFICATION_GROUP_DISPLAY_ID ) {
-        if ( notification.getGroupId().equals( NOTIFICATION_GROUP_DISPLAY_ID ) ) {
-            debouncer.debounce( () -> {
-                if ( notification.getType() == NotificationType.ERROR ) {
-                    listener.onUnitTestFailed();
-                } else {
-                    listener.onUnitTestPassed();
-                }
-            } );
-        }
     }
 
     @Override
