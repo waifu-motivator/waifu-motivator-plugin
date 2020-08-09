@@ -14,7 +14,7 @@ public class WaifuTestPrinterAdapter implements Printer {
     public void print( String text, ConsoleViewContentType contentType ) {
         if ( !ConsoleViewContentType.ERROR_OUTPUT.equals( contentType ) ) return;
 
-        printables.append( contentType ).append( " " ).append( text );
+        printables.append( text );
     }
 
     @Override
