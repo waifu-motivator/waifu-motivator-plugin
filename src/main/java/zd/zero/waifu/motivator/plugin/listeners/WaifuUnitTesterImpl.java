@@ -42,13 +42,15 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
     }
 
     /**
-     * A compatibility hack method to perform checking
+     * <p>A compatibility hack method to perform checking
      * for external processes (Gradle test execution)
-     * to check if user has cancelled the test.
-     * <p>
-     * For 202, it should be replaced with
-     * ExternalSystemProcessHandler external = ( ExternalSystemProcessHandler ) testsRoot.getHandler();
+     * to check if user has cancelled the test.</p>
+     *
+     * <p>For <code>202.4357.23</code>, it should be replaced with</p>
+     * <p><code>
+     * ExternalSystemProcessHandler external = ( ExternalSystemProcessHandler ) testsRoot.getHandler();<br>
      * ExternalSystemTaskState state = external.getTask().getState();
+     * </code></p>
      *
      * @param testsRoot test execution root node
      * @return true - if it finds 'Build Cancelled'
