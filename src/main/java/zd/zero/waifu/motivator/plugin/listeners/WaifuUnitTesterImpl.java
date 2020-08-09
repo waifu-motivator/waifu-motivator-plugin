@@ -52,8 +52,8 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
      * ExternalSystemTaskState state = external.getTask().getState();
      * </code></p>
      *
-     * @param testsRoot test execution root node
-     * @return true - if it finds 'Build Cancelled'
+     * @param testsRoot test execution root node.
+     * @return true - if it finds 'Build Cancelled' to the error message.
      */
     private boolean isCancelledOnExternalProcess( @NotNull SMTestProxy.SMRootTestProxy testsRoot ) {
         if ( !( testsRoot.getHandler() instanceof ExternalSystemProcessHandler ) ) return false;
