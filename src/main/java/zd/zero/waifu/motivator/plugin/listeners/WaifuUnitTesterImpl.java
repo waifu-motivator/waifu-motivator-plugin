@@ -1,12 +1,12 @@
 package zd.zero.waifu.motivator.plugin.listeners;
 
-import com.intellij.execution.testframework.TestsUIUtil;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
+import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsAdapter;
+import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener;
+import com.intellij.execution.testframework.sm.runner.SMTestProxy;
+import com.intellij.openapi.externalSystem.service.execution.ExternalSystemProcessHandler;
 import com.intellij.util.messages.MessageBusConnection;
 import org.jetbrains.annotations.NotNull;
-import zd.zero.waifu.motivator.plugin.tools.Debouncer;
+import zd.zero.waifu.motivator.plugin.listeners.adapter.WaifuTestPrinterAdapter;
 
 public class WaifuUnitTesterImpl implements WaifuUnitTester {
 
@@ -14,36 +14,26 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
 
     private final WaifuUnitTester.Listener listener;
 
-    private final Debouncer debouncer;
-
     public WaifuUnitTesterImpl( MessageBusConnection busConnection,
-                                Listener listener,
-                                Debouncer debouncer ) {
+                                Listener listener ) {
         this.busConnection = busConnection;
         this.listener = listener;
-        this.debouncer = debouncer;
     }
 
     @Override
     public void init() {
-        busConnection.subscribe( Notifications.TOPIC, new Notifications() {
+        busConnection.subscribe( SMTRunnerEventsListener.TEST_STATUS, new SMTRunnerEventsAdapter() {
             @Override
-            public void notify( @NotNull Notification notification ) {
-                invokeListener( notification, TestsUIUtil.NOTIFICATION_GROUP.getDisplayId() );
+            public void onTestingFinished( @NotNull SMTestProxy.SMRootTestProxy testsRoot ) {
+                if ( testsRoot.wasTerminated() || testsRoot.isInterrupted()
+                    || isCancelledOnExternalProcess( testsRoot ) ) return;
+                if ( testsRoot.isPassed() ) {
+                    listener.onUnitTestPassed();
+                } else {
+                    listener.onUnitTestFailed();
+                }
             }
         } );
-    }
-
-    void invokeListener( Notification notification, final String NOTIFICATION_GROUP_DISPLAY_ID ) {
-        if ( notification.getGroupId().equals( NOTIFICATION_GROUP_DISPLAY_ID ) ) {
-            debouncer.debounce( () -> {
-                if ( notification.getType() == NotificationType.ERROR ) {
-                    listener.onUnitTestFailed();
-                } else {
-                    listener.onUnitTestPassed();
-                }
-            } );
-        }
     }
 
     @Override
@@ -51,4 +41,28 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
         this.busConnection.disconnect();
     }
 
+    /**
+     * <p>A compatibility hack method to perform checking
+     * for external processes (Gradle test execution)
+     * to check if user has cancelled the test.</p>
+     *
+     * <p>For <code>202.4357.23</code>, it should be replaced with</p>
+     * <p><code>
+     * ExternalSystemProcessHandler external = ( ExternalSystemProcessHandler ) testsRoot.getHandler();<br>
+     * ExternalSystemTaskState state = external.getTask().getState();
+     * </code></p>
+     *
+     * @param testsRoot test execution root node.
+     * @return true - if it finds 'Build Cancelled' to the error message.
+     */
+    private boolean isCancelledOnExternalProcess( @NotNull SMTestProxy.SMRootTestProxy testsRoot ) {
+        if ( !( testsRoot.getHandler() instanceof ExternalSystemProcessHandler ) ) return false;
+
+        WaifuTestPrinterAdapter printer = new WaifuTestPrinterAdapter();
+        testsRoot.printOn( printer );
+        testsRoot.flush();
+
+        return printer.getPrintableContent().toLowerCase()
+            .contains( "build cancelled" );
+    }
 }
