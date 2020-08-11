@@ -1,5 +1,4 @@
-# Waifu Motivator plugin
-## Changelog
+# Changelog
 
 ## [v1.1.2](https://github.com/zd-zero/waifu-motivator-plugin/releases/tag/v1.1.2)
 #### 24/04/20
