@@ -24,8 +24,8 @@ object UserOnboarding {
     }
 
     fun isNewVersion() =
-        getVersion().isPresent
-            && getVersion().get() != WaifuMotivatorPluginState.getPluginState().version
+        getVersion().isPresent &&
+            getVersion().get() != WaifuMotivatorPluginState.getPluginState().version
 
     private fun getVersion(): Optional<String> =
         PluginManagerCore.getPlugin(PluginId.getId(WaifuMotivator.PLUGIN_ID))
