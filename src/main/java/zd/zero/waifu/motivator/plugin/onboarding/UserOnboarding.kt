@@ -11,7 +11,7 @@ import java.util.*
 object UserOnboarding {
 
     fun attemptToShowUpdateNotification() {
-        if (!isNewVersion()) return;
+        if (!isNewVersion()) return
 
         getVersion().ifPresent { newVersion ->
             WaifuMotivatorPluginState.getPluginState().version = newVersion
