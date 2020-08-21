@@ -14,6 +14,8 @@ val UPDATE_MESSAGE: String = """
       <ul>
         <li>Visual Test Pass Notifications!</li>
         <li>More settings customization.</li>
+        <li>Do Not Disturb mode.</li>
+        <li>Toolbar menu revamp.</li>
       </ul>
       <br>Please see the <a href="https://github.com/zd-zero/waifu-motivator-plugin/blob/master/docs/CHANGELOG.md">changelog</a> for more details.
       <br><br>
