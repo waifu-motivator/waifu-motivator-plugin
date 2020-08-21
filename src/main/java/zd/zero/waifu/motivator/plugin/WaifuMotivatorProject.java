@@ -73,12 +73,13 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     }
 
     private void initializeStartupMotivator() {
-        if ( isMultipleProjectsOpened() ) return;
+        if ( isMultipleProjectsOpened()
+            || UserOnboarding.INSTANCE.isNewVersion() ) return;
 
         AlertConfiguration config = new AlertConfiguration(
-                 pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled(),
-                 pluginState.isStartupMotivationEnabled() ,
-                 pluginState.isStartupMotivationSoundEnabled()
+            pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled(),
+            pluginState.isStartupMotivationEnabled(),
+            pluginState.isStartupMotivationSoundEnabled()
         );
 
         WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
