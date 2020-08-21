@@ -3,6 +3,7 @@
 ## v1.2
 ## 21/08/2020
 Features:
+
 * [WMP-097](https://github.com/zd-zero/waifu-motivator-plugin/issues/97) Ability to disable 'Motivate Me' notification
 * [WMP-080](https://github.com/zd-zero/waifu-motivator-plugin/issues/80) Improvements on toolbar menu
 * [WMP-103](https://github.com/zd-zero/waifu-motivator-plugin/issues/103) Ability to enable 'Do Not Disturb' mode on different viewing modes
@@ -10,6 +11,7 @@ Features:
 * [WMP-100](https://github.com/zd-zero/waifu-motivator-plugin/issues/100) Add images associated to the alert notification
 
 Bug fix:
+
 * Fix [WMP-110](https://github.com/zd-zero/waifu-motivator-plugin/issues/110) Waifu unit tester executes multiple times
 * Fix [WMP-112](https://github.com/zd-zero/waifu-motivator-plugin/issues/112) Multiple different startup sounds
 * Fix [WMP-124](https://github.com/zd-zero/waifu-motivator-plugin/issues/124) Multiple test notifications
