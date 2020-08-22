@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/BUILT%20WITH-COFFEE-blue?style=for-the-badge">
 </p>
 
-<p align="center">Simple and open-sourced Jetbrains IDE plugin that your *Waifu* motivates you and helps you work on your coding challenges.</p>
+<p align="center">Simple and open-sourced Jetbrains IDE plugin that your <i>Waifu</i> motivates you and helps you work on your coding challenges.</p>
 
 > *Waifu* is a term for a fictional character, usually in anime or related media, that someone has great, and sometimes romantic, affection for. [source](https://www.dictionary.com/e/fictional-characters/waifu/)
 
