@@ -50,7 +50,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     @Override
     public void projectClosing( @NotNull Project project ) {
         if ( !pluginState.isSayonaraEnabled() || isMultipleProjectsOpened() ) return;
-
+        
         Path soundFilePath = AudibleAssetDefinitionService.INSTANCE.getRandomAssetByCategory(
             WaifuAssetCategory.DEPARTURE
         ).getSoundFilePath();
