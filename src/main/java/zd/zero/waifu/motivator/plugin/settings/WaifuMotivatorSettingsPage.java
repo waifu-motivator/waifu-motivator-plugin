@@ -1,6 +1,7 @@
 package zd.zero.waifu.motivator.plugin.settings;
 
 import com.intellij.ide.GeneralSettings;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
 import org.jetbrains.annotations.Nls;
@@ -85,8 +86,10 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         Object timeoutValue = idleTimeoutSpinner.getValue();
         if(timeoutValue instanceof Long) {
             return (Long)timeoutValue;
+        } else if (timeoutValue instanceof Integer) {
+            return Long.valueOf( (Integer) timeoutValue );
         }
-        return -1L;
+        return WaifuMotivatorState.Companion.getDEFAULT_IDLE_TIMEOUT();
     }
 
     @Override
@@ -105,9 +108,16 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setMotivateMeEnabled( enableMotivateMe.isSelected() );
         this.state.setMotivateMeSoundEnabled( enableMotivateMeSound.isSelected() );
         this.state.setSayonaraEnabled( enableSayonara.isSelected() );
+        this.state.setIdleMotivationEnabled( enableIdleNotificationCheckBox.isSelected() );
+        this.state.setIdleSoundEnabled( enableIdleSoundCheckBox.isSelected() );
+        this.state.setIdleTimout( getIdleTimeout() );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
+
+        ApplicationManager.getApplication().getMessageBus()
+            .syncPublisher( ThemeSettingsListener.Companion.getTHEME_SETTINGS_TOPIC() )
+            .themeSettingsUpdated( this.state );
     }
 
     private void setFieldsFromState() {
