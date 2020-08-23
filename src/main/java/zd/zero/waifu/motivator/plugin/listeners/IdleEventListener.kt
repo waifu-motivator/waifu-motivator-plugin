@@ -46,9 +46,9 @@ class IdleEventListener : Runnable, Disposable {
     private fun createAlertConfiguration(): AlertConfiguration {
         val pluginState = WaifuMotivatorPluginState.getInstance().state
         return AlertConfiguration(
-            pluginState!!.isUnitTesterMotivationEnabled || pluginState.isUnitTesterMotivationSoundEnabled,
-            pluginState.isUnitTesterMotivationEnabled,
-            pluginState.isUnitTesterMotivationSoundEnabled
+            pluginState!!.isIdleMotivationEnabled || pluginState.isIdleSoundEnabled,
+            pluginState.isIdleMotivationEnabled,
+            pluginState.isIdleSoundEnabled
         )
     }
 }
