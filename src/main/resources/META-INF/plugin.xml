@@ -14,7 +14,6 @@
   <idea-version since-build="201.3803.71"/>
 
   <extensions defaultExtensionNs="com.intellij">
-    <externalSystemTaskNotificationListener implementation="zd.zero.waifu.motivator.plugin.listeners.TaskListener"/>
     <applicationService
       serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState"/>
     <applicationConfigurable
@@ -56,7 +55,7 @@
   <projectListeners>
     <listener class="zd.zero.waifu.motivator.plugin.WaifuMotivatorProject"
               topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    <listener class="zd.zero.waifu.motivator.plugin.listeners.WaifuCompilationListener"
+    <listener class="zd.zero.waifu.motivator.plugin.listeners.TaskListener"
               topic="com.intellij.task.ProjectTaskListener"/>
   </projectListeners>
 

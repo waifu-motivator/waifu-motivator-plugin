@@ -1,20 +1,13 @@
 package zd.zero.waifu.motivator.plugin;
 
-import com.intellij.build.BuildProgressListener;
-import com.intellij.build.BuildViewManager;
-import com.intellij.build.events.BuildEvent;
-import com.intellij.build.events.OutputBuildEvent;
 import com.intellij.ide.GeneralSettings;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.startup.StartupManager;
 import org.jetbrains.annotations.NotNull;
-import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.assets.AudibleAssetDefinitionService;
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
@@ -25,7 +18,6 @@ import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
 import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
 import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
-import zd.zero.waifu.motivator.plugin.service.ApplicationService;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
@@ -34,7 +26,6 @@ import java.nio.file.Path;
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
     private static final String IS_INITIAL_PLATFORM_TIP_UPDATED = "WAIFU_UPDATE_TIP";
-    private static final Logger LOGGER = Logger.getInstance( WaifuMotivatorProject.class );
 
     private Project project;
 
@@ -57,15 +48,6 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
         initializeListeners();
         initializeStartupMotivator();
         UserOnboarding.INSTANCE.attemptToShowUpdateNotification();
-        ServiceManager.getService( project, BuildViewManager.class ).addListener(
-            ( buildId, event ) -> {
-                if (event instanceof OutputBuildEvent ) {
-                    OutputBuildEvent outputBuildEvent = (OutputBuildEvent) event;
-                    LOGGER.warn( outputBuildEvent.getMessage());
-                }
-            },
-            ApplicationService.INSTANCE
-        );
     }
 
     @Override

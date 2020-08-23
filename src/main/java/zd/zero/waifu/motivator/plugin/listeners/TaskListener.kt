@@ -1,44 +1,51 @@
 package zd.zero.waifu.motivator.plugin.listeners
 
-import com.intellij.build.BuildProgressListener
-import com.intellij.build.events.BuildEvent
-import com.intellij.openapi.diagnostic.Logger
-import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskId
-import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskNotificationEvent
-import com.intellij.openapi.externalSystem.model.task.ExternalSystemTaskNotificationListener
-import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider
+import com.intellij.openapi.project.ProjectManager
+import com.intellij.task.ProjectTaskListener
+import com.intellij.task.ProjectTaskManager
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
+import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
+import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
+import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 
-class TaskListener : ExternalSystemTaskNotificationListener {
-    private val LOGGER = Logger.getInstance(TaskListener::class.java)
+internal enum class TaskStatus {
+    PASS, FAIL, UNKNOWN
+}
 
-    private var didFail = false
+class TaskListener : ProjectTaskListener {
 
-    override fun onSuccess(id: ExternalSystemTaskId) {
-        if(didFail) {
-            didFail = false
-//            VisualMotivationFactory.constructMotivation(
-//                ProjectManager.getInstance().defaultProject,
-//                VisualMotivationAssetProvider.pickAssetFromCategories(
-//                    WaifuAssetCategory.CELEBRATION,
-//                    WaifuAssetCategory.SMUG
-//                ),
-//                createAlertConfiguration()
-//            )
+    private var previousTaskStatus = TaskStatus.UNKNOWN
+
+    override fun finished(result: ProjectTaskManager.Result) {
+        when {
+            result.hasErrors() -> {
+                VisualMotivationFactory.constructMotivation(
+                    ProjectManager.getInstance().defaultProject,
+                    VisualMotivationAssetProvider.pickAssetFromCategories(
+                        WaifuAssetCategory.DISAPPOINTMENT,
+                        WaifuAssetCategory.SHOCKED
+                    ),
+                    createAlertConfiguration()
+                ).motivate()
+                previousTaskStatus = TaskStatus.FAIL
+            }
+            previousTaskStatus == TaskStatus.FAIL -> {
+                VisualMotivationFactory.constructMotivation(
+                    ProjectManager.getInstance().defaultProject,
+                    VisualMotivationAssetProvider.pickAssetFromCategories(
+                        WaifuAssetCategory.CELEBRATION,
+                        WaifuAssetCategory.CELEBRATION,
+                        WaifuAssetCategory.SMUG
+                    ),
+                    createAlertConfiguration()
+                ).motivate()
+                previousTaskStatus = TaskStatus.PASS
+            }
+            else -> {
+                previousTaskStatus = TaskStatus.PASS
+            }
         }
-    }
-
-    override fun onFailure(id: ExternalSystemTaskId, e: Exception) {
-        didFail = true
-//        VisualMotivationFactory.constructMotivation(
-//            ProjectManager.getInstance().defaultProject,
-//            VisualMotivationAssetProvider.pickAssetFromCategories(
-//                WaifuAssetCategory.DISAPPOINTMENT,
-//                WaifuAssetCategory.SHOCKED
-//            ),
-//            createAlertConfiguration()
-//        ).motivate()
     }
 
     private fun createAlertConfiguration(): AlertConfiguration {
@@ -49,32 +56,4 @@ class TaskListener : ExternalSystemTaskNotificationListener {
             pluginState.isUnitTesterMotivationSoundEnabled
         )
     }
-
-
-    override fun onTaskOutput(id: ExternalSystemTaskId, text: String, stdOut: Boolean) {
-//        LOGGER.warn("""
-//            $id
-//            $text
-//        """.trimIndent())
-    }
-
-    override fun onStatusChange(event: ExternalSystemTaskNotificationEvent) {
-//        println(event)
-    }
-
-    override fun onCancel(id: ExternalSystemTaskId) {}
-
-    override fun onEnd(id: ExternalSystemTaskId) {}
-
-    override fun beforeCancel(id: ExternalSystemTaskId) {}
-
-    override fun onStart(id: ExternalSystemTaskId) {}
-
-}
-
-class ProgressListener: BuildProgressListener {
-    override fun onEvent(buildId: Any, event: BuildEvent) {
-        println(event.toString())
-    }
-
 }
