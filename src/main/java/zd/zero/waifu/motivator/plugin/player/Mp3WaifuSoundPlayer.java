@@ -5,6 +5,8 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.FactoryRegistry;
 import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -51,13 +53,33 @@ public final class Mp3WaifuSoundPlayer implements WaifuSoundPlayer {
     }
 
     private void initPlayer( Consumer<Runnable> runnableConsumer ) {
-        try ( InputStream soundStream = new BufferedInputStream( Files.newInputStream( soundFilePath )) ) {
+        try {
+            InputStream soundStream = new BufferedInputStream( Files.newInputStream( soundFilePath ));
+            playSound( runnableConsumer, soundStream );
+        } catch ( IOException e ) {
+            LOGGER.error( e.getMessage(), e );
+        }
+    }
+
+    private void playSound( Consumer<Runnable> runnableConsumer, InputStream soundStream ) throws IOException {
+        try {
             audioDevice = FactoryRegistry.systemRegistry().createAudioDevice();
             player = new AdvancedPlayer( soundStream, audioDevice );
-
+            player.setPlayBackListener( new PlaybackListener() {
+                @Override
+                public void playbackFinished( PlaybackEvent evt ) {
+                    super.playbackFinished( evt );
+                    try {
+                        soundStream.close();
+                    } catch ( IOException e ) {
+                        e.printStackTrace();
+                    }
+                }
+            } );
             runnableConsumer.accept( this::invokePlay );
-        } catch ( IOException | JavaLayerException e ) {
+        } catch ( Exception e ) {
             LOGGER.error( e.getMessage(), e );
+            soundStream.close();
         }
     }
 
