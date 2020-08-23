@@ -23,6 +23,11 @@ object TextAssetDefinitionService {
             "You're a pretty big deal..", "Ain't nothing but a thing.",
             "Too easy!", "Make it more difficult.",
             "Awww yessss!!", "Nothing but skill!", "Get rekt, problems.", "They call that talent."),
+        buildAssetDefinitions(WaifuAssetCategory.WAITING,
+            "Where did you go?", "I'll be here.",
+            "I'm bored", "Can you come back?", "The code doesn't write itself",
+            "ι(´Д｀)ﾉ"
+        ),
         buildAssetDefinitions(WaifuAssetCategory.WELCOMING,
             "Heyyy!", "Welcome Back!", "Nice to see you again!",
             "What's up?!", "Hiya!"
