@@ -1,12 +1,10 @@
 package zd.zero.waifu.motivator.plugin.assets
 
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import zd.zero.waifu.motivator.plugin.tools.RestClient
-import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.Optional.ofNullable
 
 abstract class RemoteAssetManager<T : AssetDefinition>(
     private val assetCategory: AssetCategory,
@@ -45,12 +43,9 @@ abstract class RemoteAssetManager<T : AssetDefinition>(
             backupAssets
         }
 
-    private fun convertToDefinitions(defJson: String): List<T> =
-        Gson().fromJson<List<T>>(
-            defJson, object : TypeToken<List<T>>() {}.type
-        )
-
     private fun readLocalFile(assetUrl: String) =
-        Files.readAllBytes(Paths.get(URI(assetUrl))).toOptional()
+        ofNullable(Files.readAllBytes(Paths.get(URI(assetUrl))))
             .map { String(it, Charsets.UTF_8) }
+
+    protected abstract fun convertToDefinitions(defJson: String): List<T>
 }

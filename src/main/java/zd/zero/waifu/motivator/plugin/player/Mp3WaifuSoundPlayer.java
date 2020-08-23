@@ -6,6 +6,7 @@ import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.FactoryRegistry;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -50,7 +51,7 @@ public final class Mp3WaifuSoundPlayer implements WaifuSoundPlayer {
     }
 
     private void initPlayer( Consumer<Runnable> runnableConsumer ) {
-        try ( InputStream soundStream = Files.newInputStream( soundFilePath ) ) {
+        try ( InputStream soundStream = new BufferedInputStream( Files.newInputStream( soundFilePath )) ) {
             audioDevice = FactoryRegistry.systemRegistry().createAudioDevice();
             player = new AdvancedPlayer( soundStream, audioDevice );
 

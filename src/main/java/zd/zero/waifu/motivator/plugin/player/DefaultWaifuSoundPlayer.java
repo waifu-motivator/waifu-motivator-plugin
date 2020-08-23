@@ -5,6 +5,7 @@ import com.intellij.openapi.diagnostic.Logger;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -28,7 +29,7 @@ public final class DefaultWaifuSoundPlayer implements WaifuSoundPlayer {
 
     @Override
     public void play() {
-        try ( InputStream soundStream = Files.newInputStream( filePath ) ) {
+        try ( InputStream soundStream = new BufferedInputStream(Files.newInputStream( filePath )) ) {
             clip = SoundClipUtil.openClip( soundStream );
             clip.start();
         } catch ( IOException | LineUnavailableException | UnsupportedAudioFileException e ) {
