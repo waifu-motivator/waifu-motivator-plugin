@@ -51,9 +51,9 @@ class TaskListener : ProjectTaskListener {
     private fun createAlertConfiguration(): AlertConfiguration {
         val pluginState = WaifuMotivatorPluginState.getInstance().state
         return AlertConfiguration(
-            pluginState!!.isUnitTesterMotivationEnabled || pluginState.isUnitTesterMotivationSoundEnabled,
-            pluginState.isUnitTesterMotivationEnabled,
-            pluginState.isUnitTesterMotivationSoundEnabled
+            pluginState!!.isTaskMotivationEnabled || pluginState.isTaskSoundEnabled,
+            pluginState.isTaskMotivationEnabled,
+            pluginState.isTaskSoundEnabled
         )
     }
 }

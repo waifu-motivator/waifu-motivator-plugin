@@ -43,6 +43,10 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JSpinner idleTimeoutSpinner;
 
+    private JCheckBox enableTaskEventNotificationsCheckBox;
+
+    private JCheckBox enableTaskEventSoundsCheckBox;
+
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
     }
@@ -80,6 +84,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableIdleNotificationCheckBox.isSelected() != this.state.isIdleMotivationEnabled() ||
                 enableIdleSoundCheckBox.isSelected() != this.state.isIdleSoundEnabled() ||
                 getIdleTimeout() != this.state.getIdleTimeoutInMinutes() ||
+                enableTaskEventNotificationsCheckBox.isSelected() != this.state.isTaskMotivationEnabled() ||
+                enableTaskEventSoundsCheckBox.isSelected() != this.state.isTaskSoundEnabled() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled();
     }
 
@@ -112,6 +118,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setIdleMotivationEnabled( enableIdleNotificationCheckBox.isSelected() );
         this.state.setIdleSoundEnabled( enableIdleSoundCheckBox.isSelected() );
         this.state.setIdleTimeoutInMinutes( getIdleTimeout() );
+        this.state.setTaskMotivationEnabled( enableTaskEventNotificationsCheckBox.isSelected() );
+        this.state.setTaskSoundEnabled( enableTaskEventSoundsCheckBox.isSelected() );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
@@ -134,6 +142,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.idleTimeoutSpinner.setValue( this.state.getIdleTimeoutInMinutes() );
         this.enableIdleNotificationCheckBox.setSelected( this.state.isIdleMotivationEnabled() );
         this.enableIdleSoundCheckBox.setSelected( this.state.isIdleSoundEnabled() );
+        this.enableTaskEventNotificationsCheckBox.setSelected( this.state.isTaskMotivationEnabled() );
+        this.enableTaskEventSoundsCheckBox.setSelected( this.state.isTaskSoundEnabled() );
     }
 
 }
