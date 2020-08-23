@@ -18,7 +18,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 enum class AssetCategory(val category: String) {
-    VISUAL("visuals")
+    VISUAL("visuals"), AUDIBLE("audible")
 }
 
 object AssetManager {
