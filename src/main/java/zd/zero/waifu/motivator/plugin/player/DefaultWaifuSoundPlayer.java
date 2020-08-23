@@ -7,31 +7,28 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.io.InputStream;
-
-import static zd.zero.waifu.motivator.plugin.WaifuMotivator.SOUND_DIR;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public final class DefaultWaifuSoundPlayer implements WaifuSoundPlayer {
 
     private static final Logger LOGGER = Logger.getInstance( DefaultWaifuSoundPlayer.class );
 
-    private String fileName;
+    private final Path filePath;
 
     private Clip clip;
 
-    private DefaultWaifuSoundPlayer( String fileName ) {
-        this.fileName = SOUND_DIR + fileName;
+    private DefaultWaifuSoundPlayer( Path filePath ) {
+        this.filePath = filePath;
     }
 
-    public static DefaultWaifuSoundPlayer ofFile( String fileName ) {
-        return new DefaultWaifuSoundPlayer( fileName );
+    public static DefaultWaifuSoundPlayer ofFile( Path filePath ) {
+        return new DefaultWaifuSoundPlayer( filePath );
     }
 
     @Override
     public void play() {
-        try ( InputStream soundStream = getClass().getClassLoader().getResourceAsStream( fileName ) ) {
-            if ( soundStream == null ) {
-                throw new IllegalArgumentException( "Could not create a stream for " + fileName );
-            }
+        try ( InputStream soundStream = Files.newInputStream( filePath ) ) {
             clip = SoundClipUtil.openClip( soundStream );
             clip.start();
         } catch ( IOException | LineUnavailableException | UnsupportedAudioFileException e ) {

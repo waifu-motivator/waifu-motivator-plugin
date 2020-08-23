@@ -29,7 +29,7 @@ public class TextualMotivationFactory implements WaifuMotivationFactory {
                 motivation,
                 project
             ),
-            WaifuSoundPlayerFactory.createPlayer( motivation.getSoundFileName() ),
+            WaifuSoundPlayerFactory.createPlayer( motivation.getSoundFilePath() ),
             config
         );
     }

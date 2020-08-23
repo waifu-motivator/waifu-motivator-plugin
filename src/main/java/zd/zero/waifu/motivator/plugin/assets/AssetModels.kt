@@ -1,5 +1,8 @@
 package zd.zero.waifu.motivator.plugin.assets
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 interface AssetDefinition {
     val categories: Array<WaifuAssetCategory>
     val path: String
@@ -20,9 +23,11 @@ data class VisualMotivationAssetDefinition(
 
 data class AudibleMotivationAssetDefinition(
     override val path: String,
-    val soundFile: String,
     override val categories: Array<WaifuAssetCategory>
-) : AssetDefinition
+) : AssetDefinition {
+    val soundFilePath: Path
+    get() = Paths.get(path)
+}
 
 data class TextualMotivationAssetDefinition(
     override val path: String,

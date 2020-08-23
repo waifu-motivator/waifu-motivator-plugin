@@ -59,7 +59,7 @@ object VisualMotivationAssetProvider {
                     <img src='${visualAssetDefinition.imagePath}' alt='${visualAssetDefinition.imageAlt}'/>
                 </div>
             """.trimIndent(),
-            audibleAssetDefinition.soundFile,
+            audibleAssetDefinition.soundFilePath,
             arrayOf()
         )
 
