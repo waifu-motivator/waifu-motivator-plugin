@@ -34,6 +34,14 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JCheckBox enableMotivateMeSound;
 
+    private JTabbedPane idleEventTab;
+
+    private JCheckBox enableIdleNotificationCheckBox;
+
+    private JCheckBox enableIdleSoundCheckBox;
+
+    private JSpinner idleTimeoutSpinner;
+
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
     }
@@ -67,7 +75,18 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableUnitTesterMotivationSound.isSelected() != this.state.isUnitTesterMotivationSoundEnabled() ||
                 enableMotivateMe.isSelected() != this.state.isMotivateMeEnabled() ||
                 enableMotivateMeSound.isSelected() != this.state.isMotivateMeSoundEnabled() ||
+                enableIdleNotificationCheckBox.isSelected() != this.state.isIdleMotivationEnabled() ||
+                enableIdleSoundCheckBox.isSelected() != this.state.isIdleSoundEnabled() ||
+                getIdleTimeout() != this.state.getIdleTimout() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled();
+    }
+
+    private long getIdleTimeout() {
+        Object timeoutValue = idleTimeoutSpinner.getValue();
+        if(timeoutValue instanceof Long) {
+            return (Long)timeoutValue;
+        }
+        return -1L;
     }
 
     @Override
@@ -101,6 +120,9 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.enableStartupMotivationSound.setSelected( this.state.isStartupMotivationSoundEnabled() );
         this.enableUnitTesterMotivationSound.setSelected( this.state.isUnitTesterMotivationSoundEnabled() );
         this.enableMotivateMeSound.setSelected( this.state.isMotivateMeSoundEnabled() );
+        this.idleTimeoutSpinner.setValue( this.state.getIdleTimout() );
+        this.enableIdleNotificationCheckBox.setSelected( this.state.isIdleMotivationEnabled() );
+        this.enableIdleSoundCheckBox.setSelected( this.state.isIdleSoundEnabled() );
     }
 
 }
