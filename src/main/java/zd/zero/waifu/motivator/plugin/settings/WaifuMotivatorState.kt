@@ -1,10 +1,8 @@
 package zd.zero.waifu.motivator.plugin.settings
 
-import java.util.concurrent.TimeUnit
-
 class WaifuMotivatorState {
     companion object {
-        val DEFAULT_IDLE_TIMEOUT = TimeUnit.MILLISECONDS.convert(5L, TimeUnit.MINUTES)
+        const val DEFAULT_IDLE_TIMEOUT_IN_MINUTES: Long = 5L
     }
 
     var isWaifuOfTheDayEnabled = true
@@ -29,7 +27,7 @@ class WaifuMotivatorState {
 
     var isIdleSoundEnabled = true
 
-    var idleTimout = DEFAULT_IDLE_TIMEOUT
+    var idleTimoutInMinutes = DEFAULT_IDLE_TIMEOUT_IN_MINUTES
 
     var version = "v0.0.0"
 

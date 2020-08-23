@@ -11,7 +11,8 @@ import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory
 import zd.zero.waifu.motivator.plugin.settings.ThemeSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
-import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState.Companion.DEFAULT_IDLE_TIMEOUT
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState.Companion.DEFAULT_IDLE_TIMEOUT_IN_MINUTES
+import java.util.concurrent.TimeUnit
 
 class IdleEventListener : Runnable, Disposable {
     private val messageBus = ApplicationManager.getApplication().messageBus.connect()
@@ -21,14 +22,25 @@ class IdleEventListener : Runnable, Disposable {
         messageBus.subscribe(ThemeSettingsListener.THEME_SETTINGS_TOPIC, object : ThemeSettingsListener {
             override fun themeSettingsUpdated(themeSettings: WaifuMotivatorState) {
                 IdeEventQueue.getInstance().removeIdleListener(self)
-                IdeEventQueue.getInstance().addIdleListener(self, themeSettings.idleTimout.toInt())
+                IdeEventQueue.getInstance().addIdleListener(self,
+                    TimeUnit.MILLISECONDS.convert(
+                        themeSettings.idleTimoutInMinutes,
+                        TimeUnit.MINUTES
+                    ).toInt()
+                )
             }
         })
         IdeEventQueue.getInstance().addIdleListener(
             this,
-            WaifuMotivatorPluginState.getInstance().state?.idleTimout?.toInt() ?: DEFAULT_IDLE_TIMEOUT.toInt()
+            TimeUnit.MILLISECONDS.convert(
+                getCurrentTimoutInMinutes(),
+                TimeUnit.MINUTES
+            ).toInt()
         )
     }
+
+    private fun getCurrentTimoutInMinutes() =
+        WaifuMotivatorPluginState.getInstance().state?.idleTimoutInMinutes ?: DEFAULT_IDLE_TIMEOUT_IN_MINUTES
 
     override fun dispose() {
         messageBus.dispose()

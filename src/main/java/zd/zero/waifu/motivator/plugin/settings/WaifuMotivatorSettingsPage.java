@@ -78,7 +78,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableMotivateMeSound.isSelected() != this.state.isMotivateMeSoundEnabled() ||
                 enableIdleNotificationCheckBox.isSelected() != this.state.isIdleMotivationEnabled() ||
                 enableIdleSoundCheckBox.isSelected() != this.state.isIdleSoundEnabled() ||
-                getIdleTimeout() != this.state.getIdleTimout() ||
+                getIdleTimeout() != this.state.getIdleTimoutInMinutes() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled();
     }
 
@@ -89,7 +89,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         } else if (timeoutValue instanceof Integer) {
             return Long.valueOf( (Integer) timeoutValue );
         }
-        return WaifuMotivatorState.Companion.getDEFAULT_IDLE_TIMEOUT();
+        return WaifuMotivatorState.DEFAULT_IDLE_TIMEOUT_IN_MINUTES;
     }
 
     @Override
@@ -110,7 +110,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setSayonaraEnabled( enableSayonara.isSelected() );
         this.state.setIdleMotivationEnabled( enableIdleNotificationCheckBox.isSelected() );
         this.state.setIdleSoundEnabled( enableIdleSoundCheckBox.isSelected() );
-        this.state.setIdleTimout( getIdleTimeout() );
+        this.state.setIdleTimoutInMinutes( getIdleTimeout() );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
@@ -130,7 +130,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.enableStartupMotivationSound.setSelected( this.state.isStartupMotivationSoundEnabled() );
         this.enableUnitTesterMotivationSound.setSelected( this.state.isUnitTesterMotivationSoundEnabled() );
         this.enableMotivateMeSound.setSelected( this.state.isMotivateMeSoundEnabled() );
-        this.idleTimeoutSpinner.setValue( this.state.getIdleTimout() );
+        this.idleTimeoutSpinner.setValue( this.state.getIdleTimoutInMinutes() );
         this.enableIdleNotificationCheckBox.setSelected( this.state.isIdleMotivationEnabled() );
         this.enableIdleSoundCheckBox.setSelected( this.state.isIdleSoundEnabled() );
     }
