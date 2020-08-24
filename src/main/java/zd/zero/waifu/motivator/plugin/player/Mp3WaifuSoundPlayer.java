@@ -79,7 +79,6 @@ public final class Mp3WaifuSoundPlayer implements WaifuSoundPlayer {
         return new PlaybackListener() {
             @Override
             public void playbackFinished( PlaybackEvent evt ) {
-                super.playbackFinished( evt );
                 try {
                     soundStream.close();
                 } catch ( IOException e ) {
