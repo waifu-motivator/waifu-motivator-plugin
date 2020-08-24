@@ -116,8 +116,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
 
         ApplicationManager.getApplication().getMessageBus()
-            .syncPublisher( ThemeSettingsListener.Companion.getTHEME_SETTINGS_TOPIC() )
-            .themeSettingsUpdated( this.state );
+            .syncPublisher( PluginSettingsListener.Companion.getPLUGIN_SETTINGS_TOPIC() )
+            .settingsUpdated( this.state );
     }
 
     private void setFieldsFromState() {
