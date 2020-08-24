@@ -38,6 +38,7 @@ intellij {
     type System.getenv().getOrDefault("INTELLIJ_TYPE", "IC")
     println "Building for IntelliJ version: ${version}"
 
+    alternativeIdePath idePath
 }
 
 compileKotlin {
