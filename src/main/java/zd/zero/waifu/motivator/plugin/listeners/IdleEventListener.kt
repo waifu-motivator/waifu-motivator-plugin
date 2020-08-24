@@ -47,12 +47,18 @@ class IdleEventListener : Runnable, Disposable {
         IdeEventQueue.getInstance().removeIdleListener(this)
     }
 
+    private var isEventDisplayed = false
     override fun run() {
-        VisualMotivationFactory.constructMotivation(
-            ProjectManager.getInstance().defaultProject,
-            VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING),
-            createAlertConfiguration()
-        ).motivate()
+        if (isEventDisplayed.not()) {
+            isEventDisplayed = true
+            VisualMotivationFactory.constructMotivation(
+                ProjectManager.getInstance().defaultProject,
+                VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING),
+                createAlertConfiguration()
+            ).setListener {
+                isEventDisplayed = false
+            }.motivate()
+        }
     }
 
     private fun createAlertConfiguration(): AlertConfiguration {
