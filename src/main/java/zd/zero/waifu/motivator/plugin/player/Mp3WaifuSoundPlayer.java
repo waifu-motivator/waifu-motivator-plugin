@@ -7,6 +7,7 @@ import javazoom.jl.player.FactoryRegistry;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -65,22 +66,27 @@ public final class Mp3WaifuSoundPlayer implements WaifuSoundPlayer {
         try {
             audioDevice = FactoryRegistry.systemRegistry().createAudioDevice();
             player = new AdvancedPlayer( soundStream, audioDevice );
-            player.setPlayBackListener( new PlaybackListener() {
-                @Override
-                public void playbackFinished( PlaybackEvent evt ) {
-                    super.playbackFinished( evt );
-                    try {
-                        soundStream.close();
-                    } catch ( IOException e ) {
-                        e.printStackTrace();
-                    }
-                }
-            } );
+            player.setPlayBackListener( buildPlaybackListener( soundStream ) );
             runnableConsumer.accept( this::invokePlay );
         } catch ( Exception e ) {
             LOGGER.error( e.getMessage(), e );
             soundStream.close();
         }
+    }
+
+    @NotNull
+    private PlaybackListener buildPlaybackListener( InputStream soundStream ) {
+        return new PlaybackListener() {
+            @Override
+            public void playbackFinished( PlaybackEvent evt ) {
+                super.playbackFinished( evt );
+                try {
+                    soundStream.close();
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
     private void invokePlay() {

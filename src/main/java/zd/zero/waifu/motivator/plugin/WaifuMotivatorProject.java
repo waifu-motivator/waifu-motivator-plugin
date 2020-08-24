@@ -21,7 +21,6 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 import java.nio.file.Path;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 

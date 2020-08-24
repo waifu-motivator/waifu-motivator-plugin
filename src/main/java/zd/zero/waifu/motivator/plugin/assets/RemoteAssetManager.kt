@@ -21,11 +21,11 @@ abstract class RemoteAssetManager<T : AssetDefinition>(
             remoteAssets
         }
 
-    abstract fun applyAssetUrl(visualAsset: T, assetUrl: String): T
+    abstract fun applyAssetUrl(asset: T, assetUrl: String): T
 
-    fun resolveAsset(visualAsset: T): T {
-        val assetUrl = AssetManager.resolveAssetUrl(assetCategory, visualAsset.path)
-        return applyAssetUrl(visualAsset, assetUrl)
+    fun resolveAsset(asset: T): T {
+        val assetUrl = AssetManager.resolveAssetUrl(assetCategory, asset.path)
+        return applyAssetUrl(asset, assetUrl)
     }
 
     private fun initializeRemoteAssets(assetUrl: String): List<T> =
