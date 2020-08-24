@@ -78,7 +78,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableMotivateMeSound.isSelected() != this.state.isMotivateMeSoundEnabled() ||
                 enableIdleNotificationCheckBox.isSelected() != this.state.isIdleMotivationEnabled() ||
                 enableIdleSoundCheckBox.isSelected() != this.state.isIdleSoundEnabled() ||
-                getIdleTimeout() != this.state.getIdleTimoutInMinutes() ||
+                getIdleTimeout() != this.state.getIdleTimeoutInMinutes() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled();
     }
 
@@ -110,7 +110,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setSayonaraEnabled( enableSayonara.isSelected() );
         this.state.setIdleMotivationEnabled( enableIdleNotificationCheckBox.isSelected() );
         this.state.setIdleSoundEnabled( enableIdleSoundCheckBox.isSelected() );
-        this.state.setIdleTimoutInMinutes( getIdleTimeout() );
+        this.state.setIdleTimeoutInMinutes( getIdleTimeout() );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
@@ -130,7 +130,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.enableStartupMotivationSound.setSelected( this.state.isStartupMotivationSoundEnabled() );
         this.enableUnitTesterMotivationSound.setSelected( this.state.isUnitTesterMotivationSoundEnabled() );
         this.enableMotivateMeSound.setSelected( this.state.isMotivateMeSoundEnabled() );
-        this.idleTimeoutSpinner.setValue( this.state.getIdleTimoutInMinutes() );
+        this.idleTimeoutSpinner.setValue( this.state.getIdleTimeoutInMinutes() );
         this.enableIdleNotificationCheckBox.setSelected( this.state.isIdleMotivationEnabled() );
         this.enableIdleSoundCheckBox.setSelected( this.state.isIdleSoundEnabled() );
     }

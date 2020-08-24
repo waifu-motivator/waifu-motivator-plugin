@@ -24,7 +24,7 @@ class IdleEventListener : Runnable, Disposable {
                 IdeEventQueue.getInstance().removeIdleListener(self)
                 IdeEventQueue.getInstance().addIdleListener(self,
                     TimeUnit.MILLISECONDS.convert(
-                        newPluginState.idleTimoutInMinutes,
+                        newPluginState.idleTimeoutInMinutes,
                         TimeUnit.MINUTES
                     ).toInt()
                 )
@@ -40,7 +40,7 @@ class IdleEventListener : Runnable, Disposable {
     }
 
     private fun getCurrentTimoutInMinutes() =
-        WaifuMotivatorPluginState.getInstance().state?.idleTimoutInMinutes ?: DEFAULT_IDLE_TIMEOUT_IN_MINUTES
+        WaifuMotivatorPluginState.getInstance().state?.idleTimeoutInMinutes ?: DEFAULT_IDLE_TIMEOUT_IN_MINUTES
 
     override fun dispose() {
         messageBus.dispose()

@@ -27,7 +27,7 @@ class WaifuMotivatorState {
 
     var isIdleSoundEnabled = true
 
-    var idleTimoutInMinutes = DEFAULT_IDLE_TIMEOUT_IN_MINUTES
+    var idleTimeoutInMinutes = DEFAULT_IDLE_TIMEOUT_IN_MINUTES
 
     var version = "v0.0.0"
 
