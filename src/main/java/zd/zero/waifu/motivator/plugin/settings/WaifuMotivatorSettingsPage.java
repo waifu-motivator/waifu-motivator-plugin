@@ -62,6 +62,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     @Nullable
     @Override
     public JComponent createComponent() {
+        idleTimeoutSpinner.setModel( new SpinnerNumberModel( 1, 1, null, 1 ) );
         this.setFieldsFromState();
         return rootPanel;
     }
