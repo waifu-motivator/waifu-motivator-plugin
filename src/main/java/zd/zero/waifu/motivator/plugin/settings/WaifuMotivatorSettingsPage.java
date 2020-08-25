@@ -1,6 +1,7 @@
 package zd.zero.waifu.motivator.plugin.settings;
 
 import com.intellij.ide.GeneralSettings;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
 import org.jetbrains.annotations.Nls;
@@ -34,6 +35,14 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JCheckBox enableMotivateMeSound;
 
+    private JTabbedPane idleEventTab;
+
+    private JCheckBox enableIdleNotificationCheckBox;
+
+    private JCheckBox enableIdleSoundCheckBox;
+
+    private JSpinner idleTimeoutSpinner;
+
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
     }
@@ -53,6 +62,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     @Nullable
     @Override
     public JComponent createComponent() {
+        idleTimeoutSpinner.setModel( new SpinnerNumberModel( 1, 1, null, 1 ) );
         this.setFieldsFromState();
         return rootPanel;
     }
@@ -67,7 +77,20 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableUnitTesterMotivationSound.isSelected() != this.state.isUnitTesterMotivationSoundEnabled() ||
                 enableMotivateMe.isSelected() != this.state.isMotivateMeEnabled() ||
                 enableMotivateMeSound.isSelected() != this.state.isMotivateMeSoundEnabled() ||
+                enableIdleNotificationCheckBox.isSelected() != this.state.isIdleMotivationEnabled() ||
+                enableIdleSoundCheckBox.isSelected() != this.state.isIdleSoundEnabled() ||
+                getIdleTimeout() != this.state.getIdleTimeoutInMinutes() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled();
+    }
+
+    private long getIdleTimeout() {
+        Object timeoutValue = idleTimeoutSpinner.getValue();
+        if(timeoutValue instanceof Long) {
+            return (Long)timeoutValue;
+        } else if (timeoutValue instanceof Integer) {
+            return Long.valueOf( (Integer) timeoutValue );
+        }
+        return WaifuMotivatorState.DEFAULT_IDLE_TIMEOUT_IN_MINUTES;
     }
 
     @Override
@@ -86,9 +109,16 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setMotivateMeEnabled( enableMotivateMe.isSelected() );
         this.state.setMotivateMeSoundEnabled( enableMotivateMeSound.isSelected() );
         this.state.setSayonaraEnabled( enableSayonara.isSelected() );
+        this.state.setIdleMotivationEnabled( enableIdleNotificationCheckBox.isSelected() );
+        this.state.setIdleSoundEnabled( enableIdleSoundCheckBox.isSelected() );
+        this.state.setIdleTimeoutInMinutes( getIdleTimeout() );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
+
+        ApplicationManager.getApplication().getMessageBus()
+            .syncPublisher( PluginSettingsListener.Companion.getPLUGIN_SETTINGS_TOPIC() )
+            .settingsUpdated( this.state );
     }
 
     private void setFieldsFromState() {
@@ -101,6 +131,9 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.enableStartupMotivationSound.setSelected( this.state.isStartupMotivationSoundEnabled() );
         this.enableUnitTesterMotivationSound.setSelected( this.state.isUnitTesterMotivationSoundEnabled() );
         this.enableMotivateMeSound.setSelected( this.state.isMotivateMeSoundEnabled() );
+        this.idleTimeoutSpinner.setValue( this.state.getIdleTimeoutInMinutes() );
+        this.enableIdleNotificationCheckBox.setSelected( this.state.isIdleMotivationEnabled() );
+        this.enableIdleSoundCheckBox.setSelected( this.state.isIdleSoundEnabled() );
     }
 
 }

@@ -27,6 +27,7 @@ object VisualMotivationAssetProvider {
             WaifuAssetCategory.DISAPPOINTMENT,
             WaifuAssetCategory.SHOCKED,
             WaifuAssetCategory.SMUG,
+            WaifuAssetCategory.WAITING,
             WaifuAssetCategory.WELCOMING
             -> pickRandomAssetByCategory(
                 category

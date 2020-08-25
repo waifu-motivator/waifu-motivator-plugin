@@ -19,4 +19,6 @@ public interface WaifuMotivation {
     void onAlertClosed( Notification notification );
 
     void motivate();
+
+    WaifuMotivation setListener( MotivationListener motivationListener);
 }
