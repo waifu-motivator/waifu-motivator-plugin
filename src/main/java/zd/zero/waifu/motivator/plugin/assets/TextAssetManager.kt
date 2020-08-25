@@ -8,10 +8,10 @@ object TextAssetManager : RemoteAssetManager<TextualMotivationAssetDefinition>(
     emptyList()
 ) {
     override fun applyAssetUrl(
-        visualAsset: TextualMotivationAssetDefinition,
+        asset: TextualMotivationAssetDefinition,
         assetUrl: String
     ): TextualMotivationAssetDefinition =
-        visualAsset.copy(path = assetUrl)
+        asset.copy(path = assetUrl)
 
     override fun convertToDefinitions(defJson: String): List<TextualMotivationAssetDefinition> =
         Gson().fromJson<List<TextualMotivationAssetDefinition>>(
