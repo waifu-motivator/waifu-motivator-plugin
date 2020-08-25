@@ -12,6 +12,7 @@ import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.assets.AudibleAssetDefinitionService;
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
+import zd.zero.waifu.motivator.plugin.listeners.IdleEventListener;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
 import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
 import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
@@ -32,6 +33,8 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     private WaifuUnitTester unitTestListener;
 
+    private IdleEventListener idleEventListener;
+
     @Override
     public void projectOpened( @NotNull Project projectOpened ) {
         if ( this.project != null ) return;
@@ -39,6 +42,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
         this.project = projectOpened;
         this.pluginState = WaifuMotivatorPluginState.getPluginState();
         this.unitTestListener = WaifuUnitTester.newInstance( projectOpened );
+        this.idleEventListener = new IdleEventListener();
 
         updatePlatformStartupConfig();
         initializeListeners();
@@ -59,6 +63,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     @Override
     public void dispose() {
         this.unitTestListener.stop();
+        this.idleEventListener.dispose();
     }
 
     private void initializeListeners() {
