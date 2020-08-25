@@ -1,49 +1,44 @@
 package zd.zero.waifu.motivator.plugin.assets
 
-import kotlin.random.Random
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.net.URI
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
-object TextAssetDefinitionService {
+object TextAssetDefinitionService : RemoteAssetDefinitionService<TextualMotivationAssetDefinition>(
+    TextAssetManager
+) {
+    private val gson = Gson()
+    private val categoryToTextDefinitions: MutableMap<WaifuAssetCategory, List<TextualMotivationAsset>> =
+        ConcurrentHashMap()
 
-    private val random = Random(System.currentTimeMillis())
-
-    private val assetDefinitions: List<TextualMotivationAssetDefinition> = listOf(
-        buildAssetDefinitions(WaifuAssetCategory.CELEBRATION,
-            "Excellent!", "You did it!", "Way to go!", "Amazing work!", "You're the best!"),
-        buildAssetDefinitions(WaifuAssetCategory.DISAPPOINTMENT,
-            "Wwwwwwaaaaaaaaaaaaaaaaaaaaah", "OH MY GAH!",
-            "Oh No!", "How could you do this?", "Why?", "Why did you do that??"
-        ),
-        buildAssetDefinitions(WaifuAssetCategory.SHOCKED,
-            "Nani?!", "What the?!", "Oh No!", "Whyyy???", "The horror!",
-            "OH MY GAH!!", "How could this happen?!", "Why did you do that??",
-            "Hurry quick fix it!"
-        ),
-        buildAssetDefinitions(WaifuAssetCategory.SMUG,
-            "Ohhhh yeaaahhh!!", "You meant to do that!",
-            "You're a pretty big deal..", "Ain't nothing but a thing.",
-            "Too easy!", "Make it more difficult.",
-            "Awww yessss!!", "Nothing but skill!", "Get rekt, problems.", "They call that talent."),
-        buildAssetDefinitions(WaifuAssetCategory.WAITING,
-            "Where did you go?", "I'll be here.",
-            "I'm bored", "Can you come back?", "The code doesn't write itself",
-            "ι(´Д｀)ﾉ"
-        ),
-        buildAssetDefinitions(WaifuAssetCategory.WELCOMING,
-            "Heyyy!", "Welcome Back!", "Nice to see you again!",
-            "What's up?!", "Hiya!"
-        )
-    ).flatten()
-
-    private fun buildAssetDefinitions(
-        category: WaifuAssetCategory,
-        vararg assets: String
-    ) = assets.map {
-        TextualMotivationAssetDefinition(
-            it, it, it, arrayOf(category)
-        )
+    fun pickRandomAssetByCategory(waifuAssetCategory: WaifuAssetCategory): TextualMotivationAsset {
+        val listOfAssets = getListOfAssets(waifuAssetCategory)
+        return listOfAssets.random(random)
     }
 
-    fun getRandomAssetByCategory(waifuAssetCategory: WaifuAssetCategory): TextualMotivationAssetDefinition =
-        assetDefinitions.filter { it.categories.contains(waifuAssetCategory) }
-            .random(random)
+    private fun getListOfAssets(waifuAssetCategory: WaifuAssetCategory): List<TextualMotivationAsset> =
+        if (categoryToTextDefinitions.containsKey(waifuAssetCategory)) {
+            categoryToTextDefinitions[waifuAssetCategory]!!
+        } else {
+            remoteAssetManager.supplyAssetDefinitions().stream()
+                .filter { it.categories.contains(waifuAssetCategory) }
+                .findFirst()
+                .map {
+                    Files.newBufferedReader(
+                        Paths.get(URI(remoteAssetManager.resolveAsset(it).path))
+                    ).use { reader ->
+                        gson.fromJson<List<TextualMotivationAsset>>(
+                            reader,
+                            object : TypeToken<List<TextualMotivationAsset>>() {}.type
+                        )
+                    }
+                }
+                .orElseGet {
+                    Collections.emptyList<TextualMotivationAsset>()
+                }
+        }
 }

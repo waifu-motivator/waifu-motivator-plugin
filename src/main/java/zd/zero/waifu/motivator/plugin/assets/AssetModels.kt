@@ -32,7 +32,9 @@ data class AudibleMotivationAssetDefinition(
 
 data class TextualMotivationAssetDefinition(
     override val path: String,
-    val title: String,
-    val message: String,
     override val categories: Array<WaifuAssetCategory>
 ) : AssetDefinition
+
+data class TextualMotivationAsset(
+    val title: String
+)
