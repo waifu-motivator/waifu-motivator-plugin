@@ -34,7 +34,7 @@ object TextAssetDefinitionService {
         vararg assets: String
     ) = assets.map {
         TextualMotivationAssetDefinition(
-            it, it, arrayOf(category)
+            it, it, it, arrayOf(category)
         )
     }
 

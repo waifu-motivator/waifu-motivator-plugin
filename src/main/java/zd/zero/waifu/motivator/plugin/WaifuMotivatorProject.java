@@ -9,6 +9,7 @@ import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.startup.StartupManager;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
+import zd.zero.waifu.motivator.plugin.assets.AudibleAssetDefinitionService;
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
@@ -19,7 +20,7 @@ import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.nio.file.Path;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
@@ -49,9 +50,10 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     public void projectClosing( @NotNull Project project ) {
         if ( !pluginState.isSayonaraEnabled() || isMultipleProjectsOpened() ) return;
 
-        final String[] sayonara = { "ara_ara_sayonara.wav", "sayonara_bye_bye.wav", "sayonara_senpai.wav" };
-        String file = sayonara[ThreadLocalRandom.current().nextInt( sayonara.length )];
-        WaifuSoundPlayerFactory.createPlayer( file ).playAndWait();
+        Path soundFilePath = AudibleAssetDefinitionService.INSTANCE.getRandomAssetByCategory(
+            WaifuAssetCategory.DEPARTURE
+        ).getSoundFilePath();
+        WaifuSoundPlayerFactory.createPlayer( soundFilePath ).playAndWait();
     }
 
     @Override

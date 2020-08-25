@@ -1,12 +1,11 @@
 package zd.zero.waifu.motivator.plugin.assets
 
-import com.google.gson.annotations.SerializedName
 import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory
+import java.nio.file.Path
 
 data class MotivationAsset(
     val title: String,
     val message: String,
-    @SerializedName("sound")
-    val soundFileName: String,
+    val soundFilePath: Path,
     val categories: Array<WaifuMotivatorAlertAssetCategory>
 )

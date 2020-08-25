@@ -6,8 +6,6 @@ public final class WaifuMotivator {
 
     public static final String PLUGIN_NAME = "Waifu Motivator";
 
-    public static final String SOUND_DIR = "sound/";
-
     private WaifuMotivator() {
         throw new AssertionError( "Never instantiate." );
     }
