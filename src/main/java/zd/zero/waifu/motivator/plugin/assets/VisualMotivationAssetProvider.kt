@@ -43,6 +43,7 @@ object VisualMotivationAssetProvider {
     ): MotivationAsset =
         createAssetByCategory(categories.random(random))
 
+    // todo: what do when no local assets of this category exist for a specific asset??
     private fun pickRandomAssetByCategory(category: WaifuAssetCategory): MotivationAsset =
         constructMotivation(
             TextAssetService.pickRandomAssetByCategory(category),

@@ -34,16 +34,16 @@ object AssetManager {
      * Will return a resolvable URL that can be used to reference an asset.
      * If the asset was able to be downloaded on the local machine it will return a
      * file:// url to the local asset. If it was not able to get the asset then it
-     * will return an https:// url to the remote asset.
+     * will return empty if the asset is not available locally.
      */
-    fun resolveAssetUrl(assetCategory: AssetCategory, assetPath: String): String {
+    fun resolveAssetUrl(assetCategory: AssetCategory, assetPath: String): Optional<String> {
         val remoteAssetUrl = constructRemoteAssetUrl(
             assetCategory, assetPath
         )
         return constructLocalAssetPath(assetCategory, assetPath)
             .flatMap {
                 resolveTheAssetUrl(it, remoteAssetUrl)
-            }.orElse(remoteAssetUrl)
+            }
     }
 
     private fun constructRemoteAssetUrl(
@@ -52,10 +52,12 @@ object AssetManager {
     ): String = "$ASSETS_SOURCE/${assetCategory.category}/$assetPath"
 
     private fun resolveTheAssetUrl(localAssetPath: Path, remoteAssetUrl: String): Optional<String> =
-        if (hasAssetChanged(localAssetPath, remoteAssetUrl)) {
-            downloadAndGetAssetUrl(localAssetPath, remoteAssetUrl)
-        } else {
-            localAssetPath.toUri().toString().toOptional()
+        when {
+            hasAssetChanged(localAssetPath, remoteAssetUrl) ->
+                downloadAndGetAssetUrl(localAssetPath, remoteAssetUrl)
+            Files.exists(localAssetPath) ->
+                localAssetPath.toUri().toString().toOptional()
+            else -> Optional.empty()
         }
 
     private fun constructLocalAssetPath(

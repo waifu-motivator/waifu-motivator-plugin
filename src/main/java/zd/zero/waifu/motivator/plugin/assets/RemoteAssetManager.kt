@@ -1,46 +1,52 @@
 package zd.zero.waifu.motivator.plugin.assets
 
-import zd.zero.waifu.motivator.plugin.tools.RestClient
+import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.*
 import java.util.Optional.ofNullable
 
 abstract class RemoteAssetManager<T : AssetDefinition>(
-    private val assetCategory: AssetCategory,
-    private val backupAssets: List<T>
+    private val assetCategory: AssetCategory
 ) {
     private lateinit var remoteAssets: List<T>
 
+    init {
+        AssetManager.resolveAssetUrl(assetCategory, "assets.json")
+            .flatMap { assetUrl -> initializeRemoteAssets(assetUrl) }
+            .doOrElse({
+                remoteAssets = it
+            }) {
+                // The plugin cannot work if there is not asset metadata locally :(
+                // todo: let user know in bad state....
+            }
+    }
+
     fun supplyAssetDefinitions(): List<T> =
-        if (this::remoteAssets.isInitialized) {
-            remoteAssets
-        } else {
-            val assetUrl = AssetManager.resolveAssetUrl(assetCategory, "assets.json")
-            remoteAssets = initializeRemoteAssets(assetUrl)
-            remoteAssets
-        }
+        remoteAssets
+
+    fun supplyLocalAssetDefinitions(): List<T> =
+        remoteAssets
 
     abstract fun applyAssetUrl(asset: T, assetUrl: String): T
 
-    fun resolveAsset(asset: T): T {
-        val assetUrl = AssetManager.resolveAssetUrl(assetCategory, asset.path)
-        return applyAssetUrl(asset, assetUrl)
-    }
+    fun resolveAsset(asset: T): Optional<T> =
+        AssetManager.resolveAssetUrl(assetCategory, asset.path)
+            .map { assetUrl -> applyAssetUrl(asset, assetUrl) }
 
-    private fun initializeRemoteAssets(assetUrl: String): List<T> =
+    private fun initializeRemoteAssets(assetUrl: String): Optional<List<T>> =
         try {
             if (assetUrl.startsWith("file://")) {
                 readLocalFile(assetUrl)
             } else {
-                RestClient.performGet(assetUrl)
+                Optional.empty()
             }.map {
                 convertToDefinitions(it)
-            }.orElseGet {
-                backupAssets
             }
         } catch (e: Throwable) {
-            backupAssets
+            // todo: log error
+            Optional.empty()
         }
 
     private fun readLocalFile(assetUrl: String) =

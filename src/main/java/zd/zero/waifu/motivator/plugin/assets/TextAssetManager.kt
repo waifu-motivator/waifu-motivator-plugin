@@ -4,8 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 object TextAssetManager : RemoteAssetManager<TextualMotivationAssetDefinition>(
-        AssetCategory.TEXT,
-    emptyList()
+        AssetCategory.TEXT
 ) {
     override fun applyAssetUrl(
         asset: TextualMotivationAssetDefinition,

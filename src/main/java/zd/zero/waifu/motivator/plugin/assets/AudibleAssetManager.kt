@@ -4,8 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 object AudibleAssetManager : RemoteAssetManager<AudibleMotivationAssetDefinition>(
-    AssetCategory.AUDIBLE,
-    emptyList()
+    AssetCategory.AUDIBLE
 ) {
     override fun applyAssetUrl(
         visualAsset: AudibleMotivationAssetDefinition,

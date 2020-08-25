@@ -7,10 +7,18 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition>(
 ) {
     private val random = Random(System.currentTimeMillis())
 
-    fun getRandomAssetByCategory(waifuAssetCategory: WaifuAssetCategory): T =
-        remoteAssetManager.resolveAsset(
-            remoteAssetManager.supplyAssetDefinitions()
-                .filter { it.categories.contains(waifuAssetCategory) }
-                .random(random)
-        )
+    fun getRandomAssetByCategory(waifuAssetCategory: WaifuAssetCategory): T {
+        return remoteAssetManager.resolveAsset(
+            pickRandomAsset(remoteAssetManager.supplyAssetDefinitions(), waifuAssetCategory)
+        ).orElseGet {
+            pickRandomAsset(remoteAssetManager.supplyLocalAssetDefinitions(), waifuAssetCategory)
+        }
+    }
+
+    // todo: handle empty list better.
+    private fun pickRandomAsset(supplyLocalAssetDefinitions: List<T>, waifuAssetCategory: WaifuAssetCategory): T {
+        return supplyLocalAssetDefinitions
+            .filter { it.categories.contains(waifuAssetCategory) }
+            .random(random)
+    }
 }
