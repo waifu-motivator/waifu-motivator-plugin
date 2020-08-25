@@ -43,7 +43,7 @@ object VisualMotivationAssetProvider {
 
     private fun pickRandomAssetByCategory(category: WaifuAssetCategory): MotivationAsset =
         constructMotivation(
-            TextAssetDefinitionService.pickRandomAssetByCategory(category),
+            TextAssetService.pickRandomAssetByCategory(category),
             VisualAssetDefinitionService.getRandomAssetByCategory(category),
             AudibleAssetDefinitionService.getRandomAssetByCategory(category)
         )
