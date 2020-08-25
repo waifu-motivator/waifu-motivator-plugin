@@ -2,6 +2,7 @@ package zd.zero.waifu.motivator.plugin.player;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -11,9 +12,12 @@ public final class WaifuSoundPlayerFactory {
         throw new AssertionError( "Never instantiate." );
     }
 
-    public static WaifuSoundPlayer createPlayer( String fileName ) {
-        String extension = Optional.ofNullable( fileName ).filter( f -> f.contains( "." ) )
-                .map( f -> f.substring( fileName.lastIndexOf( '.' ) + 1 ) ).orElse( "" );
+    public static WaifuSoundPlayer createPlayer( Path fileName ) {
+        String extension = Optional.ofNullable( fileName )
+            .map( Path::getFileName )
+            .map( String::valueOf )
+            .filter( f -> f.contains( "." ) )
+            .map( f -> f.substring( f.lastIndexOf( '.' ) + 1 ) ).orElse( "" );
 
         Optional<SupportedFile> supportedFile = SupportedFile.ofExtension( extension );
         if ( supportedFile.isPresent() ) {
@@ -45,8 +49,8 @@ public final class WaifuSoundPlayerFactory {
             if ( StringUtils.isBlank( ext ) ) return Optional.empty();
 
             return Stream.of( SupportedFile.values() )
-                    .filter( f -> Stream.of( f.extensions ).anyMatch( x -> x.equalsIgnoreCase( ext ) ) )
-                    .findFirst();
+                .filter( f -> Stream.of( f.extensions ).anyMatch( x -> x.equalsIgnoreCase( ext ) ) )
+                .findFirst();
         }
 
     }

@@ -14,7 +14,7 @@ object VisualMotivationFactory : WaifuMotivationFactory {
     ): WaifuMotivation =
         VisualMotivation(
             VisualWaifuNotification(motivation, project),
-            WaifuSoundPlayerFactory.createPlayer(motivation.soundFileName),
+            WaifuSoundPlayerFactory.createPlayer(motivation.soundFilePath),
             config
         )
 }

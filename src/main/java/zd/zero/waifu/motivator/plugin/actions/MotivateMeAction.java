@@ -3,13 +3,15 @@ package zd.zero.waifu.motivator.plugin.actions;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
-import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
-import zd.zero.waifu.motivator.plugin.motivation.TextualMotivationFactory;
+import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
+import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
+import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
 import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
+
+import java.util.Objects;
 
 public class MotivateMeAction extends AnAction {
 
@@ -22,8 +24,11 @@ public class MotivateMeAction extends AnAction {
             pluginState.isMotivateMeEnabled(),
             pluginState.isMotivateMeSoundEnabled() );
 
-        WaifuMotivation waifuMotivation = TextualMotivationFactory.getInstance().constructMotivation( e.getProject(),
-                AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ), config );
+        WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
+            Objects.requireNonNull( e.getProject() ),
+            VisualMotivationAssetProvider.INSTANCE.createAssetByCategory( WaifuAssetCategory.CELEBRATION),
+            config
+        );
         waifuMotivation.motivate();
     }
 
