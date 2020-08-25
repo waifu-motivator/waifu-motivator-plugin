@@ -8,8 +8,8 @@ object TextAssetManager : RemoteAssetManager<TextualMotivationAssetDefinition>(
     emptyList()
 ) {
     override fun applyAssetUrl(
-            visualAsset: TextualMotivationAssetDefinition,
-            assetUrl: String
+        visualAsset: TextualMotivationAssetDefinition,
+        assetUrl: String
     ): TextualMotivationAssetDefinition =
         visualAsset.copy(path = assetUrl)
 
