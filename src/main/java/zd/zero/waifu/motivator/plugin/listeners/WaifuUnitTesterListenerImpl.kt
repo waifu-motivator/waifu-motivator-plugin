@@ -16,6 +16,7 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
 
     override fun onUnitTestPassed() {
         // todo: motivation, encouragement
+        // todo: try a couple times then give up
         pickAssetFromCategories(
             WaifuAssetCategory.CELEBRATION,
             *getExtraTestPassCategories()
@@ -36,6 +37,7 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
 
     override fun onUnitTestFailed() {
         // todo: motivation, encouragement
+        // todo: try a couple times then give up
         pickAssetFromCategories(
             WaifuAssetCategory.DISAPPOINTMENT,
             WaifuAssetCategory.SHOCKED

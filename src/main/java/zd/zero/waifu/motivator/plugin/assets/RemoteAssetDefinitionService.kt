@@ -9,8 +9,8 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
 ) {
     private val random = Random(System.currentTimeMillis())
 
-    fun getRandomAssetByCategory(waifuAssetCategory: WaifuAssetCategory): Optional<U> {
-        return remoteAssetManager.resolveAsset(
+    fun getRandomAssetByCategory(waifuAssetCategory: WaifuAssetCategory): Optional<U> =
+        remoteAssetManager.resolveAsset(
             pickRandomAsset(remoteAssetManager.supplyAssetDefinitions(), waifuAssetCategory)
         ).map { it.toOptional() } // todo: replace with or when supporting only JRE 11+
             .orElseGet {
@@ -18,7 +18,6 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
                     pickRandomAsset(remoteAssetManager.supplyLocalAssetDefinitions(), waifuAssetCategory)
                 )
             }
-    }
 
     // todo: handle empty list better.
     private fun pickRandomAsset(supplyLocalAssetDefinitions: List<T>, waifuAssetCategory: WaifuAssetCategory): T {

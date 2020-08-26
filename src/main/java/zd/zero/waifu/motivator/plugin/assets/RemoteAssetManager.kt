@@ -26,6 +26,7 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
     fun supplyAssetDefinitions(): List<T> =
         remoteAssets
 
+    // todo: this
     fun supplyLocalAssetDefinitions(): List<T> =
         remoteAssets
 
