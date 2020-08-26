@@ -12,6 +12,7 @@ import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState.Companion.DEFAULT_IDLE_TIMEOUT_IN_MINUTES
+import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import java.util.concurrent.TimeUnit
 
 class IdleEventListener : Runnable, Disposable {
@@ -50,14 +51,19 @@ class IdleEventListener : Runnable, Disposable {
     private var isEventDisplayed = false
     override fun run() {
         if (isEventDisplayed.not()) {
-            isEventDisplayed = true
-            VisualMotivationFactory.constructMotivation(
-                ProjectManager.getInstance().defaultProject,
-                VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING),
-                createAlertConfiguration()
-            ).setListener {
-                isEventDisplayed = false
-            }.motivate()
+            VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING)
+                .doOrElse({ asset ->
+                    isEventDisplayed = true
+                    VisualMotivationFactory.constructMotivation(
+                        ProjectManager.getInstance().defaultProject,
+                        asset,
+                        createAlertConfiguration()
+                    ).setListener {
+                        isEventDisplayed = false
+                    }.motivate()
+                }) {
+                    // todo: tell user that this feature is unavailable offline.
+                }
         }
     }
 

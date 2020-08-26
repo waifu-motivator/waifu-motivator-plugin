@@ -1,13 +1,13 @@
 package zd.zero.waifu.motivator.plugin.assets
 
-import java.net.URI
 import java.nio.file.Path
-import java.nio.file.Paths
 
 interface AssetDefinition {
-    val categories: Array<WaifuAssetCategory>
+    val categories: List<WaifuAssetCategory>
     val path: String
 }
+
+interface Asset
 
 data class ImageDimension(
     val width: Int,
@@ -19,21 +19,32 @@ data class VisualMotivationAssetDefinition(
     override val path: String,
     val imageAlt: String,
     val imageDimensions: ImageDimension,
-    override val categories: Array<WaifuAssetCategory>
+    override val categories: List<WaifuAssetCategory>
 ) : AssetDefinition
+
+data class VisualMotivationAsset(
+    val filePath: String,
+    val imageAlt: String,
+    val imageDimensions: ImageDimension
+) : Asset
 
 data class AudibleMotivationAssetDefinition(
     override val path: String,
-    override val categories: Array<WaifuAssetCategory>
-) : AssetDefinition {
+    override val categories: List<WaifuAssetCategory>
+) : AssetDefinition
+
+data class AudibleMotivationAsset(
     val soundFilePath: Path
-    get() = Paths.get(URI(path))
-}
+) : Asset
 
 data class TextualMotivationAssetDefinition(
     override val path: String,
-    override val categories: Array<WaifuAssetCategory>
+    override val categories: List<WaifuAssetCategory>
 ) : AssetDefinition
+
+data class TextualMotivationAssetPackage(
+    val packagePath: Path
+) : Asset
 
 data class TextualMotivationAsset(
     val title: String

@@ -93,19 +93,13 @@ object AssetManager {
                 localAssetPath.toUri().toString().toOptional()
             } else {
                 log.warn("Asset request for $remoteAssetUrl responded with $remoteAssetResponse")
-                getFallbackURL(localAssetPath, remoteAssetUrl)
+                Optional.empty()
             }
         } catch (e: Throwable) {
             log.error("Unable to get remote remote asset $remoteAssetUrl for raisins", e)
-            getFallbackURL(localAssetPath, remoteAssetUrl)
+            Optional.empty()
         }
     }
-
-    private fun getFallbackURL(localAssetPath: Path, remoteAssetPath: String) =
-        when {
-            Files.exists(localAssetPath) -> localAssetPath.toUri().toString()
-            else -> remoteAssetPath
-        }.toOptional()
 
     private fun createGetRequest(remoteUrl: String): HttpGet {
         val remoteAssetRequest = HttpGet(remoteUrl)

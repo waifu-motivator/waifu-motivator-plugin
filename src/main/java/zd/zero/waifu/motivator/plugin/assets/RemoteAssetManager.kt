@@ -7,7 +7,7 @@ import java.nio.file.Paths
 import java.util.*
 import java.util.Optional.ofNullable
 
-abstract class RemoteAssetManager<T : AssetDefinition>(
+abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
     private val assetCategory: AssetCategory
 ) {
     private lateinit var remoteAssets: List<T>
@@ -29,21 +29,18 @@ abstract class RemoteAssetManager<T : AssetDefinition>(
     fun supplyLocalAssetDefinitions(): List<T> =
         remoteAssets
 
-    abstract fun applyAssetUrl(asset: T, assetUrl: String): T
+    abstract fun convertToAsset(asset: T, assetUrl: String): U
 
-    fun resolveAsset(asset: T): Optional<T> =
+    fun resolveAsset(asset: T): Optional<U> =
         AssetManager.resolveAssetUrl(assetCategory, asset.path)
-            .map { assetUrl -> applyAssetUrl(asset, assetUrl) }
+            .map { assetUrl -> convertToAsset(asset, assetUrl) }
 
     private fun initializeRemoteAssets(assetUrl: String): Optional<List<T>> =
         try {
-            if (assetUrl.startsWith("file://")) {
-                readLocalFile(assetUrl)
-            } else {
-                Optional.empty()
-            }.map {
-                convertToDefinitions(it)
-            }
+            readLocalFile(assetUrl)
+                .map {
+                    convertToDefinitions(it)
+                }
         } catch (e: Throwable) {
             // todo: log error
             Optional.empty()

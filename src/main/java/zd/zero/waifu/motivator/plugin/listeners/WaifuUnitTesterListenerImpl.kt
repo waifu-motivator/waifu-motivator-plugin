@@ -15,14 +15,16 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
     private var lastStatus = TestStatus.UNKNOWN
 
     override fun onUnitTestPassed() {
-        val successMotivation = constructMotivation(project,
-            // todo: motivation, encouragement
-            pickAssetFromCategories(
-                WaifuAssetCategory.CELEBRATION,
-                *getExtraTestPassCategories()
-            ),
-            createAlertConfiguration())
-        successMotivation.motivate()
+        // todo: motivation, encouragement
+        pickAssetFromCategories(
+            WaifuAssetCategory.CELEBRATION,
+            *getExtraTestPassCategories()
+        ).ifPresent { asset ->
+            constructMotivation(project,
+                asset,
+                createAlertConfiguration()).motivate()
+        }
+
         lastStatus = TestStatus.PASS
     }
 
@@ -33,14 +35,16 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
         }
 
     override fun onUnitTestFailed() {
-        val keepGoingMotivation = constructMotivation(project,
-            // todo: motivation, encouragement
-            pickAssetFromCategories(
-                WaifuAssetCategory.DISAPPOINTMENT,
-                WaifuAssetCategory.SHOCKED
-            ),
-            createAlertConfiguration())
-        keepGoingMotivation.motivate()
+        // todo: motivation, encouragement
+        pickAssetFromCategories(
+            WaifuAssetCategory.DISAPPOINTMENT,
+            WaifuAssetCategory.SHOCKED
+        ).ifPresent { asset ->
+            constructMotivation(project,
+                asset,
+                createAlertConfiguration()).motivate()
+        }
+
         lastStatus = TestStatus.FAIL
     }
 

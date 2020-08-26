@@ -1,5 +1,7 @@
 package zd.zero.waifu.motivator.plugin.assets
 
+import zd.zero.waifu.motivator.plugin.tools.allOf
+import java.util.*
 import kotlin.random.Random
 
 enum class WaifuAssetCategory {
@@ -22,7 +24,7 @@ object VisualMotivationAssetProvider {
 
     fun createAssetByCategory(
         category: WaifuAssetCategory
-    ): MotivationAsset {
+    ): Optional<MotivationAsset> {
         return when (category) {
             WaifuAssetCategory.CELEBRATION,
             WaifuAssetCategory.DISAPPOINTMENT,
@@ -40,27 +42,28 @@ object VisualMotivationAssetProvider {
 
     fun pickAssetFromCategories(
         vararg categories: WaifuAssetCategory
-    ): MotivationAsset =
+    ): Optional<MotivationAsset> =
         createAssetByCategory(categories.random(random))
 
-    // todo: what do when no local assets of this category exist for a specific asset??
-    private fun pickRandomAssetByCategory(category: WaifuAssetCategory): MotivationAsset =
-        constructMotivation(
+    private fun pickRandomAssetByCategory(category: WaifuAssetCategory): Optional<MotivationAsset> =
+        allOf(
             TextAssetService.pickRandomAssetByCategory(category),
             VisualAssetDefinitionService.getRandomAssetByCategory(category),
             AudibleAssetDefinitionService.getRandomAssetByCategory(category)
-        )
+        ).map {
+            constructMotivation(it.first, it.second, it.third)
+        }
 
     private fun constructMotivation(
         textualAssetDefinition: TextualMotivationAsset,
-        visualAssetDefinition: VisualMotivationAssetDefinition,
-        audibleAssetDefinition: AudibleMotivationAssetDefinition
+        visualAssetDefinition: VisualMotivationAsset,
+        audibleAssetDefinition: AudibleMotivationAsset
     ): MotivationAsset =
         MotivationAsset(
             "&nbsp;&nbsp;&nbsp;${textualAssetDefinition.title}",
             """
                 <div style="margin: 5px 5px 5px 10px;${getExtraStyles(visualAssetDefinition.imageDimensions)}" >
-                    <img src='${visualAssetDefinition.imagePath}' alt='${visualAssetDefinition.imageAlt}'/>
+                    <img src='${visualAssetDefinition.filePath}' alt='${visualAssetDefinition.imageAlt}'/>
                 </div>
             """.trimIndent(),
             audibleAssetDefinition.soundFilePath,

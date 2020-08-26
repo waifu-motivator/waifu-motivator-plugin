@@ -21,7 +21,7 @@ import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
-import java.nio.file.Path;
+import static zd.zero.waifu.motivator.plugin.tools.ToolBox.doOrElse;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
@@ -54,10 +54,9 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     public void projectClosing( @NotNull Project project ) {
         if ( !pluginState.isSayonaraEnabled() || isMultipleProjectsOpened() ) return;
 
-        Path soundFilePath = AudibleAssetDefinitionService.INSTANCE.getRandomAssetByCategory(
+        AudibleAssetDefinitionService.INSTANCE.getRandomAssetByCategory(
             WaifuAssetCategory.DEPARTURE
-        ).getSoundFilePath();
-        WaifuSoundPlayerFactory.createPlayer( soundFilePath ).playAndWait();
+        ).ifPresent( asset -> WaifuSoundPlayerFactory.createPlayer( asset.getSoundFilePath() ).playAndWait() );
     }
 
     @Override
@@ -89,19 +88,25 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             pluginState.isStartupMotivationSoundEnabled()
         );
 
-        WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
-            project,
-            VisualMotivationAssetProvider.INSTANCE.createAssetByCategory(
-                WaifuAssetCategory.WELCOMING
-            ),
-            config
-        );
+        // todo: replace with presentOrElse when only supporting JRE 11+
+        doOrElse( VisualMotivationAssetProvider.INSTANCE.createAssetByCategory(
+            WaifuAssetCategory.WELCOMING
+        ), asset -> {
+            WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
+                project,
+                asset,
+                config
+            );
 
-        if ( !project.isInitialized() ) {
-            StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );
-        } else {
-            waifuMotivation.motivate();
-        }
+            if ( !project.isInitialized() ) {
+                StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );
+            } else {
+                waifuMotivation.motivate();
+            }
+        }, () -> {
+            // todo: tell user that this feature is unavailable offline.
+        } );
+
     }
 
     private boolean isMultipleProjectsOpened() {

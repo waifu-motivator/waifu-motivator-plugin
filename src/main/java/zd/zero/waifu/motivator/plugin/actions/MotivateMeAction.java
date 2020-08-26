@@ -4,15 +4,16 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAware;
 import org.jetbrains.annotations.NotNull;
+import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
 import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
-import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
-import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 import java.util.Objects;
+
+import static zd.zero.waifu.motivator.plugin.tools.ToolBox.doOrElse;
 
 public class MotivateMeAction extends AnAction implements DumbAware {
 
@@ -25,16 +26,20 @@ public class MotivateMeAction extends AnAction implements DumbAware {
             pluginState.isMotivateMeEnabled(),
             pluginState.isMotivateMeSoundEnabled() );
 
-        WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructNonTitledMotivation(
-            Objects.requireNonNull( e.getProject() ),
-            VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
-                WaifuAssetCategory.CELEBRATION,
-                WaifuAssetCategory.HAPPY,
-                WaifuAssetCategory.SMUG
+        // todo: replace with presentOrElse when only supporting JRE 11+
+        doOrElse( VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
+            WaifuAssetCategory.CELEBRATION,
+            WaifuAssetCategory.HAPPY,
+            WaifuAssetCategory.SMUG
             ),
-            config
-        );
-        waifuMotivation.motivate();
+            motivationAsset ->
+                VisualMotivationFactory.INSTANCE.constructMotivation(
+                    Objects.requireNonNull( e.getProject() ),
+                    motivationAsset,
+                    config
+                ).motivate(), () -> {
+                // todo: tell user that this feature is unavailable offline.
+            } );
     }
 
     @Override

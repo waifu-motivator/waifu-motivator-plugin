@@ -4,14 +4,16 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import zd.zero.waifu.motivator.plugin.assets.AssetCategory.VISUAL
 
-object VisualAssetManager : RemoteAssetManager<VisualMotivationAssetDefinition>(
+object VisualAssetManager : RemoteAssetManager<VisualMotivationAssetDefinition, VisualMotivationAsset>(
     VISUAL
 ) {
-    override fun applyAssetUrl(
-        visualAsset: VisualMotivationAssetDefinition,
+    override fun convertToAsset(
+        asset: VisualMotivationAssetDefinition,
         assetUrl: String
-    ): VisualMotivationAssetDefinition =
-        visualAsset.copy(path = assetUrl, imagePath = assetUrl)
+    ): VisualMotivationAsset =
+        VisualMotivationAsset(
+            assetUrl, asset.imageAlt, asset.imageDimensions
+        )
 
     override fun convertToDefinitions(defJson: String): List<VisualMotivationAssetDefinition> =
         Gson().fromJson<List<VisualMotivationAssetDefinition>>(
