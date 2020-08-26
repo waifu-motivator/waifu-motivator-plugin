@@ -7,19 +7,30 @@ import java.nio.file.Paths
 import java.util.*
 import java.util.Optional.ofNullable
 
+enum class Status {
+    OK, BROKEN, UNKNOWN
+}
+
+interface HasStatus {
+    var status: Status
+}
+
 abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
     private val assetCategory: AssetCategory
-) {
+) : HasStatus {
     private lateinit var remoteAssets: List<T>
+
+    override var status = Status.UNKNOWN
 
     init {
         AssetManager.resolveAssetUrl(assetCategory, "assets.json")
             .flatMap { assetUrl -> initializeRemoteAssets(assetUrl) }
             .doOrElse({
+                status = Status.OK
                 remoteAssets = it
             }) {
-                // The plugin cannot work if there is not asset metadata locally :(
-                // todo: let user know in bad state....
+                status = Status.BROKEN
+                remoteAssets = listOf()
             }
     }
 

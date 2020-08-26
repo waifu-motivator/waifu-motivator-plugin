@@ -98,6 +98,8 @@ object AssetManager {
         } catch (e: Throwable) {
             log.error("Unable to get remote remote asset $remoteAssetUrl for raisins", e)
             Optional.empty()
+        } finally {
+            httpClient.close()
         }
     }
 

@@ -10,16 +10,25 @@ import com.intellij.openapi.startup.StartupManager;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.assets.AudibleAssetDefinitionService;
+import zd.zero.waifu.motivator.plugin.assets.AudibleAssetManager;
+import zd.zero.waifu.motivator.plugin.assets.HasStatus;
+import zd.zero.waifu.motivator.plugin.assets.Status;
+import zd.zero.waifu.motivator.plugin.assets.TextAssetManager;
+import zd.zero.waifu.motivator.plugin.assets.VisualAssetManager;
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
 import zd.zero.waifu.motivator.plugin.listeners.IdleEventListener;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
 import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
 import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
+import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification;
 import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
+
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static zd.zero.waifu.motivator.plugin.tools.ToolBox.doOrElse;
 
@@ -37,6 +46,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void projectOpened( @NotNull Project projectOpened ) {
+        checkIfInGoodState(projectOpened);
         if ( this.project != null ) return;
 
         this.project = projectOpened;
@@ -48,6 +58,25 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
         initializeListeners();
         initializeStartupMotivator();
         UserOnboarding.INSTANCE.attemptToShowUpdateNotification();
+    }
+
+    private void checkIfInGoodState( Project projectOpened ) {
+        StartupManager.getInstance( projectOpened ).registerPostStartupActivity( () -> {
+            boolean isInGoodState = Stream.of(
+                TextAssetManager.INSTANCE,
+                VisualAssetManager.INSTANCE,
+                AudibleAssetManager.INSTANCE
+            ).map( HasStatus::getStatus )
+                .allMatch( Predicate.isEqual( Status.OK ) );
+            if ( !isInGoodState ) {
+                // todo: add help link?
+                UpdateNotification.INSTANCE.sendMessage(
+                    "Unable setup correctly!",
+                    "The plugin requires internet first before offline mode can work.",
+                    projectOpened
+                );
+            }
+        } );
     }
 
     @Override

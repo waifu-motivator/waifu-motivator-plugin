@@ -39,6 +39,13 @@ intellij {
     println "Building for IntelliJ version: ${version}"
 
     alternativeIdePath idePath
+
+    if ("DOKI" == System.getenv("DEV_ENV")) {
+        setPlugins(
+            'io.acari.DDLCTheme:10.0.0'
+        )
+    }
+
 }
 
 compileKotlin {
