@@ -29,7 +29,7 @@ object RestClient {
             log.warn("Unable to get remote asset: $url for raisins", e)
             Optional.empty<String>()
         } finally {
-            httpClient.close()
+            request.releaseConnection()
         }
     }
 

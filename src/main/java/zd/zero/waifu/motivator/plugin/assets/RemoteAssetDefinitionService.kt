@@ -23,7 +23,7 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
             }
 
     private fun pickRandomAsset(
-        supplyLocalAssetDefinitions: List<T>,
+        supplyLocalAssetDefinitions: Collection<T>,
         waifuAssetCategory: WaifuAssetCategory
     ): Optional<T> =
         supplyLocalAssetDefinitions

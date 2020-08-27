@@ -60,7 +60,7 @@ object AssetManager {
             else -> Optional.empty()
         }
 
-    private fun constructLocalAssetPath(
+    fun constructLocalAssetPath(
         assetCategory: AssetCategory,
         assetPath: String
     ): Optional<Path> =
@@ -76,9 +76,9 @@ object AssetManager {
         remoteAssetUrl: String
     ): Optional<String> {
         createDirectories(localAssetPath)
+        val remoteAssetRequest = createGetRequest(remoteAssetUrl)
         return try {
             log.warn("Attempting to download asset $remoteAssetUrl")
-            val remoteAssetRequest = createGetRequest(remoteAssetUrl)
             val remoteAssetResponse = httpClient.execute(remoteAssetRequest)
             if (remoteAssetResponse.statusLine.statusCode == 200) {
                 remoteAssetResponse.entity.content.use { inputStream ->
@@ -99,7 +99,7 @@ object AssetManager {
             log.error("Unable to get remote remote asset $remoteAssetUrl for raisins", e)
             Optional.empty()
         } finally {
-            httpClient.close()
+            remoteAssetRequest.releaseConnection()
         }
     }
 

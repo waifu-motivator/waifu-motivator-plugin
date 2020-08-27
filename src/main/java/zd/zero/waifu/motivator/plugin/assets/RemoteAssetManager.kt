@@ -1,5 +1,6 @@
 package zd.zero.waifu.motivator.plugin.assets
 
+import com.intellij.openapi.diagnostic.Logger
 import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import java.net.URI
 import java.nio.file.Files
@@ -18,34 +19,45 @@ interface HasStatus {
 abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
     private val assetCategory: AssetCategory
 ) : HasStatus {
-    private lateinit var remoteAssets: List<T>
+    private lateinit var remoteAndLocalAssets: List<T>
+    private lateinit var localAssets: MutableSet<T>
 
     override var status = Status.UNKNOWN
+    private val log = Logger.getInstance(this::class.java)
 
     init {
         AssetManager.resolveAssetUrl(assetCategory, "assets.json")
             .flatMap { assetUrl -> initializeRemoteAssets(assetUrl) }
-            .doOrElse({
+            .doOrElse({ allAssetDefinitions ->
                 status = Status.OK
-                remoteAssets = it
+                remoteAndLocalAssets = allAssetDefinitions
+                localAssets = allAssetDefinitions.filter { asset ->
+                    AssetManager.constructLocalAssetPath(assetCategory, asset.path)
+                        .filter { Files.exists(it) }
+                        .isPresent
+                }.toSet().toMutableSet()
+                println("aoue")
             }) {
                 status = Status.BROKEN
-                remoteAssets = listOf()
+                remoteAndLocalAssets = listOf()
+                localAssets = mutableSetOf()
             }
     }
 
     fun supplyAssetDefinitions(): List<T> =
-        remoteAssets
+        remoteAndLocalAssets
 
-    // todo: this
-    fun supplyLocalAssetDefinitions(): List<T> =
-        remoteAssets
+    fun supplyLocalAssetDefinitions(): Set<T> =
+        localAssets
 
     abstract fun convertToAsset(asset: T, assetUrl: String): U
 
     fun resolveAsset(asset: T): Optional<U> =
         AssetManager.resolveAssetUrl(assetCategory, asset.path)
-            .map { assetUrl -> convertToAsset(asset, assetUrl) }
+            .map { assetUrl ->
+                localAssets.add(asset)
+                convertToAsset(asset, assetUrl)
+            }
 
     private fun initializeRemoteAssets(assetUrl: String): Optional<List<T>> =
         try {
@@ -54,7 +66,7 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
                     convertToDefinitions(it)
                 }
         } catch (e: Throwable) {
-            // todo: log error
+            log.error("Unable to initialize asset metadata.", e)
             Optional.empty()
         }
 
