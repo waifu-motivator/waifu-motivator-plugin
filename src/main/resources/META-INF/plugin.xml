@@ -20,7 +20,7 @@
       instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
     <errorHandler
       id="7111f9b9-f252-483e-9496-72d649347b6d"
-      implementation="zd.zero.waifu.motivator.plugin.integrations.ErrorReporter" />
+      implementation="zd.zero.waifu.motivator.plugin.integrations.ErrorReporter"/>
     <postStartupActivity id="WaifuOfTheDayStartupActivity"
                          implementation="zd.zero.waifu.motivator.plugin.WaifuOfTheDayStartupActivity"/>
     <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.ApplicationService"/>
@@ -55,6 +55,8 @@
   <projectListeners>
     <listener class="zd.zero.waifu.motivator.plugin.WaifuMotivatorProject"
               topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    <listener class="zd.zero.waifu.motivator.plugin.listeners.TaskListener"
+              topic="com.intellij.task.ProjectTaskListener"/>
   </projectListeners>
 
 </idea-plugin>

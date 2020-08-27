@@ -23,6 +23,10 @@ class WaifuMotivatorState {
 
     var isDisabledInDistractionFreeMode = true
 
+    var isTaskMotivationEnabled = true
+
+    var isTaskSoundEnabled = true
+
     var isIdleMotivationEnabled = true
 
     var isIdleSoundEnabled = false
