@@ -8,6 +8,7 @@ import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
 import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
+import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
@@ -38,7 +39,12 @@ public class MotivateMeAction extends AnAction implements DumbAware {
                     motivationAsset,
                     config
                 ).motivate(), () -> {
-                // todo: tell user that this feature is unavailable offline.
+                UpdateNotification.INSTANCE.sendMessage(
+                    "'Motivate Me' Unavailable Offline",
+                    "Unfortunately I wasn't able to find any waifu saved locally. Please try again" +
+                        "when you are back online!",
+                    e.getProject()
+                );
             } );
     }
 

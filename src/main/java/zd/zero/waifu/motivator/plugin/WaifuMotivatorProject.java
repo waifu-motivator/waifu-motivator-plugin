@@ -46,21 +46,22 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void projectOpened( @NotNull Project projectOpened ) {
-        checkIfInGoodState(projectOpened);
         if ( this.project != null ) return;
 
-        this.project = projectOpened;
-        this.pluginState = WaifuMotivatorPluginState.getPluginState();
-        this.unitTestListener = WaifuUnitTester.newInstance( projectOpened );
-        this.idleEventListener = new IdleEventListener();
+        checkIfInGoodState(projectOpened, () -> {
+            this.project = projectOpened;
+            this.pluginState = WaifuMotivatorPluginState.getPluginState();
+            this.unitTestListener = WaifuUnitTester.newInstance( projectOpened );
+            this.idleEventListener = new IdleEventListener(projectOpened);
 
-        updatePlatformStartupConfig();
-        initializeListeners();
-        initializeStartupMotivator();
-        UserOnboarding.INSTANCE.attemptToShowUpdateNotification();
+            updatePlatformStartupConfig();
+            initializeListeners();
+            initializeStartupMotivator();
+            UserOnboarding.INSTANCE.attemptToShowUpdateNotification();
+        });
     }
 
-    private void checkIfInGoodState( Project projectOpened ) {
+    private void checkIfInGoodState( Project projectOpened, Runnable onGoodState) {
         StartupManager.getInstance( projectOpened ).registerPostStartupActivity( () -> {
             boolean isInGoodState = Stream.of(
                 TextAssetManager.INSTANCE,
@@ -72,9 +73,12 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
                 // todo: add help link?
                 UpdateNotification.INSTANCE.sendMessage(
                     "Unable setup correctly!",
-                    "The plugin requires internet first before offline mode can work.",
+                    "The plugin requires internet first before offline mode can work. " +
+                        "Please re-establish connection and restart the IDE.",
                     projectOpened
                 );
+            } else {
+                onGoodState.run();
             }
         } );
     }
@@ -132,10 +136,12 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             } else {
                 waifuMotivation.motivate();
             }
-        }, () -> {
-            // todo: tell user that this feature is unavailable offline.
-        } );
-
+        }, () -> UpdateNotification.INSTANCE.sendMessage(
+            "'Startup Motivation' Unavailable Offline",
+            "Unfortunately I wasn't able to find any waifu saved locally, to greet you. Please try again" +
+                "when you are back online!",
+            project
+        ) );
     }
 
     private boolean isMultipleProjectsOpened() {

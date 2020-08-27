@@ -9,7 +9,6 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
 ) {
     private val random = Random(System.currentTimeMillis())
 
-    // todo: logging
     fun getRandomAssetByCategory(waifuAssetCategory: WaifuAssetCategory): Optional<U> =
         pickRandomAsset(remoteAssetManager.supplyAssetDefinitions(), waifuAssetCategory)
             .flatMap { randomRemoteAsset ->

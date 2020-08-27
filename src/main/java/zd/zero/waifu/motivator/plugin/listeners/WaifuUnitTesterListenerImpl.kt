@@ -5,7 +5,9 @@ import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider.pickAssetFromCategories
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
 import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory.constructMotivation
+import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification.sendMessage
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
+import zd.zero.waifu.motivator.plugin.tools.doOrElse
 
 internal enum class TestStatus {
     PASS, FAIL, UNKNOWN
@@ -16,15 +18,11 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
 
     override fun onUnitTestPassed() {
         // todo: motivation, encouragement
-        // todo: try a couple times then give up
-        pickAssetFromCategories(
+        attemptToDisplayNotification(
+            0,
             WaifuAssetCategory.CELEBRATION,
             *getExtraTestPassCategories()
-        ).ifPresent { asset ->
-            constructMotivation(project,
-                asset,
-                createAlertConfiguration()).motivate()
-        }
+        )
 
         lastStatus = TestStatus.PASS
     }
@@ -37,17 +35,37 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
 
     override fun onUnitTestFailed() {
         // todo: motivation, encouragement
-        // todo: try a couple times then give up
-        pickAssetFromCategories(
+        attemptToDisplayNotification(
+            0,
             WaifuAssetCategory.DISAPPOINTMENT,
             WaifuAssetCategory.SHOCKED
-        ).ifPresent { asset ->
-            constructMotivation(project,
-                asset,
-                createAlertConfiguration()).motivate()
-        }
+        )
 
         lastStatus = TestStatus.FAIL
+    }
+
+    private fun attemptToDisplayNotification(
+        attempts: Int,
+        vararg categories: WaifuAssetCategory
+    ) {
+        if(attempts < 5) {
+            pickAssetFromCategories(
+                *categories
+            ).doOrElse( { asset ->
+                constructMotivation(project,
+                    asset,
+                    createAlertConfiguration()).motivate()
+            }) {
+                attemptToDisplayNotification(attempts + 1, * categories)
+            }
+        } else {
+            sendMessage(
+                "'Test Motivation' Unavailable Offline",
+                "Unfortunately I wasn't able to find any waifu saved locally. Please try again" +
+                    "when you are back online!",
+                project
+            )
+        }
     }
 
     private fun createAlertConfiguration(): AlertConfiguration {
