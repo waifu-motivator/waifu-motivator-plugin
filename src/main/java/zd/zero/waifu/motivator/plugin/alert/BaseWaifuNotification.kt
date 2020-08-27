@@ -7,7 +7,7 @@ import zd.zero.waifu.motivator.plugin.WaifuMotivator
 import zd.zero.waifu.motivator.plugin.assets.MotivationAsset
 
 abstract class BaseWaifuNotification(
-    private val motivationAsset: MotivationAsset
+    protected val motivationAsset: MotivationAsset
 ) : WaifuNotification {
 
     companion object {
@@ -16,7 +16,7 @@ abstract class BaseWaifuNotification(
         )
     }
 
-    protected fun buildNotification(): Notification {
+    protected open fun buildNotification(): Notification {
         return notificationGroup.createNotification()
             .setTitle(motivationAsset.title.ifEmpty { "" })
             .setContent(motivationAsset.message.ifEmpty { "" })

@@ -24,9 +24,13 @@ public class MotivateMeAction extends AnAction {
             pluginState.isMotivateMeEnabled(),
             pluginState.isMotivateMeSoundEnabled() );
 
-        WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
+        WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructNonTitledMotivation(
             Objects.requireNonNull( e.getProject() ),
-            VisualMotivationAssetProvider.INSTANCE.createAssetByCategory( WaifuAssetCategory.CELEBRATION),
+            VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
+                WaifuAssetCategory.CELEBRATION,
+                WaifuAssetCategory.HAPPY,
+                WaifuAssetCategory.SMUG
+            ),
             config
         );
         waifuMotivation.motivate();
