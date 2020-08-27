@@ -96,7 +96,7 @@ object AssetManager {
                 Optional.empty()
             }
         } catch (e: Throwable) {
-            log.error("Unable to get remote remote asset $remoteAssetUrl for raisins", e)
+            log.warn("Unable to get remote remote asset $remoteAssetUrl for raisins", e)
             Optional.empty()
         } finally {
             remoteAssetRequest.releaseConnection()

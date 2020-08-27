@@ -36,7 +36,6 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
                         .filter { Files.exists(it) }
                         .isPresent
                 }.toSet().toMutableSet()
-                println("aoue")
             }) {
                 status = Status.BROKEN
                 remoteAndLocalAssets = listOf()
