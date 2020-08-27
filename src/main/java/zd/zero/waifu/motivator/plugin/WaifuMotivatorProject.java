@@ -138,7 +138,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             }
         }, () -> UpdateNotification.INSTANCE.sendMessage(
             "'Startup Motivation' Unavailable Offline",
-            "Unfortunately I wasn't able to find any waifu saved locally, to greet you. Please try again" +
+            "Unfortunately I wasn't able to find any waifu saved locally, to greet you. Please try again " +
                 "when you are back online!",
             project
         ) );

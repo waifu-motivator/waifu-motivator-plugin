@@ -3,7 +3,6 @@ package zd.zero.waifu.motivator.plugin.listeners
 import com.intellij.ide.IdeEventQueue
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
@@ -17,7 +16,7 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState.Companion.DEF
 import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import java.util.concurrent.TimeUnit
 
-class IdleEventListener(private val project: Project) : Runnable, Disposable {
+class IdleEventListener() : Runnable, Disposable {
     private val messageBus = ApplicationManager.getApplication().messageBus.connect()
 
     init {
@@ -53,24 +52,26 @@ class IdleEventListener(private val project: Project) : Runnable, Disposable {
     private var isEventDisplayed = false
     override fun run() {
         if (isEventDisplayed.not()) {
-            VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING)
-                .doOrElse({ asset ->
-                    isEventDisplayed = true
-                    VisualMotivationFactory.constructMotivation(
-                        ProjectManager.getInstance().defaultProject,
-                        asset,
-                        createAlertConfiguration()
-                    ).setListener {
-                        isEventDisplayed = false
-                    }.motivate()
-                }) {
-                    sendMessage(
-                        "'Idle Events' Unavailable Offline",
-                        "Unfortunately I wasn't able to find any waifu saved locally. Please try again" +
-                            "when you are back online!",
-                        project
-                    )
-                }
+            ProjectManager.getInstance().openProjects.forEach {
+                VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING)
+                    .doOrElse({ asset ->
+                        isEventDisplayed = true
+                        VisualMotivationFactory.constructMotivation(
+                            it,
+                            asset,
+                            createAlertConfiguration()
+                        ).setListener {
+                            isEventDisplayed = false
+                        }.motivate()
+                    }) {
+                        sendMessage(
+                            "'Idle Events' Unavailable Offline",
+                            "Unfortunately I wasn't able to find any waifu saved locally. Please try again" +
+                                "when you are back online!",
+                            it
+                        )
+                    }
+            }
         }
     }
 

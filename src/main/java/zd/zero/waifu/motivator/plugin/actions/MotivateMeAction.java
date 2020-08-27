@@ -38,14 +38,13 @@ public class MotivateMeAction extends AnAction implements DumbAware {
                     Objects.requireNonNull( e.getProject() ),
                     motivationAsset,
                     config
-                ).motivate(), () -> {
+                ).motivate(), () ->
                 UpdateNotification.INSTANCE.sendMessage(
                     "'Motivate Me' Unavailable Offline",
-                    "Unfortunately I wasn't able to find any waifu saved locally. Please try again" +
+                    "Unfortunately I wasn't able to find any waifu saved locally. Please try again " +
                         "when you are back online!",
                     e.getProject()
-                );
-            } );
+                ) );
     }
 
     @Override

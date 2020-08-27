@@ -14,6 +14,9 @@ internal enum class TestStatus {
 }
 
 class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTester.Listener {
+    companion object {
+        private const val MAXIMUM_RETRY_ATTEMPTS = 6
+    }
     private var lastStatus = TestStatus.UNKNOWN
 
     override fun onUnitTestPassed() {
@@ -48,7 +51,7 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
         attempts: Int,
         vararg categories: WaifuAssetCategory
     ) {
-        if (attempts < 5) {
+        if (attempts < MAXIMUM_RETRY_ATTEMPTS) {
             pickAssetFromCategories(
                 *categories
             ).doOrElse({ asset ->
@@ -61,7 +64,7 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
         } else {
             sendMessage(
                 "'Test Motivation' Unavailable Offline",
-                "Unfortunately I wasn't able to find any waifu saved locally. Please try again" +
+                "Unfortunately I wasn't able to find any waifu saved locally. Please try again " +
                     "when you are back online!",
                 project
             )
