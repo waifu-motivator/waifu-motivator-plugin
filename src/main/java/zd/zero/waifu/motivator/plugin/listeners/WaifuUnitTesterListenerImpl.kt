@@ -48,10 +48,10 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
         attempts: Int,
         vararg categories: WaifuAssetCategory
     ) {
-        if(attempts < 5) {
+        if (attempts < 5) {
             pickAssetFromCategories(
                 *categories
-            ).doOrElse( { asset ->
+            ).doOrElse({ asset ->
                 constructMotivation(project,
                     asset,
                     createAlertConfiguration()).motivate()
