@@ -24,6 +24,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit',
         version: '4.12'
     testCompile "org.mockito:mockito-core:2.+"
+    testImplementation "org.assertj:assertj-core:3.8.0"
     testImplementation "io.mockk:mockk:1.10.0"
 }
 
