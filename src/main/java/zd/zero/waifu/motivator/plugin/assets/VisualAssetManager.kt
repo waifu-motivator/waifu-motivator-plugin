@@ -11,9 +11,7 @@ object VisualAssetManager : RemoteAssetManager<VisualMotivationAssetDefinition, 
         asset: VisualMotivationAssetDefinition,
         assetUrl: String
     ): VisualMotivationAsset =
-        VisualMotivationAsset(
-            assetUrl, asset.imageAlt, asset.imageDimensions
-        )
+        asset.toAsset(assetUrl)
 
     override fun convertToDefinitions(defJson: String): List<VisualMotivationAssetDefinition> =
         Gson().fromJson<List<VisualMotivationAssetDefinition>>(

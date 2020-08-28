@@ -20,7 +20,12 @@ data class VisualMotivationAssetDefinition(
     val imageAlt: String,
     val imageDimensions: ImageDimension,
     override val categories: List<WaifuAssetCategory>
-) : AssetDefinition
+) : AssetDefinition {
+    fun toAsset(assetUrl: String): VisualMotivationAsset =
+        VisualMotivationAsset(
+            assetUrl, imageAlt, imageDimensions
+        )
+}
 
 data class VisualMotivationAsset(
     val filePath: String,
