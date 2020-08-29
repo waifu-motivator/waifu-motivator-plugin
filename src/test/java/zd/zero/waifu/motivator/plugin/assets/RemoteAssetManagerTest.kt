@@ -67,7 +67,7 @@ class RemoteAssetManagerTest {
 
     @Test
     fun getStatusShouldOkWhenAssetsMetaDataIsThere() {
-        val localAssetDirectory = Paths.get(".", "src", "test", "resources").toAbsolutePath()
+        val localAssetDirectory = TestTools.getTestAssetPath()
         val assetsPath = Paths.get(localAssetDirectory.toString(), "visuals", "assets.json")
 
         every { LocalStorageService.getLocalAssetDirectory() } returns localAssetDirectory.toString().toOptional()
