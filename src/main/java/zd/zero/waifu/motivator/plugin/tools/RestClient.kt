@@ -26,7 +26,7 @@ object RestClient {
                 Optional.empty()
             }
         } catch (e: Exception) {
-            log.warn("Unable to get remote asset: $url for raisins", e)
+            log.warn("Unable to get remote asset: $url for raisins ${e.message}")
             Optional.empty<String>()
         } finally {
             request.releaseConnection()

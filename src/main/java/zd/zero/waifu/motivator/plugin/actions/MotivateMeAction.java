@@ -35,7 +35,7 @@ public class MotivateMeAction extends AnAction implements DumbAware {
                 WaifuAssetCategory.SMUG
             ),
             motivationAsset ->
-                VisualMotivationFactory.INSTANCE.constructMotivation(
+                VisualMotivationFactory.INSTANCE.constructNonTitledMotivation(
                     Objects.requireNonNull( e.getProject() ),
                     motivationAsset,
                     config
