@@ -17,11 +17,11 @@ object AssetTools {
         vararg categories: WaifuAssetCategory
     ) {
         attemptToDisplayMotivation(
-                project,
-                alertConfigurationSupplier,
-                onFailure,
-                0,
-                *categories
+            project,
+            alertConfigurationSupplier,
+            onFailure,
+            0,
+            *categories
         )
     }
 
@@ -34,18 +34,18 @@ object AssetTools {
     ) {
         if (attempts < MAXIMUM_RETRY_ATTEMPTS) {
             VisualMotivationAssetProvider.pickAssetFromCategories(
-                    *categories
+                *categories
             ).doOrElse({ asset ->
                 VisualMotivationFactory.constructMotivation(project,
-                        asset,
-                        alertConfigurationSupplier()).motivate()
+                    asset,
+                    alertConfigurationSupplier()).motivate()
             }) {
                 attemptToDisplayMotivation(
-                        project,
-                        alertConfigurationSupplier,
-                        onFailure,
-                        attempts + 1,
-                        *categories
+                    project,
+                    alertConfigurationSupplier,
+                    onFailure,
+                    attempts + 1,
+                    *categories
                 )
             }
         } else {

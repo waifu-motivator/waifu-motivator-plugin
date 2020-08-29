@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAware;
 import org.jetbrains.annotations.NotNull;
+import zd.zero.waifu.motivator.plugin.ProjectConstants;
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
@@ -42,8 +43,7 @@ public class MotivateMeAction extends AnAction implements DumbAware {
             () ->
                 UpdateNotification.INSTANCE.sendMessage(
                     "'Motivate Me' Unavailable Offline",
-                    "Unfortunately I wasn't able to find any waifu saved locally. Please try again " +
-                        "when you are back online!",
+                    ProjectConstants.getWAIFU_UNAVAILABLE_MESSAGE(),
                     e.getProject()
                 ) );
     }

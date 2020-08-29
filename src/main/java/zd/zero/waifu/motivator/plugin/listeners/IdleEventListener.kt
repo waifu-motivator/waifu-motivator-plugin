@@ -4,6 +4,7 @@ import com.intellij.ide.IdeEventQueue
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.ProjectManager
+import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
@@ -66,8 +67,7 @@ class IdleEventListener : Runnable, Disposable {
                     }) {
                         sendMessage(
                             "'Idle Events' Unavailable Offline",
-                            "Unfortunately I wasn't able to find any waifu saved locally. Please try again" +
-                                "when you are back online!",
+                            ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
                             it
                         )
                     }

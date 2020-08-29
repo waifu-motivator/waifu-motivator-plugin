@@ -3,6 +3,7 @@ package zd.zero.waifu.motivator.plugin.listeners
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.task.ProjectTaskListener
 import com.intellij.task.ProjectTaskManager
+import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
@@ -27,8 +28,7 @@ class TaskListener : ProjectTaskListener {
                     {
                         UpdateNotification.sendMessage(
                             "'Task Failure Motivation' Unavailable Offline",
-                            "Unfortunately I wasn't able to find any waifu saved locally. Please try again " +
-                                "when you are back online!",
+                            ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
                             project
                         )
                     },
@@ -44,8 +44,7 @@ class TaskListener : ProjectTaskListener {
                     {
                         UpdateNotification.sendMessage(
                             "'Task Success Motivation' Unavailable Offline",
-                            "Unfortunately I wasn't able to find any waifu saved locally. Please try again " +
-                                "when you are back online!",
+                            ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
                             project
                         )
                     },

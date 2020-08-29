@@ -3,6 +3,7 @@ package zd.zero.waifu.motivator.plugin;
 import com.intellij.ide.GeneralSettings;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.ex.ApplicationInfoEx;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerListener;
@@ -70,11 +71,12 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             ).map( HasStatus::getStatus )
                 .allMatch( Predicate.isEqual( Status.OK ) );
             if ( !isInGoodState ) {
-                // todo: add help link?
                 UpdateNotification.INSTANCE.sendMessage(
-                    "Unable setup correctly!",
-                    "The plugin requires internet first before offline mode can work. " +
-                        "Please re-establish connection and restart the IDE.",
+                    "Unable to contact Waifus!",
+                    "I need internet first before I can bring you waifus. " +
+                        "Please re-establish connection and restart " +
+                        ApplicationInfoEx.getInstance().getFullApplicationName()
+                        + ".",
                     projectOpened
                 );
             } else {
