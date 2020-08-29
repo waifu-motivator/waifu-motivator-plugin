@@ -27,7 +27,6 @@ public class MotivateMeAction extends AnAction implements DumbAware {
             pluginState.isMotivateMeEnabled(),
             pluginState.isMotivateMeSoundEnabled() );
 
-        // todo: replace with presentOrElse when only supporting JRE 11+
         doOrElse( VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
             WaifuAssetCategory.CELEBRATION,
             WaifuAssetCategory.HAPPY,

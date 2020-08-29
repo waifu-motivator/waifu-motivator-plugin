@@ -8,7 +8,6 @@ import org.assertj.core.api.Assertions
 import org.junit.AfterClass
 import org.junit.Test
 
-import org.junit.Assert.*
 import org.junit.BeforeClass
 import zd.zero.waifu.motivator.plugin.test.tools.TestTools
 import zd.zero.waifu.motivator.plugin.tools.toOptional

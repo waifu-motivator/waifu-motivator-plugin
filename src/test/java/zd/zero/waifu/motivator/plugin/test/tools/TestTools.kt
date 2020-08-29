@@ -8,11 +8,13 @@ import org.apache.http.impl.client.CloseableHttpClient
 import zd.zero.waifu.motivator.plugin.assets.AssetManager
 import zd.zero.waifu.motivator.plugin.assets.HttpClientFactory
 import zd.zero.waifu.motivator.plugin.assets.LocalStorageService
+import java.nio.file.Path
 import java.nio.file.Paths
 
 object TestTools {
 
-    fun getTestAssetPath() = Paths.get(".", "src", "test", "resources").toAbsolutePath()
+    fun getTestAssetPath(): Path =
+        Paths.get(".", "src", "test", "resources").toAbsolutePath()
 
     fun setUpMocksForAssetManager() {
         mockkObject(HttpClientFactory)

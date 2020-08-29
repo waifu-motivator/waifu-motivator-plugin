@@ -121,7 +121,6 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             pluginState.isStartupMotivationSoundEnabled()
         );
 
-        // todo: replace with presentOrElse when only supporting JRE 11+
         doOrElse( VisualMotivationAssetProvider.INSTANCE.createAssetByCategory(
             WaifuAssetCategory.WELCOMING
         ), asset -> {
