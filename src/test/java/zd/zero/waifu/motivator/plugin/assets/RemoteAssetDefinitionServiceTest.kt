@@ -133,7 +133,6 @@ class RemoteAssetDefinitionServiceTest {
         assertThat(randomAsset.isEmpty).isTrue()
     }
 
-
     @Test
     fun getRandomAssetByCategoryShouldReturnEmptyWhenLocalAssetIsNotLocal() {
         val bestMotivation = VisualMotivationAssetDefinition(
@@ -154,9 +153,7 @@ class RemoteAssetDefinitionServiceTest {
             listOf(WaifuAssetCategory.MOTIVATION)
         )
         every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf(bestLocalMotivation)
-        val expectedAsset = bestLocalMotivation.toAsset("file:///s-tier-waifus/ryuko.png")
         every { remoteAssetManager.resolveAsset(bestLocalMotivation) } returns Optional.empty()
-
 
         val randomAsset = fakeVisualAssetDefinitionService.getRandomAssetByCategory(
             WaifuAssetCategory.MOTIVATION
@@ -188,7 +185,6 @@ class RemoteAssetDefinitionServiceTest {
         val expectedAsset = bestLocalMotivation.toAsset("file:///s-tier-waifus/ryuko.png")
         every { remoteAssetManager.resolveAsset(bestLocalMotivation) } returns expectedAsset.deepClonePolymorphic()
             .toOptional()
-
 
         val randomAsset = fakeVisualAssetDefinitionService.getRandomAssetByCategory(
             WaifuAssetCategory.MOTIVATION

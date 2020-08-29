@@ -61,7 +61,7 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
     private fun initializeRemoteAssets(assetUrl: String): Optional<List<T>> =
         try {
             readLocalFile(assetUrl)
-                .map {
+                .flatMap {
                     convertToDefinitions(it)
                 }
         } catch (e: Throwable) {
@@ -73,5 +73,5 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
         ofNullable(Files.readAllBytes(Paths.get(URI(assetUrl))))
             .map { String(it, Charsets.UTF_8) }
 
-    protected abstract fun convertToDefinitions(defJson: String): List<T>
+    abstract fun convertToDefinitions(defJson: String): Optional<List<T>>
 }

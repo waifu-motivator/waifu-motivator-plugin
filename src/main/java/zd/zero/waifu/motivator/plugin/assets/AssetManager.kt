@@ -5,6 +5,7 @@ import com.intellij.openapi.diagnostic.Logger
 import org.apache.commons.io.IOUtils
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
+import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClients
 import zd.zero.waifu.motivator.plugin.assets.LocalAssetService.hasAssetChanged
 import zd.zero.waifu.motivator.plugin.assets.LocalStorageService.createDirectories
@@ -21,13 +22,17 @@ enum class AssetCategory(val category: String) {
     VISUAL("visuals"), AUDIBLE("audible"), TEXT("text")
 }
 
+object HttpClientFactory {
+    fun createHttpClient(): CloseableHttpClient =
+        HttpClients.custom()
+            .setUserAgent(ApplicationInfoEx.getInstance()?.fullApplicationName)
+            .build()
+}
+
 object AssetManager {
     private const val ASSETS_SOURCE = "https://waifu.assets.unthrottled.io"
 
-    private val httpClient = HttpClients.custom()
-        .setUserAgent(ApplicationInfoEx.getInstance().fullApplicationName)
-        .build()
-
+    private val httpClient = HttpClientFactory.createHttpClient()
     private val log = Logger.getInstance(this::class.java)
 
     /**
