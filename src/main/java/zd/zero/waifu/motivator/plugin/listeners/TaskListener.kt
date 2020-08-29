@@ -7,7 +7,7 @@ import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
-import zd.zero.waifu.motivator.plugin.tools.AssetTools
+import zd.zero.waifu.motivator.plugin.tools.AssetTools.attemptToShowCategories
 
 internal enum class TaskStatus {
     PASS, FAIL, UNKNOWN
@@ -21,7 +21,7 @@ class TaskListener : ProjectTaskListener {
         val project = ProjectManager.getInstance().defaultProject
         when {
             result.hasErrors() -> {
-                AssetTools.attemptToShowCategories(
+                attemptToShowCategories(
                     project,
                     { createAlertConfiguration() },
                     {
@@ -38,7 +38,7 @@ class TaskListener : ProjectTaskListener {
                 previousTaskStatus = TaskStatus.FAIL
             }
             previousTaskStatus == TaskStatus.FAIL -> {
-                AssetTools.attemptToShowCategories(
+                attemptToShowCategories(
                     project,
                     { createAlertConfiguration() },
                     {

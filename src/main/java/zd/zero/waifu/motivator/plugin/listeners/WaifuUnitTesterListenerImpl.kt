@@ -5,7 +5,7 @@ import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification.sendMessage
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
-import zd.zero.waifu.motivator.plugin.tools.AssetTools
+import zd.zero.waifu.motivator.plugin.tools.AssetTools.attemptToShowCategories
 
 internal enum class TestStatus {
     PASS, FAIL, UNKNOWN
@@ -16,7 +16,7 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
     private var lastStatus = TestStatus.UNKNOWN
 
     override fun onUnitTestPassed() {
-        AssetTools.attemptToShowCategories(
+        attemptToShowCategories(
             project,
             { createAlertConfiguration() },
             {
@@ -42,7 +42,7 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
         }
 
     override fun onUnitTestFailed() {
-        AssetTools.attemptToShowCategories(
+        attemptToShowCategories(
             project,
             { createAlertConfiguration() },
             {

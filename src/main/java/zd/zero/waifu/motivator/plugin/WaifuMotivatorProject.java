@@ -48,7 +48,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     public void projectOpened( @NotNull Project projectOpened ) {
         if ( this.project != null ) return;
 
-        checkIfInGoodState(projectOpened, () -> {
+        checkIfInGoodState( projectOpened, () -> {
             this.project = projectOpened;
             this.pluginState = WaifuMotivatorPluginState.getPluginState();
             this.unitTestListener = WaifuUnitTester.newInstance( projectOpened );
@@ -58,10 +58,10 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             initializeListeners();
             initializeStartupMotivator();
             UserOnboarding.INSTANCE.attemptToShowUpdateNotification();
-        });
+        } );
     }
 
-    private void checkIfInGoodState( Project projectOpened, Runnable onGoodState) {
+    private void checkIfInGoodState( Project projectOpened, Runnable onGoodState ) {
         StartupManager.getInstance( projectOpened ).registerPostStartupActivity( () -> {
             boolean isInGoodState = Stream.of(
                 TextAssetManager.INSTANCE,
@@ -121,26 +121,29 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             pluginState.isStartupMotivationSoundEnabled()
         );
 
-        doOrElse( VisualMotivationAssetProvider.INSTANCE.createAssetByCategory(
-            WaifuAssetCategory.WELCOMING
-        ), asset -> {
-            WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
-                project,
-                asset,
-                config
-            );
+        doOrElse(
+            VisualMotivationAssetProvider.INSTANCE.createAssetByCategory(
+                WaifuAssetCategory.WELCOMING
+            ),
+            asset -> {
+                WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
+                    project,
+                    asset,
+                    config
+                );
 
-            if ( !project.isInitialized() ) {
-                StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );
-            } else {
-                waifuMotivation.motivate();
-            }
-        }, () -> UpdateNotification.INSTANCE.sendMessage(
-            "'Startup Motivation' Unavailable Offline",
-            "Unfortunately I wasn't able to find any waifu saved locally, to greet you. Please try again " +
-                "when you are back online!",
-            project
-        ) );
+                if ( !project.isInitialized() ) {
+                    StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );
+                } else {
+                    waifuMotivation.motivate();
+                }
+            },
+            () -> UpdateNotification.INSTANCE.sendMessage(
+                "'Startup Motivation' Unavailable Offline",
+                "Unfortunately I wasn't able to find any waifu saved locally, to greet you. Please try again " +
+                    "when you are back online!",
+                project
+            ) );
     }
 
     private boolean isMultipleProjectsOpened() {

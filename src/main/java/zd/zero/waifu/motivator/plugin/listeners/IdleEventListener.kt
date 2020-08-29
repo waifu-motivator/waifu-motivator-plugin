@@ -16,7 +16,7 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState.Companion.DEF
 import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import java.util.concurrent.TimeUnit
 
-class IdleEventListener() : Runnable, Disposable {
+class IdleEventListener : Runnable, Disposable {
     private val messageBus = ApplicationManager.getApplication().messageBus.connect()
 
     init {

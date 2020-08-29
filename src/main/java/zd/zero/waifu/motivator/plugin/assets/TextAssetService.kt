@@ -3,7 +3,7 @@ package zd.zero.waifu.motivator.plugin.assets
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.intellij.openapi.diagnostic.Logger
-import zd.zero.waifu.motivator.plugin.tools.ExceptionTools
+import zd.zero.waifu.motivator.plugin.tools.ExceptionTools.runSafely
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.io.BufferedReader
 import java.nio.file.Files
@@ -40,7 +40,7 @@ object TextAssetService {
         }
 
     private fun attemptToReadAsset(assetPackage: TextualMotivationAssetPackage): Optional<List<TextualMotivationAsset>> =
-        ExceptionTools.runSafely({
+        runSafely({
             val motivationAssets = Files.newBufferedReader(
                 assetPackage.packagePath
             ).use { reader ->
@@ -55,7 +55,7 @@ object TextAssetService {
         reader: BufferedReader,
         assetPackage: TextualMotivationAssetPackage
     ): Optional<List<TextualMotivationAsset>> =
-        ExceptionTools.runSafely({
+        runSafely({
             val fromJson = gson.fromJson<List<TextualMotivationAsset>>(
                 reader,
                 object : TypeToken<List<TextualMotivationAsset>>() {}.type

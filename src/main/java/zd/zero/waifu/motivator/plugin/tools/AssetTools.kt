@@ -16,7 +16,7 @@ object AssetTools {
         onFailure: () -> Unit,
         vararg categories: WaifuAssetCategory
     ) {
-        attemptToDisplayNotification(
+        attemptToDisplayMotivation(
                 project,
                 alertConfigurationSupplier,
                 onFailure,
@@ -25,7 +25,7 @@ object AssetTools {
         )
     }
 
-    private fun attemptToDisplayNotification(
+    private fun attemptToDisplayMotivation(
         project: Project,
         alertConfigurationSupplier: () -> AlertConfiguration,
         onFailure: () -> Unit,
@@ -40,7 +40,7 @@ object AssetTools {
                         asset,
                         alertConfigurationSupplier()).motivate()
             }) {
-                attemptToDisplayNotification(
+                attemptToDisplayMotivation(
                         project,
                         alertConfigurationSupplier,
                         onFailure,
