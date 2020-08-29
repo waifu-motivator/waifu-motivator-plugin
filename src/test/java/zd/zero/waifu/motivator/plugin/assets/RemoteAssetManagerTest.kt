@@ -1,26 +1,14 @@
 package zd.zero.waifu.motivator.plugin.assets
 
 import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkObject
-import org.apache.http.impl.client.CloseableHttpClient
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
+import org.junit.AfterClass
+import org.junit.BeforeClass
 import org.junit.Test
-import zd.zero.waifu.motivator.plugin.assets.TestTools.setUpMocksForAssetManager
+import zd.zero.waifu.motivator.plugin.test.tools.TestTools
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.nio.file.Paths
 import java.util.*
-
-object TestTools {
-    fun setUpMocksForAssetManager() {
-        mockkObject(HttpClientFactory)
-        val mockHttpClient = mockk<CloseableHttpClient>()
-        every { HttpClientFactory.createHttpClient() } returns mockHttpClient
-        mockkObject(AssetManager)
-        mockkObject(LocalStorageService)
-    }
-}
 
 internal class FakeAssetManager :
     RemoteAssetManager<VisualMotivationAssetDefinition, VisualMotivationAsset>(
@@ -35,9 +23,18 @@ internal class FakeAssetManager :
 
 class RemoteAssetManagerTest {
 
-    @Before
-    fun setUp() {
-        setUpMocksForAssetManager()
+    companion object {
+        @JvmStatic
+        @BeforeClass
+        fun setUp() {
+            TestTools.setUpMocksForAssetManager()
+        }
+
+        @JvmStatic
+        @AfterClass
+        fun tearDown() {
+            TestTools.tearDownMocksForAssetManager()
+        }
     }
 
     @Test
@@ -53,7 +50,7 @@ class RemoteAssetManagerTest {
 
     @Test
     fun getStatusShouldReturnBrokenWhenAssetsFileIsntJson() {
-        val localAssetDirectory = Paths.get(".", "src", "test", "resources").toAbsolutePath()
+        val localAssetDirectory = TestTools.getTestAssetPath()
         val assetsPath = Paths.get(localAssetDirectory.toString(), "visuals", "hard-to-swallow-pills.txt")
 
         every { LocalStorageService.getLocalAssetDirectory() } returns localAssetDirectory.toString().toOptional()
