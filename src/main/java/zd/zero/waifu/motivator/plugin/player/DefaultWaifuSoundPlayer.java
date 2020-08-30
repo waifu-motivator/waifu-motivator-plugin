@@ -33,7 +33,7 @@ public final class DefaultWaifuSoundPlayer implements WaifuSoundPlayer {
             clip = SoundClipUtil.openClip( soundStream );
             clip.start();
         } catch ( IOException | LineUnavailableException | UnsupportedAudioFileException e ) {
-            LOGGER.error( e.getMessage(), e );
+            LOGGER.warn( e.getMessage(), e );
         }
     }
 
@@ -42,7 +42,7 @@ public final class DefaultWaifuSoundPlayer implements WaifuSoundPlayer {
         try {
             Thread.sleep( clip.getMicrosecondLength() / 1000 );
         } catch ( InterruptedException e ) {
-            LOGGER.error( e.getMessage(), e );
+            LOGGER.warn( e.getMessage(), e );
         }
     }
 

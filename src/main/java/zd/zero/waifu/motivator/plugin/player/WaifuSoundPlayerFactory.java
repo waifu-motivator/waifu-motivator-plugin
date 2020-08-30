@@ -19,18 +19,20 @@ public final class WaifuSoundPlayerFactory {
             .filter( f -> f.contains( "." ) )
             .map( f -> f.substring( f.lastIndexOf( '.' ) + 1 ) ).orElse( "" );
 
-        Optional<SupportedFile> supportedFile = SupportedFile.ofExtension( extension );
-        if ( supportedFile.isPresent() ) {
-            switch ( supportedFile.get() ) {
-                case CLIP:
-                    return DefaultWaifuSoundPlayer.ofFile( fileName );
+        return SupportedFile.ofExtension( extension )
+            .map( fileType -> {
+                switch ( fileType ) {
+                    case CLIP:
+                        return DefaultWaifuSoundPlayer.ofFile( fileName );
 
-                case MP3:
-                    return Mp3WaifuSoundPlayer.ofFile( fileName );
-            }
-        }
+                    case MP3:
+                        return Mp3WaifuSoundPlayer.ofFile( fileName );
 
-        return EmptyWaifuSoundPlayer.of( fileName );
+                    default:
+                        return EmptyWaifuSoundPlayer.of( fileName );
+                }
+            } )
+            .orElse( EmptyWaifuSoundPlayer.of( fileName ) );
     }
 
     private enum SupportedFile {

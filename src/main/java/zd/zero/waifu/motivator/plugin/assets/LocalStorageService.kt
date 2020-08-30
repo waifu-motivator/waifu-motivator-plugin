@@ -15,7 +15,7 @@ object LocalStorageService {
         try {
             Files.createDirectories(directoriesToCreate.parent)
         } catch (e: IOException) {
-            log.error("Unable to create directories $directoriesToCreate for raisins", e)
+            log.warn("Unable to create directories $directoriesToCreate for raisins", e)
         }
     }
 

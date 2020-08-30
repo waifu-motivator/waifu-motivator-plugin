@@ -163,7 +163,7 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
             this.browser.setText( getUpdatedTemplateContent() );
             this.browser.setCaretPosition( 0 ); // resets scroll back to top
         } catch ( IOException e ) {
-            LOGGER.error( e.getMessage(), e );
+            LOGGER.warn( e.getMessage(), e );
         }
     }
 
