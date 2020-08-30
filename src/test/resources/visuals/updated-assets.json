@@ -1,0 +1,80 @@
+[
+    {
+        "imagePath": "aqua_celebration.gif",
+        "path": "aqua_celebration.gif",
+        "imageAlt": "Aqua celebration",
+        "imageDimensions": {
+            "width": 240,
+            "height": 320
+        },
+        "categories": [
+            "CELEBRATION",
+            "MOTIVATION"
+        ]
+    },
+    {
+        "imagePath": "celebration/caramelldansen.gif",
+        "path": "celebration/caramelldansen.gif",
+        "imageAlt": "Caramelldansen",
+        "imageDimensions": {
+            "width": 320,
+            "height": 240
+        },
+        "categories": [
+            "CELEBRATION",
+            "MOTIVATION"
+        ]
+    },
+    {
+        "imagePath": "waiting/kanna_bored.gif",
+        "path": "waiting/kanna_bored.gif",
+        "imageAlt": "",
+        "imageDimensions": {
+            "width": 480,
+            "height": 270
+        },
+        "categories": [
+            "WAITING",
+            "BORED"
+        ]
+    },
+    {
+        "imagePath": "waiting/konata_bored_one.gif",
+        "path": "waiting/konata_bored_one.gif",
+        "imageAlt": "",
+        "imageDimensions": {
+            "width": 498,
+            "height": 252
+        },
+        "categories": [
+            "WAITING",
+            "BORED"
+        ]
+    },
+    {
+        "imagePath": "waiting/misato_bored_one.gif",
+        "path": "waiting/misato_bored_one.gif",
+        "imageAlt": "",
+        "imageDimensions": {
+            "width": 498,
+            "height": 278
+        },
+        "categories": [
+            "WAITING",
+            "BORED"
+        ]
+    },
+    {
+        "imagePath": "waiting/ryuko_waiting.gif",
+        "path": "waiting/ryuko_waiting.gif",
+        "imageAlt": "",
+        "imageDimensions": {
+            "width": 400,
+            "height": 224
+        },
+        "categories": [
+            "WAITING",
+            "BORED"
+        ]
+    }
+]
