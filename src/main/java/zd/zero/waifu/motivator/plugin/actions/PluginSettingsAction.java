@@ -3,10 +3,11 @@ package zd.zero.waifu.motivator.plugin.actions;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.options.ShowSettingsUtil;
+import com.intellij.openapi.project.DumbAware;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage;
 
-public class PluginSettingsAction extends AnAction {
+public class PluginSettingsAction extends AnAction implements DumbAware {
     @Override
     public void actionPerformed( @NotNull AnActionEvent e ) {
         if ( e.getProject() == null ) return;
