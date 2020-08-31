@@ -53,7 +53,7 @@ class ExitCodeListener(private val project: Project) : Runnable, Disposable {
                 ).motivate()
             }) {
                 sendMessage(
-                    "'Task Termination Events' Unavailable Offline",
+                    "'Exit Code Events' Unavailable Offline",
                     ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
                     project
                 )

@@ -19,7 +19,6 @@ class TaskListener(private val project: Project) : ProjectTaskListener {
 
     private var previousTaskStatus = TaskStatus.UNKNOWN
 
-    // todo: show task failure for project.
     override fun finished(result: ProjectTaskManager.Result) {
         when {
             result.hasErrors() -> {
