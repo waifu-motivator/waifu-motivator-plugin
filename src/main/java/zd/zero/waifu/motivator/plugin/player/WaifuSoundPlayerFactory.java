@@ -1,5 +1,6 @@
 package zd.zero.waifu.motivator.plugin.player;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Path;
@@ -13,11 +14,7 @@ public final class WaifuSoundPlayerFactory {
     }
 
     public static WaifuSoundPlayer createPlayer( Path fileName ) {
-        String extension = Optional.ofNullable( fileName )
-            .map( Path::getFileName )
-            .map( String::valueOf )
-            .filter( f -> f.contains( "." ) )
-            .map( f -> f.substring( f.lastIndexOf( '.' ) + 1 ) ).orElse( "" );
+        String extension = FilenameUtils.getExtension( fileName.getFileName().toString() );
 
         Optional<SupportedFile> supportedFile = SupportedFile.ofExtension( extension );
         if ( supportedFile.isPresent() ) {
