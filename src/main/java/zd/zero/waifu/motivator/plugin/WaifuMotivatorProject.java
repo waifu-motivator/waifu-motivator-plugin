@@ -3,6 +3,7 @@ package zd.zero.waifu.motivator.plugin;
 import com.intellij.ide.GeneralSettings;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerListener;
@@ -10,18 +11,27 @@ import com.intellij.openapi.startup.StartupManager;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
 import zd.zero.waifu.motivator.plugin.assets.AudibleAssetDefinitionService;
+import zd.zero.waifu.motivator.plugin.assets.AudibleAssetManager;
+import zd.zero.waifu.motivator.plugin.assets.HasStatus;
+import zd.zero.waifu.motivator.plugin.assets.Status;
+import zd.zero.waifu.motivator.plugin.assets.TextAssetManager;
+import zd.zero.waifu.motivator.plugin.assets.VisualAssetManager;
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
 import zd.zero.waifu.motivator.plugin.listeners.IdleEventListener;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
 import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
 import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
+import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification;
 import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
-import java.nio.file.Path;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
+import static zd.zero.waifu.motivator.plugin.tools.ToolBox.doOrElse;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
@@ -39,25 +49,49 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     public void projectOpened( @NotNull Project projectOpened ) {
         if ( this.project != null ) return;
 
-        this.project = projectOpened;
-        this.pluginState = WaifuMotivatorPluginState.getPluginState();
-        this.unitTestListener = WaifuUnitTester.newInstance( projectOpened );
-        this.idleEventListener = new IdleEventListener();
+        checkIfInGoodState( projectOpened, () -> {
+            this.project = projectOpened;
+            this.pluginState = WaifuMotivatorPluginState.getPluginState();
+            this.unitTestListener = WaifuUnitTester.newInstance( projectOpened );
+            this.idleEventListener = new IdleEventListener();
 
-        updatePlatformStartupConfig();
-        initializeListeners();
-        initializeStartupMotivator();
-        UserOnboarding.INSTANCE.attemptToShowUpdateNotification();
+            updatePlatformStartupConfig();
+            initializeListeners();
+            initializeStartupMotivator();
+            UserOnboarding.INSTANCE.attemptToShowUpdateNotification();
+        } );
+    }
+
+    private void checkIfInGoodState( Project projectOpened, Runnable onGoodState ) {
+        StartupManager.getInstance( projectOpened ).registerPostStartupActivity( () -> {
+            boolean isInGoodState = Stream.of(
+                TextAssetManager.INSTANCE,
+                VisualAssetManager.INSTANCE,
+                AudibleAssetManager.INSTANCE
+            ).map( HasStatus::getStatus )
+                .allMatch( Predicate.isEqual( Status.OK ) );
+            if ( !isInGoodState ) {
+                UpdateNotification.INSTANCE.sendMessage(
+                    "Unable to contact Waifus!",
+                    "I need internet first before I can bring you waifus. " +
+                        "Please re-establish connection and restart " +
+                        ApplicationInfo.getInstance().getFullApplicationName()
+                        + ".",
+                    projectOpened
+                );
+            } else {
+                onGoodState.run();
+            }
+        } );
     }
 
     @Override
     public void projectClosing( @NotNull Project project ) {
         if ( !pluginState.isSayonaraEnabled() || isMultipleProjectsOpened() ) return;
 
-        Path soundFilePath = AudibleAssetDefinitionService.INSTANCE.getRandomAssetByCategory(
+        AudibleAssetDefinitionService.INSTANCE.getRandomAssetByCategory(
             WaifuAssetCategory.DEPARTURE
-        ).getSoundFilePath();
-        WaifuSoundPlayerFactory.createPlayer( soundFilePath ).playAndWait();
+        ).ifPresent( asset -> WaifuSoundPlayerFactory.createPlayer( asset.getSoundFilePath() ).playAndWait() );
     }
 
     @Override
@@ -89,19 +123,28 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             pluginState.isStartupMotivationSoundEnabled()
         );
 
-        WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
-            project,
+        doOrElse(
             VisualMotivationAssetProvider.INSTANCE.createAssetByCategory(
                 WaifuAssetCategory.WELCOMING
             ),
-            config
-        );
+            asset -> {
+                WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
+                    project,
+                    asset,
+                    config
+                );
 
-        if ( !project.isInitialized() ) {
-            StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );
-        } else {
-            waifuMotivation.motivate();
-        }
+                if ( !project.isInitialized() ) {
+                    StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );
+                } else {
+                    waifuMotivation.motivate();
+                }
+            },
+            () -> UpdateNotification.INSTANCE.sendMessage(
+                "'Welcome Wafiu' Unavailable Offline",
+                ProjectConstants.getWAIFU_UNAVAILABLE_MESSAGE(),
+                project
+            ) );
     }
 
     private boolean isMultipleProjectsOpened() {

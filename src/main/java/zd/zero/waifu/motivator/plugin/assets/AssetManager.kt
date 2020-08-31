@@ -1,10 +1,11 @@
 package zd.zero.waifu.motivator.plugin.assets
 
-import com.intellij.openapi.application.ex.ApplicationInfoEx
+import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.diagnostic.Logger
 import org.apache.commons.io.IOUtils
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
+import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClients
 import zd.zero.waifu.motivator.plugin.assets.LocalAssetService.hasAssetChanged
 import zd.zero.waifu.motivator.plugin.assets.LocalStorageService.createDirectories
@@ -21,29 +22,33 @@ enum class AssetCategory(val category: String) {
     VISUAL("visuals"), AUDIBLE("audible"), TEXT("text")
 }
 
+object HttpClientFactory {
+    fun createHttpClient(): CloseableHttpClient =
+        HttpClients.custom()
+            .setUserAgent(ApplicationInfo.getInstance()?.fullApplicationName)
+            .build()
+}
+
 object AssetManager {
     private const val ASSETS_SOURCE = "https://waifu.assets.unthrottled.io"
 
-    private val httpClient = HttpClients.custom()
-        .setUserAgent(ApplicationInfoEx.getInstance().fullApplicationName)
-        .build()
-
+    private val httpClient = HttpClientFactory.createHttpClient()
     private val log = Logger.getInstance(this::class.java)
 
     /**
      * Will return a resolvable URL that can be used to reference an asset.
      * If the asset was able to be downloaded on the local machine it will return a
      * file:// url to the local asset. If it was not able to get the asset then it
-     * will return an https:// url to the remote asset.
+     * will return empty if the asset is not available locally.
      */
-    fun resolveAssetUrl(assetCategory: AssetCategory, assetPath: String): String {
+    fun resolveAssetUrl(assetCategory: AssetCategory, assetPath: String): Optional<String> {
         val remoteAssetUrl = constructRemoteAssetUrl(
             assetCategory, assetPath
         )
         return constructLocalAssetPath(assetCategory, assetPath)
             .flatMap {
                 resolveTheAssetUrl(it, remoteAssetUrl)
-            }.orElse(remoteAssetUrl)
+            }
     }
 
     private fun constructRemoteAssetUrl(
@@ -52,13 +57,15 @@ object AssetManager {
     ): String = "$ASSETS_SOURCE/${assetCategory.category}/$assetPath"
 
     private fun resolveTheAssetUrl(localAssetPath: Path, remoteAssetUrl: String): Optional<String> =
-        if (hasAssetChanged(localAssetPath, remoteAssetUrl)) {
-            downloadAndGetAssetUrl(localAssetPath, remoteAssetUrl)
-        } else {
-            localAssetPath.toUri().toString().toOptional()
+        when {
+            hasAssetChanged(localAssetPath, remoteAssetUrl) ->
+                downloadAndGetAssetUrl(localAssetPath, remoteAssetUrl)
+            Files.exists(localAssetPath) ->
+                localAssetPath.toUri().toString().toOptional()
+            else -> Optional.empty()
         }
 
-    private fun constructLocalAssetPath(
+    fun constructLocalAssetPath(
         assetCategory: AssetCategory,
         assetPath: String
     ): Optional<Path> =
@@ -74,9 +81,9 @@ object AssetManager {
         remoteAssetUrl: String
     ): Optional<String> {
         createDirectories(localAssetPath)
+        val remoteAssetRequest = createGetRequest(remoteAssetUrl)
         return try {
             log.warn("Attempting to download asset $remoteAssetUrl")
-            val remoteAssetRequest = createGetRequest(remoteAssetUrl)
             val remoteAssetResponse = httpClient.execute(remoteAssetRequest)
             if (remoteAssetResponse.statusLine.statusCode == 200) {
                 remoteAssetResponse.entity.content.use { inputStream ->
@@ -91,19 +98,15 @@ object AssetManager {
                 localAssetPath.toUri().toString().toOptional()
             } else {
                 log.warn("Asset request for $remoteAssetUrl responded with $remoteAssetResponse")
-                getFallbackURL(localAssetPath, remoteAssetUrl)
+                Optional.empty()
             }
         } catch (e: Throwable) {
-            log.error("Unable to get remote remote asset $remoteAssetUrl for raisins", e)
-            getFallbackURL(localAssetPath, remoteAssetUrl)
+            log.warn("Unable to get remote remote asset $remoteAssetUrl for raisins ${e.message}")
+            Optional.empty()
+        } finally {
+            remoteAssetRequest.releaseConnection()
         }
     }
-
-    private fun getFallbackURL(localAssetPath: Path, remoteAssetPath: String) =
-        when {
-            Files.exists(localAssetPath) -> localAssetPath.toUri().toString()
-            else -> remoteAssetPath
-        }.toOptional()
 
     private fun createGetRequest(remoteUrl: String): HttpGet {
         val remoteAssetRequest = HttpGet(remoteUrl)

@@ -1,51 +1,77 @@
 package zd.zero.waifu.motivator.plugin.assets
 
-import zd.zero.waifu.motivator.plugin.tools.RestClient
+import com.intellij.openapi.diagnostic.Logger
+import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.util.*
 import java.util.Optional.ofNullable
 
-abstract class RemoteAssetManager<T : AssetDefinition>(
-    private val assetCategory: AssetCategory,
-    private val backupAssets: List<T>
-) {
-    private lateinit var remoteAssets: List<T>
+enum class Status {
+    OK, BROKEN, UNKNOWN
+}
 
-    fun supplyAssetDefinitions(): List<T> =
-        if (this::remoteAssets.isInitialized) {
-            remoteAssets
-        } else {
-            val assetUrl = AssetManager.resolveAssetUrl(assetCategory, "assets.json")
-            remoteAssets = initializeRemoteAssets(assetUrl)
-            remoteAssets
-        }
+interface HasStatus {
+    var status: Status
+}
 
-    abstract fun applyAssetUrl(asset: T, assetUrl: String): T
+abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
+    private val assetCategory: AssetCategory
+) : HasStatus {
+    private lateinit var remoteAndLocalAssets: List<T>
+    private lateinit var localAssets: MutableSet<T>
 
-    fun resolveAsset(asset: T): T {
-        val assetUrl = AssetManager.resolveAssetUrl(assetCategory, asset.path)
-        return applyAssetUrl(asset, assetUrl)
+    override var status = Status.UNKNOWN
+    private val log = Logger.getInstance(this::class.java)
+
+    init {
+        AssetManager.resolveAssetUrl(assetCategory, "assets.json")
+            .flatMap { assetUrl -> initializeRemoteAssets(assetUrl) }
+            .doOrElse({ allAssetDefinitions ->
+                status = Status.OK
+                remoteAndLocalAssets = allAssetDefinitions
+                localAssets = allAssetDefinitions.filter { asset ->
+                    AssetManager.constructLocalAssetPath(assetCategory, asset.path)
+                        .filter { Files.exists(it) }
+                        .isPresent
+                }.toSet().toMutableSet()
+            }) {
+                status = Status.BROKEN
+                remoteAndLocalAssets = listOf()
+                localAssets = mutableSetOf()
+            }
     }
 
-    private fun initializeRemoteAssets(assetUrl: String): List<T> =
-        try {
-            if (assetUrl.startsWith("file://")) {
-                readLocalFile(assetUrl)
-            } else {
-                RestClient.performGet(assetUrl)
-            }.map {
-                convertToDefinitions(it)
-            }.orElseGet {
-                backupAssets
+    fun supplyAssetDefinitions(): List<T> =
+        remoteAndLocalAssets
+
+    fun supplyLocalAssetDefinitions(): Set<T> =
+        localAssets
+
+    abstract fun convertToAsset(asset: T, assetUrl: String): U
+
+    fun resolveAsset(asset: T): Optional<U> =
+        AssetManager.resolveAssetUrl(assetCategory, asset.path)
+            .map { assetUrl ->
+                localAssets.add(asset)
+                convertToAsset(asset, assetUrl)
             }
+
+    private fun initializeRemoteAssets(assetUrl: String): Optional<List<T>> =
+        try {
+            readLocalFile(assetUrl)
+                .flatMap {
+                    convertToDefinitions(it)
+                }
         } catch (e: Throwable) {
-            backupAssets
+            log.error("Unable to initialize asset metadata.", e)
+            Optional.empty()
         }
 
     private fun readLocalFile(assetUrl: String) =
         ofNullable(Files.readAllBytes(Paths.get(URI(assetUrl))))
             .map { String(it, Charsets.UTF_8) }
 
-    protected abstract fun convertToDefinitions(defJson: String): List<T>
+    abstract fun convertToDefinitions(defJson: String): Optional<List<T>>
 }

@@ -24,6 +24,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit',
         version: '4.12'
     testCompile "org.mockito:mockito-core:2.+"
+    testImplementation "org.assertj:assertj-core:3.8.0"
     testImplementation "io.mockk:mockk:1.10.0"
 }
 
@@ -39,6 +40,13 @@ intellij {
     println "Building for IntelliJ version: ${version}"
 
     alternativeIdePath idePath
+
+    if ("DOKI" == System.getenv("DEV_ENV")) {
+        setPlugins(
+            'io.acari.DDLCTheme:10.0.0'
+        )
+    }
+
 }
 
 compileKotlin {

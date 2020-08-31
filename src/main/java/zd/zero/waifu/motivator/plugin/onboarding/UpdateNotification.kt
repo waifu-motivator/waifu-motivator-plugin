@@ -5,6 +5,8 @@ import com.intellij.notification.impl.NotificationsManagerImpl
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.Balloon
 import com.intellij.ui.BalloonLayoutData
+import icons.WaifuMotivatorIcons
+import org.jetbrains.annotations.Nls
 import zd.zero.waifu.motivator.plugin.WaifuMotivator.PLUGIN_NAME
 import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParameters
 import zd.zero.waifu.motivator.plugin.service.ApplicationService
@@ -48,6 +50,33 @@ object UpdateNotification {
             .setListener(NotificationListener.UrlOpeningListener(false))
 
         showNotification(project, updateNotification)
+    }
+
+    fun sendMessage(
+        title: String,
+        message: String,
+        project: Project? = null
+    ) {
+        showRegularNotification(
+            title,
+            message,
+            project = project,
+            listener = defaultListener
+        )
+    }
+
+    private val defaultListener = NotificationListener.UrlOpeningListener(false)
+    private fun showRegularNotification(
+        @Nls(capitalization = Nls.Capitalization.Sentence) title: String = "",
+        @Nls(capitalization = Nls.Capitalization.Sentence) content: String,
+        project: Project? = null,
+        listener: NotificationListener? = defaultListener
+    ) {
+        notificationGroup.createNotification(
+            title, content,
+            listener = listener
+        ).setIcon(WaifuMotivatorIcons.MENU)
+            .notify(project)
     }
 
     private fun showNotification(

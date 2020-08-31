@@ -1,28 +1,37 @@
 package zd.zero.waifu.motivator.plugin.listeners
 
 import com.intellij.openapi.project.Project
+import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
-import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider.pickAssetFromCategories
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
-import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory.constructMotivation
+import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification.sendMessage
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
+import zd.zero.waifu.motivator.plugin.tools.AssetTools.attemptToShowCategories
 
 internal enum class TestStatus {
     PASS, FAIL, UNKNOWN
 }
 
 class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTester.Listener {
+
     private var lastStatus = TestStatus.UNKNOWN
 
     override fun onUnitTestPassed() {
-        val successMotivation = constructMotivation(project,
+        attemptToShowCategories(
+            project,
+            { createAlertConfiguration() },
+            {
+                sendMessage(
+                    "'Test Success Motivation' Unavailable Offline",
+                    ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
+                    project
+                )
+            },
             // todo: motivation, encouragement
-            pickAssetFromCategories(
-                WaifuAssetCategory.CELEBRATION,
-                *getExtraTestPassCategories()
-            ),
-            createAlertConfiguration())
-        successMotivation.motivate()
+            WaifuAssetCategory.CELEBRATION,
+            *getExtraTestPassCategories()
+        )
+
         lastStatus = TestStatus.PASS
     }
 
@@ -33,14 +42,21 @@ class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTeste
         }
 
     override fun onUnitTestFailed() {
-        val keepGoingMotivation = constructMotivation(project,
+        attemptToShowCategories(
+            project,
+            { createAlertConfiguration() },
+            {
+                sendMessage(
+                    "'Test Failure Motivation' Unavailable Offline",
+                    ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
+                    project
+                )
+            },
             // todo: motivation, encouragement
-            pickAssetFromCategories(
-                WaifuAssetCategory.DISAPPOINTMENT,
-                WaifuAssetCategory.SHOCKED
-            ),
-            createAlertConfiguration())
-        keepGoingMotivation.motivate()
+            WaifuAssetCategory.DISAPPOINTMENT,
+            WaifuAssetCategory.SHOCKED
+        )
+
         lastStatus = TestStatus.FAIL
     }
 
