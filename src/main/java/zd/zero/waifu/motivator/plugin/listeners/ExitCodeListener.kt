@@ -21,14 +21,13 @@ class ExitCodeListener(private val project: Project) : Runnable, Disposable {
 
     init {
         messageBus.subscribe(ExecutionManager.EXECUTION_TOPIC, object : ExecutionListener {
-
             override fun processTerminated(
                 executorId: String,
                 env: ExecutionEnvironment,
                 handler: ProcessHandler,
                 exitCode: Int
             ) {
-                if(exitCode > 0) {
+                if(exitCode > 0 && env.project == project) {
                     run()
                 }
             }
