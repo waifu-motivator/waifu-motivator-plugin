@@ -3,7 +3,7 @@ package zd.zero.waifu.motivator.plugin.listeners
 import com.intellij.ide.IdeEventQueue
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.project.ProjectManager
+import com.intellij.openapi.project.Project
 import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
@@ -17,7 +17,7 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState.Companion.DEF
 import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import java.util.concurrent.TimeUnit
 
-class IdleEventListener : Runnable, Disposable {
+class IdleEventListener(private val project: Project) : Runnable, Disposable {
     private val messageBus = ApplicationManager.getApplication().messageBus.connect()
 
     init {
@@ -53,7 +53,6 @@ class IdleEventListener : Runnable, Disposable {
     private var isEventDisplayed = false
     override fun run() {
         if (isEventDisplayed.not()) {
-            val project = ProjectManager.getInstance().defaultProject
             VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING)
                 .doOrElse({ asset ->
                     isEventDisplayed = true
