@@ -27,7 +27,7 @@ class ExitCodeListener(private val project: Project) : Runnable, Disposable {
                 handler: ProcessHandler,
                 exitCode: Int
             ) {
-                if(exitCode > 0 && env.project == project) {
+                if (exitCode > 0 && env.project == project) {
                     run()
                 }
             }
@@ -40,36 +40,32 @@ class ExitCodeListener(private val project: Project) : Runnable, Disposable {
 
     private var isEventDisplayed = false
     override fun run() {
-        if (isEventDisplayed.not()) {
-            VisualMotivationAssetProvider.pickAssetFromCategories(
-                WaifuAssetCategory.SHOCKED,
-                WaifuAssetCategory.DISAPPOINTMENT
-            )
-                .doOrElse({ asset ->
-                    isEventDisplayed = true
-                    VisualMotivationFactory.constructMotivation(
-                        project,
-                        asset,
-                        createAlertConfiguration()
-                    ).setListener {
-                        isEventDisplayed = false
-                    }.motivate()
-                }) {
-                    sendMessage(
-                        "'Task Termination Events' Unavailable Offline",
-                        ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
-                        project
-                    )
-                }
-        }
+        VisualMotivationAssetProvider.pickAssetFromCategories(
+            WaifuAssetCategory.SHOCKED,
+            WaifuAssetCategory.DISAPPOINTMENT
+        )
+            .doOrElse({ asset ->
+                isEventDisplayed = true
+                VisualMotivationFactory.constructMotivation(
+                    project,
+                    asset,
+                    createAlertConfiguration()
+                ).motivate()
+            }) {
+                sendMessage(
+                    "'Task Termination Events' Unavailable Offline",
+                    ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
+                    project
+                )
+            }
     }
 
     private fun createAlertConfiguration(): AlertConfiguration {
         val pluginState = WaifuMotivatorPluginState.getInstance().state
         return AlertConfiguration(
-            pluginState!!.isIdleMotivationEnabled || pluginState.isIdleSoundEnabled,
-            pluginState.isIdleMotivationEnabled,
-            pluginState.isIdleSoundEnabled
+            pluginState!!.isExitCodeNotificationEnabled || pluginState.isExitCodeSoundEnabled,
+            pluginState.isExitCodeNotificationEnabled,
+            pluginState.isExitCodeSoundEnabled
         )
     }
 }

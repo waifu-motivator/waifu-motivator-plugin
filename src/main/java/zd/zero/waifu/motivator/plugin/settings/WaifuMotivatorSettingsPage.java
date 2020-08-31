@@ -53,6 +53,10 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JCheckBox allowFrustrationCheckBox;
 
+    private JCheckBox enableExitCodeNotifications;
+
+    private JCheckBox enableExitCodeSound;
+
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
     }
@@ -100,6 +104,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableTaskEventSoundsCheckBox.isSelected() != this.state.isTaskSoundEnabled() ||
                 frustrationProbabilitySlider.getValue() != this.state.getProbabilityOfFrustration() ||
                 ((Integer) eventsBeforeFrustrationSpinner.getValue()) != this.state.getEventsBeforeFrustration() ||
+                enableExitCodeNotifications.isSelected() != this.state.isExitCodeNotificationEnabled() ||
+                enableExitCodeSound.isSelected() != this.state.isExitCodeSoundEnabled() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled();
     }
 
@@ -137,6 +143,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setAllowFrustration( allowFrustrationCheckBox.isSelected() );
         this.state.setEventsBeforeFrustration( ( Integer ) eventsBeforeFrustrationSpinner.getValue() );
         this.state.setProbabilityOfFrustration( frustrationProbabilitySlider.getValue() );
+        this.state.setExitCodeNotificationEnabled( enableExitCodeNotifications.isSelected() );
+        this.state.setExitCodeSoundEnabled( enableExitCodeSound.isSelected() );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
@@ -164,6 +172,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.allowFrustrationCheckBox.setSelected( this.state.isAllowFrustration() );
         this.eventsBeforeFrustrationSpinner.setValue( this.state.getEventsBeforeFrustration() );
         this.frustrationProbabilitySlider.setValue( this.state.getProbabilityOfFrustration() );
+        this.enableExitCodeNotifications.setSelected( this.state.isExitCodeNotificationEnabled() );
+        this.enableExitCodeSound.setSelected( this.state.isExitCodeSoundEnabled() );
     }
 
 }
