@@ -53,25 +53,24 @@ class IdleEventListener : Runnable, Disposable {
     private var isEventDisplayed = false
     override fun run() {
         if (isEventDisplayed.not()) {
-            ProjectManager.getInstance().openProjects.forEach {
-                VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING)
-                    .doOrElse({ asset ->
-                        isEventDisplayed = true
-                        VisualMotivationFactory.constructMotivation(
-                            it,
-                            asset,
-                            createAlertConfiguration()
-                        ).setListener {
-                            isEventDisplayed = false
-                        }.motivate()
-                    }) {
-                        sendMessage(
-                            "'Idle Events' Unavailable Offline",
-                            ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
-                            it
-                        )
-                    }
-            }
+            val project = ProjectManager.getInstance().defaultProject
+            VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING)
+                .doOrElse({ asset ->
+                    isEventDisplayed = true
+                    VisualMotivationFactory.constructMotivation(
+                        project,
+                        asset,
+                        createAlertConfiguration()
+                    ).setListener {
+                        isEventDisplayed = false
+                    }.motivate()
+                }) {
+                    sendMessage(
+                        "'Idle Events' Unavailable Offline",
+                        ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
+                        project
+                    )
+                }
         }
     }
 
