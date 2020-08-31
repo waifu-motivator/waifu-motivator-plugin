@@ -41,15 +41,32 @@ object AssetManager {
      * file:// url to the local asset. If it was not able to get the asset then it
      * will return empty if the asset is not available locally.
      */
-    fun resolveAssetUrl(assetCategory: AssetCategory, assetPath: String): Optional<String> {
-        val remoteAssetUrl = constructRemoteAssetUrl(
-            assetCategory, assetPath
-        )
-        return constructLocalAssetPath(assetCategory, assetPath)
+    fun resolveAssetUrl(assetCategory: AssetCategory, assetPath: String): Optional<String> =
+        resolveAsset(assetCategory, assetPath) { localAssetPath, remoteAssetUrl ->
+            resolveTheAssetUrl(localAssetPath, remoteAssetUrl)
+        }
+
+    /**
+     * Works just like <code>resolveAssetUrl</code> except that it will always
+     * download the remote asset.
+     */
+    fun forceResolveAssetUrl(assetCategory: AssetCategory, assetPath: String): Optional<String> =
+        resolveAsset(assetCategory, assetPath) { localAssetPath, remoteAssetUrl ->
+            downloadAndGetAssetUrl(localAssetPath, remoteAssetUrl)
+        }
+
+    private fun resolveAsset(
+        assetCategory: AssetCategory,
+        assetPath: String,
+        resolveAsset: (Path, String) -> Optional<String>
+    ): Optional<String> =
+        constructLocalAssetPath(assetCategory, assetPath)
             .flatMap {
-                resolveTheAssetUrl(it, remoteAssetUrl)
+                val remoteAssetUrl = constructRemoteAssetUrl(
+                    assetCategory, assetPath
+                )
+                resolveAsset(it, remoteAssetUrl)
             }
-    }
 
     private fun constructRemoteAssetUrl(
         assetCategory: AssetCategory,

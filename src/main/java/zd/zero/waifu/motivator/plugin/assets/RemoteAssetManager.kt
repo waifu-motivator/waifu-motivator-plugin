@@ -1,6 +1,8 @@
 package zd.zero.waifu.motivator.plugin.assets
 
 import com.intellij.openapi.diagnostic.Logger
+import zd.zero.waifu.motivator.plugin.platform.LifeCycleManager
+import zd.zero.waifu.motivator.plugin.platform.UpdateListener
 import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import java.net.URI
 import java.nio.file.Files
@@ -26,21 +28,37 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
     private val log = Logger.getInstance(this::class.java)
 
     init {
-        AssetManager.resolveAssetUrl(assetCategory, "assets.json")
-            .flatMap { assetUrl -> initializeRemoteAssets(assetUrl) }
-            .doOrElse({ allAssetDefinitions ->
-                status = Status.OK
-                remoteAndLocalAssets = allAssetDefinitions
-                localAssets = allAssetDefinitions.filter { asset ->
-                    AssetManager.constructLocalAssetPath(assetCategory, asset.path)
-                        .filter { Files.exists(it) }
-                        .isPresent
-                }.toSet().toMutableSet()
-            }) {
-                status = Status.BROKEN
-                remoteAndLocalAssets = listOf()
-                localAssets = mutableSetOf()
+        initializeAssetCaches(AssetManager.resolveAssetUrl(assetCategory, "assets.json"))
+        LifeCycleManager.registerUpdateListener(object : UpdateListener {
+            override fun onUpdate() {
+                initializeAssetCaches(
+                    AssetManager.forceResolveAssetUrl(
+                        assetCategory, "assets.json"
+                    ),
+                    breakOnFailure = false
+                )
             }
+        })
+    }
+
+    private fun initializeAssetCaches(assetFileUrl: Optional<String>, breakOnFailure: Boolean = true) {
+        assetFileUrl
+                .flatMap { assetUrl -> initializeRemoteAssets(assetUrl) }
+                .doOrElse({ allAssetDefinitions ->
+                    status = Status.OK
+                    remoteAndLocalAssets = allAssetDefinitions
+                    localAssets = allAssetDefinitions.filter { asset ->
+                        AssetManager.constructLocalAssetPath(assetCategory, asset.path)
+                            .filter { Files.exists(it) }
+                            .isPresent
+                    }.toSet().toMutableSet()
+                }) {
+                    if (breakOnFailure) {
+                        status = Status.BROKEN
+                        remoteAndLocalAssets = listOf()
+                        localAssets = mutableSetOf()
+                    }
+                }
     }
 
     fun supplyAssetDefinitions(): List<T> =

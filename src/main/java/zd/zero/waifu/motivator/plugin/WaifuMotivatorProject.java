@@ -24,6 +24,7 @@ import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
 import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification;
 import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
+import zd.zero.waifu.motivator.plugin.platform.LifeCycleManager;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
@@ -47,6 +48,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void projectOpened( @NotNull Project projectOpened ) {
+        LifeCycleManager.INSTANCE.init();
         if ( this.project != null ) return;
 
         checkIfInGoodState( projectOpened, () -> {
@@ -58,7 +60,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             updatePlatformStartupConfig();
             initializeListeners();
             initializeStartupMotivator();
-            UserOnboarding.INSTANCE.attemptToShowUpdateNotification();
+            UserOnboarding.INSTANCE.attemptToPerformNewUpdateActions();
         } );
     }
 
