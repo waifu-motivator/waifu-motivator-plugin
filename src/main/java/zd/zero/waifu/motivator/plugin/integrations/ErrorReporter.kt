@@ -4,9 +4,8 @@ import com.google.gson.GsonBuilder
 import com.intellij.ide.IdeBundle
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.ide.ui.LafManager
+import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.application.ApplicationNamesInfo
-import com.intellij.openapi.application.ex.ApplicationInfoEx
-import com.intellij.openapi.application.impl.ApplicationInfoImpl
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent
 import com.intellij.openapi.diagnostic.SubmittedReportInfo
@@ -115,7 +114,7 @@ class ErrorReporter : ErrorReportSubmitter() {
     private fun getGC() = ManagementFactory.getGarbageCollectorMXBeans().stream()
         .map { it.name }.collect(Collectors.joining(","))
 
-    private fun getBuildInfo(appInfo: ApplicationInfoImpl): String? {
+    private fun getBuildInfo(appInfo: ApplicationInfo): String? {
         var buildInfo = IdeBundle.message("about.box.build.number", appInfo.build.asString())
         val cal = appInfo.buildDate
         var buildDate = ""
@@ -127,8 +126,8 @@ class ErrorReporter : ErrorReportSubmitter() {
         return buildInfo
     }
 
-    private fun getAppName(): Pair<ApplicationInfoImpl, String> {
-        val appInfo = ApplicationInfoEx.getInstanceEx() as ApplicationInfoImpl
+    private fun getAppName(): Pair<ApplicationInfo, String> {
+        val appInfo = ApplicationInfo.getInstance()
         var appName = appInfo.fullApplicationName
         val edition = ApplicationNamesInfo.getInstance().editionName
         if (edition != null) appName += " ($edition)"

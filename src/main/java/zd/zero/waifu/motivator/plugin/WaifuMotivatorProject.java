@@ -3,7 +3,7 @@ package zd.zero.waifu.motivator.plugin;
 import com.intellij.ide.GeneralSettings;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ex.ApplicationInfoEx;
+import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerListener;
@@ -75,7 +75,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
                     "Unable to contact Waifus!",
                     "I need internet first before I can bring you waifus. " +
                         "Please re-establish connection and restart " +
-                        ApplicationInfoEx.getInstance().getFullApplicationName()
+                        ApplicationInfo.getInstance().getFullApplicationName()
                         + ".",
                     projectOpened
                 );

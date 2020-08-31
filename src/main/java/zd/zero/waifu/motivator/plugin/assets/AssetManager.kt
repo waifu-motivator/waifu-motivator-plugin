@@ -1,6 +1,6 @@
 package zd.zero.waifu.motivator.plugin.assets
 
-import com.intellij.openapi.application.ex.ApplicationInfoEx
+import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.diagnostic.Logger
 import org.apache.commons.io.IOUtils
 import org.apache.http.client.config.RequestConfig
@@ -25,7 +25,7 @@ enum class AssetCategory(val category: String) {
 object HttpClientFactory {
     fun createHttpClient(): CloseableHttpClient =
         HttpClients.custom()
-            .setUserAgent(ApplicationInfoEx.getInstance()?.fullApplicationName)
+            .setUserAgent(ApplicationInfo.getInstance()?.fullApplicationName)
             .build()
 }
 
