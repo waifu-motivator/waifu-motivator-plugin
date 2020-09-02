@@ -15,8 +15,8 @@ class EmotionCore {
     }
 
     private fun processEvent(
-            motivationEvent: MotivationEvent,
-            emotionalState: EmotionalState
+        motivationEvent: MotivationEvent,
+        emotionalState: EmotionalState
     ): EmotionalState {
         return when (motivationEvent.category) {
             MotivationEventCategory.POSITIVE -> derivePositive(motivationEvent, emotionalState)
@@ -28,8 +28,8 @@ class EmotionCore {
     }
 
     private fun derivePositive(
-            motivationEvent: MotivationEvent,
-            emotionalState: EmotionalState
+        motivationEvent: MotivationEvent,
+        emotionalState: EmotionalState
     ): EmotionalState {
         return emotionalState.copy(
             observedPositiveEvents = emotionalState.observedPositiveEvents + 1
@@ -37,8 +37,8 @@ class EmotionCore {
     }
 
     private fun deriveNegative(
-            motivationEvent: MotivationEvent,
-            emotionalState: EmotionalState
+        motivationEvent: MotivationEvent,
+        emotionalState: EmotionalState
     ): EmotionalState {
         val observedFrustrationEvents = emotionalState.observedNegativeEvents + 1
         val newMood =
@@ -55,8 +55,8 @@ class EmotionCore {
     }
 
     private fun deriveNeutral(
-            motivationEvent: MotivationEvent,
-            emotionalState: EmotionalState
+        motivationEvent: MotivationEvent,
+        emotionalState: EmotionalState
     ): EmotionalState =
         when (motivationEvent.type) {
             MotivationEvents.IDLE -> EmotionalState(Mood.CALM)
@@ -64,9 +64,16 @@ class EmotionCore {
         }.copy(
             observedNeutralEvents = emotionalState.observedNeutralEvents + 1
         )
-
 }
 
 enum class Mood {
     ENRAGED, FRUSTRATED, AGITATED, HAPPY, AMAZED, CALM, BORED
 }
+
+data class EmotionalState(
+    val mood: Mood,
+    val previousEvent: MotivationEvent? = null,
+    val observedPositiveEvents: Int = 0,
+    val observedNeutralEvents: Int = 0,
+    val observedNegativeEvents: Int = 0
+)

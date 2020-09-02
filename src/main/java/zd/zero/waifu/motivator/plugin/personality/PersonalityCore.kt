@@ -4,7 +4,7 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 
 interface PersonalityCore {
     fun processMotivationEvent(
-            motivationEvent: MotivationEvent,
-            emotionalState: EmotionalState
+        motivationEvent: MotivationEvent,
+        emotionalState: EmotionalState
     )
 }
