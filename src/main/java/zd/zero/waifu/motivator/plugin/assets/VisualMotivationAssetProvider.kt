@@ -6,6 +6,8 @@ import java.util.*
 import kotlin.random.Random
 
 enum class WaifuAssetCategory {
+    FUSTRATED,
+    ENRAGED,
     CELEBRATION,
     HAPPY,
     SMUG,

@@ -37,9 +37,9 @@ class TaskListener : ProjectTaskListener {
                     .syncPublisher(MotivationEventListener.TOPIC)
                     .onEventTrigger(
                         MotivationEvent(
-                            MotivationEvents.TEST,
+                            MotivationEvents.TASK,
                             MotivationEventCategory.POSITIVE,
-                            "Test Success Motivation",
+                            "Task Success Motivation",
                             project
                         ) { createAlertConfiguration() }
                     )

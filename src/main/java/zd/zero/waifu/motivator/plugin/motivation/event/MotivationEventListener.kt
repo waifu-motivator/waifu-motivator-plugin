@@ -12,5 +12,4 @@ interface MotivationEventListener {
     }
 
     fun onEventTrigger(motivationEvent: MotivationEvent)
-
 }
