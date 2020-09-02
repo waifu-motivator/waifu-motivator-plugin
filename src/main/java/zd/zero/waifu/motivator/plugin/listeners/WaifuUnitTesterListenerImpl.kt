@@ -1,12 +1,13 @@
 package zd.zero.waifu.motivator.plugin.listeners
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
-import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
-import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
-import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification.sendMessage
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
-import zd.zero.waifu.motivator.plugin.tools.AssetTools.attemptToShowCategories
 
 internal enum class TestStatus {
     PASS, FAIL, UNKNOWN
@@ -14,50 +15,30 @@ internal enum class TestStatus {
 
 class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTester.Listener {
 
-    private var lastStatus = TestStatus.UNKNOWN
-
     override fun onUnitTestPassed() {
-        attemptToShowCategories(
-            project,
-            { createAlertConfiguration() },
-            {
-                sendMessage(
-                    "'Test Success Motivation' Unavailable Offline",
-                    ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
+        ApplicationManager.getApplication().messageBus
+            .syncPublisher(MotivationEventListener.TOPIC)
+            .onEventTrigger(
+                MotivationEvent(
+                    MotivationEvents.TEST,
+                    MotivationEventCategory.POSITIVE,
+                    "Test Success Motivation",
                     project
-                )
-            },
-            // todo: motivation, encouragement
-            WaifuAssetCategory.CELEBRATION,
-            *getExtraTestPassCategories()
-        )
-
-        lastStatus = TestStatus.PASS
+                ) { createAlertConfiguration() }
+            )
     }
 
-    private fun getExtraTestPassCategories(): Array<WaifuAssetCategory> =
-        when (lastStatus) {
-            TestStatus.FAIL -> arrayOf(WaifuAssetCategory.SMUG, WaifuAssetCategory.SMUG, WaifuAssetCategory.SMUG)
-            else -> arrayOf()
-        }
-
     override fun onUnitTestFailed() {
-        attemptToShowCategories(
-            project,
-            { createAlertConfiguration() },
-            {
-                sendMessage(
-                    "'Test Failure Motivation' Unavailable Offline",
-                    ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
+        ApplicationManager.getApplication().messageBus
+            .syncPublisher(MotivationEventListener.TOPIC)
+            .onEventTrigger(
+                MotivationEvent(
+                    MotivationEvents.TEST,
+                    MotivationEventCategory.NEGATIVE,
+                    "Test Failure Motivation",
                     project
-                )
-            },
-            // todo: motivation, encouragement
-            WaifuAssetCategory.DISAPPOINTMENT,
-            WaifuAssetCategory.SHOCKED
-        )
-
-        lastStatus = TestStatus.FAIL
+                ) { createAlertConfiguration() }
+            )
     }
 
     private fun createAlertConfiguration(): AlertConfiguration {
