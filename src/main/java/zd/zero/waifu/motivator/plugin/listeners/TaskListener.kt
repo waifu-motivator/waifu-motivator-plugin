@@ -17,6 +17,8 @@ internal enum class TaskStatus {
 
 class TaskListener : ProjectTaskListener {
 
+    private var previousTaskStatus = TaskStatus.UNKNOWN
+
     override fun finished(result: ProjectTaskManager.Result) {
         val project = ProjectManager.getInstance().defaultProject
         when {
@@ -32,7 +34,7 @@ class TaskListener : ProjectTaskListener {
                         ) { createAlertConfiguration() }
                     )
             }
-            else -> {
+            previousTaskStatus == TaskStatus.FAIL -> {
                 ApplicationManager.getApplication().messageBus
                     .syncPublisher(MotivationEventListener.TOPIC)
                     .onEventTrigger(
@@ -43,6 +45,9 @@ class TaskListener : ProjectTaskListener {
                             project
                         ) { createAlertConfiguration() }
                     )
+            }
+            else -> {
+                previousTaskStatus = TaskStatus.PASS
             }
         }
     }

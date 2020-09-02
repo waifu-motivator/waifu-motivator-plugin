@@ -5,7 +5,9 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.util.messages.MessageBusConnection
 import zd.zero.waifu.motivator.plugin.ProjectConstants
+import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
+import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
@@ -13,6 +15,7 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.tools.AssetTools.attemptToShowCategories
+import zd.zero.waifu.motivator.plugin.tools.doOrElse
 
 // %%%%%%%%%%%%%%%   ,     ,                                     #@@@@&%%%%%%%%%%%%
 // %%%%%%%%%%@@@@@@@@@@@& /                                            @@@@%%%%%%%%
@@ -56,6 +59,9 @@ object Wendi : Disposable {
     private lateinit var messageBusConnection: MessageBusConnection
     private val log = Logger.getInstance(this::class.java)
     private var emotionalState = EmotionalState(Mood.NORMAL)
+    private val taskPersonalityCore = TaskPersonalityCore()
+    private val testPersonalityCore = TestPersonalityCore()
+    private val idlePersonalityCore = IdlePersonalityCore()
 
     fun initialize() {
         if (this::messageBusConnection.isInitialized.not()) {
@@ -74,9 +80,9 @@ object Wendi : Disposable {
     private fun consumeEvent(motivationEvent: MotivationEvent) {
         emotionalState = deriveMood(motivationEvent)
         when (motivationEvent.type) {
-            MotivationEvents.TEST -> showTestMotivation(motivationEvent)
-            else -> {
-            }
+            MotivationEvents.TEST -> testPersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
+            MotivationEvents.IDLE -> idlePersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
+            MotivationEvents.TASK -> taskPersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
         }
     }
 
@@ -85,7 +91,9 @@ object Wendi : Disposable {
             MotivationEventCategory.POSITIVE,
             MotivationEventCategory.NEUTRAL -> shouldICalmDown(motivationEvent)
             MotivationEventCategory.NEGATIVE -> tryToRemainCalm(motivationEvent)
-        }
+        }.copy(
+            previousEvent = emotionalState.previousEvent
+        )
     }
 
     private fun tryToRemainCalm(motivationEvent: MotivationEvent): EmotionalState {
@@ -114,7 +122,25 @@ object Wendi : Disposable {
         }
     }
 
-    private fun showTestMotivation(motivationEvent: MotivationEvent) {
+    override fun dispose() {
+        if (this::messageBusConnection.isInitialized) {
+            messageBusConnection.dispose()
+        }
+    }
+}
+
+interface PersonalityCore {
+    fun processMotivationEvent(
+        motivationEvent: MotivationEvent,
+        emotionalState: EmotionalState
+    )
+}
+
+class TaskPersonalityCore : PersonalityCore {
+    override fun processMotivationEvent(
+        motivationEvent: MotivationEvent,
+        emotionalState: EmotionalState
+    ) {
         val project = motivationEvent.project
         attemptToShowCategories(
             project,
@@ -126,11 +152,14 @@ object Wendi : Disposable {
                     project
                 )
             },
-            *getRelevantCategories(motivationEvent)
+            *getRelevantCategories(motivationEvent, emotionalState)
         )
     }
 
-    private fun getRelevantCategories(motivationEvent: MotivationEvent): Array<out WaifuAssetCategory> {
+    private fun getRelevantCategories(
+        motivationEvent: MotivationEvent,
+        emotionalState: EmotionalState
+    ): Array<out WaifuAssetCategory> {
         return when (motivationEvent.category) {
             MotivationEventCategory.POSITIVE -> arrayOf(
                 WaifuAssetCategory.CELEBRATION
@@ -142,16 +171,79 @@ object Wendi : Disposable {
             MotivationEventCategory.NEUTRAL -> arrayOf()
         }
     }
+}
 
-    override fun dispose() {
-        if (this::messageBusConnection.isInitialized) {
-            messageBusConnection.dispose()
+class TestPersonalityCore : PersonalityCore {
+    override fun processMotivationEvent(
+        motivationEvent: MotivationEvent,
+        emotionalState: EmotionalState
+    ) {
+        val project = motivationEvent.project
+        attemptToShowCategories(
+            project,
+            motivationEvent.alertConfigurationSupplier,
+            {
+                UpdateNotification.sendMessage(
+                    "'${motivationEvent.title}' Unavailable Offline",
+                    ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
+                    project
+                )
+            },
+            *getRelevantCategories(motivationEvent, emotionalState)
+        )
+    }
+
+    private fun getRelevantCategories(
+        motivationEvent: MotivationEvent,
+        emotionalState: EmotionalState
+    ): Array<out WaifuAssetCategory> {
+        return when (motivationEvent.category) {
+            MotivationEventCategory.POSITIVE -> arrayOf(
+                WaifuAssetCategory.CELEBRATION
+            )
+            MotivationEventCategory.NEGATIVE -> arrayOf(
+                WaifuAssetCategory.DISAPPOINTMENT,
+                WaifuAssetCategory.SHOCKED
+            )
+            MotivationEventCategory.NEUTRAL -> arrayOf()
+        }
+    }
+}
+
+class IdlePersonalityCore : PersonalityCore {
+
+    private var isEventDisplayed = false
+
+    override fun processMotivationEvent(
+        motivationEvent: MotivationEvent,
+        emotionalState: EmotionalState
+    ) {
+        if (isEventDisplayed.not()) {
+            val project = motivationEvent.project
+            VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING)
+                .doOrElse({ asset ->
+                    isEventDisplayed = true
+                    VisualMotivationFactory.constructMotivation(
+                        project,
+                        asset,
+                        motivationEvent.alertConfigurationSupplier()
+                    ).setListener {
+                        isEventDisplayed = false
+                    }.motivate()
+                }) {
+                    UpdateNotification.sendMessage(
+                        "'${motivationEvent.title}' unavailable offline.",
+                        ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
+                        project
+                    )
+                }
         }
     }
 }
 
 data class EmotionalState(
     val mood: Mood,
+    val previousEvent: MotivationEvent? = null,
     val observedPositiveEvents: Int = 0,
     val observedNegativeEvents: Int = 0
 )
