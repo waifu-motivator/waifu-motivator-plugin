@@ -1,6 +1,7 @@
 package zd.zero.waifu.motivator.plugin.assets
 
 import zd.zero.waifu.motivator.plugin.tools.allOf
+import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.util.*
 import kotlin.random.Random
 
@@ -43,7 +44,9 @@ object VisualMotivationAssetProvider {
     fun pickAssetFromCategories(
         vararg categories: WaifuAssetCategory
     ): Optional<MotivationAsset> =
-        createAssetByCategory(categories.random(random))
+        categories.toOptional()
+            .filter { it.isNotEmpty() }
+            .flatMap { createAssetByCategory(it.random(random)) }
 
     private fun pickRandomAssetByCategory(category: WaifuAssetCategory): Optional<MotivationAsset> =
         allOf(

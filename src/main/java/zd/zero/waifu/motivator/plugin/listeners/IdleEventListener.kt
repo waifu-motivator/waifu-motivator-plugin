@@ -9,6 +9,10 @@ import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
 import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification.sendMessage
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
@@ -50,27 +54,17 @@ class IdleEventListener(private val project: Project) : Runnable, Disposable {
         IdeEventQueue.getInstance().removeIdleListener(this)
     }
 
-    private var isEventDisplayed = false
     override fun run() {
-        if (isEventDisplayed.not()) {
-            VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING)
-                .doOrElse({ asset ->
-                    isEventDisplayed = true
-                    VisualMotivationFactory.constructMotivation(
-                        project,
-                        asset,
-                        createAlertConfiguration()
-                    ).setListener {
-                        isEventDisplayed = false
-                    }.motivate()
-                }) {
-                    sendMessage(
-                        "'Idle Events' Unavailable Offline",
-                        ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
-                        project
-                    )
-                }
-        }
+        ApplicationManager.getApplication().messageBus
+            .syncPublisher(MotivationEventListener.TOPIC)
+            .onEventTrigger(
+                MotivationEvent(
+                    MotivationEvents.IDLE,
+                    MotivationEventCategory.NEUTRAL,
+                    "Idle Events",
+                    project
+                ) { createAlertConfiguration() }
+            )
     }
 
     private fun createAlertConfiguration(): AlertConfiguration {

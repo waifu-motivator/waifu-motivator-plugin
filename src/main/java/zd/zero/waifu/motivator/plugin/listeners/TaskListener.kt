@@ -1,14 +1,15 @@
 package zd.zero.waifu.motivator.plugin.listeners
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.task.ProjectTaskListener
 import com.intellij.task.ProjectTaskManager
-import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
-import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
-import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
-import zd.zero.waifu.motivator.plugin.tools.AssetTools.attemptToShowCategories
 
 internal enum class TaskStatus {
     PASS, FAIL, UNKNOWN
@@ -16,46 +17,32 @@ internal enum class TaskStatus {
 
 class TaskListener : ProjectTaskListener {
 
-    private var previousTaskStatus = TaskStatus.UNKNOWN
-
     override fun finished(result: ProjectTaskManager.Result) {
         val project = ProjectManager.getInstance().defaultProject
         when {
             result.hasErrors() -> {
-                attemptToShowCategories(
-                    project,
-                    { createAlertConfiguration() },
-                    {
-                        UpdateNotification.sendMessage(
-                            "'Task Failure Motivation' Unavailable Offline",
-                            ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
+                ApplicationManager.getApplication().messageBus
+                    .syncPublisher(MotivationEventListener.TOPIC)
+                    .onEventTrigger(
+                        MotivationEvent(
+                            MotivationEvents.TASK,
+                            MotivationEventCategory.NEGATIVE,
+                            "Task Failure Motivation",
                             project
-                        )
-                    },
-                    WaifuAssetCategory.DISAPPOINTMENT,
-                    WaifuAssetCategory.SHOCKED
-                )
-                previousTaskStatus = TaskStatus.FAIL
-            }
-            previousTaskStatus == TaskStatus.FAIL -> {
-                attemptToShowCategories(
-                    project,
-                    { createAlertConfiguration() },
-                    {
-                        UpdateNotification.sendMessage(
-                            "'Task Success Motivation' Unavailable Offline",
-                            ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
-                            project
-                        )
-                    },
-                    WaifuAssetCategory.CELEBRATION,
-                    WaifuAssetCategory.CELEBRATION,
-                    WaifuAssetCategory.SMUG
-                )
-                previousTaskStatus = TaskStatus.PASS
+                        ) { createAlertConfiguration() }
+                    )
             }
             else -> {
-                previousTaskStatus = TaskStatus.PASS
+                ApplicationManager.getApplication().messageBus
+                    .syncPublisher(MotivationEventListener.TOPIC)
+                    .onEventTrigger(
+                        MotivationEvent(
+                            MotivationEvents.TEST,
+                            MotivationEventCategory.POSITIVE,
+                            "Test Success Motivation",
+                            project
+                        ) { createAlertConfiguration() }
+                    )
             }
         }
     }
