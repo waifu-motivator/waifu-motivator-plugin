@@ -1,12 +1,21 @@
 package zd.zero.waifu.motivator.plugin.personality
 
+import com.intellij.util.containers.concat
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
+import zd.zero.waifu.motivator.plugin.tools.toStream
+import java.util.stream.Collectors
+import kotlin.random.Random
 
 class EmotionCore(private val pluginState: WaifuMotivatorState) {
 
+    companion object {
+        private const val TOTAL_WEIGHT = 100
+    }
+
+    private val random = Random(Random(System.currentTimeMillis()).nextLong())
     private var emotionalState = EmotionalState(Mood.CALM)
 
     fun updateConfig(pluginState: WaifuMotivatorState): EmotionCore {
@@ -50,7 +59,7 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
         val observedFrustrationEvents = emotionalState.observedNegativeEvents + 1
         val newMood =
             if (observedFrustrationEvents >= pluginState.eventsBeforeFrustration) {
-                Mood.FRUSTRATED
+                tryToRemainCalm()
             } else {
                 emotionalState.mood
             }
@@ -59,6 +68,22 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
             mood = newMood,
             observedNegativeEvents = observedFrustrationEvents
         )
+    }
+
+    private val otherNegativeEmotions = listOf(
+        Mood.SHOCKED, Mood.DISAPPOINTED
+    )
+
+    private fun tryToRemainCalm(): Mood {
+        val weightRemaining = TOTAL_WEIGHT - pluginState.probabilityOfFrustration
+        val otherWeight = weightRemaining / otherNegativeEmotions.size
+        val weightedEmotions = concat(
+            (Mood.FRUSTRATED to pluginState.eventsBeforeFrustration).toStream(),
+            otherNegativeEmotions.stream().map { it to otherWeight }
+        ).collect(Collectors.toList())
+            .shuffle()
+        val randomWeight = random.nextInt(0, TOTAL_WEIGHT)
+        return Mood.FRUSTRATED
     }
 
     private fun deriveNeutral(
@@ -83,7 +108,8 @@ enum class Mood {
     SHOCKED,
     SURPRISED,
     CALM,
-    BORED
+    BORED,
+    DISAPPOINTED
 }
 
 internal data class EmotionalState(

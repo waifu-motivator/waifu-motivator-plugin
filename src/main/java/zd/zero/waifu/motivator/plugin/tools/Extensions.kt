@@ -3,12 +3,15 @@ package zd.zero.waifu.motivator.plugin.tools
 import org.apache.commons.io.IOUtils
 import java.io.InputStream
 import java.util.Optional
+import java.util.stream.Stream
 
 fun <T> T?.toOptional() = Optional.ofNullable(this)
 
 fun InputStream.readAllTheBytes(): ByteArray = IOUtils.toByteArray(this)
 
 inline fun <reified T> T.toArray(): Array<T> = arrayOf(this)
+
+fun <T> T.toStream(): Stream<T> = Stream.of(this)
 
 // todo: This can be removed once the plugin supports only JRE 11+
 fun <T> Optional<T>.doOrElse(
