@@ -3,11 +3,18 @@ package zd.zero.waifu.motivator.plugin.personality
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
-import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 
-class EmotionCore {
+class EmotionCore(private val pluginState: WaifuMotivatorState) {
 
     private var emotionalState = EmotionalState(Mood.CALM)
+
+    fun updateConfig(pluginState: WaifuMotivatorState): EmotionCore {
+        return EmotionCore(pluginState).let {
+            it.emotionalState = this.emotionalState
+            it
+        }
+    }
 
     fun deriveMood(motivationEvent: MotivationEvent): Mood {
         emotionalState = processEvent(motivationEvent, emotionalState)
@@ -42,7 +49,7 @@ class EmotionCore {
     ): EmotionalState {
         val observedFrustrationEvents = emotionalState.observedNegativeEvents + 1
         val newMood =
-            if (observedFrustrationEvents >= WaifuMotivatorPluginState.getPluginState().eventsBeforeFrustration) {
+            if (observedFrustrationEvents >= pluginState.eventsBeforeFrustration) {
                 Mood.FRUSTRATED
             } else {
                 emotionalState.mood
@@ -67,7 +74,16 @@ class EmotionCore {
 }
 
 enum class Mood {
-    ENRAGED, FRUSTRATED, AGITATED, HAPPY, AMAZED, CALM, BORED
+    ENRAGED,
+    FRUSTRATED,
+    AGITATED,
+    HAPPY,
+    AMAZED,
+    SMUG,
+    SHOCKED,
+    SURPRISED,
+    CALM,
+    BORED
 }
 
 internal data class EmotionalState(

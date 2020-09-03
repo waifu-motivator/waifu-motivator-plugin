@@ -7,6 +7,9 @@ import com.intellij.util.messages.MessageBusConnection
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
+import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 
 // %%%%%%%%%%%%%%%   ,     ,                                     #@@@@&%%%%%%%%%%%%
 // %%%%%%%%%%@@@@@@@@@@@& /                                            @@@@%%%%%%%%
@@ -49,13 +52,21 @@ object Wendi : Disposable {
 
     private lateinit var messageBusConnection: MessageBusConnection
     private val log = Logger.getInstance(this::class.java)
-    private val emotionCore = EmotionCore()
+    private lateinit var emotionCore: EmotionCore
     private val taskPersonalityCore = TaskPersonalityCore()
     private val idlePersonalityCore = IdlePersonalityCore()
 
     fun initialize() {
         if (this::messageBusConnection.isInitialized.not()) {
             messageBusConnection = ApplicationManager.getApplication().messageBus.connect()
+
+            emotionCore = EmotionCore(WaifuMotivatorPluginState.getPluginState())
+
+            messageBusConnection.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, object : PluginSettingsListener {
+                override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
+                    this@Wendi.emotionCore = emotionCore.updateConfig(newPluginState)
+                }
+            })
 
             messageBusConnection.subscribe(MotivationEventListener.TOPIC, object : MotivationEventListener {
                 override fun onEventTrigger(motivationEvent: MotivationEvent) {

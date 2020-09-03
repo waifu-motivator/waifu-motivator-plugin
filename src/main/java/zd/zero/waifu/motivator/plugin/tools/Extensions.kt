@@ -8,6 +8,8 @@ fun <T> T?.toOptional() = Optional.ofNullable(this)
 
 fun InputStream.readAllTheBytes(): ByteArray = IOUtils.toByteArray(this)
 
+inline fun <reified T> T.toArray(): Array<T> = arrayOf(this)
+
 // todo: This can be removed once the plugin supports only JRE 11+
 fun <T> Optional<T>.doOrElse(
     present: (T) -> Unit,
