@@ -7,6 +7,7 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.toStream
 import java.util.stream.Collectors
+import java.util.stream.Stream
 import kotlin.random.Random
 
 class EmotionCore(private val pluginState: WaifuMotivatorState) {
@@ -61,11 +62,15 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
     ): EmotionalState {
         val observedFrustrationEvents = emotionalState.observedNegativeEvents
         val newMood =
-            if (pluginState.eventsBeforeFrustration in 0..observedFrustrationEvents) {
-                tryToRemainCalm()
-            } else {
+            when {
+                shouldBeEnraged(observedFrustrationEvents) ->
+                    hurryFindCover()
+
+                shouldBeFrustrated(observedFrustrationEvents) ->
+                    tryToRemainCalm()
+
                 // todo: more appropriate choice based off of previous state
-                OTHER_NEGATIVE_EMOTIONS.random(random)
+                else -> OTHER_NEGATIVE_EMOTIONS.random(random)
             }
 
         return emotionalState.copy(
@@ -74,14 +79,33 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
         )
     }
 
+    private fun shouldBeFrustrated(observedFrustrationEvents: Int) =
+        pluginState.eventsBeforeFrustration in 0..observedFrustrationEvents
+
+    private fun shouldBeEnraged(observedFrustrationEvents: Int) =
+        observedFrustrationEvents >= pluginState.eventsBeforeFrustration * 2
+
+    private fun hurryFindCover(): Mood {
+        val rageProbability = pluginState.probabilityOfFrustration * 3 / 4
+        val streams =
+            Stream.of(
+                Mood.ENRAGED to rageProbability,
+                Mood.FRUSTRATED to pluginState.probabilityOfFrustration - rageProbability)
+
+        return pickNegativeEmotion(streams)
+    }
+
     private fun tryToRemainCalm(): Mood {
+        val streams =
+            (Mood.FRUSTRATED to pluginState.probabilityOfFrustration)
+                .toStream()
+        return pickNegativeEmotion(streams)
+    }
+
+    private fun pickNegativeEmotion(streams: Stream<Pair<Mood, Int>>): Mood {
         val weightRemaining = TOTAL_WEIGHT - pluginState.probabilityOfFrustration
-        val otherWeight = weightRemaining / OTHER_NEGATIVE_EMOTIONS.size
-        val weightedEmotions = concat(
-            (Mood.FRUSTRATED to pluginState.probabilityOfFrustration).toStream(),
-            OTHER_NEGATIVE_EMOTIONS.stream().map { it to otherWeight }
-        ).collect(Collectors.toList())
-            .shuffled()
+        val weightedEmotions = buildWeightedList(weightRemaining, streams)
+
         var randomWeight = random.nextInt(0, TOTAL_WEIGHT)
 
         for ((mood, weight) in weightedEmotions) {
@@ -92,6 +116,16 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
         }
 
         return weightedEmotions.first().first
+    }
+
+    private fun buildWeightedList(weightRemaining: Int, streams: Stream<Pair<Mood, Int>>): List<Pair<Mood, Int>> {
+        val otherWeight = weightRemaining / OTHER_NEGATIVE_EMOTIONS.size
+        val weightedEmotions = concat(
+            streams,
+            OTHER_NEGATIVE_EMOTIONS.stream().map { it to otherWeight }
+        ).collect(Collectors.toList())
+            .shuffled()
+        return weightedEmotions
     }
 
     private fun deriveNeutral(
