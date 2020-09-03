@@ -205,6 +205,12 @@ class EmotionCoreTest {
         }
     }
 
+    // todo: rage test
+
+    // todo: cooldown test
+
+    // todo: smug test
+
     private fun buildMotivationEvent(
         type: MotivationEvents,
         category: MotivationEventCategory

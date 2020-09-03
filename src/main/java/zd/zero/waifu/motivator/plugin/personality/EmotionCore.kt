@@ -52,9 +52,17 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
         emotionalState: EmotionalState
     ): EmotionalState {
         return emotionalState.copy(
-            observedPositiveEvents = emotionalState.observedPositiveEvents + 1
+            observedPositiveEvents = emotionalState.observedPositiveEvents + 1,
+            observedNegativeEvents = coolDownFrustration(emotionalState)
         )
     }
+
+    private fun coolDownFrustration(emotionalState: EmotionalState): Int =
+        if (emotionalState.observedNegativeEvents > 0) {
+            emotionalState.observedNegativeEvents - 1
+        } else {
+            0
+        }
 
     private fun deriveNegative(
         motivationEvent: MotivationEvent,
@@ -120,12 +128,11 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
 
     private fun buildWeightedList(weightRemaining: Int, streams: Stream<Pair<Mood, Int>>): List<Pair<Mood, Int>> {
         val otherWeight = weightRemaining / OTHER_NEGATIVE_EMOTIONS.size
-        val weightedEmotions = concat(
+        return concat(
             streams,
             OTHER_NEGATIVE_EMOTIONS.stream().map { it to otherWeight }
         ).collect(Collectors.toList())
-            .shuffled()
-        return weightedEmotions
+            .shuffled<Pair<Mood, Int>>()
     }
 
     private fun deriveNeutral(
