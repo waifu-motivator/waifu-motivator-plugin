@@ -14,7 +14,7 @@ class IdlePersonalityCore : PersonalityCore {
 
     override fun processMotivationEvent(
         motivationEvent: MotivationEvent,
-        emotionalState: EmotionalState
+        mood: Mood
     ) {
         if (isEventDisplayed.not()) {
             val project = motivationEvent.project

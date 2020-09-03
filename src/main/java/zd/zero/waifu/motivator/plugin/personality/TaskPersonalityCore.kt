@@ -10,7 +10,7 @@ import zd.zero.waifu.motivator.plugin.tools.AssetTools
 class TaskPersonalityCore : PersonalityCore {
     override fun processMotivationEvent(
         motivationEvent: MotivationEvent,
-        emotionalState: EmotionalState
+        mood: Mood
     ) {
         val project = motivationEvent.project
         AssetTools.attemptToShowCategories(
@@ -23,13 +23,13 @@ class TaskPersonalityCore : PersonalityCore {
                             project
                     )
                 },
-                *getRelevantCategories(motivationEvent, emotionalState)
+                *getRelevantCategories(motivationEvent, mood)
         )
     }
 
     private fun getRelevantCategories(
         motivationEvent: MotivationEvent,
-        emotionalState: EmotionalState
+        mood: Mood
     ): Array<out WaifuAssetCategory> {
         return when (motivationEvent.category) {
             MotivationEventCategory.POSITIVE -> arrayOf(

@@ -9,9 +9,9 @@ class EmotionCore {
 
     private var emotionalState = EmotionalState(Mood.CALM)
 
-    fun deriveMood(motivationEvent: MotivationEvent): EmotionalState {
+    fun deriveMood(motivationEvent: MotivationEvent): Mood {
         emotionalState = processEvent(motivationEvent, emotionalState)
-        return emotionalState.copy()
+        return emotionalState.mood
     }
 
     private fun processEvent(
@@ -70,7 +70,7 @@ enum class Mood {
     ENRAGED, FRUSTRATED, AGITATED, HAPPY, AMAZED, CALM, BORED
 }
 
-data class EmotionalState(
+internal data class EmotionalState(
     val mood: Mood,
     val previousEvent: MotivationEvent? = null,
     val observedPositiveEvents: Int = 0,
