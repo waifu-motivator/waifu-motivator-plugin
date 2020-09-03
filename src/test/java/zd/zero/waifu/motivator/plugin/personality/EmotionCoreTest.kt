@@ -48,7 +48,7 @@ class EmotionCoreTest {
     fun deriveMoodShouldAlwaysReturnFrustratedAfterExpectedEvents() {
         val emotionCore = EmotionCore(
             WaifuMotivatorState().apply {
-                eventsBeforeFrustration = 5
+                eventsBeforeFrustration = 4
                 probabilityOfFrustration = 100
             }
         )
@@ -79,14 +79,15 @@ class EmotionCoreTest {
                 MotivationEventCategory.NEGATIVE
             ) to Mood.FRUSTRATED
         ).forEachIndexed { index, arguments ->
+            val deriveMood = emotionCore.deriveMood(
+                arguments.first
+            )
             Assertions.assertThat(
-                emotionCore.deriveMood(
-                    arguments.first
-                )
+                deriveMood
             ).withFailMessage(
                 """At index #$index
                     |${arguments.first}
-                    |did not create ${arguments.second}
+                    |did not create ${arguments.second} but did $deriveMood
                 """.trimMargin()
             ).isEqualTo(arguments.second)
         }
@@ -96,7 +97,7 @@ class EmotionCoreTest {
     fun shouldCalmDownAfterIdleEvent() {
         val emotionCore = EmotionCore(
             WaifuMotivatorState().apply {
-                eventsBeforeFrustration = 2
+                eventsBeforeFrustration = 1
                 probabilityOfFrustration = 100
             }
         )
@@ -127,14 +128,15 @@ class EmotionCoreTest {
                 MotivationEventCategory.NEGATIVE
             ) to Mood.FRUSTRATED
         ).forEachIndexed { index, arguments ->
+            val deriveMood = emotionCore.deriveMood(
+                arguments.first
+            )
             Assertions.assertThat(
-                emotionCore.deriveMood(
-                    arguments.first
-                )
+                deriveMood
             ).withFailMessage(
                 """At index #$index
                     |${arguments.first}
-                    |did not create ${arguments.second}
+                    |did not create ${arguments.second} but did $deriveMood
                 """.trimMargin()
             ).isEqualTo(arguments.second)
         }
@@ -156,14 +158,15 @@ class EmotionCoreTest {
 
         val expectedMood = Mood.CALM
         repeat(42) { index ->
+            val deriveMood = emotionCore.deriveMood(
+                motivationEvent
+            )
             Assertions.assertThat(
-                emotionCore.deriveMood(
-                    motivationEvent
-                )
+                deriveMood
             ).withFailMessage(
                 """At index #$index
                     |$motivationEvent
-                    |did not create $expectedMood
+                    |did not create $expectedMood but did $deriveMood
                 """.trimMargin()
             ).isEqualTo(expectedMood)
         }
@@ -173,7 +176,7 @@ class EmotionCoreTest {
     fun deriveMoodShouldReturnNeverReturnFrustratedWhenProbabilityIsZero() {
         val emotionCore = EmotionCore(
             WaifuMotivatorState().apply {
-                eventsBeforeFrustration = 1
+                eventsBeforeFrustration = 0
                 probabilityOfFrustration = 0
             }
         )
@@ -183,18 +186,22 @@ class EmotionCoreTest {
             MotivationEventCategory.NEGATIVE
         )
 
-        val expectedMood = Mood.CALM
+        val negativeEmotions =
+            EmotionCore.OTHER_NEGATIVE_EMOTIONS.toTypedArray()
         repeat(42) { index ->
+            val deriveMood = emotionCore.deriveMood(
+                motivationEvent
+            )
             Assertions.assertThat(
-                emotionCore.deriveMood(
-                    motivationEvent
-                )
+                deriveMood
             ).withFailMessage(
                 """At index #$index
                     |$motivationEvent
-                    |did not create $expectedMood
+                    |did not create ${EmotionCore.OTHER_NEGATIVE_EMOTIONS} but did $deriveMood
                 """.trimMargin()
-            ).isEqualTo(expectedMood)
+            ).isIn(
+                *negativeEmotions
+            )
         }
     }
 

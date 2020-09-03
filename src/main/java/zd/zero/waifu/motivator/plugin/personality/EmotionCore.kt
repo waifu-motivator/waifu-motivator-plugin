@@ -13,6 +13,9 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
 
     companion object {
         private const val TOTAL_WEIGHT = 100
+        val OTHER_NEGATIVE_EMOTIONS = listOf(
+            Mood.SHOCKED, Mood.DISAPPOINTED
+        )
     }
 
     private val random = Random(Random(System.currentTimeMillis()).nextLong())
@@ -56,34 +59,39 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
         motivationEvent: MotivationEvent,
         emotionalState: EmotionalState
     ): EmotionalState {
-        val observedFrustrationEvents = emotionalState.observedNegativeEvents + 1
+        val observedFrustrationEvents = emotionalState.observedNegativeEvents
         val newMood =
-            if (observedFrustrationEvents >= pluginState.eventsBeforeFrustration) {
+            if (pluginState.eventsBeforeFrustration in 0..observedFrustrationEvents) {
                 tryToRemainCalm()
             } else {
-                emotionalState.mood
+                // todo: more appropriate choice based off of previous state
+                OTHER_NEGATIVE_EMOTIONS.random(random)
             }
 
         return emotionalState.copy(
             mood = newMood,
-            observedNegativeEvents = observedFrustrationEvents
+            observedNegativeEvents = observedFrustrationEvents + 1
         )
     }
 
-    private val otherNegativeEmotions = listOf(
-        Mood.SHOCKED, Mood.DISAPPOINTED
-    )
-
     private fun tryToRemainCalm(): Mood {
         val weightRemaining = TOTAL_WEIGHT - pluginState.probabilityOfFrustration
-        val otherWeight = weightRemaining / otherNegativeEmotions.size
+        val otherWeight = weightRemaining / OTHER_NEGATIVE_EMOTIONS.size
         val weightedEmotions = concat(
-            (Mood.FRUSTRATED to pluginState.eventsBeforeFrustration).toStream(),
-            otherNegativeEmotions.stream().map { it to otherWeight }
+            (Mood.FRUSTRATED to pluginState.probabilityOfFrustration).toStream(),
+            OTHER_NEGATIVE_EMOTIONS.stream().map { it to otherWeight }
         ).collect(Collectors.toList())
-            .shuffle()
-        val randomWeight = random.nextInt(0, TOTAL_WEIGHT)
-        return Mood.FRUSTRATED
+            .shuffled()
+        var randomWeight = random.nextInt(0, TOTAL_WEIGHT)
+
+        for ((mood, weight) in weightedEmotions) {
+            if (randomWeight <= weight) {
+                return mood
+            }
+            randomWeight -= weight
+        }
+
+        return weightedEmotions.first().first
     }
 
     private fun deriveNeutral(
@@ -109,7 +117,11 @@ enum class Mood {
     SURPRISED,
     CALM,
     BORED,
-    DISAPPOINTED
+    DISAPPOINTED;
+
+    override fun toString(): String {
+        return this.name
+    }
 }
 
 internal data class EmotionalState(
