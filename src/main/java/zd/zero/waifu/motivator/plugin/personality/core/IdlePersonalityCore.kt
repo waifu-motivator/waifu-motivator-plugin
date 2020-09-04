@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project
 import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
+import zd.zero.waifu.motivator.plugin.motivation.MotivationListener
 import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
@@ -27,9 +28,17 @@ class IdlePersonalityCore : PersonalityCore {
                             project,
                             asset,
                             motivationEvent.alertConfigurationSupplier()
-                    ).setListener {
-                        displayedProjects.remove(project)
-                    }.motivate()
+                    ).setListener(
+                        object : MotivationListener {
+                            override fun onDismissed() {
+                                displayedProjects.remove(project)
+                            }
+
+                            override fun onNotDisplayed() {
+                                displayedProjects.remove(project)
+                            }
+                        }
+                    ).motivate()
                 }) {
                     UpdateNotification.sendMessage(
                             "'${motivationEvent.title}' unavailable offline.",
