@@ -8,6 +8,7 @@ import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
+import zd.zero.waifu.motivator.plugin.personality.NegativeEmotionDerivationUnit.Companion.OTHER_NEGATIVE_EMOTIONS
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.toList
 
@@ -62,7 +63,7 @@ class EmotionCoreTest {
         )
 
         val negativeEmotions =
-            EmotionCore.OTHER_NEGATIVE_EMOTIONS
+            OTHER_NEGATIVE_EMOTIONS
         val calm = Mood.CALM.toList()
         val frustrated = Mood.FRUSTRATED.toList()
         listOf(
@@ -115,7 +116,7 @@ class EmotionCoreTest {
         )
 
         val negativeEmotions =
-            EmotionCore.OTHER_NEGATIVE_EMOTIONS
+            OTHER_NEGATIVE_EMOTIONS
         val calm = Mood.CALM.toList()
         val frustrated = Mood.FRUSTRATED.toList()
         listOf(
@@ -173,7 +174,7 @@ class EmotionCoreTest {
         )
 
         val negativeEmotions =
-            EmotionCore.OTHER_NEGATIVE_EMOTIONS.toTypedArray()
+            OTHER_NEGATIVE_EMOTIONS.toTypedArray()
         repeat(42) { index ->
             val deriveMood = emotionCore.deriveMood(
                 motivationEvent
@@ -183,7 +184,7 @@ class EmotionCoreTest {
             ).withFailMessage(
                 """At index #$index
                     |$motivationEvent
-                    |did not create ${EmotionCore.OTHER_NEGATIVE_EMOTIONS} but did $deriveMood
+                    |did not create $OTHER_NEGATIVE_EMOTIONS but did $deriveMood
                 """.trimMargin()
             ).isIn(
                 *negativeEmotions
@@ -206,7 +207,7 @@ class EmotionCoreTest {
         )
 
         val negativeEmotions =
-            EmotionCore.OTHER_NEGATIVE_EMOTIONS.toTypedArray()
+            OTHER_NEGATIVE_EMOTIONS.toTypedArray()
         repeat(42) { index ->
             val deriveMood = emotionCore.deriveMood(
                 motivationEvent
@@ -216,7 +217,7 @@ class EmotionCoreTest {
             ).withFailMessage(
                 """At index #$index
                     |$motivationEvent
-                    |did not create ${EmotionCore.OTHER_NEGATIVE_EMOTIONS} but did $deriveMood
+                    |did not create $OTHER_NEGATIVE_EMOTIONS but did $deriveMood
                 """.trimMargin()
             ).isIn(
                 *negativeEmotions
