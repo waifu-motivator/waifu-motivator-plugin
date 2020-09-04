@@ -304,7 +304,7 @@ class NegativeEmotionCoreTests {
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.POSITIVE
-            ) to Mood.HAPPY.toList(),
+            ) to listOf(Mood.HAPPY, Mood.EXCITED),
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE

@@ -40,7 +40,7 @@ class EmotionCore(
             MotivationEventCategory.NEGATIVE -> negativeDerivationUnit.deriveEmotion(motivationEvent, emotionalState)
             MotivationEventCategory.NEUTRAL -> neutralDerivationUnit.deriveEmotion(motivationEvent, emotionalState)
         }.copy(
-            previousEvent = emotionalState.previousEvent
+            previousEvent = motivationEvent
         )
 }
 

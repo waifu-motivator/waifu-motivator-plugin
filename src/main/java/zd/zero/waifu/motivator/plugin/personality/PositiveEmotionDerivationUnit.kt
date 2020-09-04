@@ -4,12 +4,19 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
+import java.util.stream.Stream
 import kotlin.random.Random
 
 internal class PositiveEmotionDerivationUnit(
     private val pluginState: WaifuMotivatorState,
     private val random: Random
 ) : EmotionDerivationUnit {
+
+    companion object {
+        val OTHER_POSITIVE_EMOTIONS = listOf(Mood.HAPPY)
+    }
+    private val probabilityTools = ProbabilityTools(random)
+
     override fun deriveEmotion(
         motivationEvent: MotivationEvent,
         emotionalState: EmotionalState
@@ -41,9 +48,37 @@ internal class PositiveEmotionDerivationUnit(
         return when {
             emotionalState.mood == Mood.FRUSTRATED -> Mood.RELIEVED
             emotionalState.previousEvent?.category == MotivationEventCategory.NEGATIVE ->
-                Mood.EXCITED
-            else -> Mood.HAPPY
+                deriveProblemSolvedMood()
+            else -> deriveStandardPositiveMood()
         }
+    }
+
+    private fun deriveStandardPositiveMood(): Mood {
+        val excitedProbability = 75
+        val primaryEmotions =
+            Stream.of(
+                Mood.EXCITED to excitedProbability
+            )
+        return probabilityTools.pickEmotion(
+            excitedProbability,
+            primaryEmotions,
+            OTHER_POSITIVE_EMOTIONS
+        )
+    }
+
+    private fun deriveProblemSolvedMood(): Mood {
+        val primaryEmotionProbability = 80
+        val excitedProbability = 20
+        val primaryEmotions =
+            Stream.of(
+                Mood.SMUG to primaryEmotionProbability - excitedProbability,
+                Mood.EXCITED to excitedProbability
+            )
+        return probabilityTools.pickEmotion(
+            primaryEmotionProbability,
+            primaryEmotions,
+            OTHER_POSITIVE_EMOTIONS
+        )
     }
 
     private fun coolDownFrustration(emotionalState: EmotionalState): Int =

@@ -3,7 +3,6 @@ package zd.zero.waifu.motivator.plugin.personality
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions
-import org.junit.Ignore
 import org.junit.Test
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
@@ -14,7 +13,6 @@ import kotlin.random.Random
 class PositiveEmotionCoreTests {
 
     @Test
-    @Ignore
     fun `should return smug after negative event`() {
         val mockRandom = mockk<Random>()
         val emotionCore = EmotionCore(
