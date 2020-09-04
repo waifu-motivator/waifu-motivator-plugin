@@ -2,24 +2,29 @@ package zd.zero.waifu.motivator.plugin.personality
 
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
-import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import kotlin.random.Random
 
-class EmotionCore(pluginState: WaifuMotivatorState) {
-    private val random = Random(Random(System.currentTimeMillis()).nextLong())
+class EmotionCore(
+    pluginState: WaifuMotivatorState,
+    private val random: Random = Random(Random(System.currentTimeMillis()).nextLong())
+) {
     private val negativeDerivationUnit = NegativeEmotionDerivationUnit(
-        pluginState,
-        random
+        pluginState, random
+    )
+    private val positiveDerivationUnit = PositiveEmotionDerivationUnit(
+        pluginState, random
+    )
+    private val neutralDerivationUnit = NeutralEmotionDerivationUnit(
+        pluginState, random
     )
     private var emotionalState = EmotionalState(Mood.CALM)
 
-    fun updateConfig(pluginState: WaifuMotivatorState): EmotionCore {
-        return EmotionCore(pluginState).let {
+    fun updateConfig(pluginState: WaifuMotivatorState): EmotionCore =
+        EmotionCore(pluginState, random).let {
             it.emotionalState = this.emotionalState
             it
         }
-    }
 
     fun deriveMood(motivationEvent: MotivationEvent): Mood {
         emotionalState = processEvent(motivationEvent, emotionalState)
@@ -29,42 +34,13 @@ class EmotionCore(pluginState: WaifuMotivatorState) {
     private fun processEvent(
         motivationEvent: MotivationEvent,
         emotionalState: EmotionalState
-    ): EmotionalState {
-        return when (motivationEvent.category) {
-            MotivationEventCategory.POSITIVE -> derivePositive(motivationEvent, emotionalState)
+    ): EmotionalState =
+        when (motivationEvent.category) {
+            MotivationEventCategory.POSITIVE -> positiveDerivationUnit.deriveEmotion(motivationEvent, emotionalState)
             MotivationEventCategory.NEGATIVE -> negativeDerivationUnit.deriveEmotion(motivationEvent, emotionalState)
-            MotivationEventCategory.NEUTRAL -> deriveNeutral(motivationEvent, emotionalState)
+            MotivationEventCategory.NEUTRAL -> neutralDerivationUnit.deriveEmotion(motivationEvent, emotionalState)
         }.copy(
             previousEvent = emotionalState.previousEvent
-        )
-    }
-
-    private fun derivePositive(
-        motivationEvent: MotivationEvent,
-        emotionalState: EmotionalState
-    ): EmotionalState {
-        return emotionalState.copy(
-            observedPositiveEvents = emotionalState.observedPositiveEvents + 1,
-            observedNegativeEvents = coolDownFrustration(emotionalState)
-        )
-    }
-
-    private fun coolDownFrustration(emotionalState: EmotionalState): Int =
-        if (emotionalState.observedNegativeEvents > 0) {
-            emotionalState.observedNegativeEvents - 1
-        } else {
-            0
-        }
-
-    private fun deriveNeutral(
-        motivationEvent: MotivationEvent,
-        emotionalState: EmotionalState
-    ): EmotionalState =
-        when (motivationEvent.type) {
-            MotivationEvents.IDLE -> EmotionalState(Mood.CALM)
-            else -> emotionalState
-        }.copy(
-            observedNeutralEvents = emotionalState.observedNeutralEvents + 1
         )
 }
 
@@ -73,6 +49,9 @@ enum class Mood {
     FRUSTRATED,
     AGITATED,
     HAPPY,
+    RELIEVED,
+    EXCITED,
+    PROUD,
     AMAZED,
     SMUG,
     SHOCKED,
@@ -85,11 +64,3 @@ enum class Mood {
         return this.name
     }
 }
-
-internal data class EmotionalState(
-    val mood: Mood,
-    val previousEvent: MotivationEvent? = null,
-    val observedPositiveEvents: Int = 0,
-    val observedNeutralEvents: Int = 0,
-    val observedNegativeEvents: Int = 0
-)

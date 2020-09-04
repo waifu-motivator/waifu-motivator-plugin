@@ -227,7 +227,69 @@ class EmotionCoreTest {
 
     // todo: rage test
 
-    // todo: cooldown test
+    @Test
+    fun `frustration should cool down when positive events happen`() {
+        val emotionCore = EmotionCore(
+            WaifuMotivatorState().apply {
+                eventsBeforeFrustration = 1
+                probabilityOfFrustration = 100
+            }
+        )
+
+        val negativeEmotions =
+            OTHER_NEGATIVE_EMOTIONS
+        val frustrated = Mood.FRUSTRATED.toList()
+        listOf(
+            buildMotivationEvent(
+                MotivationEvents.TASK,
+                MotivationEventCategory.NEGATIVE
+            ) to negativeEmotions,
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to frustrated,
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.POSITIVE
+            ) to Mood.RELIEVED.toList(),
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.POSITIVE
+            ) to Mood.HAPPY.toList(),
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to negativeEmotions,
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to frustrated,
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.POSITIVE
+            ) to Mood.RELIEVED.toList(),
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to frustrated,
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to listOf(Mood.FRUSTRATED, Mood.ENRAGED)
+        ).forEachIndexed { index, arguments ->
+            val deriveMood = emotionCore.deriveMood(
+                arguments.first
+            )
+            Assertions.assertThat(
+                deriveMood
+            ).withFailMessage(
+                """At index #$index
+                    |${arguments.first}
+                    |did not create ${arguments.second} but did $deriveMood
+                """.trimMargin()
+            ).isIn(arguments.second)
+        }
+    }
 
     // todo: smug test
 
