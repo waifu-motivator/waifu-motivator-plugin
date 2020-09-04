@@ -15,11 +15,12 @@ internal class NegativeEmotionDerivationUnit(
 ) : EmotionDerivationUnit {
 
     companion object {
-        private const val TOTAL_WEIGHT = 100
         val OTHER_NEGATIVE_EMOTIONS = listOf(
             Mood.SHOCKED, Mood.DISAPPOINTED
         )
     }
+
+    private val probabilityTools = ProbabilityTools(random)
 
     override fun deriveEmotion(
         motivationEvent: MotivationEvent,
@@ -62,27 +63,73 @@ internal class NegativeEmotionDerivationUnit(
 
     private fun hurryFindCover(): Mood {
         val rageProbability = pluginState.probabilityOfFrustration * 3 / 4
-        val streams =
+        val primaryEmotions =
             Stream.of(
                 Mood.ENRAGED to rageProbability,
                 Mood.FRUSTRATED to pluginState.probabilityOfFrustration - rageProbability)
 
-        return pickNegativeEmotion(streams)
+        return pickNegativeEmotion(primaryEmotions)
     }
 
     private fun tryToRemainCalm(): Mood {
-        val streams =
+        val primaryEmotions =
             (Mood.FRUSTRATED to pluginState.probabilityOfFrustration)
                 .toStream()
-        return pickNegativeEmotion(streams)
+        return pickNegativeEmotion(primaryEmotions)
     }
 
-    private fun pickNegativeEmotion(streams: Stream<Pair<Mood, Int>>): Mood {
-        val weightRemaining = TOTAL_WEIGHT - pluginState.probabilityOfFrustration
-        val weightedEmotions = buildWeightedList(weightRemaining, streams)
+    private fun pickNegativeEmotion(
+        primaryEmotions: Stream<Pair<Mood, Int>>
+    ): Mood {
+        val secondaryEmotions = OTHER_NEGATIVE_EMOTIONS
+        val probabilityOfPrimaryEmotions = pluginState.probabilityOfFrustration
+        return probabilityTools.pickEmotion(probabilityOfPrimaryEmotions, primaryEmotions, secondaryEmotions)
+    }
+}
 
-        var randomWeight = random.nextInt(1, TOTAL_WEIGHT)
+class ProbabilityTools(
+    private val random: Random
+) {
+    companion object {
+        private const val TOTAL_WEIGHT = 100
+    }
 
+    fun pickEmotion(
+        probabilityOfPrimaryEmotions: Int,
+        primaryEmotions: Stream<Pair<Mood, Int>>,
+        secondaryEmotions: List<Mood>
+    ): Mood {
+        assert(probabilityOfPrimaryEmotions in 0..TOTAL_WEIGHT) { "Expected probability to be from 0 to 100" }
+        val weightRemaining = TOTAL_WEIGHT - probabilityOfPrimaryEmotions
+        val weightedEmotions = buildWeightedList(
+            weightRemaining,
+            primaryEmotions,
+            secondaryEmotions
+        )
+        return pickFromWeightedList(
+            random.nextInt(1, TOTAL_WEIGHT),
+            weightedEmotions
+        )
+    }
+
+    private fun buildWeightedList(
+        weightRemaining: Int,
+        primaryEmotions: Stream<Pair<Mood, Int>>,
+        secondaryEmotions: List<Mood>
+    ): List<Pair<Mood, Int>> {
+        val secondaryEmotionWeights = weightRemaining / secondaryEmotions.size
+        return concat(
+            primaryEmotions,
+            secondaryEmotions.stream().map { it to secondaryEmotionWeights }
+        ).collect(Collectors.toList())
+            .shuffled<Pair<Mood, Int>>()
+    }
+
+    private fun pickFromWeightedList(
+        weightChosen: Int,
+        weightedEmotions: List<Pair<Mood, Int>>
+    ): Mood {
+        var randomWeight = weightChosen
         for ((mood, weight) in weightedEmotions) {
             if (randomWeight <= weight) {
                 return mood
@@ -91,14 +138,5 @@ internal class NegativeEmotionDerivationUnit(
         }
 
         return weightedEmotions.first { it.second > 0 }.first
-    }
-
-    private fun buildWeightedList(weightRemaining: Int, streams: Stream<Pair<Mood, Int>>): List<Pair<Mood, Int>> {
-        val otherWeight = weightRemaining / OTHER_NEGATIVE_EMOTIONS.size
-        return concat(
-            streams,
-            OTHER_NEGATIVE_EMOTIONS.stream().map { it to otherWeight }
-        ).collect(Collectors.toList())
-            .shuffled<Pair<Mood, Int>>()
     }
 }

@@ -1,6 +1,7 @@
 package zd.zero.waifu.motivator.plugin.personality
 
 import com.intellij.openapi.project.Project
+import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions
 import org.junit.Test
@@ -11,10 +12,9 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.personality.NegativeEmotionDerivationUnit.Companion.OTHER_NEGATIVE_EMOTIONS
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.toList
+import kotlin.random.Random
 
-class EmotionCoreTest {
-
-    private val projectMock = mockk<Project>()
+class NegativeEmotionCoreTests {
 
     @Test
     fun deriveMoodShouldReturnCalmAfterIdleEvent() {
@@ -225,7 +225,56 @@ class EmotionCoreTest {
         }
     }
 
-    // todo: rage test
+    @Test
+    fun `frustration should evolve into rage`() {
+        val mockRandom = mockk<Random>()
+        val emotionCore = EmotionCore(
+            WaifuMotivatorState().apply {
+                eventsBeforeFrustration = 1
+                probabilityOfFrustration = 100
+            },
+            mockRandom
+        )
+
+        every { mockRandom.nextInt(1, 100) } returns 50
+        every { mockRandom.nextInt(2) } returns 1
+
+        val frustrated = Mood.FRUSTRATED.toList()
+        listOf(
+            buildMotivationEvent(
+                MotivationEvents.TASK,
+                MotivationEventCategory.NEGATIVE
+            ) to OTHER_NEGATIVE_EMOTIONS[1].toList(),
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to frustrated,
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to Mood.ENRAGED.toList(),
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to Mood.ENRAGED.toList(),
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to Mood.ENRAGED.toList()
+        ).forEachIndexed { index, arguments ->
+            val deriveMood = emotionCore.deriveMood(
+                arguments.first
+            )
+            Assertions.assertThat(
+                deriveMood
+            ).withFailMessage(
+                """At index #$index
+                    |${arguments.first}
+                    |did not create ${arguments.second} but did $deriveMood
+                """.trimMargin()
+            ).isIn(arguments.second)
+        }
+    }
 
     @Test
     fun `frustration should cool down when positive events happen`() {
@@ -290,24 +339,24 @@ class EmotionCoreTest {
             ).isIn(arguments.second)
         }
     }
+}
 
-    // todo: smug test
+private val projectMock = mockk<Project>()
 
-    private fun buildMotivationEvent(
-        type: MotivationEvents,
-        category: MotivationEventCategory
-    ): MotivationEvent {
-        return MotivationEvent(
-            type,
-            category,
-            "我会写汉字",
-            projectMock
-        ) {
-            AlertConfiguration(
-                isAlertEnabled = true,
-                isDisplayNotificationEnabled = true,
-                isSoundAlertEnabled = true
-            )
-        }
+internal fun buildMotivationEvent(
+    type: MotivationEvents,
+    category: MotivationEventCategory
+): MotivationEvent {
+    return MotivationEvent(
+        type,
+        category,
+        "我会写汉字",
+        projectMock
+    ) {
+        AlertConfiguration(
+            isAlertEnabled = true,
+            isDisplayNotificationEnabled = true,
+            isSoundAlertEnabled = true
+        )
     }
 }
