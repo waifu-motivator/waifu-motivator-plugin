@@ -242,6 +242,7 @@ class NegativeEmotionCoreTests {
         every { mockRandom.nextInt(2) } returns 1
 
         val frustrated = Mood.FRUSTRATED.toList()
+        val enraged = Mood.ENRAGED.toList()
         listOf(
             buildMotivationEvent(
                 MotivationEvents.TASK,
@@ -254,15 +255,15 @@ class NegativeEmotionCoreTests {
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.ENRAGED.toList(),
+            ) to enraged,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.ENRAGED.toList(),
+            ) to enraged,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.ENRAGED.toList()
+            ) to enraged
         ).forEachIndexed { index, arguments ->
             val deriveMood = emotionCore.deriveMood(
                 arguments.first
@@ -290,6 +291,7 @@ class NegativeEmotionCoreTests {
         val negativeEmotions =
             OTHER_NEGATIVE_EMOTIONS
         val frustrated = Mood.FRUSTRATED.toList()
+        val relieved = Mood.RELIEVED.toList()
         listOf(
             buildMotivationEvent(
                 MotivationEvents.TASK,
@@ -302,7 +304,7 @@ class NegativeEmotionCoreTests {
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.POSITIVE
-            ) to Mood.RELIEVED.toList(),
+            ) to relieved,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.POSITIVE
@@ -318,7 +320,7 @@ class NegativeEmotionCoreTests {
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.POSITIVE
-            ) to Mood.RELIEVED.toList(),
+            ) to relieved,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE

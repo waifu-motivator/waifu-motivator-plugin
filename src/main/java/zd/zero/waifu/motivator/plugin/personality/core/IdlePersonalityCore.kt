@@ -1,5 +1,6 @@
 package zd.zero.waifu.motivator.plugin.personality.core
 
+import com.intellij.openapi.project.Project
 import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
@@ -11,23 +12,23 @@ import zd.zero.waifu.motivator.plugin.tools.doOrElse
 
 class IdlePersonalityCore : PersonalityCore {
 
-    private var isEventDisplayed = false
+    private var displayedProjects = mutableSetOf<Project>()
 
     override fun processMotivationEvent(
         motivationEvent: MotivationEvent,
         mood: Mood
     ) {
-        if (isEventDisplayed.not()) {
-            val project = motivationEvent.project
+        val project = motivationEvent.project
+        if (displayedProjects.contains(motivationEvent.project).not()) {
             VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING)
                 .doOrElse({ asset ->
-                    isEventDisplayed = true
+                    displayedProjects.add(project)
                     VisualMotivationFactory.constructMotivation(
                             project,
                             asset,
                             motivationEvent.alertConfigurationSupplier()
                     ).setListener {
-                        isEventDisplayed = false
+                        displayedProjects.remove(project)
                     }.motivate()
                 }) {
                     UpdateNotification.sendMessage(

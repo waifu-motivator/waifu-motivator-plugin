@@ -41,7 +41,6 @@ internal class PositiveEmotionDerivationUnit(
         )
     }
 
-    // todo: chance of smug after regular negative event
     private fun getPositiveMood(
         motivationEvent: MotivationEvent,
         emotionalState: EmotionalState

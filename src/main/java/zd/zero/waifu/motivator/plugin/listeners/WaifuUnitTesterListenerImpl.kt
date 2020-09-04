@@ -9,10 +9,6 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 
-internal enum class TestStatus {
-    PASS, FAIL, UNKNOWN
-}
-
 class WaifuUnitTesterListenerImpl(private val project: Project) : WaifuUnitTester.Listener {
 
     override fun onUnitTestPassed() {

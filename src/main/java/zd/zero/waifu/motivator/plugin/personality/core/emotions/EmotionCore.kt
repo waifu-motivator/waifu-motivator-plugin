@@ -58,9 +58,5 @@ enum class Mood {
     SURPRISED,
     CALM,
     BORED,
-    DISAPPOINTED;
-
-    override fun toString(): String {
-        return this.name
-    }
+    DISAPPOINTED
 }
