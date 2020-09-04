@@ -1,6 +1,7 @@
-package zd.zero.waifu.motivator.plugin.personality
+package zd.zero.waifu.motivator.plugin.tools
 
 import com.intellij.util.containers.concat
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
 import java.util.stream.Collectors
 import java.util.stream.Stream
 import kotlin.random.Random

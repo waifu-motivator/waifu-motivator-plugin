@@ -7,10 +7,19 @@ import com.intellij.util.messages.MessageBusConnection
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
+import zd.zero.waifu.motivator.plugin.personality.core.IdlePersonalityCore
+import zd.zero.waifu.motivator.plugin.personality.core.TaskPersonalityCore
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionCore
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 
+//                                   Waifu
+//                                   Emotion
+//                                   Notification
+//                                   Determination
+//                                   Interface
+// %%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%   ,     ,                                     #@@@@&%%%%%%%%%%%%
 // %%%%%%%%%%@@@@@@@@@@@& /                                            @@@@%%%%%%%%
 // %%%%%%%@@&%*    .                                                    /%%%@@%%%%%
@@ -43,11 +52,6 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 // %%%%%%%%%%%%%%%%%%%%%%%*                               #%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%..                     ....,%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%.......           .........(%%%%%%%%%%%%%%%%%%%%%%%%%
-//        Waifu
-//        Emotion
-//        Notification
-//        Determination
-//        Interface
 object Wendi : Disposable {
 
     private lateinit var messageBusConnection: MessageBusConnection

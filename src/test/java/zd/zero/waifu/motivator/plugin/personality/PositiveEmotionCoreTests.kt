@@ -6,6 +6,9 @@ import org.assertj.core.api.Assertions
 import org.junit.Test
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionCore
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.NegativeEmotionDerivationUnit
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.toList
 import kotlin.random.Random

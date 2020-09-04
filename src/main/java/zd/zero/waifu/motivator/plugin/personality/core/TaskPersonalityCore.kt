@@ -1,10 +1,11 @@
-package zd.zero.waifu.motivator.plugin.personality
+package zd.zero.waifu.motivator.plugin.personality.core
 
 import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
 import zd.zero.waifu.motivator.plugin.tools.AssetTools
 import zd.zero.waifu.motivator.plugin.tools.toArray
 

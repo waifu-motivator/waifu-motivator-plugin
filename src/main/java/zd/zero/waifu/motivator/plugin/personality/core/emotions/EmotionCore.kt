@@ -1,4 +1,4 @@
-package zd.zero.waifu.motivator.plugin.personality
+package zd.zero.waifu.motivator.plugin.personality.core.emotions
 
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
