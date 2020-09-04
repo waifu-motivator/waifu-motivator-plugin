@@ -12,6 +12,7 @@ import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionCore
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
+import zd.zero.waifu.motivator.plugin.tools.AlarmDebouncer
 
 //                                   Waifu
 //                                   Emotion
@@ -57,6 +58,7 @@ object Wendi : Disposable {
     private lateinit var emotionCore: EmotionCore
     private val taskPersonalityCore = TaskPersonalityCore()
     private val idlePersonalityCore = IdlePersonalityCore()
+    private val debouncer = AlarmDebouncer(50)
 
     fun initialize() {
         if (this::messageBusConnection.isInitialized.not()) {
@@ -72,7 +74,9 @@ object Wendi : Disposable {
 
             messageBusConnection.subscribe(MotivationEventListener.TOPIC, object : MotivationEventListener {
                 override fun onEventTrigger(motivationEvent: MotivationEvent) {
-                    consumeEvent(motivationEvent)
+//                    debouncer.debounce {
+                        consumeEvent(motivationEvent)
+//                    }
                 }
             })
         }
