@@ -10,6 +10,7 @@ fun <T> T?.toOptional() = Optional.ofNullable(this)
 fun InputStream.readAllTheBytes(): ByteArray = IOUtils.toByteArray(this)
 
 inline fun <reified T> T.toArray(): Array<T> = arrayOf(this)
+inline fun <reified T> T.toList(): List<T> = listOf(this)
 
 fun <T> T.toStream(): Stream<T> = Stream.of(this)
 

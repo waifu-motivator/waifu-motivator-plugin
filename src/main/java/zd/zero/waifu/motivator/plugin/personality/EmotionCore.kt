@@ -67,7 +67,16 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
     private fun deriveNegative(
         motivationEvent: MotivationEvent,
         emotionalState: EmotionalState
-    ): EmotionalState {
+    ): EmotionalState =
+        when {
+            shouldProcessNegativeEvent(motivationEvent) -> processNegativeEvent(emotionalState)
+            else -> emotionalState
+        }
+
+    private fun shouldProcessNegativeEvent(motivationEvent: MotivationEvent): Boolean =
+        motivationEvent.type != MotivationEvents.IDLE
+
+    private fun processNegativeEvent(emotionalState: EmotionalState): EmotionalState {
         val observedFrustrationEvents = emotionalState.observedNegativeEvents
         val newMood =
             when {
@@ -91,7 +100,8 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
         pluginState.eventsBeforeFrustration in 0..observedFrustrationEvents
 
     private fun shouldBeEnraged(observedFrustrationEvents: Int) =
-        observedFrustrationEvents >= pluginState.eventsBeforeFrustration * 2
+        shouldBeFrustrated(observedFrustrationEvents) &&
+            observedFrustrationEvents >= pluginState.eventsBeforeFrustration * 2
 
     private fun hurryFindCover(): Mood {
         val rageProbability = pluginState.probabilityOfFrustration * 3 / 4
@@ -123,7 +133,7 @@ class EmotionCore(private val pluginState: WaifuMotivatorState) {
             randomWeight -= weight
         }
 
-        return weightedEmotions.first().first
+        return weightedEmotions.first { it.second > 0 }.first
     }
 
     private fun buildWeightedList(weightRemaining: Int, streams: Stream<Pair<Mood, Int>>): List<Pair<Mood, Int>> {

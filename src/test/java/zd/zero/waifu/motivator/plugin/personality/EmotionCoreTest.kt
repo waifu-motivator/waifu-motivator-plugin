@@ -9,6 +9,7 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
+import zd.zero.waifu.motivator.plugin.tools.toList
 
 class EmotionCoreTest {
 
@@ -35,12 +36,19 @@ class EmotionCoreTest {
                 MotivationEvents.IDLE,
                 MotivationEventCategory.POSITIVE
             )
-        ).forEach {
+        ).forEachIndexed { index, event ->
+            val deriveMood = emotionCore.deriveMood(
+                event
+            )
+            val expectedMood = Mood.CALM
             Assertions.assertThat(
-                emotionCore.deriveMood(
-                    it
-                )
-            ).isEqualTo(Mood.CALM)
+                deriveMood
+            ).withFailMessage(
+                """At index #$index
+                    |$event
+                    |did not create $expectedMood but did $deriveMood
+                """.trimMargin()
+            ).isEqualTo(expectedMood)
         }
     }
 
@@ -53,31 +61,35 @@ class EmotionCoreTest {
             }
         )
 
+        val negativeEmotions =
+            EmotionCore.OTHER_NEGATIVE_EMOTIONS
+        val calm = Mood.CALM.toList()
+        val frustrated = Mood.FRUSTRATED.toList()
         listOf(
             buildMotivationEvent(
                 MotivationEvents.TASK,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.CALM,
+            ) to negativeEmotions,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.CALM,
+            ) to negativeEmotions,
             buildMotivationEvent(
                 MotivationEvents.TASK,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.CALM,
+            ) to negativeEmotions,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.CALM,
+            ) to negativeEmotions,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.FRUSTRATED,
+            ) to frustrated,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.FRUSTRATED
+            ) to frustrated
         ).forEachIndexed { index, arguments ->
             val deriveMood = emotionCore.deriveMood(
                 arguments.first
@@ -89,7 +101,7 @@ class EmotionCoreTest {
                     |${arguments.first}
                     |did not create ${arguments.second} but did $deriveMood
                 """.trimMargin()
-            ).isEqualTo(arguments.second)
+            ).isIn(arguments.second)
         }
     }
 
@@ -102,31 +114,35 @@ class EmotionCoreTest {
             }
         )
 
+        val negativeEmotions =
+            EmotionCore.OTHER_NEGATIVE_EMOTIONS
+        val calm = Mood.CALM.toList()
+        val frustrated = Mood.FRUSTRATED.toList()
         listOf(
             buildMotivationEvent(
                 MotivationEvents.TASK,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.CALM,
+            ) to negativeEmotions,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.FRUSTRATED,
+            ) to frustrated,
             buildMotivationEvent(
                 MotivationEvents.IDLE,
                 MotivationEventCategory.NEUTRAL
-            ) to Mood.CALM,
+            ) to calm,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.CALM,
+            ) to negativeEmotions,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.FRUSTRATED,
+            ) to frustrated,
             buildMotivationEvent(
                 MotivationEvents.TEST,
                 MotivationEventCategory.NEGATIVE
-            ) to Mood.FRUSTRATED
+            ) to listOf(Mood.FRUSTRATED, Mood.ENRAGED)
         ).forEachIndexed { index, arguments ->
             val deriveMood = emotionCore.deriveMood(
                 arguments.first
@@ -138,7 +154,7 @@ class EmotionCoreTest {
                     |${arguments.first}
                     |did not create ${arguments.second} but did $deriveMood
                 """.trimMargin()
-            ).isEqualTo(arguments.second)
+            ).isIn(arguments.second)
         }
     }
 
@@ -156,7 +172,8 @@ class EmotionCoreTest {
             MotivationEventCategory.NEGATIVE
         )
 
-        val expectedMood = Mood.CALM
+        val negativeEmotions =
+            EmotionCore.OTHER_NEGATIVE_EMOTIONS.toTypedArray()
         repeat(42) { index ->
             val deriveMood = emotionCore.deriveMood(
                 motivationEvent
@@ -166,9 +183,11 @@ class EmotionCoreTest {
             ).withFailMessage(
                 """At index #$index
                     |$motivationEvent
-                    |did not create $expectedMood but did $deriveMood
+                    |did not create ${EmotionCore.OTHER_NEGATIVE_EMOTIONS} but did $deriveMood
                 """.trimMargin()
-            ).isEqualTo(expectedMood)
+            ).isIn(
+                *negativeEmotions
+            )
         }
     }
 
