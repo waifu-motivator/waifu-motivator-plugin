@@ -35,6 +35,8 @@ class WaifuMotivatorState {
 
     var idleTimeoutInMinutes = DEFAULT_IDLE_TIMEOUT_IN_MINUTES
 
+    var isAllowFrustration = true
+
     var eventsBeforeFrustration = DEFAULT_EVENTS_BEFORE_FRUSTRATION
 
     var probabilityOfFrustration = DEFAULT_FRUSTRATION_PROBABILITY

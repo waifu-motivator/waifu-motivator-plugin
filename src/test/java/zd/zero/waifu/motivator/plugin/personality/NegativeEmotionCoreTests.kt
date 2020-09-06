@@ -162,10 +162,11 @@ class NegativeEmotionCoreTests {
     }
 
     @Test
-    fun deriveMoodShouldReturnNeverReturnFrustratedWhenEventsIsNegative() {
+    fun `should never return frustration when frustration is disabled`() {
         val emotionCore = EmotionCore(
             WaifuMotivatorState().apply {
-                eventsBeforeFrustration = -1
+                isAllowFrustration = false
+                eventsBeforeFrustration = 0
                 probabilityOfFrustration = 100
             }
         )

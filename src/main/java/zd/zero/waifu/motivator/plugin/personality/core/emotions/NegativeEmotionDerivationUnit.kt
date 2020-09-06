@@ -54,7 +54,8 @@ internal class NegativeEmotionDerivationUnit(
     }
 
     private fun shouldBeFrustrated(observedFrustrationEvents: Int) =
-        pluginState.eventsBeforeFrustration in 0..observedFrustrationEvents
+        pluginState.isAllowFrustration &&
+            pluginState.eventsBeforeFrustration <= observedFrustrationEvents
 
     private fun shouldBeEnraged(observedFrustrationEvents: Int) =
         shouldBeFrustrated(observedFrustrationEvents) &&
