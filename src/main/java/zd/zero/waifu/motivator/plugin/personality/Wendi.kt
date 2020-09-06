@@ -55,7 +55,6 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 object Wendi : Disposable {
 
     private lateinit var messageBusConnection: MessageBusConnection
-    private val log = Logger.getInstance(this::class.java)
     private lateinit var emotionCore: EmotionCore
     private val taskPersonalityCore = TaskPersonalityCore()
     private val idlePersonalityCore = IdlePersonalityCore()
