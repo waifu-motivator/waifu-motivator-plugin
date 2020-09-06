@@ -47,6 +47,12 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JCheckBox enableTaskEventSoundsCheckBox;
 
+    private JSpinner eventsBeforeFrustrationSpinner;
+
+    private JSlider frustrationProbabilitySlider;
+
+    private JCheckBox allowFrustrationCheckBox;
+
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
     }
@@ -67,6 +73,11 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     @Override
     public JComponent createComponent() {
         idleTimeoutSpinner.setModel( new SpinnerNumberModel( 1, 1, null, 1 ) );
+        eventsBeforeFrustrationSpinner.setModel( new SpinnerNumberModel( 5, 0, null, 1 ) );
+        allowFrustrationCheckBox.addActionListener( e -> {
+            frustrationProbabilitySlider.setEnabled(allowFrustrationCheckBox.isSelected());
+            eventsBeforeFrustrationSpinner.setEnabled(allowFrustrationCheckBox.isSelected());
+        } );
         this.setFieldsFromState();
         return rootPanel;
     }
@@ -85,7 +96,10 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableIdleSoundCheckBox.isSelected() != this.state.isIdleSoundEnabled() ||
                 getIdleTimeout() != this.state.getIdleTimeoutInMinutes() ||
                 enableTaskEventNotificationsCheckBox.isSelected() != this.state.isTaskMotivationEnabled() ||
+                allowFrustrationCheckBox.isSelected() != this.state.isAllowFrustration() ||
                 enableTaskEventSoundsCheckBox.isSelected() != this.state.isTaskSoundEnabled() ||
+                frustrationProbabilitySlider.getValue() != this.state.getProbabilityOfFrustration() ||
+                ((Integer) eventsBeforeFrustrationSpinner.getValue()) != this.state.getEventsBeforeFrustration() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled();
     }
 
@@ -120,6 +134,9 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setIdleTimeoutInMinutes( getIdleTimeout() );
         this.state.setTaskMotivationEnabled( enableTaskEventNotificationsCheckBox.isSelected() );
         this.state.setTaskSoundEnabled( enableTaskEventSoundsCheckBox.isSelected() );
+        this.state.setAllowFrustration( allowFrustrationCheckBox.isSelected() );
+        this.state.setEventsBeforeFrustration( ( Integer ) eventsBeforeFrustrationSpinner.getValue() );
+        this.state.setProbabilityOfFrustration( frustrationProbabilitySlider.getValue() );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
@@ -144,6 +161,9 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.enableIdleSoundCheckBox.setSelected( this.state.isIdleSoundEnabled() );
         this.enableTaskEventNotificationsCheckBox.setSelected( this.state.isTaskMotivationEnabled() );
         this.enableTaskEventSoundsCheckBox.setSelected( this.state.isTaskSoundEnabled() );
+        this.allowFrustrationCheckBox.setSelected( this.state.isAllowFrustration() );
+        this.eventsBeforeFrustrationSpinner.setValue( this.state.getEventsBeforeFrustration() );
+        this.frustrationProbabilitySlider.setValue( this.state.getProbabilityOfFrustration() );
     }
 
 }
