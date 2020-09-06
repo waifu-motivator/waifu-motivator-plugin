@@ -66,7 +66,6 @@ class NegativeEmotionCoreTests {
 
         val negativeEmotions =
             OTHER_NEGATIVE_EMOTIONS
-        val calm = Mood.CALM.toList()
         val frustrated = Mood.FRUSTRATED.toList()
         listOf(
             buildMotivationEvent(
