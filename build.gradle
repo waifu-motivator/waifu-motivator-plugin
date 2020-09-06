@@ -8,7 +8,7 @@ plugins {
 }
 
 group pluginGroup
-version pluginVersion
+version System.getenv().getOrDefault('VERSION', '').replace('refs/tags/v', '')
 
 sourceCompatibility = 1.8
 
@@ -35,8 +35,8 @@ configurations {
 }
 
 publishPlugin {
-    token System.getenv('PUBLISH_TOKEN')
-    channels System.getenv('PUBLISH_CHANNEL')
+    token System.properties.getProperty('PUBLISH_TOKEN', '')
+    channels System.properties.getProperty('PUBLISH_CHANNEL', '')
 }
 
 
