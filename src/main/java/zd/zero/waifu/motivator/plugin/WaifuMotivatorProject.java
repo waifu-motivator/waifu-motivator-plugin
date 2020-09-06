@@ -32,6 +32,7 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static java.util.Optional.ofNullable;
 import static zd.zero.waifu.motivator.plugin.tools.ToolBox.doOrElse;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
@@ -89,7 +90,8 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void projectClosing( @NotNull Project project ) {
-        if ( !pluginState.isSayonaraEnabled() || isMultipleProjectsOpened() ) return;
+        if ( !WaifuMotivatorPluginState.getPluginState().isSayonaraEnabled() ||
+            areMultipleProjectsOpened() ) return;
 
         AudibleAssetDefinitionService.INSTANCE.getRandomAssetByCategory(
             WaifuAssetCategory.DEPARTURE
@@ -98,8 +100,8 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void dispose() {
-        this.unitTestListener.stop();
-        this.idleEventListener.dispose();
+        ofNullable(this.unitTestListener).ifPresent( WaifuUnitTester::stop );
+        ofNullable(this.idleEventListener).ifPresent( IdleEventListener::dispose );
     }
 
     private void initializeListeners() {
@@ -116,7 +118,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     }
 
     private void initializeStartupMotivator() {
-        if ( isMultipleProjectsOpened()
+        if ( areMultipleProjectsOpened()
             || UserOnboarding.INSTANCE.isNewVersion() ) return;
 
         AlertConfiguration config = new AlertConfiguration(
@@ -149,7 +151,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             ) );
     }
 
-    private boolean isMultipleProjectsOpened() {
+    private boolean areMultipleProjectsOpened() {
         return ProjectManager.getInstance().getOpenProjects().length > 1;
     }
 
