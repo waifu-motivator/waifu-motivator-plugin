@@ -7,14 +7,12 @@ import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
-import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
-import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
-import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
-import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory
-import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification.sendMessage
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
-import zd.zero.waifu.motivator.plugin.tools.doOrElse
 
 class ExitCodeListener(private val project: Project) : Runnable, Disposable {
     private val messageBus = ApplicationManager.getApplication().messageBus.connect()
@@ -27,7 +25,7 @@ class ExitCodeListener(private val project: Project) : Runnable, Disposable {
                 handler: ProcessHandler,
                 exitCode: Int
             ) {
-                if (exitCode > 0 && env.project == project) {
+                if (exitCode != 0 && env.project == project) {
                     run()
                 }
             }
@@ -38,26 +36,17 @@ class ExitCodeListener(private val project: Project) : Runnable, Disposable {
         messageBus.dispose()
     }
 
-    private var isEventDisplayed = false
     override fun run() {
-        VisualMotivationAssetProvider.pickAssetFromCategories(
-            WaifuAssetCategory.SHOCKED,
-            WaifuAssetCategory.DISAPPOINTMENT
-        )
-            .doOrElse({ asset ->
-                isEventDisplayed = true
-                VisualMotivationFactory.constructMotivation(
-                    project,
-                    asset,
-                    createAlertConfiguration()
-                ).motivate()
-            }) {
-                sendMessage(
-                    "'Exit Code Events' Unavailable Offline",
-                    ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
+        ApplicationManager.getApplication().messageBus
+            .syncPublisher(MotivationEventListener.TOPIC)
+            .onEventTrigger(
+                MotivationEvent(
+                    MotivationEvents.TASK,
+                    MotivationEventCategory.NEGATIVE,
+                    "Exit Code Motivation",
                     project
-                )
-            }
+                ) { createAlertConfiguration() }
+            )
     }
 
     private fun createAlertConfiguration(): AlertConfiguration {

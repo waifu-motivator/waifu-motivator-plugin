@@ -58,7 +58,7 @@ object Wendi : Disposable {
     private lateinit var emotionCore: EmotionCore
     private val taskPersonalityCore = TaskPersonalityCore()
     private val idlePersonalityCore = IdlePersonalityCore()
-    private val debouncer = AlarmDebouncer(50)
+    private val debouncer = AlarmDebouncer(80)
 
     fun initialize() {
         if (this::messageBusConnection.isInitialized.not()) {
@@ -74,9 +74,9 @@ object Wendi : Disposable {
 
             messageBusConnection.subscribe(MotivationEventListener.TOPIC, object : MotivationEventListener {
                 override fun onEventTrigger(motivationEvent: MotivationEvent) {
-//                    debouncer.debounce {
+                    debouncer.debounce {
                         consumeEvent(motivationEvent)
-//                    }
+                    }
                 }
             })
         }
