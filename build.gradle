@@ -34,6 +34,12 @@ configurations {
     implementation.exclude group: 'org.slf4j'
 }
 
+publishPlugin {
+    token System.getenv('PUBLISH_TOKEN')
+    channels System.getenv('PUBLISH_CHANNEL')
+}
+
+
 intellij {
     version ideaVersion
     type System.getenv().getOrDefault("INTELLIJ_TYPE", "IC")
