@@ -1,7 +1,7 @@
 package zd.zero.waifu.motivator.plugin.listeners
 
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.project.ProjectManager
+import com.intellij.openapi.project.Project
 import com.intellij.task.ProjectTaskListener
 import com.intellij.task.ProjectTaskManager
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
@@ -15,12 +15,11 @@ internal enum class TaskStatus {
     PASS, FAIL, UNKNOWN
 }
 
-class TaskListener : ProjectTaskListener {
+class TaskListener(private val project: Project) : ProjectTaskListener {
 
     private var previousTaskStatus = TaskStatus.UNKNOWN
 
     override fun finished(result: ProjectTaskManager.Result) {
-        val project = ProjectManager.getInstance().defaultProject
         when {
             result.hasErrors() -> {
                 ApplicationManager.getApplication().messageBus
