@@ -26,13 +26,13 @@ import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification;
 import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
 import zd.zero.waifu.motivator.plugin.platform.LifeCycleManager;
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory;
-import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static java.util.Optional.ofNullable;
+import static zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState.getPluginState;
 import static zd.zero.waifu.motivator.plugin.tools.ToolBox.doOrElse;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
@@ -40,8 +40,6 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     private static final String IS_INITIAL_PLATFORM_TIP_UPDATED = "WAIFU_UPDATE_TIP";
 
     private Project project;
-
-    private WaifuMotivatorState pluginState;
 
     private WaifuUnitTester unitTestListener;
 
@@ -54,7 +52,6 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
         checkIfInGoodState( projectOpened, () -> {
             this.project = projectOpened;
-            this.pluginState = WaifuMotivatorPluginState.getPluginState();
             this.unitTestListener = WaifuUnitTester.newInstance( projectOpened );
             this.idleEventListener = new IdleEventListener( projectOpened );
 
@@ -90,7 +87,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void projectClosing( @NotNull Project project ) {
-        if ( !WaifuMotivatorPluginState.getPluginState().isSayonaraEnabled() ||
+        if ( !getPluginState().isSayonaraEnabled() ||
             areMultipleProjectsOpened() ) return;
 
         AudibleAssetDefinitionService.INSTANCE.getRandomAssetByCategory(
@@ -100,8 +97,8 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void dispose() {
-        ofNullable(this.unitTestListener).ifPresent( WaifuUnitTester::stop );
-        ofNullable(this.idleEventListener).ifPresent( IdleEventListener::dispose );
+        ofNullable( this.unitTestListener ).ifPresent( WaifuUnitTester::stop );
+        ofNullable( this.idleEventListener ).ifPresent( IdleEventListener::dispose );
     }
 
     private void initializeListeners() {
@@ -113,7 +110,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             .getValue( IS_INITIAL_PLATFORM_TIP_UPDATED, "" ) );
         if ( !isInitialPlatformTipUpdated ) {
             PropertiesComponent.getInstance().setValue( IS_INITIAL_PLATFORM_TIP_UPDATED, true );
-            GeneralSettings.getInstance().setShowTipsOnStartup( !pluginState.isWaifuOfTheDayEnabled() );
+            GeneralSettings.getInstance().setShowTipsOnStartup( !getPluginState().isWaifuOfTheDayEnabled() );
         }
     }
 
@@ -121,6 +118,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
         if ( areMultipleProjectsOpened()
             || UserOnboarding.INSTANCE.isNewVersion() ) return;
 
+        WaifuMotivatorState pluginState = getPluginState();
         AlertConfiguration config = new AlertConfiguration(
             pluginState.isStartupMotivationEnabled() || pluginState.isStartupMotivationSoundEnabled(),
             pluginState.isStartupMotivationEnabled(),
