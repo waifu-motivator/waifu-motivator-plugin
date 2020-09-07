@@ -91,6 +91,10 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void projectClosing( @NotNull Project project ) {
+        if(project == this.project) {
+            dispose();
+        }
+
         if ( !getPluginState().isSayonaraEnabled() ||
             areMultipleProjectsOpened() ) return;
 
