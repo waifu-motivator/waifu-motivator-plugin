@@ -18,6 +18,7 @@ import zd.zero.waifu.motivator.plugin.assets.TextAssetManager;
 import zd.zero.waifu.motivator.plugin.assets.VisualAssetManager;
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
+import zd.zero.waifu.motivator.plugin.listeners.ExitCodeListener;
 import zd.zero.waifu.motivator.plugin.listeners.IdleEventListener;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
 import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
@@ -45,6 +46,8 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     private IdleEventListener idleEventListener;
 
+    private ExitCodeListener exitCodeListener;
+
     @Override
     public void projectOpened( @NotNull Project projectOpened ) {
         LifeCycleManager.INSTANCE.init();
@@ -54,6 +57,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             this.project = projectOpened;
             this.unitTestListener = WaifuUnitTester.newInstance( projectOpened );
             this.idleEventListener = new IdleEventListener( projectOpened );
+            this.exitCodeListener = new ExitCodeListener( projectOpened );
 
             updatePlatformStartupConfig();
             initializeListeners();
@@ -87,6 +91,10 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void projectClosing( @NotNull Project project ) {
+        if(project == this.project) {
+            dispose();
+        }
+
         if ( !getPluginState().isSayonaraEnabled() ||
             areMultipleProjectsOpened() ) return;
 
@@ -99,6 +107,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     public void dispose() {
         ofNullable( this.unitTestListener ).ifPresent( WaifuUnitTester::stop );
         ofNullable( this.idleEventListener ).ifPresent( IdleEventListener::dispose );
+        ofNullable( this.exitCodeListener ).ifPresent( ExitCodeListener::dispose );
     }
 
     private void initializeListeners() {

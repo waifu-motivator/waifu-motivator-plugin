@@ -25,8 +25,20 @@ abstract class BaseMotivation(
 
     override fun motivate() {
         if (isAlertEnabled && isDistractionAllowed) {
-            if (isDisplayNotificationEnabled) displayNotification()
+            if (isDisplayNotificationEnabled) {
+                displayNotification()
+            } else {
+                notifyDisposal()
+            }
             if (isSoundAlertEnabled) soundAlert()
+        } else {
+            notifyDisposal()
+        }
+    }
+
+    private fun notifyDisposal() {
+        if (this::listener.isInitialized) {
+            listener.onDisposal()
         }
     }
 
@@ -53,9 +65,7 @@ abstract class BaseMotivation(
             player.stop()
         }
 
-        if (this::listener.isInitialized) {
-            listener.onDismissed()
-        }
+        notifyDisposal()
     }
 
     override fun setListener(motivationListener: MotivationListener): WaifuMotivation {

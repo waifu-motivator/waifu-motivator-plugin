@@ -9,9 +9,11 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.personality.core.IdlePersonalityCore
 import zd.zero.waifu.motivator.plugin.personality.core.TaskPersonalityCore
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionCore
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
+import zd.zero.waifu.motivator.plugin.tools.AlarmDebouncer
 
 //                                   Waifu
 //                                   Emotion
@@ -57,6 +59,9 @@ object Wendi : Disposable {
     private lateinit var emotionCore: EmotionCore
     private val taskPersonalityCore = TaskPersonalityCore()
     private val idlePersonalityCore = IdlePersonalityCore()
+    private const val DEBOUNCE_INTERVAL = 80
+    private val singleEventDebouncer = AlarmDebouncer<MotivationEvent>(DEBOUNCE_INTERVAL)
+    private val idleEventDebouncer = AlarmDebouncer<MotivationEvent>(DEBOUNCE_INTERVAL)
 
     fun initialize() {
         if (this::messageBusConnection.isInitialized.not()) {
@@ -72,14 +77,31 @@ object Wendi : Disposable {
 
             messageBusConnection.subscribe(MotivationEventListener.TOPIC, object : MotivationEventListener {
                 override fun onEventTrigger(motivationEvent: MotivationEvent) {
-                    consumeEvent(motivationEvent)
+                    when (motivationEvent.type) {
+                        MotivationEvents.IDLE ->
+                            idleEventDebouncer.debounceAndBuffer(motivationEvent) {
+                                consumeEvents(it)
+                            }
+                        else -> singleEventDebouncer.debounce {
+                            consumeEvent(motivationEvent)
+                        }
+                    }
                 }
             })
         }
     }
 
+    private fun consumeEvents(bufferedMotivationEvents: List<MotivationEvent>) {
+        val emotionalState = emotionCore.deriveMood(bufferedMotivationEvents.first())
+        bufferedMotivationEvents.forEach { motivationEvent -> reactToEvent(motivationEvent, emotionalState) }
+    }
+
     private fun consumeEvent(motivationEvent: MotivationEvent) {
         val emotionalState = emotionCore.deriveMood(motivationEvent)
+        reactToEvent(motivationEvent, emotionalState)
+    }
+
+    private fun reactToEvent(motivationEvent: MotivationEvent, emotionalState: Mood) {
         when (motivationEvent.type) {
             MotivationEvents.TEST,
             MotivationEvents.TASK -> taskPersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
@@ -90,6 +112,8 @@ object Wendi : Disposable {
     override fun dispose() {
         if (this::messageBusConnection.isInitialized) {
             messageBusConnection.dispose()
+            singleEventDebouncer.dispose()
+            idleEventDebouncer.dispose()
         }
     }
 }

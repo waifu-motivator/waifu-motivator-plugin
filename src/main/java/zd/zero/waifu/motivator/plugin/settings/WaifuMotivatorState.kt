@@ -33,6 +33,10 @@ class WaifuMotivatorState {
 
     var isIdleSoundEnabled = false
 
+    var isExitCodeNotificationEnabled = true
+
+    var isExitCodeSoundEnabled = true
+
     var idleTimeoutInMinutes = DEFAULT_IDLE_TIMEOUT_IN_MINUTES
 
     var isAllowFrustration = true
