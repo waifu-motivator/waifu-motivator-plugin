@@ -30,11 +30,7 @@ class IdlePersonalityCore : PersonalityCore {
                             motivationEvent.alertConfigurationSupplier()
                     ).setListener(
                         object : MotivationListener {
-                            override fun onDismissed() {
-                                displayedProjects.remove(project)
-                            }
-
-                            override fun onNotDisplayed() {
+                            override fun onDisposal() {
                                 displayedProjects.remove(project)
                             }
                         }
