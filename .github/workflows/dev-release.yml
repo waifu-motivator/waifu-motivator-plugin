@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - canary/*
-      - chore/wmp-141-publish
 
 jobs:
   release:
@@ -18,7 +17,6 @@ jobs:
         uses: Unthrottled/wmp-env-action@v1.0.0
         with:
           release-type: non-prod
-          branch-override: refs/head/canary/v1.3
       - run: ./ciScripts/buildPlugin.sh
       - run: ./gradlew publishPlugin
         env:
