@@ -36,8 +36,8 @@ configurations {
 }
 
 publishPlugin {
-    token System.properties.getProperty('PUBLISH_TOKEN', '')
-    channels System.properties.getProperty('PUBLISH_CHANNEL', '')
+    token System.getenv().getOrDefault('PUBLISH_TOKEN', '')
+    channels System.getenv().getOrDefault('PUBLISH_CHANNEL', '')
 }
 
 
