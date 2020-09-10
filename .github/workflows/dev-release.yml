@@ -3,8 +3,8 @@ name: Development Release
 on:
   push:
     branches:
-      - development/*
-      - pre-release/*
+      - canary/*
+      - chore/wmp-141-publish
 
 jobs:
   release:
@@ -12,16 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
-          with:
-            java-version: 11
+        with:
+          java-version: 11
       - name: Setting up environment
-        uses: Unthrottled/wmp-env-action@v1.0.o
+        uses: Unthrottled/wmp-env-action@v1.0.0
         with:
           release-type: non-prod
+          branch-override: canary
       - run: ./ciScripts/buildPlugin.sh
-          env:
-            RELEASE_NOTES: ${{ github.event.commits[0].message }}
-            VERSION: ${{ github.ref }}
       - run: ./gradlew publishPlugin
-          env:
-            PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+        env:
+          PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
