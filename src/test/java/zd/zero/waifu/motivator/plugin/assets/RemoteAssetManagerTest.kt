@@ -6,7 +6,7 @@ import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
 import zd.zero.waifu.motivator.plugin.platform.LifeCycleManager
-import zd.zero.waifu.motivator.plugin.platform.UpdateListener
+import zd.zero.waifu.motivator.plugin.platform.UpdateAssetsListener
 import zd.zero.waifu.motivator.plugin.test.tools.TestTools
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.nio.file.Paths
@@ -110,7 +110,7 @@ class RemoteAssetManagerTest {
         every { AssetManager.forceResolveAssetUrl(AssetCategory.VISUAL, "assets.json") } returns
             Optional.empty()
 
-        val listenerSlot = slot<UpdateListener>()
+        val listenerSlot = slot<UpdateAssetsListener>()
         every { LifeCycleManager.registerUpdateListener(capture(listenerSlot)) } just runs
 
         val fakeAssetManager = FakeAssetManager()
@@ -130,7 +130,7 @@ class RemoteAssetManagerTest {
                 "waiting/ryuko_waiting.gif"
             )
 
-        listenerSlot.captured.onUpdate()
+        listenerSlot.captured.requestUpdate()
 
         assertThat(fakeAssetManager.status).isEqualTo(Status.OK)
         assertThat(fakeAssetManager.supplyAssetDefinitions()).extracting("path")
@@ -162,7 +162,7 @@ class RemoteAssetManagerTest {
             Paths.get(localAssetDirectory.toString(), "visuals", "hard-to-swallow-pills.txt")
                 .toUri().toString().toOptional()
 
-        val listenerSlot = slot<UpdateListener>()
+        val listenerSlot = slot<UpdateAssetsListener>()
         every { LifeCycleManager.registerUpdateListener(capture(listenerSlot)) } just runs
 
         val fakeAssetManager = FakeAssetManager()
@@ -182,7 +182,7 @@ class RemoteAssetManagerTest {
                 "waiting/ryuko_waiting.gif"
             )
 
-        listenerSlot.captured.onUpdate()
+        listenerSlot.captured.requestUpdate()
 
         assertThat(fakeAssetManager.status).isEqualTo(Status.OK)
         assertThat(fakeAssetManager.supplyAssetDefinitions()).extracting("path")
@@ -214,7 +214,7 @@ class RemoteAssetManagerTest {
             Paths.get(localAssetDirectory.toString(), "visuals", "updated-assets.json")
                 .toUri().toString().toOptional()
 
-        val listenerSlot = slot<UpdateListener>()
+        val listenerSlot = slot<UpdateAssetsListener>()
         every { LifeCycleManager.registerUpdateListener(capture(listenerSlot)) } just runs
 
         val fakeAssetManager = FakeAssetManager()
@@ -234,7 +234,7 @@ class RemoteAssetManagerTest {
                 "waiting/ryuko_waiting.gif"
             )
 
-        listenerSlot.captured.onUpdate()
+        listenerSlot.captured.requestUpdate()
 
         assertThat(fakeAssetManager.status).isEqualTo(Status.OK)
         assertThat(fakeAssetManager.supplyAssetDefinitions()).extracting("path")

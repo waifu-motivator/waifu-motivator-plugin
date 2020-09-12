@@ -47,6 +47,13 @@
               text="Settings"
               description="Show me how to handle my Waifu.">
       </action>
+      <action id="zd.zero.waifu.motivator.plugin.actions.AssetSyncAction"
+              class="zd.zero.waifu.motivator.plugin.actions.AssetSyncAction"
+              icon="/actions/refresh.svg"
+              text="Synchronize Motivation Assets"
+              description="Updates the list of assets to be used for motivation from the central repository.">
+      </action>
+
 
       <add-to-group group-id="HelpMenu" anchor="last"/>
     </group>

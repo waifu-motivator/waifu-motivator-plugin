@@ -5,7 +5,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.ProjectManager
 import zd.zero.waifu.motivator.plugin.WaifuMotivator
-import zd.zero.waifu.motivator.plugin.platform.UpdateListener
+import zd.zero.waifu.motivator.plugin.platform.UpdateAssetsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.util.*
@@ -16,8 +16,8 @@ object UserOnboarding {
         getNewVersion().ifPresent { newVersion ->
             WaifuMotivatorPluginState.getPluginState().version = newVersion
             ApplicationManager.getApplication().messageBus
-                .syncPublisher(UpdateListener.TOPIC)
-                .onUpdate()
+                .syncPublisher(UpdateAssetsListener.TOPIC)
+                .requestUpdate()
             UpdateNotification.display(ProjectManager.getInstance().defaultProject, newVersion)
         }
 
