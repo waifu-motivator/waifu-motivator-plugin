@@ -1,13 +1,26 @@
 package zd.zero.waifu.motivator.plugin.settings;
 
 import com.intellij.ide.GeneralSettings;
+import com.intellij.ide.IdeBundle;
+import com.intellij.ide.plugins.PluginHostsConfigurable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
+import com.intellij.openapi.ui.cellvalidators.CellComponentProvider;
+import com.intellij.openapi.ui.cellvalidators.CellTooltipManager;
+import com.intellij.openapi.ui.cellvalidators.StatefulValidatingCellEditor;
+import com.intellij.openapi.ui.cellvalidators.ValidationUtils;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.components.fields.ExtendableTextField;
+import com.intellij.ui.table.JBTable;
+import com.intellij.util.ui.ColumnInfo;
+import com.intellij.util.ui.ListTableModel;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import zd.zero.waifu.motivator.plugin.WaifuMotivator;
+import zd.zero.waifu.motivator.plugin.service.ApplicationService;
 
 import javax.swing.*;
 
@@ -56,6 +69,10 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     private JCheckBox enableExitCodeNotifications;
 
     private JCheckBox enableExitCodeSound;
+
+    private JBTable exitCodes;
+
+    private JPanel exitCodePanel;
 
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
@@ -176,4 +193,58 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.enableExitCodeSound.setSelected( this.state.isExitCodeSoundEnabled() );
     }
 
+    private ListTableModel<Integer> exitCodeModel;
+    private void createUIComponents() {
+        exitCodeModel = new ListTableModel<Integer>(  ) {
+            @Override
+            public void addRow() {
+                addRow(0);
+            }
+        };
+        exitCodes = new JBTable(exitCodeModel);
+        exitCodeModel.setColumnInfos(new ColumnInfo[]{new ColumnInfo<Integer, String>("") {
+            @Nullable
+            @Override
+            public String valueOf( Integer info) {
+                return info.toString();
+            }
+
+            @Override
+            public boolean isCellEditable( Integer info) {
+                return true;
+            }
+
+            @Override
+            public void setValue( Integer info, String value) {
+                int row = exitCodes.getSelectedRow();
+                if ( StringUtil.isEmpty(value) && row >= 0 && row < exitCodeModel.getRowCount()) {
+                    exitCodeModel.removeRow(row);
+                }
+                else {
+                }
+            }
+        }});
+        exitCodes.getColumnModel().setColumnMargin(0);
+        exitCodes.setShowColumns(false);
+        exitCodes.setShowGrid(false);
+
+        exitCodes.getEmptyText().setText( IdeBundle.message("update.no.update.hosts"));
+
+        exitCodes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        ExtendableTextField cellEditor = new ExtendableTextField();
+        DefaultCellEditor editor = new StatefulValidatingCellEditor(cellEditor, ApplicationService.INSTANCE ).
+            withStateUpdater(vi -> ValidationUtils.setExtension(cellEditor, vi));
+        editor.setClickCountToStart(1);
+        exitCodes.setDefaultEditor(Object.class, editor);
+
+        new CellTooltipManager(ApplicationService.INSTANCE).
+            withCellComponentProvider( CellComponentProvider.forTable(exitCodes)).
+            installOn(exitCodes);
+
+
+        exitCodePanel = ToolbarDecorator.createDecorator( exitCodes )
+            .disableUpDownActions().createPanel();
+
+    }
 }
