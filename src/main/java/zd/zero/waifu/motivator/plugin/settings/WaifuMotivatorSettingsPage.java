@@ -74,6 +74,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JPanel exitCodePanel;
 
+    private JLabel allowedExitCodeLabel;
+
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
     }
