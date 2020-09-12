@@ -17,7 +17,7 @@ object UserOnboarding {
             WaifuMotivatorPluginState.getPluginState().version = newVersion
             ApplicationManager.getApplication().messageBus
                 .syncPublisher(UpdateAssetsListener.TOPIC)
-                .requestUpdate()
+                .onRequestedUpdate()
             UpdateNotification.display(ProjectManager.getInstance().defaultProject, newVersion)
         }
 

@@ -30,7 +30,7 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
     init {
         initializeAssetCaches(AssetManager.resolveAssetUrl(assetCategory, "assets.json"))
         LifeCycleManager.registerUpdateListener(object : UpdateAssetsListener {
-            override fun requestUpdate() {
+            override fun onRequestedUpdate() {
                 initializeAssetCaches(
                     AssetManager.forceResolveAssetUrl(
                         assetCategory, "assets.json"

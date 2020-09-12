@@ -130,7 +130,7 @@ class RemoteAssetManagerTest {
                 "waiting/ryuko_waiting.gif"
             )
 
-        listenerSlot.captured.requestUpdate()
+        listenerSlot.captured.onRequestedUpdate()
 
         assertThat(fakeAssetManager.status).isEqualTo(Status.OK)
         assertThat(fakeAssetManager.supplyAssetDefinitions()).extracting("path")
@@ -182,7 +182,7 @@ class RemoteAssetManagerTest {
                 "waiting/ryuko_waiting.gif"
             )
 
-        listenerSlot.captured.requestUpdate()
+        listenerSlot.captured.onRequestedUpdate()
 
         assertThat(fakeAssetManager.status).isEqualTo(Status.OK)
         assertThat(fakeAssetManager.supplyAssetDefinitions()).extracting("path")
@@ -234,7 +234,7 @@ class RemoteAssetManagerTest {
                 "waiting/ryuko_waiting.gif"
             )
 
-        listenerSlot.captured.requestUpdate()
+        listenerSlot.captured.onRequestedUpdate()
 
         assertThat(fakeAssetManager.status).isEqualTo(Status.OK)
         assertThat(fakeAssetManager.supplyAssetDefinitions()).extracting("path")

@@ -11,7 +11,7 @@ class AssetSyncAction : AnAction(), DumbAware {
     override fun actionPerformed(e: AnActionEvent) {
         ApplicationManager.getApplication().messageBus
             .syncPublisher(UpdateAssetsListener.TOPIC)
-            .requestUpdate()
+            .onRequestedUpdate()
         UpdateNotification.sendMessage(
             "Assets Synchronized",
             "Your local lists of assets should now be up to date with the remote repository.",

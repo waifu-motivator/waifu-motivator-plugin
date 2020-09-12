@@ -7,5 +7,5 @@ interface UpdateAssetsListener {
         val TOPIC = Topic.create("Motivator Assets Update", UpdateAssetsListener::class.java)
     }
 
-    fun requestUpdate()
+    fun onRequestedUpdate()
 }
