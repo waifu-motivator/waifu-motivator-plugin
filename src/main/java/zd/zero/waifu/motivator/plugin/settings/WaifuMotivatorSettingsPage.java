@@ -7,6 +7,7 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.ui.cellvalidators.CellComponentProvider;
 import com.intellij.openapi.ui.cellvalidators.CellTooltipManager;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.ColumnInfo;
@@ -27,6 +28,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -240,7 +242,20 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
             @Override
             public String valueOf( String integer ) {
-                return integer.toString();
+                return integer;
+            }
+
+            @Override
+            public void setValue( String s, String value ) {
+                int row = exitCodes.getSelectedRow();
+                if ( StringUtil.isEmpty(value) && row >= 0 && row < exitCodeModel.getRowCount()) {
+                    exitCodeModel.removeRow(row);
+                }
+                else {
+                    exitCodeModel.insertRow( row, value);
+                    exitCodeModel.removeRow( row + 1 );
+                    exitCodes.transferFocus();
+                }
             }
 
             @Override
