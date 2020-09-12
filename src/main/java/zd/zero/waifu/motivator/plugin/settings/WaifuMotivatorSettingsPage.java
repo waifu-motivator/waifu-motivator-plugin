@@ -200,7 +200,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
         int rowCount = exitCodeModel.getRowCount();
         if(rowCount > 0) {
-            IntStream.range( 0, rowCount + 1).forEach( exitCodeModel::removeRow );
+            IntStream.range( 0, rowCount).forEach( idx -> exitCodeModel.removeRow( 0 ) );
         }
         Arrays.stream( this.state.getAllowedExitCodes().split( WaifuMotivatorState.DEFAULT_DELIMITER ) )
         .map( Integer::parseInt )
