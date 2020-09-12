@@ -1,7 +1,6 @@
 package zd.zero.waifu.motivator.plugin.settings;
 
 import com.intellij.ide.GeneralSettings;
-import com.intellij.ide.IdeBundle;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
@@ -223,6 +222,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         }
         Arrays.stream( this.state.getAllowedExitCodes()
             .split( WaifuMotivatorState.DEFAULT_DELIMITER ) )
+            .filter( code -> !StringUtil.isEmpty( code ) )
             .map( Integer::parseInt )
             .forEach( exitCodeListModel::addRow );
         exitCodesChanged = false;
