@@ -23,6 +23,8 @@ import zd.zero.waifu.motivator.plugin.WaifuMotivator;
 import zd.zero.waifu.motivator.plugin.service.ApplicationService;
 
 import javax.swing.*;
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Configurable.NoScroll {
 
@@ -75,6 +77,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     private JPanel exitCodePanel;
 
     private JLabel allowedExitCodeLabel;
+
+    private ListTableModel<Integer> exitCodeModel;
 
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
@@ -193,9 +197,16 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.frustrationProbabilitySlider.setValue( this.state.getProbabilityOfFrustration() );
         this.enableExitCodeNotifications.setSelected( this.state.isExitCodeNotificationEnabled() );
         this.enableExitCodeSound.setSelected( this.state.isExitCodeSoundEnabled() );
+
+        int rowCount = exitCodeModel.getRowCount();
+        if(rowCount > 0) {
+            IntStream.range( 0, rowCount + 1).forEach( exitCodeModel::removeRow );
+        }
+        Arrays.stream( this.state.getAllowedExitCodes().split( WaifuMotivatorState.DEFAULT_DELIMITER ) )
+        .map( Integer::parseInt )
+        .forEach( exitCodeModel::addRow );
     }
 
-    private ListTableModel<Integer> exitCodeModel;
     private void createUIComponents() {
         exitCodeModel = new ListTableModel<Integer>(  ) {
             @Override
@@ -204,11 +215,11 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
             }
         };
         exitCodes = new JBTable(exitCodeModel);
-        exitCodeModel.setColumnInfos(new ColumnInfo[]{new ColumnInfo<Integer, String>("") {
-            @Nullable
+        exitCodeModel.setColumnInfos(new ColumnInfo[]{new ColumnInfo<Integer, String>("Exit Code") {
+
             @Override
-            public String valueOf( Integer info) {
-                return info.toString();
+            public String valueOf( Integer integer ) {
+                return integer.toString();
             }
 
             @Override
@@ -216,15 +227,6 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 return true;
             }
 
-            @Override
-            public void setValue( Integer info, String value) {
-                int row = exitCodes.getSelectedRow();
-                if ( StringUtil.isEmpty(value) && row >= 0 && row < exitCodeModel.getRowCount()) {
-                    exitCodeModel.removeRow(row);
-                }
-                else {
-                }
-            }
         }});
         exitCodes.getColumnModel().setColumnMargin(0);
         exitCodes.setShowColumns(false);
