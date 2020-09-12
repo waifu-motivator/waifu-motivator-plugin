@@ -28,7 +28,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -84,7 +83,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JLabel allowedExitCodeLabel;
 
-    private ListTableModel<String> exitCodeModel;
+    private ListTableModel<Integer> exitCodeModel;
 
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
@@ -177,8 +176,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setExitCodeSoundEnabled( enableExitCodeSound.isSelected() );
         this.state.setAllowedExitCodes(
             IntStream.range( 0, exitCodeModel.getRowCount() )
-            .mapToObj( exitCodeModel::getRowValue )
-            .mapToInt( Integer::parseInt )
+            .map( exitCodeModel::getRowValue )
             .distinct()
             .sorted()
             .mapToObj( String::valueOf )
@@ -220,7 +218,6 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         }
         Arrays.stream( this.state.getAllowedExitCodes().split( WaifuMotivatorState.DEFAULT_DELIMITER ) )
             .map( Integer::parseInt )
-            .map( String::valueOf )
             .forEach( exitCodeModel::addRow );
         codesChanged = false;
     }
@@ -228,38 +225,37 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     private boolean codesChanged = false;
 
     private void createUIComponents() {
-        exitCodeModel = new ListTableModel<String>(  ) {
+        exitCodeModel = new ListTableModel<Integer>(  ) {
             @Override
             public void addRow() {
-                addRow("0");
+                addRow(0);
             }
 
         };
         exitCodeModel.addTableModelListener( e -> codesChanged = true );
 
         exitCodes = new JBTable(exitCodeModel);
-        exitCodeModel.setColumnInfos(new ColumnInfo[]{new ColumnInfo<String, String>("Exit Code") {
+        exitCodeModel.setColumnInfos(new ColumnInfo[]{new ColumnInfo<Integer, String>("Exit Code") {
 
             @Override
-            public String valueOf( String integer ) {
-                return integer;
+            public String valueOf( Integer integer ) {
+                return integer.toString();
             }
 
             @Override
-            public void setValue( String s, String value ) {
+            public void setValue( Integer s, String value ) {
                 int row = exitCodes.getSelectedRow();
-                if ( StringUtil.isEmpty(value) && row >= 0 && row < exitCodeModel.getRowCount()) {
-                    exitCodeModel.removeRow(row);
-                }
-                else {
-                    exitCodeModel.insertRow( row, value);
+                if ( StringUtil.isEmpty( value ) && row >= 0 && row < exitCodeModel.getRowCount() ) {
+                    exitCodeModel.removeRow( row );
+                } else {
+                    exitCodeModel.insertRow( row, Integer.parseInt( value ) );
                     exitCodeModel.removeRow( row + 1 );
                     exitCodes.transferFocus();
                 }
             }
 
             @Override
-            public boolean isCellEditable( String info) {
+            public boolean isCellEditable( Integer info) {
                 return true;
             }
 
