@@ -2,17 +2,12 @@ package zd.zero.waifu.motivator.plugin.settings;
 
 import com.intellij.ide.GeneralSettings;
 import com.intellij.ide.IdeBundle;
-import com.intellij.ide.plugins.PluginHostsConfigurable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.ui.cellvalidators.CellComponentProvider;
 import com.intellij.openapi.ui.cellvalidators.CellTooltipManager;
-import com.intellij.openapi.ui.cellvalidators.StatefulValidatingCellEditor;
-import com.intellij.openapi.ui.cellvalidators.ValidationUtils;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.ToolbarDecorator;
-import com.intellij.ui.components.fields.ExtendableTextField;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.ColumnInfo;
 import com.intellij.util.ui.ListTableModel;
@@ -22,8 +17,17 @@ import org.jetbrains.annotations.Nullable;
 import zd.zero.waifu.motivator.plugin.WaifuMotivator;
 import zd.zero.waifu.motivator.plugin.service.ApplicationService;
 
-import javax.swing.*;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Configurable.NoScroll {
@@ -78,7 +82,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JLabel allowedExitCodeLabel;
 
-    private ListTableModel<Integer> exitCodeModel;
+    private ListTableModel<String> exitCodeModel;
 
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
@@ -129,7 +133,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 ((Integer) eventsBeforeFrustrationSpinner.getValue()) != this.state.getEventsBeforeFrustration() ||
                 enableExitCodeNotifications.isSelected() != this.state.isExitCodeNotificationEnabled() ||
                 enableExitCodeSound.isSelected() != this.state.isExitCodeSoundEnabled() ||
-                enableSayonara.isSelected() != this.state.isSayonaraEnabled();
+                enableSayonara.isSelected() != this.state.isSayonaraEnabled() ||
+                codesChanged;
     }
 
     private long getIdleTimeout() {
@@ -168,6 +173,15 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setProbabilityOfFrustration( frustrationProbabilitySlider.getValue() );
         this.state.setExitCodeNotificationEnabled( enableExitCodeNotifications.isSelected() );
         this.state.setExitCodeSoundEnabled( enableExitCodeSound.isSelected() );
+        this.state.setAllowedExitCodes(
+            IntStream.range( 0, exitCodeModel.getRowCount() )
+            .mapToObj( exitCodeModel::getRowValue )
+            .mapToInt( Integer::parseInt )
+            .distinct()
+            .sorted()
+            .mapToObj( String::valueOf )
+            .collect( Collectors.joining(WaifuMotivatorState.DEFAULT_DELIMITER))
+        );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
@@ -203,27 +217,34 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
             IntStream.range( 0, rowCount).forEach( idx -> exitCodeModel.removeRow( 0 ) );
         }
         Arrays.stream( this.state.getAllowedExitCodes().split( WaifuMotivatorState.DEFAULT_DELIMITER ) )
-        .map( Integer::parseInt )
-        .forEach( exitCodeModel::addRow );
+            .map( Integer::parseInt )
+            .map( String::valueOf )
+            .forEach( exitCodeModel::addRow );
+        codesChanged = false;
     }
 
+    private boolean codesChanged = false;
+
     private void createUIComponents() {
-        exitCodeModel = new ListTableModel<Integer>(  ) {
+        exitCodeModel = new ListTableModel<String>(  ) {
             @Override
             public void addRow() {
-                addRow(0);
+                addRow("0");
             }
+
         };
+        exitCodeModel.addTableModelListener( e -> codesChanged = true );
+
         exitCodes = new JBTable(exitCodeModel);
-        exitCodeModel.setColumnInfos(new ColumnInfo[]{new ColumnInfo<Integer, String>("Exit Code") {
+        exitCodeModel.setColumnInfos(new ColumnInfo[]{new ColumnInfo<String, String>("Exit Code") {
 
             @Override
-            public String valueOf( Integer integer ) {
+            public String valueOf( String integer ) {
                 return integer.toString();
             }
 
             @Override
-            public boolean isCellEditable( Integer info) {
+            public boolean isCellEditable( String info) {
                 return true;
             }
 
@@ -236,11 +257,6 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
         exitCodes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        ExtendableTextField cellEditor = new ExtendableTextField();
-        DefaultCellEditor editor = new StatefulValidatingCellEditor(cellEditor, ApplicationService.INSTANCE ).
-            withStateUpdater(vi -> ValidationUtils.setExtension(cellEditor, vi));
-        editor.setClickCountToStart(1);
-        exitCodes.setDefaultEditor(Object.class, editor);
 
         new CellTooltipManager(ApplicationService.INSTANCE).
             withCellComponentProvider( CellComponentProvider.forTable(exitCodes)).
