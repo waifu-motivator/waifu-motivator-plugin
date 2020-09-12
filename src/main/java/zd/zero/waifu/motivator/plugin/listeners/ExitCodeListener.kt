@@ -20,7 +20,7 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState.Companion.DEF
 const val OK_EXIT_CODE = 0
 const val FORCE_KILLED_EXIT_CODE = 130
 
-fun String.toExitCodes() : Set<Int> = this.split(DEFAULT_DELIMITER).map { it.trim().toInt() }.toSet()
+fun String.toExitCodes(): Set<Int> = this.split(DEFAULT_DELIMITER).map { it.trim().toInt() }.toSet()
 
 class ExitCodeListener(private val project: Project) : Runnable, Disposable {
     private val messageBus = ApplicationManager.getApplication().messageBus.connect()
@@ -28,7 +28,7 @@ class ExitCodeListener(private val project: Project) : Runnable, Disposable {
     private var allowedExitCodes = WaifuMotivatorPluginState.getPluginState()
         .allowedExitCodes.toExitCodes()
     init {
-        messageBus.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, object: PluginSettingsListener {
+        messageBus.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, object : PluginSettingsListener {
             override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
                 allowedExitCodes = newPluginState
                     .allowedExitCodes.toExitCodes()
