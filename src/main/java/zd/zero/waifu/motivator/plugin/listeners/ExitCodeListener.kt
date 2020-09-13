@@ -12,12 +12,31 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
+import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState.Companion.DEFAULT_DELIMITER
+
+const val OK_EXIT_CODE = 0
+const val FORCE_KILLED_EXIT_CODE = 130
+
+fun String.toExitCodes(): Set<Int> = this.split(DEFAULT_DELIMITER)
+    .filter { it.isNotEmpty() }
+    .map { it.trim().toInt() }.toSet()
 
 class ExitCodeListener(private val project: Project) : Runnable, Disposable {
     private val messageBus = ApplicationManager.getApplication().messageBus.connect()
 
+    private var allowedExitCodes = WaifuMotivatorPluginState.getPluginState()
+        .allowedExitCodes.toExitCodes()
     init {
+        messageBus.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, object : PluginSettingsListener {
+            override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
+                allowedExitCodes = newPluginState
+                    .allowedExitCodes.toExitCodes()
+            }
+        })
+
         messageBus.subscribe(ExecutionManager.EXECUTION_TOPIC, object : ExecutionListener {
             override fun processTerminated(
                 executorId: String,
@@ -25,7 +44,7 @@ class ExitCodeListener(private val project: Project) : Runnable, Disposable {
                 handler: ProcessHandler,
                 exitCode: Int
             ) {
-                if (exitCode != 0 && env.project == project) {
+                if (allowedExitCodes.contains(exitCode).not() && env.project == project) {
                     run()
                 }
             }

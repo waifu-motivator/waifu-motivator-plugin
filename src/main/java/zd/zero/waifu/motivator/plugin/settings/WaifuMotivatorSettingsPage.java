@@ -4,12 +4,32 @@ import com.intellij.ide.GeneralSettings;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
+import com.intellij.openapi.ui.cellvalidators.CellComponentProvider;
+import com.intellij.openapi.ui.cellvalidators.CellTooltipManager;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.table.JBTable;
+import com.intellij.util.ui.ColumnInfo;
+import com.intellij.util.ui.ListTableModel;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import zd.zero.waifu.motivator.plugin.MessageBundle;
 import zd.zero.waifu.motivator.plugin.WaifuMotivator;
+import zd.zero.waifu.motivator.plugin.service.ApplicationService;
 
-import javax.swing.*;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Configurable.NoScroll {
 
@@ -56,6 +76,14 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     private JCheckBox enableExitCodeNotifications;
 
     private JCheckBox enableExitCodeSound;
+
+    private JBTable exitCodeTable;
+
+    private JPanel exitCodePanel;
+
+    private JLabel allowedExitCodeLabel;
+
+    private ListTableModel<Integer> exitCodeListModel;
 
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
@@ -106,7 +134,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 ((Integer) eventsBeforeFrustrationSpinner.getValue()) != this.state.getEventsBeforeFrustration() ||
                 enableExitCodeNotifications.isSelected() != this.state.isExitCodeNotificationEnabled() ||
                 enableExitCodeSound.isSelected() != this.state.isExitCodeSoundEnabled() ||
-                enableSayonara.isSelected() != this.state.isSayonaraEnabled();
+                enableSayonara.isSelected() != this.state.isSayonaraEnabled() ||
+            exitCodesChanged;
     }
 
     private long getIdleTimeout() {
@@ -145,6 +174,14 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setProbabilityOfFrustration( frustrationProbabilitySlider.getValue() );
         this.state.setExitCodeNotificationEnabled( enableExitCodeNotifications.isSelected() );
         this.state.setExitCodeSoundEnabled( enableExitCodeSound.isSelected() );
+        this.state.setAllowedExitCodes(
+            IntStream.range( 0, exitCodeListModel.getRowCount() )
+            .map( exitCodeListModel::getRowValue )
+            .distinct()
+            .sorted()
+            .mapToObj( String::valueOf )
+            .collect( Collectors.joining(WaifuMotivatorState.DEFAULT_DELIMITER))
+        );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
@@ -174,6 +211,74 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.frustrationProbabilitySlider.setValue( this.state.getProbabilityOfFrustration() );
         this.enableExitCodeNotifications.setSelected( this.state.isExitCodeNotificationEnabled() );
         this.enableExitCodeSound.setSelected( this.state.isExitCodeSoundEnabled() );
+        initializeExitCodes();
     }
 
+    private void initializeExitCodes() {
+        int preExistingRows = exitCodeListModel.getRowCount();
+        if ( preExistingRows > 0 ) {
+            IntStream.range( 0, preExistingRows )
+                .forEach( idx -> exitCodeListModel.removeRow( 0 ) );
+        }
+        Arrays.stream( this.state.getAllowedExitCodes()
+            .split( WaifuMotivatorState.DEFAULT_DELIMITER ) )
+            .filter( code -> !StringUtil.isEmpty( code ) )
+            .map( Integer::parseInt )
+            .forEach( exitCodeListModel::addRow );
+        exitCodesChanged = false;
+    }
+
+    private boolean exitCodesChanged = false;
+
+    private void createUIComponents() {
+        exitCodeListModel = new ListTableModel<Integer>() {
+            @Override
+            public void addRow() {
+                addRow( 0 );
+            }
+        };
+        exitCodeListModel.addTableModelListener( e -> exitCodesChanged = true );
+        exitCodeTable = new JBTable( exitCodeListModel );
+        exitCodeListModel.setColumnInfos(new ColumnInfo[]{new ColumnInfo<Integer, String>("Exit Code") {
+
+            @Override
+            public String valueOf( Integer exitCode ) {
+                return exitCode.toString();
+            }
+
+            @Override
+            public void setValue( Integer s, String value ) {
+                int currentRowIndex = exitCodeTable.getSelectedRow();
+                if ( StringUtil.isEmpty( value ) && currentRowIndex >= 0 &&
+                    currentRowIndex < exitCodeListModel.getRowCount() ) {
+                    exitCodeListModel.removeRow( currentRowIndex );
+                } else {
+                    exitCodeListModel.insertRow( currentRowIndex, Integer.parseInt( value ) );
+                    exitCodeListModel.removeRow( currentRowIndex + 1 );
+                    exitCodeTable.transferFocus();
+                }
+            }
+
+            @Override
+            public boolean isCellEditable( Integer info) {
+                return true;
+            }
+        }});
+        exitCodeTable.getColumnModel().setColumnMargin(0);
+        exitCodeTable.setShowColumns(false);
+        exitCodeTable.setShowGrid(false);
+
+        exitCodeTable.getEmptyText().setText( MessageBundle.message( "settings.exit.code.no.codes" ) );
+
+        exitCodeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        new CellTooltipManager(ApplicationService.INSTANCE).
+            withCellComponentProvider( CellComponentProvider.forTable( exitCodeTable )).
+            installOn( exitCodeTable );
+
+
+        exitCodePanel = ToolbarDecorator.createDecorator( exitCodeTable )
+            .disableUpDownActions().createPanel();
+
+    }
 }
