@@ -1,4 +1,5 @@
 plugins {
+    id 'waifu-motivator-build-plugin'
     id 'java'
     id 'org.jetbrains.intellij' version '0.4.18'
     id 'io.franzbecker.gradle-lombok' version '3.3.0'
@@ -8,7 +9,7 @@ plugins {
 }
 
 group pluginGroup
-version pluginVersion
+version System.getenv().getOrDefault('VERSION', '').replace('refs/tags/v', '')
 
 sourceCompatibility = 1.8
 
@@ -34,6 +35,12 @@ configurations {
     implementation.exclude group: 'org.slf4j'
 }
 
+publishPlugin {
+    token System.getenv().getOrDefault('PUBLISH_TOKEN', '')
+    channels System.getenv().getOrDefault('PUBLISH_CHANNEL', '')
+}
+
+
 intellij {
     version ideaVersion
     type System.getenv().getOrDefault("INTELLIJ_TYPE", "IC")
@@ -58,7 +65,7 @@ compileTestKotlin {
 }
 
 markdownToHtml {
-    sourceDir file("$projectDir/docs")
+    sourceDir file("${project.buildDir}/markdown")
     outputDir file("${project.buildDir}/html")
 }
 
@@ -71,10 +78,12 @@ patchPluginXml {
         pluginDescription(file(description).text)
     }
 
-    def changelog = "${project.buildDir}/html/CHANGELOG.html"
+    def changelog = "${project.buildDir}/html/RELEASE-NOTES.html"
     if (file(changelog).exists()) {
         changeNotes(file(changelog).text)
     }
 }
 
+tasks.markdownToHtml.dependsOn("createReleaseNotes")
+tasks.markdownToHtml.dependsOn("copyPluginDescription")
 tasks.patchPluginXml.dependsOn("markdownToHtml")
