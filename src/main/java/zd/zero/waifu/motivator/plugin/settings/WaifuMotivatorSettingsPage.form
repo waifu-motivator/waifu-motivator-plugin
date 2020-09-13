@@ -2,27 +2,9 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage">
   <grid id="27dc6" binding="rootPanel" layout-manager="FormLayout">
     <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:3dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:3dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:3dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:3dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
     <colspec value="fill:d:grow"/>
     <constraints>
-      <xy x="20" y="20" width="630" height="514"/>
+      <xy x="20" y="20" width="630" height="639"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -37,147 +19,117 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="89147" layout-manager="GridLayoutManager" row-count="12" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="e454e" layout-manager="GridLayoutManager" row-count="10" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Main"/>
+              <tabbedpane title-resource-bundle="messages/MessageBundle" title-key="settings.tab.main"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
               <component id="46af5" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.general"/>
+                  <text resource-bundle="messages/MessageBundle" key="settings.main.general"/>
                 </properties>
               </component>
-              <hspacer id="9c007">
+              <vspacer id="d6fae">
                 <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
-              </hspacer>
+              </vspacer>
+              <component id="47546" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="messages/MessageBundle" key="settings.main.motivate.me"/>
+                </properties>
+              </component>
               <component id="196ab" class="javax.swing.JCheckBox" binding="enableWaifuOfTheDay">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text resource-bundle="messages/MessageBundle" key="settings.waifu.of.the.day.and.replace.tip.of.the.day"/>
                   <toolTipText resource-bundle="messages/MessageBundle" key="settings.waifu.of.the.day.and.replace.tip.of.the.day.tooltip"/>
                 </properties>
               </component>
-              <component id="d7633" class="javax.swing.JCheckBox" binding="disabledInDistractionFreeMode">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.disable.in.distraction.free.mode.or.presentation.mode"/>
-                  <toolTipText resource-bundle="messages/MessageBundle" key="settings.disable.in.distraction.free.mode.or.presentation.mode.tooltip"/>
-                </properties>
-              </component>
-              <component id="5a1e1" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.notifications"/>
-                </properties>
-              </component>
-              <component id="b0f98" class="javax.swing.JCheckBox" binding="enableStartupMotivation">
-                <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.startup.motivation"/>
-                  <toolTipText resource-bundle="messages/MessageBundle" key="settings.startup.motivation.tooltip"/>
-                </properties>
-              </component>
-              <component id="b8976" class="javax.swing.JCheckBox" binding="enableUnitTesterMotivation">
-                <constraints>
-                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.unit.tester.motivation"/>
-                  <toolTipText resource-bundle="messages/MessageBundle" key="settings.unit.tester.motivation.tooltip"/>
-                </properties>
-              </component>
-              <component id="a1b29" class="javax.swing.JCheckBox" binding="enableMotivateMe">
-                <constraints>
-                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.motivate.me"/>
-                  <toolTipText resource-bundle="messages/MessageBundle" key="settings.motivate.me.tooltip"/>
-                </properties>
-              </component>
-              <component id="66dd" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.sounds"/>
-                </properties>
-              </component>
-              <component id="68d69" class="javax.swing.JCheckBox" binding="enableStartupMotivationSound">
-                <constraints>
-                  <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.startup.motivation.sound"/>
-                  <toolTipText resource-bundle="messages/MessageBundle" key="settings.startup.motivation.sound.tooltip"/>
-                </properties>
-              </component>
-              <component id="6f2eb" class="javax.swing.JCheckBox" binding="enableUnitTesterMotivationSound">
-                <constraints>
-                  <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.unit.tester.motivation.sound"/>
-                  <toolTipText resource-bundle="messages/MessageBundle" key="settings.unit.tester.motivation.sound.tooltip"/>
-                </properties>
-              </component>
-              <component id="d2932" class="javax.swing.JCheckBox" binding="enableMotivateMeSound">
-                <constraints>
-                  <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.sound.on.motivate.me"/>
-                  <toolTipText resource-bundle="messages/MessageBundle" key="settings.sound.on.motivate.me.tooltip"/>
-                </properties>
-              </component>
               <component id="77db" class="javax.swing.JCheckBox" binding="enableSayonara">
                 <constraints>
-                  <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text resource-bundle="messages/MessageBundle" key="settings.sayonara.play.sound.on.project.exit"/>
                   <toolTipText resource-bundle="messages/MessageBundle" key="settings.sayonara.play.sound.on.project.exit.tooltip"/>
                 </properties>
               </component>
+              <component id="d7633" class="javax.swing.JCheckBox" binding="disabledInDistractionFreeMode">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="messages/MessageBundle" key="settings.disable.in.distraction.free.mode.or.presentation.mode"/>
+                  <toolTipText resource-bundle="messages/MessageBundle" key="settings.disable.in.distraction.free.mode.or.presentation.mode.tooltip"/>
+                </properties>
+              </component>
+              <component id="a1b29" class="javax.swing.JCheckBox" binding="enableMotivateMe">
+                <constraints>
+                  <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="messages/MessageBundle" key="settings.motivate.me"/>
+                  <toolTipText resource-bundle="messages/MessageBundle" key="settings.motivate.me.tooltip"/>
+                </properties>
+              </component>
+              <component id="d2932" class="javax.swing.JCheckBox" binding="enableMotivateMeSound">
+                <constraints>
+                  <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text resource-bundle="messages/MessageBundle" key="settings.sound.on.motivate.me"/>
+                  <toolTipText resource-bundle="messages/MessageBundle" key="settings.sound.on.motivate.me.tooltip"/>
+                </properties>
+              </component>
+              <vspacer id="7f6a8">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="1" use-parent-layout="false">
+                    <preferred-size width="-1" height="8"/>
+                  </grid>
+                </constraints>
+              </vspacer>
+              <vspacer id="8389a">
+                <constraints>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                    <preferred-size width="-1" height="2"/>
+                  </grid>
+                </constraints>
+              </vspacer>
             </children>
           </grid>
-          <grid id="5245b" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="5245b" layout-manager="GridLayoutManager" row-count="8" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title-resource-bundle="messages/MessageBundle" title-key="settings.personality.tab"/>
+              <tabbedpane title-resource-bundle="messages/MessageBundle" title-key="settings.tab.personality"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
               <hspacer id="fcea9">
                 <constraints>
-                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
               </hspacer>
               <vspacer id="10343">
                 <constraints>
-                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
               <component id="e067e" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text resource-bundle="messages/MessageBundle" key="settings.personality.frustration"/>
@@ -185,7 +137,7 @@
               </component>
               <component id="35fa8" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text resource-bundle="messages/MessageBundle" key="settings.personality.frustration.events"/>
@@ -193,13 +145,13 @@
               </component>
               <component id="cfd46" class="javax.swing.JSpinner" binding="eventsBeforeFrustrationSpinner">
                 <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="1" use-parent-layout="false"/>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="1" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
               </component>
               <component id="91c93" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text resource-bundle="messages/MessageBundle" key="settings.personality.frustration.probability"/>
@@ -207,7 +159,7 @@
               </component>
               <component id="2f003" class="javax.swing.JSlider" binding="frustrationProbabilitySlider">
                 <constraints>
-                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="1" use-parent-layout="false"/>
+                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="1" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <majorTickSpacing value="10"/>
@@ -221,149 +173,244 @@
               </component>
               <component id="62dd2" class="javax.swing.JCheckBox" binding="allowFrustrationCheckBox" default-binding="true">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text resource-bundle="messages/MessageBundle" key="settings.personality.frustration.enable"/>
                 </properties>
               </component>
-            </children>
-          </grid>
-          <grid id="b2949" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <tabbedpane title="Task Events"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="c8c7a" class="javax.swing.JCheckBox" binding="enableTaskEventNotificationsCheckBox" default-binding="true">
+              <vspacer id="2313c">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.task.events.notification"/>
-                </properties>
-              </component>
-              <hspacer id="17b40">
-                <constraints>
-                  <grid row="0" column="1" row-span="2" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-              </hspacer>
-              <component id="dd1d3" class="javax.swing.JCheckBox" binding="enableTaskEventSoundsCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.task.events.sounds"/>
-                </properties>
-              </component>
-              <vspacer id="15c25">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                    <preferred-size width="-1" height="8"/>
+                  </grid>
                 </constraints>
               </vspacer>
             </children>
           </grid>
-          <grid id="87a7f" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
+          <scrollpane id="d97e">
             <constraints>
-              <tabbedpane title="Idle Events"/>
+              <tabbedpane title-resource-bundle="messages/MessageBundle" title-key="settings.tab.events"/>
             </constraints>
-            <properties/>
-            <border type="none"/>
+            <properties>
+              <foreground color="-1771777"/>
+              <horizontalScrollBarPolicy value="31"/>
+              <verticalScrollBarPolicy value="20"/>
+            </properties>
+            <border type="empty"/>
             <children>
-              <hspacer id="55383">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-              </hspacer>
-              <vspacer id="dd1fd">
-                <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                </constraints>
-              </vspacer>
-              <component id="977c8" class="javax.swing.JCheckBox" binding="enableIdleSoundCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Enable Sound"/>
-                </properties>
-              </component>
-              <component id="28213" class="javax.swing.JSpinner" binding="idleTimeoutSpinner">
-                <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="682d2" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Idle Timeout (minutes)"/>
-                </properties>
-              </component>
-              <component id="4636e" class="javax.swing.JCheckBox" binding="enableIdleNotificationCheckBox" default-binding="true">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <selected value="false"/>
-                  <text value="Enable Notification"/>
-                </properties>
-              </component>
-            </children>
-          </grid>
-          <grid id="d1ca5" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <tabbedpane title="Exit Code Events"/>
-            </constraints>
-            <properties/>
-            <border type="none"/>
-            <children>
-              <component id="fd587" class="javax.swing.JCheckBox" binding="enableExitCodeNotifications">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.exit.code.events.notification"/>
-                </properties>
-              </component>
-              <hspacer id="1906b">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                </constraints>
-              </hspacer>
-              <component id="34493" class="javax.swing.JCheckBox" binding="enableExitCodeSound">
-                <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.exit.code.events.sound"/>
-                </properties>
-              </component>
-              <component id="f2714" class="javax.swing.JLabel" binding="allowedExitCodeLabel">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text resource-bundle="messages/MessageBundle" key="settings.exit.code.allowed"/>
-                </properties>
-              </component>
-              <grid id="c6fde" binding="exitCodePanel" custom-create="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="cb672" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
-                <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                </constraints>
+                <constraints/>
                 <properties/>
                 <border type="none"/>
-                <children/>
+                <children>
+                  <grid id="7bb2" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="8" right="0"/>
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="8be8f" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.events.startup"/>
+                        </properties>
+                      </component>
+                      <component id="b0f98" class="javax.swing.JCheckBox" binding="enableStartupMotivation">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.startup.notification"/>
+                          <toolTipText resource-bundle="messages/MessageBundle" key="settings.startup.notification.tooltip"/>
+                        </properties>
+                      </component>
+                      <component id="68d69" class="javax.swing.JCheckBox" binding="enableStartupMotivationSound">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.startup.sound"/>
+                          <toolTipText resource-bundle="messages/MessageBundle" key="settings.startup.sound.tooltip"/>
+                        </properties>
+                      </component>
+                      <vspacer id="4693a">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="2" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                            <preferred-size width="-1" height="8"/>
+                          </grid>
+                        </constraints>
+                      </vspacer>
+                    </children>
+                  </grid>
+                  <grid id="b2949" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="8" right="0"/>
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="c8c7a" class="javax.swing.JCheckBox" binding="enableTaskEventNotificationsCheckBox" default-binding="true">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.task.events.notification"/>
+                        </properties>
+                      </component>
+                      <component id="dd1d3" class="javax.swing.JCheckBox" binding="enableTaskEventSoundsCheckBox" default-binding="true">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.task.events.sound"/>
+                        </properties>
+                      </component>
+                      <component id="3024" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.events.task"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="d1ca5" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="etched" title-resource-bundle="messages/MessageBundle" title-key="settings.events.exit.code"/>
+                    <children>
+                      <component id="fd587" class="javax.swing.JCheckBox" binding="enableExitCodeNotifications">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.exit.code.notification"/>
+                        </properties>
+                      </component>
+                      <component id="34493" class="javax.swing.JCheckBox" binding="enableExitCodeSound">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.exit.code.sound"/>
+                        </properties>
+                      </component>
+                      <component id="f2714" class="javax.swing.JLabel" binding="allowedExitCodeLabel">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.exit.code.allowed"/>
+                        </properties>
+                      </component>
+                      <grid id="c6fde" binding="exitCodePanel" custom-create="true" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
+                    </children>
+                  </grid>
+                  <grid id="87a7f" layout-manager="GridLayoutManager" row-count="4" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="etched" title-resource-bundle="messages/MessageBundle" title-key="settings.events.idle"/>
+                    <children>
+                      <hspacer id="55383">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </hspacer>
+                      <component id="977c8" class="javax.swing.JCheckBox" binding="enableIdleSoundCheckBox" default-binding="true">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.idle.sound"/>
+                        </properties>
+                      </component>
+                      <component id="28213" class="javax.swing.JSpinner" binding="idleTimeoutSpinner">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="682d2" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.idle.timeout"/>
+                        </properties>
+                      </component>
+                      <component id="4636e" class="javax.swing.JCheckBox" binding="enableIdleNotificationCheckBox" default-binding="true">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <selected value="false"/>
+                          <text resource-bundle="messages/MessageBundle" key="settings.idle.notification"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <grid id="827f0" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="8" right="0"/>
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="81f8e" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.events.unit.testing"/>
+                        </properties>
+                      </component>
+                      <component id="b8976" class="javax.swing.JCheckBox" binding="enableUnitTesterMotivation">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.unit.testing.notification"/>
+                          <toolTipText resource-bundle="messages/MessageBundle" key="settings.unit.testing.notification.tooltip"/>
+                        </properties>
+                      </component>
+                      <component id="6f2eb" class="javax.swing.JCheckBox" binding="enableUnitTesterMotivationSound">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="1" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text resource-bundle="messages/MessageBundle" key="settings.unit.testing.sound"/>
+                          <toolTipText resource-bundle="messages/MessageBundle" key="settings.unit.testing.sound.tooltip"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
               </grid>
             </children>
-          </grid>
+          </scrollpane>
         </children>
       </tabbedpane>
     </children>
