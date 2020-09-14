@@ -8,37 +8,12 @@ import com.intellij.openapi.project.ProjectManagerListener
 import zd.zero.waifu.motivator.plugin.WaifuMotivator
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
 
-class MotivatorProject(private val project: Project) : ProjectManagerListener {
-
-    init {
-        UpdateNotification.sendMessage(
-            "Motivator Project",
-            "Instantiated",
-            project
-        )
-
-    }
-
-    override fun projectOpened(project: Project) {
-        UpdateNotification.sendMessage(
-            "Motivator Project",
-            "Project Opened",
-            this.project
-        )
-
-    }
-
-    override fun projectClosed(project: Project) {
-        UpdateNotification.sendMessage(
-            "Motivator Project",
-            "Project Closed",
-            this.project
-        )
-    }
-}
-
 
 class PluginInstallListener : DynamicPluginListener {
+
+    companion object {
+        var isRunningUpdate = false
+    }
 
     override fun beforePluginLoaded(pluginDescriptor: IdeaPluginDescriptor) {
     }
@@ -51,15 +26,11 @@ class PluginInstallListener : DynamicPluginListener {
 
     override fun pluginLoaded(pluginDescriptor: IdeaPluginDescriptor) {
         if (pluginDescriptor.pluginId.idString == WaifuMotivator.PLUGIN_ID) {
+            isRunningUpdate = true
             ProjectManager.getInstance().openProjects.forEach {
                 ProjectManager.getInstance().reloadProject(it)
-//                UpdateNotification.sendMessage(
-//                    "Ravioli Ravioli",
-//                    "Give me the formuoli",
-//                    it
-//                )
-
             }
+            isRunningUpdate = false
         }
     }
 
