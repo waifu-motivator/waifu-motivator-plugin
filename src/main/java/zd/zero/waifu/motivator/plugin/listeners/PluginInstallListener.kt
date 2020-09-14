@@ -18,13 +18,18 @@ class PluginInstallListener : DynamicPluginListener {
     override fun pluginLoaded(pluginDescriptor: IdeaPluginDescriptor) {
         if (pluginDescriptor.pluginId.idString == WaifuMotivator.PLUGIN_ID) {
             UpdateNotification.sendMessage(
-                "Ravioli Ravioli",
-                "Give me the formuoli"
+                "I threw it on the ground",
+                "What you think I'm stupid?"
             )
         }
     }
 
     override fun pluginUnloaded(pluginDescriptor: IdeaPluginDescriptor, isUpdate: Boolean) {
-
+        if (pluginDescriptor.pluginId.idString == WaifuMotivator.PLUGIN_ID) {
+            UpdateNotification.sendMessage(
+                "Ravioli Ravioli",
+                "Give me the formuoli"
+            )
+        }
     }
 }
