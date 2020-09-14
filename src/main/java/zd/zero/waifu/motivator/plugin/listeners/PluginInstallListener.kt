@@ -52,11 +52,12 @@ class PluginInstallListener : DynamicPluginListener {
     override fun pluginLoaded(pluginDescriptor: IdeaPluginDescriptor) {
         if (pluginDescriptor.pluginId.idString == WaifuMotivator.PLUGIN_ID) {
             ProjectManager.getInstance().openProjects.forEach {
-                UpdateNotification.sendMessage(
-                    "Ravioli Ravioli",
-                    "Give me the formuoli",
-                    it
-                )
+                ProjectManager.getInstance().reloadProject(it)
+//                UpdateNotification.sendMessage(
+//                    "Ravioli Ravioli",
+//                    "Give me the formuoli",
+//                    it
+//                )
 
             }
         }
