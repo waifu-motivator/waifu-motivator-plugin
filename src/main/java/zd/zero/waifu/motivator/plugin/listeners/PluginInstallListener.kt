@@ -2,20 +2,43 @@ package zd.zero.waifu.motivator.plugin.listeners
 
 import com.intellij.ide.plugins.DynamicPluginListener
 import com.intellij.ide.plugins.IdeaPluginDescriptor
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
+import com.intellij.openapi.project.ProjectManagerListener
 import zd.zero.waifu.motivator.plugin.WaifuMotivator
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
 
-class PluginInstallListener : DynamicPluginListener {
+class MotivatorProject(private val project: Project) : ProjectManagerListener {
 
     init {
-        ProjectManager.getInstance().openProjects.forEach {
-            UpdateNotification.sendMessage(
-                "threw it on the ground",
-                "What you think I'm stupid?"
-            )
-        }
+        UpdateNotification.sendMessage(
+            "Motivator Project",
+            "Instantiated",
+            project
+        )
+
     }
+
+    override fun projectOpened(project: Project) {
+        UpdateNotification.sendMessage(
+            "Motivator Project",
+            "Project Opened",
+            this.project
+        )
+
+    }
+
+    override fun projectClosed(project: Project) {
+        UpdateNotification.sendMessage(
+            "Motivator Project",
+            "Project Closed",
+            this.project
+        )
+    }
+}
+
+
+class PluginInstallListener : DynamicPluginListener {
 
     override fun beforePluginLoaded(pluginDescriptor: IdeaPluginDescriptor) {
     }
@@ -39,8 +62,5 @@ class PluginInstallListener : DynamicPluginListener {
         }
     }
 
-    override fun pluginUnloaded(pluginDescriptor: IdeaPluginDescriptor, isUpdate: Boolean) {
-        if (pluginDescriptor.pluginId.idString == WaifuMotivator.PLUGIN_ID) {
-        }
-    }
+    override fun pluginUnloaded(pluginDescriptor: IdeaPluginDescriptor, isUpdate: Boolean) {}
 }

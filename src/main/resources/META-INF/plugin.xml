@@ -66,6 +66,8 @@
   <projectListeners>
     <listener class="zd.zero.waifu.motivator.plugin.WaifuMotivatorProject"
               topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    <listener class="zd.zero.waifu.motivator.plugin.listeners.MotivatorProject"
+              topic="com.intellij.openapi.project.ProjectManagerListener"/>
     <listener class="zd.zero.waifu.motivator.plugin.listeners.TaskListener"
               topic="com.intellij.task.ProjectTaskListener"/>
   </projectListeners>
