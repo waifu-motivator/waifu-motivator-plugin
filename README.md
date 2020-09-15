@@ -19,7 +19,7 @@
 
 > *Waifu* is a term for a fictional character, usually in anime or related media, that someone has great, and sometimes romantic, affection for. [source](https://www.dictionary.com/e/fictional-characters/waifu/)
 
-## Usage
+## Installation
 To install the plugin, go to `Settings | Plugins | Marketplace Tab | Search for 'Waifu Motivator'`. Or you can install it from [here](https://plugins.jetbrains.com/plugin/13381-waifu-motivator).
 
 ![Waifu Motivation On-demand](screenshots/plugin_installation.png)
@@ -36,7 +36,7 @@ This feature replaces the out of the box Tip of the Day of IntelliJ with a top-t
 
 ## Motivation Events
 
-Your virtual companion has the ability to react to various events trigger by your IDE.
+Your new virtual companion has the ability to react to various events trigger by your IDE.
 As you build your code, they will present various visual notifications of their reactions.
 
 ### Starting Up
@@ -47,16 +47,57 @@ Your *Waifu* loves to welcome you, make sure to keep coming back!
 
 Your *Waifu* will motivate you whenever your tests pass or fail.
 
-**Test Pass**
+**Passing tests**
 ![Test Pass](screenshots/waifu_unit_test_pass.gif)
 
 *When a test passes your companion will rejoice with you together with their voice/sound.*
 
-**Test Fails**
+**Failing Tests**
 ![Test Fails](screenshots/waifu_unit_test_fail.gif)
 
 *When a test fails they will cheer you up, so you can overcome your challenges/frustrations.*
 _Also you don't want to disappoint you waifu, now do you?_
+
+### Idling
+
+Your *Waifu* likes spending time with you, and they will miss you when you are gone.
+When you go away, after some time your *Waifu* will show that they are waiting patiently for your return,
+or they got tired from waiting!
+
+![Waiting Waifu](screenshots/waifu_waiting.gif)
+
+### Exit Codes
+
+Not every program that you start runs correctly or completes successfully.
+You *Waifu* knows that for a fact, so they can act just as surprised as you are when your applications fail to run!
+
+![Surprised on Run Failure](screenshots/waifu_app_run_surprise.gif)
+
+### Tasks
+
+Writing code is hard sometimes, your *Waifu* understands.
+So when you trigger various tasks that fail, they will cheer you up when things don't go your way.
+Such as when you build/compile your application, and it fails because you **are missing a darned ;** your *Waifu* has got you covered!
+
+![Build Failure](screenshots/waifu_build_failure_reaction.gif)
+
+## Personality
+
+Your *Waifu* is a fairly moody state machine and has many reactions to various events such as:
+- She waits for you to come back when you are away for some time
+- She is happy when your test pass.
+- She gets sad when your builds break and tests fail.
+- She gets over come with joy when you fix your tests and make your code compile.
+
+She also has the ability to feel your frustration when **things aren't working, WHY ARE THEY NOT WORKING!!**.
+Your *Waifu* figures its good to inject a little humor into the mix and show you that she is frustrated as well.
+They also have the capability from evolving from being frustrated to full-blown rage.
+This only happens when you have been triggering events in the frustration state for a given period.
+
+![Frustrated Waifu](screenshots/waifu_frustated.gif)
+
+Not every person wants their *Waifu* to get frustrated.
+Thankfully, you have the ability to disable this part of her personality, by preventing her from ever being frustrated in the first place! 😄
 
 ## Motivation On-demand
 Whenever you feel demotivated on your task, you can request a motivation.
