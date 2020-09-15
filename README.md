@@ -51,13 +51,12 @@ Your *Waifu* will motivate you whenever your tests pass or fail.
 **Passing tests**
 ![Test Pass](screenshots/waifu_unit_test_pass.gif)
 
-*When a test passes your companion will rejoice with you together with their voice/sound.*
+*When a test passes your companion will rejoice with you.*
 
 **Failing Tests**
 ![Test Fails](screenshots/waifu_unit_test_fail.gif)
 
-*When a test fails they will cheer you up, so you can overcome your challenges/frustrations.*
-_Also you don't want to disappoint you waifu, now do you?_
+*When a test fails they will do their best to cheer you up. So you can overcome your challenges/frustrations.*
 
 ### Idling
 
