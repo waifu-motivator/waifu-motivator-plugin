@@ -59,6 +59,10 @@
     </group>
   </actions>
 
+  <applicationListeners>
+    <listener class="zd.zero.waifu.motivator.plugin.listeners.PluginInstallListener"
+              topic="com.intellij.ide.plugins.DynamicPluginListener"/>
+  </applicationListeners>
   <projectListeners>
     <listener class="zd.zero.waifu.motivator.plugin.WaifuMotivatorProject"
               topic="com.intellij.openapi.project.ProjectManagerListener"/>

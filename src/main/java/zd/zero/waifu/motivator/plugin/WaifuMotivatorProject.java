@@ -20,6 +20,7 @@ import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
 import zd.zero.waifu.motivator.plugin.listeners.ExitCodeListener;
 import zd.zero.waifu.motivator.plugin.listeners.IdleEventListener;
+import zd.zero.waifu.motivator.plugin.listeners.PluginInstallListener;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
 import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
 import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
@@ -96,7 +97,8 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
         }
 
         if ( !getPluginState().isSayonaraEnabled() ||
-            areMultipleProjectsOpened() ) return;
+            areMultipleProjectsOpened() ||
+            PluginInstallListener.Companion.isRunningUpdate() ) return;
 
         AudibleAssetDefinitionService.INSTANCE.getRandomAssetByCategory(
             WaifuAssetCategory.DEPARTURE
