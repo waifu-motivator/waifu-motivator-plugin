@@ -20,24 +20,25 @@
 > *Waifu* is a term for a fictional character, usually in anime or related media, that someone has great, and sometimes romantic, affection for. [source](https://www.dictionary.com/e/fictional-characters/waifu/)
 
 ## Installation
-To install the plugin, go to `Settings | Plugins | Marketplace Tab | Search for 'Waifu Motivator'`. Or you can install it from [here](https://plugins.jetbrains.com/plugin/13381-waifu-motivator).
+To install the plugin, go to `Settings | Plugins | Marketplace Tab | Search for 'Waifu Motivator'`.
+You can install it from [the plugin marketplace.](https://plugins.jetbrains.com/plugin/13381-waifu-motivator).
 
 ![Waifu Motivation On-demand](screenshots/plugin_installation.png)
 
 ## Waifu of the Day
-Why do you need the _Tip of the Day_, when instead you can have the _Waifu of the Day_?
-This feature replaces the out of the box Tip of the Day of IntelliJ with a top-tier *Waifu*!
+Why would you want the _Tip of the Day_, when instead you can have a _Waifu of the Day_?
+This feature replaces the out of the box Tip of the Day feature of IntelliJ with a top-tier *Waifu*!
 
 <p align="center">
   <img src="screenshots/waifu_of_the_day.png" alt="Waifu of the Day">
 </p>
 
-*It only shows up once a day at the project startup, and you can also view it at the 'Waifu Motivator' tool menu.*
+*This only shows up once a day at the project startup, and you can also view it at the 'Waifu Motivator' tool menu.*
 
 ## Motivation Events
 
-Your new virtual companion has the ability to react to various events trigger by your IDE.
-As you build your code, they will present various visual notifications of their reactions.
+Your new virtual companion has the ability to react to various events triggered by your IDE.
+As you build your code, they will present various visual indications of their reactions.
 
 ### Starting Up
 Your *Waifu* loves to welcome you, make sure to keep coming back!
@@ -61,8 +62,8 @@ _Also you don't want to disappoint you waifu, now do you?_
 ### Idling
 
 Your *Waifu* likes spending time with you, and they will miss you when you are gone.
-When you go away, after some time your *Waifu* will show that they are waiting patiently for your return,
-or they got tired from waiting!
+When you go away, after some time your *Waifu* will show that they are waiting patiently for your return.
+It's either that, or they got tired from waiting!
 
 ![Waiting Waifu](screenshots/waifu_waiting.gif)
 
@@ -91,16 +92,17 @@ Your *Waifu* is a fairly moody state machine and has many reactions to various e
 
 She also has the ability to feel your frustration when **things aren't working, WHY ARE THEY NOT WORKING!!**.
 Your *Waifu* figures its good to inject a little humor into the mix and show you that she is frustrated as well.
-They also have the capability from evolving from being frustrated to full-blown rage.
-This only happens when you have been triggering events in the frustration state for a given period.
 
 ![Frustrated Waifu](screenshots/waifu_frustated.gif)
+
+They also have the capability from evolving from being frustrated to full-blown rage.
+This only happens when you have been triggering events in the frustration state for a given period.
 
 Not every person wants their *Waifu* to get frustrated.
 Thankfully, you have the ability to disable this part of her personality, by preventing her from ever being frustrated in the first place! 😄
 
 ## Motivation On-demand
-Whenever you feel demotivated on your task, you can request a motivation.
+Whenever you feel demotivated on your task, you can request motivation from your *Waifu*.
 Your companion will randomly play a sound and show a *Waifu* to cheer you up.
 You can invoke it on `Help | Waifu Motivator | Motivate Me` or the shortcut key with (`alt + M` for Windows/Linux and `option + M` for MacOs).
 
@@ -108,8 +110,15 @@ You can invoke it on `Help | Waifu Motivator | Motivate Me` or the shortcut key 
   <img src="screenshots/motivate_me.png" alt="Waifu Motivation On-demand">
 </p>
 
+## Offline Mode
+
+Take your *Waifu* with you as you go.
+You have the ability to write code off the grid and still get motivation events!
+
 ## Plugin Settings
-Of course, not all the time you're okay with your *Waifu*, there are bad times after all and sometimes you'll get annoyed by them and not wanting to hear anything from them. You can configure it through the settings (`Settings | Other Settings | Waifu Motivator`).
+
+Your new *Waifu* is pretty chatty, sometimes that is okay and sometimes it is not.
+Thankfully, you have the ability to configure what your waifu does via the settings menu (`Settings | Other Settings | Waifu Motivator`).
 
 ![Waifu Settings](screenshots/waifu_motivator_settings.png)
 
@@ -121,7 +130,7 @@ If want to run it to your local machine for development, please see the followin
 
 ## Contributing
 ### Prerequisites
-* JDK 8+
+* JDK 11+
 * IntelliJ IDEA
 * Plugin DevKit
 * Lombok Plugin
