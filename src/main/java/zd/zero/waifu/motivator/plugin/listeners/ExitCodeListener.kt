@@ -6,6 +6,7 @@ import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.runners.ExecutionEnvironment
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
@@ -25,6 +26,7 @@ fun String.toExitCodes(): Set<Int> = this.split(DEFAULT_DELIMITER)
     .map { it.trim().toInt() }.toSet()
 
 class ExitCodeListener(private val project: Project) : Runnable, Disposable {
+    private val log = Logger.getInstance(javaClass)
     private val messageBus = ApplicationManager.getApplication().messageBus.connect()
 
     private var allowedExitCodes = WaifuMotivatorPluginState.getPluginState()
@@ -44,6 +46,7 @@ class ExitCodeListener(private val project: Project) : Runnable, Disposable {
                 handler: ProcessHandler,
                 exitCode: Int
             ) {
+                log.debug("Observed exit code of $exitCode")
                 if (allowedExitCodes.contains(exitCode).not() && env.project == project) {
                     run()
                 }
