@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/BUILT%20WITH-COFFEE-blue?style=for-the-badge">
 </p>
 
-<p align="center">An open-sourced Jetbrains IDE plugin that brings in your <i>Waifu</i> to help motivate you to complete your coding challenges.</p>
+<p align="center">An open-sourced Jetbrains IDE plugin that brings your <i>Waifu</i> in to help keep your motivation to complete during your coding challenges.</p>
 
 **What is a Waifu?** 🤷
 
@@ -21,13 +21,13 @@
 
 ## Installation
 To install the plugin, go to `Settings | Plugins | Marketplace Tab | Search for 'Waifu Motivator'`.
-You can install it from [the plugin marketplace.](https://plugins.jetbrains.com/plugin/13381-waifu-motivator).
+You can install it from [the plugin marketplace.](https://plugins.jetbrains.com/plugin/13381-waifu-motivator)
 
 ![Waifu Motivation On-demand](screenshots/plugin_installation.png)
 
 ## Waifu of the Day
 Why would you want the _Tip of the Day_, when instead you can have a _Waifu of the Day_?
-This feature replaces the out of the box Tip of the Day feature of IntelliJ with a top-tier *Waifu*!
+This feature replaces the out-of-the-box Tip of the Day feature of IntelliJ with a top-tier *Waifu*!
 
 <p align="center">
   <img src="screenshots/waifu_of_the_day.png" alt="Waifu of the Day">
@@ -60,7 +60,7 @@ Your *Waifu* will motivate you whenever your tests pass or fail.
 
 ### Idling
 
-Your *Waifu* likes spending time with you, and they will miss you when you are gone.
+Your *Waifu* enjoys spending time with you, and they will miss you when you are gone.
 When you go away, after some time your *Waifu* will show that they are waiting patiently for your return.
 It's either that, or they got tired from waiting!
 
@@ -68,16 +68,18 @@ It's either that, or they got tired from waiting!
 
 ### Exit Codes
 
-Not every program that you start runs correctly or completes successfully.
-You *Waifu* knows that for a fact, so they can act just as surprised as you are when your applications fail to run!
+Not every program, that you start, runs correctly or completes successfully.
+You *Waifu* knows that for a fact.
+They will act just as surprised as you are when your applications fail to run!
 
 ![Surprised on Run Failure](screenshots/waifu_app_run_surprise.gif)
 
 ### Tasks
 
-Writing code is hard sometimes, your *Waifu* understands.
-So when you trigger various tasks that fail, they will cheer you up when things don't go your way.
-Such as when you build/compile your application, and it fails because you **are missing a darned ;** your *Waifu* has got you covered!
+Writing code is hard sometimes, and your *Waifu* understands.
+When you trigger various tasks that fail, they will cheer you up when things don't go your way.
+Such as when you build/compile your application, and it fails because you **are missing a darned ;** .
+Your *Waifu* in is the job and has got you covered!
 
 ![Build Failure](screenshots/waifu_build_failure_reaction.gif)
 
@@ -109,14 +111,15 @@ You can invoke it on `Help | Waifu Motivator | Motivate Me` or the shortcut key 
   <img src="screenshots/motivate_me.png" alt="Waifu Motivation On-demand">
 </p>
 
-## Offline Mode
+## Offline Capabilities
 
 Take your *Waifu* with you as you go.
 You have the ability to write code off the grid and still get motivation events!
 
 ## Plugin Settings
 
-Your new *Waifu* is pretty chatty, sometimes that is okay and sometimes it is not.
+Your new *Waifu* is pretty chatty.
+Sometimes that is okay and sometimes it is not.
 Thankfully, you have the ability to configure what your waifu does via the settings menu (`Settings | Other Settings | Waifu Motivator`).
 
 ![Waifu Settings](screenshots/waifu_motivator_settings.png)
@@ -125,7 +128,7 @@ Thankfully, you have the ability to configure what your waifu does via the setti
 
 ## Getting Started
 
-If want to run it to your local machine for development, please see the following sections.
+If want to run it on your local machine for development, please see the following sections.
 
 ## Contributing
 ### Prerequisites
