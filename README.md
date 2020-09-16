@@ -23,7 +23,7 @@
 To install the plugin, go to `Settings | Plugins | Marketplace Tab | Search for 'Waifu Motivator'`.
 You can install it from [the plugin marketplace.](https://plugins.jetbrains.com/plugin/13381-waifu-motivator)
 
-![Waifu Motivation On-demand](screenshots/plugin_installation.png)
+![Waifu plugin installation](screenshots/plugin_installation.png)
 
 ## Waifu of the Day
 Why would you want the _Tip of the Day_, when instead you can have a _Waifu of the Day_?
@@ -74,6 +74,8 @@ They will act just as surprised as you are when your applications fail to run!
 
 ![Surprised on Run Failure](screenshots/waifu_app_run_surprise.gif)
 
+*You can update the allowed exit codes from the plugin settings. (`Settings | Waifu Motivator | Events tab | Exit Code Event section`)*
+
 ### Tasks
 
 Writing code is hard sometimes, and your *Waifu* understands.
@@ -107,8 +109,19 @@ Whenever you feel demotivated on your task, you can request motivation from your
 Your companion will randomly play a sound and show a *Waifu* to cheer you up.
 You can invoke it on `Help | Waifu Motivator | Motivate Me` or the shortcut key with (`alt + M` for Windows/Linux and `option + M` for MacOs).
 
+![Motivate Me Demo](screenshots/motivate_me_demo.gif)
+
+## Waifu Toolbar and Actions
+When you feel like commanding your waifu, there are multiple actions she can do for you! You can access it from the toolbar.
+
 <p align="center">
-  <img src="screenshots/motivate_me.png" alt="Waifu Motivation On-demand">
+  <img src="screenshots/waifu_toolbar.png" alt="Waifu Toolbar and Actions">
+</p>
+
+Of course, you can also invoke it with `Find Action...` (`ctrl + shift + A` for Windows/Linux and `cmd + shift + A` for MacOs)
+
+<p align="center">
+  <img src="screenshots/waifu_find_actions.png" alt="Waifu Invoke Find Actions...">
 </p>
 
 ## Offline Capabilities
