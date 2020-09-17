@@ -272,11 +272,6 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
         exitCodeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        new CellTooltipManager(ApplicationService.INSTANCE).
-            withCellComponentProvider( CellComponentProvider.forTable( exitCodeTable )).
-            installOn( exitCodeTable );
-
-
         exitCodePanel = ToolbarDecorator.createDecorator( exitCodeTable )
             .disableUpDownActions().createPanel();
 
