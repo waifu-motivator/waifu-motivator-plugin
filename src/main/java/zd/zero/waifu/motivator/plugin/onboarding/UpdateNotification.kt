@@ -14,10 +14,11 @@ import zd.zero.waifu.motivator.plugin.service.ApplicationService
 val UPDATE_MESSAGE: String = """
       What's New?<br>
       <ul>
-        <li>Visual Test Pass Notifications!</li>
-        <li>More settings customization.</li>
-        <li>Do Not Disturb mode.</li>
-        <li>Toolbar menu revamp.</li>
+        <li>Added reactions to: exit code, build, and idle events.</li>
+        <li>Added configurable personality to your virtual companion.</li>
+        <li>Enabled offline mode.</li>
+        <li>Re-organized settings menu</li>
+        <li>Fixed various bugs.</li>
       </ul>
       <br>Please see the <a href="https://github.com/zd-zero/waifu-motivator-plugin/blob/master/docs/CHANGELOG.md">changelog</a> for more details.
       <br><br>
