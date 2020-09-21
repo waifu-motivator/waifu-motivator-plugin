@@ -15,6 +15,8 @@ jobs:
         java-version: 11
     - name: Build with Gradle
       run: ./gradlew build
+      env:
+        VERSION: 69
 
     - name: Verify Plugin on IntelliJ Platforms
       id: verify
