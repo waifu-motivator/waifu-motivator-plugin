@@ -9,12 +9,13 @@ import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.wm.ex.WindowManagerEx;
+import com.intellij.ui.ColorUtil;
 import com.intellij.ui.JBColor;
 import com.intellij.util.ResourceUtil;
 import com.intellij.util.text.DateFormatUtil;
 import com.intellij.util.ui.JBDimension;
 import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.StartupUiUtil;
+import com.intellij.util.ui.UIUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -234,8 +235,9 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
 
 
     private String getCssContent() throws IOException {
-        String style = StartupUiUtil.isUnderDarcula() ? "darcula_style.css" : "style.css";
-        return getContent( style );
+        return getContent( "style.css" )
+            .replace( "{{foregroundColor}}", ColorUtil.toHex( UIUtil.getLabelForeground() ) )
+            .replace( "{{linkColor}}", ColorUtil.toHex( JBUI.CurrentTheme.Link.linkColor() ) );
     }
 
     @Nullable
