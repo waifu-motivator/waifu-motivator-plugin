@@ -16,8 +16,6 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 import java.util.Objects;
 
-import static zd.zero.waifu.motivator.plugin.tools.ToolBox.doOrElse;
-
 public class MotivateMeAction extends AnAction implements DumbAware {
 
     @Override
@@ -30,12 +28,11 @@ public class MotivateMeAction extends AnAction implements DumbAware {
             pluginState.isMotivateMeSoundEnabled() );
 
         ApplicationManager.getApplication().executeOnPooledThread( () ->
-            doOrElse(
-                VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
-                    WaifuAssetCategory.CELEBRATION,
-                    WaifuAssetCategory.HAPPY,
-                    WaifuAssetCategory.SMUG
-                ),
+            VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
+                WaifuAssetCategory.CELEBRATION,
+                WaifuAssetCategory.HAPPY,
+                WaifuAssetCategory.SMUG
+            ).ifPresentOrElse(
                 motivationAsset ->
                     VisualMotivationFactory.INSTANCE.constructNonTitledMotivation(
                         Objects.requireNonNull( e.getProject() ),
@@ -47,7 +44,9 @@ public class MotivateMeAction extends AnAction implements DumbAware {
                         "'Motivate Me' Unavailable Offline",
                         ProjectConstants.getWAIFU_UNAVAILABLE_MESSAGE(),
                         e.getProject()
-                    ) ) );
+                    )
+            )
+        );
     }
 
     @Override

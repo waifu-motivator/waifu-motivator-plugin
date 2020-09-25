@@ -35,7 +35,6 @@ import java.util.stream.Stream;
 
 import static java.util.Optional.ofNullable;
 import static zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState.getPluginState;
-import static zd.zero.waifu.motivator.plugin.tools.ToolBox.doOrElse;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
@@ -92,7 +91,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void projectClosing( @NotNull Project project ) {
-        if(project == this.project) {
+        if ( project == this.project ) {
             dispose();
         }
 
@@ -136,28 +135,26 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             pluginState.isStartupMotivationSoundEnabled()
         );
 
-        doOrElse(
-            VisualMotivationAssetProvider.INSTANCE.createAssetByCategory(
-                WaifuAssetCategory.WELCOMING
-            ),
-            asset -> {
-                WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
-                    project,
-                    asset,
-                    config
-                );
 
-                if ( !project.isInitialized() ) {
-                    StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );
-                } else {
-                    waifuMotivation.motivate();
-                }
-            },
-            () -> UpdateNotification.INSTANCE.sendMessage(
-                "'Welcome Wafiu' Unavailable Offline",
-                ProjectConstants.getWAIFU_UNAVAILABLE_MESSAGE(),
-                project
-            ) );
+        VisualMotivationAssetProvider.INSTANCE.createAssetByCategory(
+            WaifuAssetCategory.WELCOMING
+        ).ifPresentOrElse( asset -> {
+            WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
+                project,
+                asset,
+                config
+            );
+
+            if ( !project.isInitialized() ) {
+                StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );
+            } else {
+                waifuMotivation.motivate();
+            }
+        }, () -> UpdateNotification.INSTANCE.sendMessage(
+            "'Welcome Wafiu' Unavailable Offline",
+            ProjectConstants.getWAIFU_UNAVAILABLE_MESSAGE(),
+            project
+        ) );
     }
 
     private boolean areMultipleProjectsOpened() {

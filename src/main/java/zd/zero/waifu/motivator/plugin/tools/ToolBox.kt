@@ -15,16 +15,3 @@ fun <T, U, S> allOf(
             }
         }
     }
-
-object ToolBox {
-
-    // todo: can be replaced by java 11 apis
-    @JvmStatic
-    fun <T> doOrElse(
-        maybeOptional: Optional<T>,
-        ifPresent: Consumer<T>,
-        orElse: Runnable
-    ) {
-        maybeOptional.doOrElse({ ifPresent.accept(it) }) { orElse.run() }
-    }
-}

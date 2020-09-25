@@ -35,7 +35,7 @@ object AssetTools {
         if (attempts < MAXIMUM_RETRY_ATTEMPTS) {
             VisualMotivationAssetProvider.pickAssetFromCategories(
                 *categories
-            ).doOrElse({ asset ->
+            ).ifPresentOrElse({ asset ->
                 VisualMotivationFactory.constructMotivation(project,
                     asset,
                     alertConfigurationSupplier()).motivate()

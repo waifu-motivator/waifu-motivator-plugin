@@ -9,7 +9,6 @@ import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
-import zd.zero.waifu.motivator.plugin.tools.doOrElse
 
 class IdlePersonalityCore : PersonalityCore {
 
@@ -22,12 +21,12 @@ class IdlePersonalityCore : PersonalityCore {
         val project = motivationEvent.project
         if (displayedProjects.contains(motivationEvent.project).not()) {
             VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING)
-                .doOrElse({ asset ->
+                .ifPresentOrElse({ asset ->
                     displayedProjects.add(project)
                     VisualMotivationFactory.constructMotivation(
-                            project,
-                            asset,
-                            motivationEvent.alertConfigurationSupplier()
+                        project,
+                        asset,
+                        motivationEvent.alertConfigurationSupplier()
                     ).setListener(
                         object : MotivationListener {
                             override fun onDisposal() {
@@ -37,9 +36,9 @@ class IdlePersonalityCore : PersonalityCore {
                     ).motivate()
                 }) {
                     UpdateNotification.sendMessage(
-                            "'${motivationEvent.title}' unavailable offline.",
-                            ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
-                            project
+                        "'${motivationEvent.title}' unavailable offline.",
+                        ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
+                        project
                     )
                 }
         }

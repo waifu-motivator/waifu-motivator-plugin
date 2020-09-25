@@ -3,7 +3,6 @@ package zd.zero.waifu.motivator.plugin.assets
 import com.intellij.openapi.diagnostic.Logger
 import zd.zero.waifu.motivator.plugin.platform.LifeCycleManager
 import zd.zero.waifu.motivator.plugin.platform.UpdateAssetsListener
-import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -44,7 +43,7 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
     private fun initializeAssetCaches(assetFileUrl: Optional<String>, breakOnFailure: Boolean = true) {
         assetFileUrl
             .flatMap { assetUrl -> initializeRemoteAssets(assetUrl) }
-            .doOrElse({ allAssetDefinitions ->
+            .ifPresentOrElse({ allAssetDefinitions ->
                 status = Status.OK
                 remoteAndLocalAssets = allAssetDefinitions
                 localAssets = allAssetDefinitions.filter { asset ->
