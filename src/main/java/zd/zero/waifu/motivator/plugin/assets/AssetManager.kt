@@ -1,6 +1,7 @@
 package zd.zero.waifu.motivator.plugin.assets
 
 import com.intellij.openapi.application.ApplicationInfo
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.Logger
 import org.apache.commons.io.IOUtils
 import org.apache.http.client.config.RequestConfig
@@ -75,11 +76,16 @@ object AssetManager {
 
     private fun resolveTheAssetUrl(localAssetPath: Path, remoteAssetUrl: String): Optional<String> =
         when {
-            hasAssetChanged(localAssetPath, remoteAssetUrl) ->
-                downloadAndGetAssetUrl(localAssetPath, remoteAssetUrl)
-            Files.exists(localAssetPath) ->
+            Files.exists(localAssetPath) -> {
+                ApplicationManager.getApplication().executeOnPooledThread {
+                    if (hasAssetChanged(localAssetPath, remoteAssetUrl)) {
+                        downloadAndGetAssetUrl(localAssetPath, remoteAssetUrl)
+                    }
+                }
+
                 localAssetPath.toUri().toString().toOptional()
-            else -> Optional.empty()
+            }
+            else -> downloadAndGetAssetUrl(localAssetPath, remoteAssetUrl)
         }
 
     fun constructLocalAssetPath(

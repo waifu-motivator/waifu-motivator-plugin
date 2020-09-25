@@ -43,22 +43,22 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
 
     private fun initializeAssetCaches(assetFileUrl: Optional<String>, breakOnFailure: Boolean = true) {
         assetFileUrl
-                .flatMap { assetUrl -> initializeRemoteAssets(assetUrl) }
-                .doOrElse({ allAssetDefinitions ->
-                    status = Status.OK
-                    remoteAndLocalAssets = allAssetDefinitions
-                    localAssets = allAssetDefinitions.filter { asset ->
-                        AssetManager.constructLocalAssetPath(assetCategory, asset.path)
-                            .filter { Files.exists(it) }
-                            .isPresent
-                    }.toSet().toMutableSet()
-                }) {
-                    if (breakOnFailure) {
-                        status = Status.BROKEN
-                        remoteAndLocalAssets = listOf()
-                        localAssets = mutableSetOf()
-                    }
+            .flatMap { assetUrl -> initializeRemoteAssets(assetUrl) }
+            .doOrElse({ allAssetDefinitions ->
+                status = Status.OK
+                remoteAndLocalAssets = allAssetDefinitions
+                localAssets = allAssetDefinitions.filter { asset ->
+                    AssetManager.constructLocalAssetPath(assetCategory, asset.path)
+                        .filter { Files.exists(it) }
+                        .isPresent
+                }.toSet().toMutableSet()
+            }) {
+                if (breakOnFailure) {
+                    status = Status.BROKEN
+                    remoteAndLocalAssets = listOf()
+                    localAssets = mutableSetOf()
                 }
+            }
     }
 
     fun supplyAssetDefinitions(): List<T> =
@@ -66,6 +66,11 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
 
     fun supplyLocalAssetDefinitions(): Set<T> =
         localAssets
+
+    fun supplyRemoteAssetDefinitions(): List<T> =
+        remoteAndLocalAssets.filterNot { remoteAndLocal ->
+            localAssets.toList().any { it.path == remoteAndLocal.path }
+        }
 
     abstract fun convertToAsset(asset: T, assetUrl: String): U
 
