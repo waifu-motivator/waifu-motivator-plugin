@@ -68,8 +68,8 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
         localAssets
 
     fun supplyRemoteAssetDefinitions(): List<T> =
-        remoteAndLocalAssets.filterNot { remoteAndLocal ->
-            localAssets.toList().any { it.path == remoteAndLocal.path }
+        remoteAndLocalAssets.filterNot { remoteOrLocalAsset ->
+            localAssets.contains(remoteOrLocalAsset)
         }
 
     abstract fun convertToAsset(asset: T, assetUrl: String): U

@@ -95,6 +95,12 @@ class RemoteAssetManagerTest {
                 "waiting/konata_bored_one.gif",
                 "waiting/ryuko_waiting.gif"
             )
+
+        assertThat(fakeAssetManager.supplyRemoteAssetDefinitions()).extracting("path")
+            .containsExactlyInAnyOrder(
+                "waiting/kanna_bored.gif",
+                "waiting/misato_bored_one.gif"
+            )
     }
 
     @Test
@@ -130,6 +136,12 @@ class RemoteAssetManagerTest {
                 "waiting/ryuko_waiting.gif"
             )
 
+        assertThat(fakeAssetManager.supplyRemoteAssetDefinitions()).extracting("path")
+            .containsExactlyInAnyOrder(
+                "waiting/kanna_bored.gif",
+                "waiting/misato_bored_one.gif"
+            )
+
         listenerSlot.captured.onRequestedUpdate()
 
         assertThat(fakeAssetManager.status).isEqualTo(Status.OK)
@@ -145,6 +157,12 @@ class RemoteAssetManagerTest {
             .containsExactlyInAnyOrder(
                 "waiting/konata_bored_one.gif",
                 "waiting/ryuko_waiting.gif"
+            )
+
+        assertThat(fakeAssetManager.supplyRemoteAssetDefinitions()).extracting("path")
+            .containsExactlyInAnyOrder(
+                "waiting/kanna_bored.gif",
+                "waiting/misato_bored_one.gif"
             )
     }
 
@@ -182,6 +200,12 @@ class RemoteAssetManagerTest {
                 "waiting/ryuko_waiting.gif"
             )
 
+        assertThat(fakeAssetManager.supplyRemoteAssetDefinitions()).extracting("path")
+            .containsExactlyInAnyOrder(
+                "waiting/kanna_bored.gif",
+                "waiting/misato_bored_one.gif"
+            )
+
         listenerSlot.captured.onRequestedUpdate()
 
         assertThat(fakeAssetManager.status).isEqualTo(Status.OK)
@@ -197,6 +221,12 @@ class RemoteAssetManagerTest {
             .containsExactlyInAnyOrder(
                 "waiting/konata_bored_one.gif",
                 "waiting/ryuko_waiting.gif"
+            )
+
+        assertThat(fakeAssetManager.supplyRemoteAssetDefinitions()).extracting("path")
+            .containsExactlyInAnyOrder(
+                "waiting/kanna_bored.gif",
+                "waiting/misato_bored_one.gif"
             )
     }
 
@@ -234,6 +264,12 @@ class RemoteAssetManagerTest {
                 "waiting/ryuko_waiting.gif"
             )
 
+        assertThat(fakeAssetManager.supplyRemoteAssetDefinitions()).extracting("path")
+            .containsExactlyInAnyOrder(
+                "waiting/kanna_bored.gif",
+                "waiting/misato_bored_one.gif"
+            )
+
         listenerSlot.captured.onRequestedUpdate()
 
         assertThat(fakeAssetManager.status).isEqualTo(Status.OK)
@@ -252,6 +288,13 @@ class RemoteAssetManagerTest {
                 "waiting/konata_bored_one.gif",
                 "waiting/ryuko_waiting.gif",
                 "celebration/caramelldansen.gif"
+            )
+
+        assertThat(fakeAssetManager.supplyRemoteAssetDefinitions()).extracting("path")
+            .containsExactlyInAnyOrder(
+                "waiting/kanna_bored.gif",
+                "waiting/misato_bored_one.gif",
+                "aqua_celebration.gif"
             )
     }
 }
