@@ -1,5 +1,6 @@
 package zd.zero.waifu.motivator.plugin.tools
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
@@ -36,9 +37,11 @@ object AssetTools {
             VisualMotivationAssetProvider.pickAssetFromCategories(
                 *categories
             ).doOrElse({ asset ->
-                VisualMotivationFactory.constructMotivation(project,
-                    asset,
-                    alertConfigurationSupplier()).motivate()
+                ApplicationManager.getApplication().executeOnPooledThread {
+                    VisualMotivationFactory.constructMotivation(project,
+                        asset,
+                        alertConfigurationSupplier()).motivate()
+                }
             }) {
                 attemptToDisplayMotivation(
                     project,

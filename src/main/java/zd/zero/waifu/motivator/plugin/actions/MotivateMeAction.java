@@ -2,6 +2,7 @@ package zd.zero.waifu.motivator.plugin.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.DumbAware;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.ProjectConstants;
@@ -28,24 +29,25 @@ public class MotivateMeAction extends AnAction implements DumbAware {
             pluginState.isMotivateMeEnabled(),
             pluginState.isMotivateMeSoundEnabled() );
 
-        doOrElse(
-            VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
-                WaifuAssetCategory.CELEBRATION,
-                WaifuAssetCategory.HAPPY,
-                WaifuAssetCategory.SMUG
-            ),
-            motivationAsset ->
-                VisualMotivationFactory.INSTANCE.constructNonTitledMotivation(
-                    Objects.requireNonNull( e.getProject() ),
-                    motivationAsset,
-                    config
-                ).motivate(),
-            () ->
-                UpdateNotification.INSTANCE.sendMessage(
-                    "'Motivate Me' Unavailable Offline",
-                    ProjectConstants.getWAIFU_UNAVAILABLE_MESSAGE(),
-                    e.getProject()
-                ) );
+        ApplicationManager.getApplication().executeOnPooledThread( () ->
+            doOrElse(
+                VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
+                    WaifuAssetCategory.CELEBRATION,
+                    WaifuAssetCategory.HAPPY,
+                    WaifuAssetCategory.SMUG
+                ),
+                motivationAsset ->
+                    VisualMotivationFactory.INSTANCE.constructNonTitledMotivation(
+                        Objects.requireNonNull( e.getProject() ),
+                        motivationAsset,
+                        config
+                    ).motivate(),
+                () ->
+                    UpdateNotification.INSTANCE.sendMessage(
+                        "'Motivate Me' Unavailable Offline",
+                        ProjectConstants.getWAIFU_UNAVAILABLE_MESSAGE(),
+                        e.getProject()
+                    ) ) );
     }
 
     @Override

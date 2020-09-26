@@ -43,29 +43,31 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
 
     private fun initializeAssetCaches(assetFileUrl: Optional<String>, breakOnFailure: Boolean = true) {
         assetFileUrl
-                .flatMap { assetUrl -> initializeRemoteAssets(assetUrl) }
-                .doOrElse({ allAssetDefinitions ->
-                    status = Status.OK
-                    remoteAndLocalAssets = allAssetDefinitions
-                    localAssets = allAssetDefinitions.filter { asset ->
-                        AssetManager.constructLocalAssetPath(assetCategory, asset.path)
-                            .filter { Files.exists(it) }
-                            .isPresent
-                    }.toSet().toMutableSet()
-                }) {
-                    if (breakOnFailure) {
-                        status = Status.BROKEN
-                        remoteAndLocalAssets = listOf()
-                        localAssets = mutableSetOf()
-                    }
+            .flatMap { assetUrl -> initializeRemoteAssets(assetUrl) }
+            .doOrElse({ allAssetDefinitions ->
+                status = Status.OK
+                remoteAndLocalAssets = allAssetDefinitions
+                localAssets = allAssetDefinitions.filter { asset ->
+                    AssetManager.constructLocalAssetPath(assetCategory, asset.path)
+                        .filter { Files.exists(it) }
+                        .isPresent
+                }.toSet().toMutableSet()
+            }) {
+                if (breakOnFailure) {
+                    status = Status.BROKEN
+                    remoteAndLocalAssets = listOf()
+                    localAssets = mutableSetOf()
                 }
+            }
     }
-
-    fun supplyAssetDefinitions(): List<T> =
-        remoteAndLocalAssets
 
     fun supplyLocalAssetDefinitions(): Set<T> =
         localAssets
+
+    fun supplyRemoteAssetDefinitions(): List<T> =
+        remoteAndLocalAssets.filterNot { remoteOrLocalAsset ->
+            localAssets.contains(remoteOrLocalAsset)
+        }
 
     abstract fun convertToAsset(asset: T, assetUrl: String): U
 
