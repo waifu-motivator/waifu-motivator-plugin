@@ -34,7 +34,6 @@ class RemoteAssetDefinitionServiceTest {
 
     @Test
     fun `get random asset by category should return empty when no assets`() {
-        every { remoteAssetManager.supplyAssetDefinitions() } returns listOf()
         every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf()
         every { remoteAssetManager.supplyRemoteAssetDefinitions() } returns listOf()
 
@@ -47,7 +46,6 @@ class RemoteAssetDefinitionServiceTest {
 
     @Test
     fun `get random asset by category should return local when no remote assets`() {
-        every { remoteAssetManager.supplyAssetDefinitions() } returns listOf()
         every { remoteAssetManager.supplyRemoteAssetDefinitions() } answers { callOriginal() }
 
         val bestLocalMotivation = VisualMotivationAssetDefinition(
@@ -78,7 +76,6 @@ class RemoteAssetDefinitionServiceTest {
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
         )
-        every { remoteAssetManager.supplyAssetDefinitions() } returns listOf(bestMotivation)
         every { remoteAssetManager.supplyRemoteAssetDefinitions() } returns listOf()
         every { remoteAssetManager.resolveAsset(bestMotivation) } returns Optional.empty()
         every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf()
@@ -99,7 +96,6 @@ class RemoteAssetDefinitionServiceTest {
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
         )
-        every { remoteAssetManager.supplyAssetDefinitions() } returns listOf(bestMotivation)
         every { remoteAssetManager.supplyRemoteAssetDefinitions() } returns listOf(bestMotivation)
         every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf()
 
@@ -123,7 +119,6 @@ class RemoteAssetDefinitionServiceTest {
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
         )
-        every { remoteAssetManager.supplyAssetDefinitions() } returns listOf(bestMotivation)
         every { remoteAssetManager.supplyRemoteAssetDefinitions() } returns listOf()
         every { remoteAssetManager.resolveAsset(bestMotivation) } returns Optional.empty()
 
@@ -152,7 +147,6 @@ class RemoteAssetDefinitionServiceTest {
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
         )
-        every { remoteAssetManager.supplyAssetDefinitions() } returns listOf(bestMotivation)
         every { remoteAssetManager.resolveAsset(bestMotivation) } returns Optional.empty()
 
         val bestLocalMotivation = VisualMotivationAssetDefinition(
@@ -181,7 +175,6 @@ class RemoteAssetDefinitionServiceTest {
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
         )
-        every { remoteAssetManager.supplyAssetDefinitions() } returns listOf(bestMotivation)
         every { remoteAssetManager.resolveAsset(bestMotivation) } returns Optional.empty()
 
         val bestLocalMotivation = VisualMotivationAssetDefinition(
