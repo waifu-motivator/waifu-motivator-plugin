@@ -3,6 +3,7 @@ package zd.zero.waifu.motivator.plugin.listeners;
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsAdapter;
 import com.intellij.execution.testframework.sm.runner.SMTRunnerEventsListener;
 import com.intellij.execution.testframework.sm.runner.SMTestProxy;
+import com.intellij.execution.testframework.sm.runner.states.TestStateInfo;
 import com.intellij.openapi.externalSystem.service.execution.ExternalSystemProcessHandler;
 import com.intellij.util.messages.MessageBusConnection;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +28,7 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
             public void onTestingFinished( @NotNull SMTestProxy.SMRootTestProxy testsRoot ) {
                 if ( testsRoot.wasTerminated() || testsRoot.isInterrupted()
                     || isCancelledOnExternalProcess( testsRoot ) ) return;
-                if ( testsRoot.isPassed() ) {
+                if ( testsRoot.isPassed() || isSuccessWithIgnoredTests(testsRoot) ) {
                     listener.onUnitTestPassed();
                 } else {
                     listener.onUnitTestFailed();
@@ -39,6 +40,10 @@ public class WaifuUnitTesterImpl implements WaifuUnitTester {
     @Override
     public void stop() {
         this.busConnection.disconnect();
+    }
+
+    private boolean isSuccessWithIgnoredTests( SMTestProxy.SMRootTestProxy testsRoot ) {
+        return TestStateInfo.Magnitude.IGNORED_INDEX.equals(  testsRoot.getMagnitudeInfo() );
     }
 
     /**

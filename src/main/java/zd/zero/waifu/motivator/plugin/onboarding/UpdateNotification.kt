@@ -5,6 +5,8 @@ import com.intellij.notification.impl.NotificationsManagerImpl
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.Balloon
 import com.intellij.ui.BalloonLayoutData
+import icons.WaifuMotivatorIcons
+import org.jetbrains.annotations.Nls
 import zd.zero.waifu.motivator.plugin.WaifuMotivator.PLUGIN_NAME
 import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParameters
 import zd.zero.waifu.motivator.plugin.service.ApplicationService
@@ -12,10 +14,11 @@ import zd.zero.waifu.motivator.plugin.service.ApplicationService
 val UPDATE_MESSAGE: String = """
       What's New?<br>
       <ul>
-        <li>Visual Test Pass Notifications!</li>
-        <li>More settings customization.</li>
-        <li>Do Not Disturb mode.</li>
-        <li>Toolbar menu revamp.</li>
+        <li>Added reactions to: exit code, build, and idle events.</li>
+        <li>Added configurable personality to your virtual companion.</li>
+        <li>Enabled offline mode.</li>
+        <li>Re-organized settings menu</li>
+        <li>Fixed various bugs.</li>
       </ul>
       <br>Please see the <a href="https://github.com/zd-zero/waifu-motivator-plugin/blob/master/docs/CHANGELOG.md">changelog</a> for more details.
       <br><br>
@@ -48,6 +51,33 @@ object UpdateNotification {
             .setListener(NotificationListener.UrlOpeningListener(false))
 
         showNotification(project, updateNotification)
+    }
+
+    fun sendMessage(
+        title: String,
+        message: String,
+        project: Project? = null
+    ) {
+        showRegularNotification(
+            title,
+            message,
+            project = project,
+            listener = defaultListener
+        )
+    }
+
+    private val defaultListener = NotificationListener.UrlOpeningListener(false)
+    private fun showRegularNotification(
+        @Nls(capitalization = Nls.Capitalization.Sentence) title: String = "",
+        @Nls(capitalization = Nls.Capitalization.Sentence) content: String,
+        project: Project? = null,
+        listener: NotificationListener? = defaultListener
+    ) {
+        notificationGroup.createNotification(
+            title, content,
+            listener = listener
+        ).setIcon(WaifuMotivatorIcons.MENU)
+            .notify(project)
     }
 
     private fun showNotification(

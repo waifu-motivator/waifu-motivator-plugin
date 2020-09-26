@@ -1,0 +1,119 @@
+package zd.zero.waifu.motivator.plugin.personality
+
+import com.intellij.openapi.Disposable
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.util.messages.MessageBusConnection
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
+import zd.zero.waifu.motivator.plugin.personality.core.IdlePersonalityCore
+import zd.zero.waifu.motivator.plugin.personality.core.TaskPersonalityCore
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionCore
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
+import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
+import zd.zero.waifu.motivator.plugin.tools.AlarmDebouncer
+
+//                                   Waifu
+//                                   Emotion
+//                                   Notification
+//                                   Determination
+//                                   Interface
+// %%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%   ,     ,                                     #@@@@&%%%%%%%%%%%%
+// %%%%%%%%%%@@@@@@@@@@@& /                                            @@@@%%%%%%%%
+// %%%%%%%@@&%*    .                                                    /%%%@@%%%%%
+// %%%%%@%%%%                                                             %%%%%@%%%
+// %%%@%%%%                                                                 %%%%%@%
+// %%%%%%%                                                                   %%%%%%
+// %%%%%.                                                       .             ,%%%%
+// %%%%                                                                         %%%
+// %%%           @@@@@@@/&.                                  @@@@@@@@@.          %%
+// %%        .@@#         @@                              @@    #     .@@        %%
+// %.       @#     %%     %  @                          ,  %,    (%%     @@      %%
+// %.     %@    #%%%%%%%%%%%%                            %%%%%%%%%%%%%     @     %%
+// %*    #     %%%%%%%%%%%%%%%                          %%%%%%%%%%%%%%%%    &    %%
+// %#         %%%%%%%%%%%%%%%%%                        %%%%%%%%%%%%%%%%%%    @   %%
+// %%        %%%%%%%%%%%%%%%%%%(                       %%%%%%%%%%%%%%%%%%       *%%
+// %%  .     #%%%%%%%%%%%%%%%%%/                       %%%%%%%%%%%%%%%%%%     / #%%
+// %%  @      %%%%%%%%%%%%%%%%%                        ,%%%%%%%%%%%%%%%%        %%%
+// %%*         %%%%%%%%%%%%%%%                           %%%%%%%%%%%%%%         %%%
+// %%%           %%%%%%%%%%.                               .%%%%%%%%/          #%%%
+// %%%                                                                         %%%%
+// %%%(   ........                                                   ..........%%%%
+// %%%%     ..........                                              ......    %%%%%
+// %%%%%                                                                     /%%%%%
+// %%%%%*                      ,(((*****************(((                      %%%%%%
+// %%%%%%.                    (((********************/(                     %%%%%%%
+// %%%%%%%/                    (**********************(                   ,%%%%%%%%
+// %%%%%%%%%%                  (*****...............**                 /%%%%%%%%%%%
+// %%%%%%%%%%%%%%                (..................               *%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%.               ,/,........               %%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%*                               #%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%..                     ....,%%%%%%%%%%%%%%%%%%%%%%%%%
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%.......           .........(%%%%%%%%%%%%%%%%%%%%%%%%%
+object Wendi : Disposable {
+
+    private lateinit var messageBusConnection: MessageBusConnection
+    private lateinit var emotionCore: EmotionCore
+    private val taskPersonalityCore = TaskPersonalityCore()
+    private val idlePersonalityCore = IdlePersonalityCore()
+    private const val DEBOUNCE_INTERVAL = 80
+    private val singleEventDebouncer = AlarmDebouncer<MotivationEvent>(DEBOUNCE_INTERVAL)
+    private val idleEventDebouncer = AlarmDebouncer<MotivationEvent>(DEBOUNCE_INTERVAL)
+
+    fun initialize() {
+        if (this::messageBusConnection.isInitialized.not()) {
+            messageBusConnection = ApplicationManager.getApplication().messageBus.connect()
+
+            emotionCore = EmotionCore(WaifuMotivatorPluginState.getPluginState())
+
+            messageBusConnection.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, object : PluginSettingsListener {
+                override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
+                    this@Wendi.emotionCore = emotionCore.updateConfig(newPluginState)
+                }
+            })
+
+            messageBusConnection.subscribe(MotivationEventListener.TOPIC, object : MotivationEventListener {
+                override fun onEventTrigger(motivationEvent: MotivationEvent) {
+                    when (motivationEvent.type) {
+                        MotivationEvents.IDLE ->
+                            idleEventDebouncer.debounceAndBuffer(motivationEvent) {
+                                consumeEvents(it)
+                            }
+                        else -> singleEventDebouncer.debounce {
+                            consumeEvent(motivationEvent)
+                        }
+                    }
+                }
+            })
+        }
+    }
+
+    private fun consumeEvents(bufferedMotivationEvents: List<MotivationEvent>) {
+        val emotionalState = emotionCore.deriveMood(bufferedMotivationEvents.first())
+        bufferedMotivationEvents.forEach { motivationEvent -> reactToEvent(motivationEvent, emotionalState) }
+    }
+
+    private fun consumeEvent(motivationEvent: MotivationEvent) {
+        val emotionalState = emotionCore.deriveMood(motivationEvent)
+        reactToEvent(motivationEvent, emotionalState)
+    }
+
+    private fun reactToEvent(motivationEvent: MotivationEvent, emotionalState: Mood) {
+        when (motivationEvent.type) {
+            MotivationEvents.TEST,
+            MotivationEvents.TASK -> taskPersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
+            MotivationEvents.IDLE -> idlePersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
+        }
+    }
+
+    override fun dispose() {
+        if (this::messageBusConnection.isInitialized) {
+            messageBusConnection.dispose()
+            singleEventDebouncer.dispose()
+            idleEventDebouncer.dispose()
+        }
+    }
+}

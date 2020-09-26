@@ -5,8 +5,8 @@ import com.intellij.notification.Notification
 import com.intellij.openapi.ui.popup.JBPopupListener
 import com.intellij.openapi.ui.popup.LightweightWindowEvent
 import com.intellij.openapi.util.registry.Registry
-import zd.zero.waifu.motivator.plugin.alert.WaifuNotification
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
+import zd.zero.waifu.motivator.plugin.alert.WaifuNotification
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayer
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.tools.toOptional
@@ -21,10 +21,24 @@ abstract class BaseMotivation(
         private const val KEY_DISTRACTION_FREE_MODE = "editor.distraction.free.mode"
     }
 
+    private lateinit var listener: MotivationListener
+
     override fun motivate() {
         if (isAlertEnabled && isDistractionAllowed) {
-            if (isDisplayNotificationEnabled) displayNotification()
+            if (isDisplayNotificationEnabled) {
+                displayNotification()
+            } else {
+                notifyDisposal()
+            }
             if (isSoundAlertEnabled) soundAlert()
+        } else {
+            notifyDisposal()
+        }
+    }
+
+    private fun notifyDisposal() {
+        if (this::listener.isInitialized) {
+            listener.onDisposal()
         }
     }
 
@@ -50,6 +64,13 @@ abstract class BaseMotivation(
         if (!isExpired && config.isSoundAlertEnabled) {
             player.stop()
         }
+
+        notifyDisposal()
+    }
+
+    override fun setListener(motivationListener: MotivationListener): WaifuMotivation {
+        this.listener = motivationListener
+        return this
     }
 
     override fun isAlertEnabled(): Boolean =

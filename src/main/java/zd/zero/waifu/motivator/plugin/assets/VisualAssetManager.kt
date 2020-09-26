@@ -2,72 +2,28 @@ package zd.zero.waifu.motivator.plugin.assets
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.intellij.openapi.diagnostic.Logger
 import zd.zero.waifu.motivator.plugin.assets.AssetCategory.VISUAL
-import zd.zero.waifu.motivator.plugin.assets.AssetManager.resolveAssetUrl
-import zd.zero.waifu.motivator.plugin.tools.RestClient
-import zd.zero.waifu.motivator.plugin.tools.toOptional
-import java.net.URI
-import java.nio.file.Files
-import java.nio.file.Paths
+import zd.zero.waifu.motivator.plugin.tools.ExceptionTools.runSafely
+import java.util.*
 
-object VisualAssetManager {
+object VisualAssetManager : RemoteAssetManager<VisualMotivationAssetDefinition, VisualMotivationAsset>(
+    VISUAL
+) {
+    private val log: Logger? = Logger.getInstance(this::class.java)
 
-    private lateinit var remoteAssets: List<VisualMotivationAssetDefinition>
+    override fun convertToAsset(
+        asset: VisualMotivationAssetDefinition,
+        assetUrl: String
+    ): VisualMotivationAsset =
+        asset.toAsset(assetUrl)
 
-    fun supplyAssetDefinitions(): List<VisualMotivationAssetDefinition> =
-        if (this::remoteAssets.isInitialized) {
-            remoteAssets
-        } else {
-            val assetUrl = resolveAssetUrl(VISUAL, "assets.json")
-            remoteAssets = initializeRemoteAssets(assetUrl)
-            remoteAssets
-        }
-
-    fun resolveAsset(visualAsset: VisualMotivationAssetDefinition): VisualMotivationAssetDefinition {
-        val assetUrl = resolveAssetUrl(VISUAL, visualAsset.imagePath)
-        return visualAsset.copy(imagePath = assetUrl)
-    }
-
-    private fun initializeRemoteAssets(assetUrl: String): List<VisualMotivationAssetDefinition> =
-        try {
-            if (assetUrl.startsWith("file://")) {
-                readLocalFile(assetUrl)
-            } else {
-                RestClient.performGet(assetUrl)
-            }.map {
-                convertToDefinitions(it)
-            }.orElseGet {
-                backupAssets
-            }
-        } catch (e: Throwable) {
-            backupAssets
-        }
-
-    private fun convertToDefinitions(defJson: String): List<VisualMotivationAssetDefinition> =
-        Gson().fromJson<List<VisualMotivationAssetDefinition>>(
-            defJson, object : TypeToken<List<VisualMotivationAssetDefinition>>() {}.type
-        )
-
-    private fun readLocalFile(assetUrl: String) =
-        Files.readAllBytes(Paths.get(URI(assetUrl))).toOptional()
-            .map { String(it, Charsets.UTF_8) }
-
-    private val backupAssets = listOf(
-        VisualMotivationAssetDefinition(
-            "caramelldansen.gif",
-            "Caramelldansen",
-            ImageDimension(320, 240),
-            arrayOf(
-                WaifuAssetCategory.CELEBRATION
+    override fun convertToDefinitions(defJson: String): Optional<List<VisualMotivationAssetDefinition>> =
+        runSafely({
+            Gson().fromJson<List<VisualMotivationAssetDefinition>>(
+                defJson, object : TypeToken<List<VisualMotivationAssetDefinition>>() {}.type
             )
-        ),
-        VisualMotivationAssetDefinition(
-            "kill-la-kill-caramelldansen.gif",
-            "Caramelldansen",
-            ImageDimension(250, 184),
-            arrayOf(
-                WaifuAssetCategory.CELEBRATION
-            )
-        )
-    )
+        }) {
+            log?.warn("Unable to read Visual Assets for reasons $defJson", it)
+        }
 }

@@ -1,0 +1,54 @@
+[
+    {
+        "imagePath": "waiting/kanna_bored.gif",
+        "path": "waiting/kanna_bored.gif",
+        "imageAlt": "",
+        "imageDimensions": {
+            "width": 480,
+            "height": 270
+        },
+        "categories": [
+            "WAITING",
+            "BORED"
+        ]
+    },
+    {
+        "imagePath": "waiting/konata_bored_one.gif",
+        "path": "waiting/konata_bored_one.gif",
+        "imageAlt": "",
+        "imageDimensions": {
+            "width": 498,
+            "height": 252
+        },
+        "categories": [
+            "WAITING",
+            "BORED"
+        ]
+    },
+    {
+        "imagePath": "waiting/misato_bored_one.gif",
+        "path": "waiting/misato_bored_one.gif",
+        "imageAlt": "",
+        "imageDimensions": {
+            "width": 498,
+            "height": 278
+        },
+        "categories": [
+            "WAITING",
+            "BORED"
+        ]
+    },
+    {
+        "imagePath": "waiting/ryuko_waiting.gif",
+        "path": "waiting/ryuko_waiting.gif",
+        "imageAlt": "",
+        "imageDimensions": {
+            "width": 400,
+            "height": 224
+        },
+        "categories": [
+            "WAITING",
+            "BORED"
+        ]
+    }
+]
