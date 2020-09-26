@@ -47,7 +47,7 @@ class RemoteAssetDefinitionServiceTest {
 
     @Test
     fun `get random asset by category should return local when no remote assets`() {
-        every { remoteAssetManager.supplyAssetDefinitions() }
+        every { remoteAssetManager.supplyAssetDefinitions() } returns listOf()
         every { remoteAssetManager.supplyRemoteAssetDefinitions() } answers { callOriginal() }
 
         val bestLocalMotivation = VisualMotivationAssetDefinition(
