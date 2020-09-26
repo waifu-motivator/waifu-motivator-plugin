@@ -1,7 +1,7 @@
 # Changelog
 
 ## v1.3
-## ??/09/2020
+## 27/09/2020
 
 Features:
 
@@ -11,7 +11,7 @@ Features:
 * [WMP-182](https://github.com/zd-zero/waifu-motivator-plugin/issues/182) Added configurable personality to your virtual companion.
 * [WMP-159](https://github.com/zd-zero/waifu-motivator-plugin/issues/159) Plugin can be used offline now.
 * [WMP-157](https://github.com/zd-zero/waifu-motivator-plugin/issues/157) `Motivate Me` now uses visual notifications.
-* [WMP-133](https://github.com/zd-zero/waifu-motivator-plugin/issues/133) When your code fails to build you'll get a `Surprised` or `Dissapointed` event. The next time that your build succeeds, then you'll get a `Celebration` or `Smug` event.
+* [WMP-133](https://github.com/zd-zero/waifu-motivator-plugin/issues/133) When your code fails to build you'll get a `Surprised` or `Disapointed` event. The next time that your build succeeds, then you'll get a `Celebration` or `Smug` event.
 * [WMP-154](https://github.com/zd-zero/waifu-motivator-plugin/issues/154) When the user's IDE remains idle for a configured amount of time (defaults to 5 minutes) then the plugin will display a bored/waiting anime girl.
 
 Bug Fixes:
@@ -20,6 +20,8 @@ Bug Fixes:
 * Fixed [WMP-178](https://github.com/zd-zero/waifu-motivator-plugin/issues/178) Plugin actions can now be used while IDE is indexing.
 * Fixed [WMP-186](https://github.com/zd-zero/waifu-motivator-plugin/issues/186) Can close projects before they are initialized.
 * Fixed [WMP-198](https://github.com/zd-zero/waifu-motivator-plugin/issues/198) Enabled plugin to work without full IDE restart.
+* Fixed [WMP-209](https://github.com/zd-zero/waifu-motivator-plugin/issues/209) Waifu of the Day colors should come from theme look and feel
+* Fixed [WMP-167](https://github.com/zd-zero/waifu-motivator-plugin/issues/167) Sound player runtime exception
 
 
 ## v1.2
