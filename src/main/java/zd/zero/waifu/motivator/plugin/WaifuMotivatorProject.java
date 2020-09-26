@@ -154,7 +154,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
                 }
             },
             () -> UpdateNotification.INSTANCE.sendMessage(
-                "'Welcome Wafiu' Unavailable Offline",
+                "'Welcome Waifu' Unavailable Offline",
                 ProjectConstants.getWAIFU_UNAVAILABLE_MESSAGE(),
                 project
             ) );
