@@ -11,7 +11,7 @@
 
   <!--    Leave this in here so the IDE gives you feedback on-->
   <!--    What APIs are available-->
-  <idea-version since-build="201.3803.71"/>
+  <idea-version since-build="201.4515.24"/>
 
   <extensions defaultExtensionNs="com.intellij">
     <applicationService
@@ -20,7 +20,7 @@
       instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
     <errorHandler
       id="7111f9b9-f252-483e-9496-72d649347b6d"
-      implementation="zd.zero.waifu.motivator.plugin.integrations.ErrorReporter" />
+      implementation="zd.zero.waifu.motivator.plugin.integrations.ErrorReporter"/>
     <postStartupActivity id="WaifuOfTheDayStartupActivity"
                          implementation="zd.zero.waifu.motivator.plugin.WaifuOfTheDayStartupActivity"/>
     <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.ApplicationService"/>
@@ -47,14 +47,27 @@
               text="Settings"
               description="Show me how to handle my Waifu.">
       </action>
+      <action id="zd.zero.waifu.motivator.plugin.actions.AssetSyncAction"
+              class="zd.zero.waifu.motivator.plugin.actions.AssetSyncAction"
+              icon="/actions/refresh.svg"
+              text="Synchronize Motivation Assets"
+              description="Updates the list of assets to be used for motivation from the central repository.">
+      </action>
+
 
       <add-to-group group-id="HelpMenu" anchor="last"/>
     </group>
   </actions>
 
+  <applicationListeners>
+    <listener class="zd.zero.waifu.motivator.plugin.listeners.PluginInstallListener"
+              topic="com.intellij.ide.plugins.DynamicPluginListener"/>
+  </applicationListeners>
   <projectListeners>
     <listener class="zd.zero.waifu.motivator.plugin.WaifuMotivatorProject"
               topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    <listener class="zd.zero.waifu.motivator.plugin.listeners.TaskListener"
+              topic="com.intellij.task.ProjectTaskListener"/>
   </projectListeners>
 
 </idea-plugin>

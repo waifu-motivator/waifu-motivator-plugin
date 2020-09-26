@@ -1,20 +1,22 @@
 package zd.zero.waifu.motivator.plugin.player;
 
+import java.nio.file.Path;
+
 public final class EmptyWaifuSoundPlayer implements WaifuSoundPlayer {
 
-    private String fileName;
+    private final Path soundFilePath;
 
-    private EmptyWaifuSoundPlayer( String fileName ) {
-        this.fileName = fileName;
+    private EmptyWaifuSoundPlayer( Path soundFilePath ) {
+        this.soundFilePath = soundFilePath;
     }
 
-    public static WaifuSoundPlayer of( String fileName ) {
-        return new EmptyWaifuSoundPlayer( fileName );
+    public static WaifuSoundPlayer of( Path soundFilePath ) {
+        return new EmptyWaifuSoundPlayer( soundFilePath );
     }
 
     @Override
     public void play() {
-        throw new UnsupportedOperationException( "Cannot play an unsupported file: '" + fileName + "'" );
+        throw new UnsupportedOperationException( "Cannot play an unsupported file: '" + soundFilePath + "'" );
     }
 
     @Override

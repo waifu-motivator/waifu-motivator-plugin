@@ -5,29 +5,33 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.FactoryRegistry;
 import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.function.Consumer;
-
-import static zd.zero.waifu.motivator.plugin.WaifuMotivator.SOUND_DIR;
 
 public final class Mp3WaifuSoundPlayer implements WaifuSoundPlayer {
 
     private static final Logger LOGGER = Logger.getInstance( Mp3WaifuSoundPlayer.class );
 
-    private String fileName;
+    private final Path soundFilePath;
 
     private AudioDevice audioDevice;
 
     private AdvancedPlayer player;
 
-    private Mp3WaifuSoundPlayer( String fileName ) {
-        this.fileName = SOUND_DIR + fileName;
+    private Mp3WaifuSoundPlayer( Path soundFilePath ) {
+        this.soundFilePath = soundFilePath;
     }
 
-    public static Mp3WaifuSoundPlayer ofFile( String fileName ) {
-        return new Mp3WaifuSoundPlayer( fileName );
+    public static Mp3WaifuSoundPlayer ofFile( Path soundFilePath ) {
+        return new Mp3WaifuSoundPlayer( soundFilePath );
     }
 
     @Override
@@ -50,24 +54,45 @@ public final class Mp3WaifuSoundPlayer implements WaifuSoundPlayer {
     }
 
     private void initPlayer( Consumer<Runnable> runnableConsumer ) {
-        try ( InputStream soundStream = getClass().getClassLoader().getResourceAsStream( fileName ) ) {
-            if ( soundStream == null ) {
-                throw new IllegalArgumentException( "Could not create a stream for " + fileName );
-            }
-            audioDevice = FactoryRegistry.systemRegistry().createAudioDevice();
-            player = new AdvancedPlayer( soundStream, audioDevice );
-
-            runnableConsumer.accept( this::invokePlay );
-        } catch ( IOException | JavaLayerException e ) {
+        try {
+            InputStream soundStream = new BufferedInputStream( Files.newInputStream( soundFilePath ));
+            playSound( runnableConsumer, soundStream );
+        } catch ( IOException e ) {
             LOGGER.error( e.getMessage(), e );
         }
+    }
+
+    private void playSound( Consumer<Runnable> runnableConsumer, InputStream soundStream ) throws IOException {
+        try {
+            audioDevice = FactoryRegistry.systemRegistry().createAudioDevice();
+            player = new AdvancedPlayer( soundStream, audioDevice );
+            player.setPlayBackListener( buildPlaybackListener( soundStream ) );
+            runnableConsumer.accept( this::invokePlay );
+        } catch ( Exception e ) {
+            LOGGER.error( e.getMessage(), e );
+            soundStream.close();
+        }
+    }
+
+    @NotNull
+    private PlaybackListener buildPlaybackListener( InputStream soundStream ) {
+        return new PlaybackListener() {
+            @Override
+            public void playbackFinished( PlaybackEvent evt ) {
+                try {
+                    soundStream.close();
+                } catch ( IOException e ) {
+                    e.printStackTrace();
+                }
+            }
+        };
     }
 
     private void invokePlay() {
         try {
             player.play();
         } catch ( JavaLayerException e ) {
-            LOGGER.error( "Cannot play sound '" + fileName + "': " + e.getMessage(), e );
+            LOGGER.error( "Cannot play sound '" + soundFilePath + "': " + e.getMessage(), e );
         }
     }
 

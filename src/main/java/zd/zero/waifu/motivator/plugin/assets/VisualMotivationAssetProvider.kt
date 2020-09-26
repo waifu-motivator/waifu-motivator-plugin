@@ -1,9 +1,15 @@
 package zd.zero.waifu.motivator.plugin.assets
 
+import zd.zero.waifu.motivator.plugin.tools.allOf
+import zd.zero.waifu.motivator.plugin.tools.toOptional
+import java.util.*
 import kotlin.random.Random
 
 enum class WaifuAssetCategory {
+    FRUSTRATION,
+    ENRAGED,
     CELEBRATION,
+    HAPPY,
     SMUG,
     WAITING,
     MOTIVATION,
@@ -21,13 +27,17 @@ object VisualMotivationAssetProvider {
 
     fun createAssetByCategory(
         category: WaifuAssetCategory
-    ): MotivationAsset {
+    ): Optional<MotivationAsset> {
         return when (category) {
             WaifuAssetCategory.CELEBRATION,
             WaifuAssetCategory.DISAPPOINTMENT,
             WaifuAssetCategory.SHOCKED,
             WaifuAssetCategory.SMUG,
-            WaifuAssetCategory.WELCOMING
+            WaifuAssetCategory.WAITING,
+            WaifuAssetCategory.WELCOMING,
+            WaifuAssetCategory.ENRAGED,
+            WaifuAssetCategory.FRUSTRATION,
+            WaifuAssetCategory.HAPPY
             -> pickRandomAssetByCategory(
                 category
             )
@@ -37,29 +47,33 @@ object VisualMotivationAssetProvider {
 
     fun pickAssetFromCategories(
         vararg categories: WaifuAssetCategory
-    ): MotivationAsset =
-        createAssetByCategory(categories.random(random))
+    ): Optional<MotivationAsset> =
+        categories.toOptional()
+            .filter { it.isNotEmpty() }
+            .flatMap { createAssetByCategory(it.random(random)) }
 
-    private fun pickRandomAssetByCategory(category: WaifuAssetCategory): MotivationAsset =
-        constructMotivation(
-            TextAssetDefinitionService.getRandomAssetByCategory(category),
+    private fun pickRandomAssetByCategory(category: WaifuAssetCategory): Optional<MotivationAsset> =
+        allOf(
+            TextAssetService.pickRandomAssetByCategory(category),
             VisualAssetDefinitionService.getRandomAssetByCategory(category),
             AudibleAssetDefinitionService.getRandomAssetByCategory(category)
-        )
+        ).map {
+            constructMotivation(it.first, it.second, it.third)
+        }
 
     private fun constructMotivation(
-        textualAssetDefinition: TextualMotivationAssetDefinition,
-        visualAssetDefinition: VisualMotivationAssetDefinition,
-        audibleAssetDefinition: AudibleMotivationAssetDefinition
+        textualAssetDefinition: TextualMotivationAsset,
+        visualAssetDefinition: VisualMotivationAsset,
+        audibleAssetDefinition: AudibleMotivationAsset
     ): MotivationAsset =
         MotivationAsset(
             "&nbsp;&nbsp;&nbsp;${textualAssetDefinition.title}",
             """
                 <div style="margin: 5px 5px 5px 10px;${getExtraStyles(visualAssetDefinition.imageDimensions)}" >
-                    <img src='${visualAssetDefinition.imagePath}' alt='${visualAssetDefinition.imageAlt}'/>
+                    <img src='${visualAssetDefinition.filePath}' alt='${visualAssetDefinition.imageAlt}'/>
                 </div>
             """.trimIndent(),
-            audibleAssetDefinition.soundFile,
+            audibleAssetDefinition.soundFilePath,
             arrayOf()
         )
 

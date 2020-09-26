@@ -2,16 +2,23 @@ package zd.zero.waifu.motivator.plugin.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.DumbAware;
 import org.jetbrains.annotations.NotNull;
-import zd.zero.waifu.motivator.plugin.alert.AlertAssetProvider;
-import zd.zero.waifu.motivator.plugin.motivation.TextualMotivationFactory;
-import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
-import zd.zero.waifu.motivator.plugin.alert.WaifuMotivatorAlertAssetCategory;
+import zd.zero.waifu.motivator.plugin.ProjectConstants;
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration;
+import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
+import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
+import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
+import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
-public class MotivateMeAction extends AnAction {
+import java.util.Objects;
+
+import static zd.zero.waifu.motivator.plugin.tools.ToolBox.doOrElse;
+
+public class MotivateMeAction extends AnAction implements DumbAware {
 
     @Override
     public void actionPerformed( @NotNull AnActionEvent e ) {
@@ -22,9 +29,25 @@ public class MotivateMeAction extends AnAction {
             pluginState.isMotivateMeEnabled(),
             pluginState.isMotivateMeSoundEnabled() );
 
-        WaifuMotivation waifuMotivation = TextualMotivationFactory.getInstance().constructMotivation( e.getProject(),
-                AlertAssetProvider.getRandomAssetByCategory( WaifuMotivatorAlertAssetCategory.NEUTRAL ), config );
-        waifuMotivation.motivate();
+        ApplicationManager.getApplication().executeOnPooledThread( () ->
+            doOrElse(
+                VisualMotivationAssetProvider.INSTANCE.pickAssetFromCategories(
+                    WaifuAssetCategory.CELEBRATION,
+                    WaifuAssetCategory.HAPPY,
+                    WaifuAssetCategory.SMUG
+                ),
+                motivationAsset ->
+                    VisualMotivationFactory.INSTANCE.constructNonTitledMotivation(
+                        Objects.requireNonNull( e.getProject() ),
+                        motivationAsset,
+                        config
+                    ).motivate(),
+                () ->
+                    UpdateNotification.INSTANCE.sendMessage(
+                        "'Motivate Me' Unavailable Offline",
+                        ProjectConstants.getWAIFU_UNAVAILABLE_MESSAGE(),
+                        e.getProject()
+                    ) ) );
     }
 
     @Override

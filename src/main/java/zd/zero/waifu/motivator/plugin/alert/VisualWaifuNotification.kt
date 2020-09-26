@@ -10,7 +10,7 @@ import zd.zero.waifu.motivator.plugin.assets.MotivationAsset
 import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParameters
 import zd.zero.waifu.motivator.plugin.service.ApplicationService
 
-class VisualWaifuNotification(
+open class VisualWaifuNotification(
     motivationAsset: MotivationAsset,
     val project: Project
 ) : BaseWaifuNotification(motivationAsset) {
