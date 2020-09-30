@@ -1,8 +1,8 @@
 ---
-name: Bug report
+name: 🐛 Bug report
 about: Create a report to help us improve
 title: ''
-labels: bug
+labels: 'type: bug'
 assignees: ''
 
 ---
@@ -18,17 +18,22 @@ Steps to reproduce the behavior:
 4. See error
 
 **Expected behavior**
+
 A clear and concise description of what you expected to happen.
 
+
 **Screenshots**
+
 If applicable, add screenshots to help explain your problem.
 
 **Platform (please complete the following information):**
- - OS: [e.g. MacOS, Windows, Linux]
- - IDE [e.g. ALL, IntelliJ, PyCharm, WebStorm]
- - IDE Version [e.g. 2020.1]
- - Version [e.g. WMP 1.0]
 
+WMP Version: [e.g. WMP 1.x]
+
+You can get the information from `'About IntelliJ IDEA' or any platform | Click the copy to clipboard icon`  and paste them here:
+![About Platform](./about_platform.png)
+*Please remove the image senpai! >.<*
 
 **Additional context**
+
 Add any other context about the problem here.
