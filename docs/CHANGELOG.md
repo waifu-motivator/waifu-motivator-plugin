@@ -96,7 +96,7 @@
     * Wwwwwwaaaaaaaaaaaaaaaaaaaaah
     * Wwwwaaaaaooowww
     * OH MY GAH
-<details>
+</details>
 
 
 ## [v1.0.1](https://github.com/zd-zero/waifu-motivator-plugin/releases/tag/v1.0.1)
