@@ -79,4 +79,5 @@ patchPluginXml {
 
 tasks.markdownToHtml.dependsOn("createReleaseNotes")
 tasks.markdownToHtml.dependsOn("copyPluginDescription")
-tasks.patchPluginXml.dependsOn("markdownToHtml")
+tasks.htmlToMarkdownExtension.dependsOn("markdownToHtml")
+tasks.patchPluginXml.dependsOn("htmlToMarkdownExtension")

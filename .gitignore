@@ -161,3 +161,5 @@ gradle-app.setting
 !.idea/waifu-motivator-plugin.iml
 !.idea/codeStyles/*
 !.idea/runConfigurations/*
+
+.java-version
