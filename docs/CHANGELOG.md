@@ -1,9 +1,9 @@
 # Changelog
 
-## v1.3
-## 27/09/2020
+## [v1.3](https://github.com/zd-zero/waifu-motivator-plugin/releases/tag/v1.3)
+#### 27/09/2020
 
-Features:
+:sparkles: Features:
 
 * [WMP-190](https://github.com/zd-zero/waifu-motivator-plugin/issues/190) Organized settings menu.
 * [WMP-155](https://github.com/zd-zero/waifu-motivator-plugin/issues/155) When any executed process through the IDE fails with an un-allowed exit code then you get a motivation event.
@@ -14,7 +14,7 @@ Features:
 * [WMP-133](https://github.com/zd-zero/waifu-motivator-plugin/issues/133) When your code fails to build you'll get a `Surprised` or `Disapointed` event. The next time that your build succeeds, then you'll get a `Celebration` or `Smug` event.
 * [WMP-154](https://github.com/zd-zero/waifu-motivator-plugin/issues/154) When the user's IDE remains idle for a configured amount of time (defaults to 5 minutes) then the plugin will display a bored/waiting anime girl.
 
-Bug Fixes:
+:bug: Bug Fixes:
 
 * Fixed [WMP-153](https://github.com/zd-zero/waifu-motivator-plugin/issues/153) Successful test runs with ignored tests now emit success motivation events.
 * Fixed [WMP-178](https://github.com/zd-zero/waifu-motivator-plugin/issues/178) Plugin actions can now be used while IDE is indexing.
@@ -24,9 +24,9 @@ Bug Fixes:
 * Fixed [WMP-167](https://github.com/zd-zero/waifu-motivator-plugin/issues/167) Sound player runtime exception
 
 
-## v1.2
-## 21/08/2020
-Features:
+## [v1.2](https://github.com/zd-zero/waifu-motivator-plugin/releases/tag/v1.2)
+#### 21/08/2020
+:sparkles: Features:
 
 * [WMP-097](https://github.com/zd-zero/waifu-motivator-plugin/issues/97) Ability to disable 'Motivate Me' notification
 * [WMP-080](https://github.com/zd-zero/waifu-motivator-plugin/issues/80) Improvements on toolbar menu
@@ -34,7 +34,7 @@ Features:
 * [WMP-102](https://github.com/zd-zero/waifu-motivator-plugin/issues/102) Welcome dialog for newly installed plugin or new version
 * [WMP-100](https://github.com/zd-zero/waifu-motivator-plugin/issues/100) Add images associated to the alert notification
 
-Bug fix:
+:bug: Bug fix:
 
 * Fix [WMP-110](https://github.com/zd-zero/waifu-motivator-plugin/issues/110) Waifu unit tester executes multiple times
 * Fix [WMP-112](https://github.com/zd-zero/waifu-motivator-plugin/issues/112) Multiple different startup sounds
@@ -63,7 +63,8 @@ Bug fix:
 * WMP-037 Create Waifu of the Day provider
 * WMP-050 Update text 'source' to 'sauce
 * WMP-051 Include more assets for waifu of the day and events
-  * **Waifu of The Day**
+<details>
+  <summary>**Waifu of The Day**</summary>
     * Update Aqua image
     * Shinobu Kocho
     * Mitsuri Kanroji
@@ -87,12 +88,15 @@ Bug fix:
     * Nino Nakano
     * Itsuki Nakano
     * Yotsuba Nakano
+</details>
 
-  * **Alert Assets**
+<details>
+  <summary>**Alert Assets**</summary>
     * Nyaaan
     * Wwwwwwaaaaaaaaaaaaaaaaaaaaah
     * Wwwwaaaaaooowww
     * OH MY GAH
+<details>
 
 
 ## [v1.0.1](https://github.com/zd-zero/waifu-motivator-plugin/releases/tag/v1.0.1)
