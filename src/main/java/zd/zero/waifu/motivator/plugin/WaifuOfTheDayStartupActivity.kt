@@ -30,11 +30,10 @@ class WaifuOfTheDayStartupActivity : StartupActivity.DumbAware {
         val isInitialPlatformTipUpdated = PropertiesComponent.getInstance()
             .getValue(IS_INITIAL_TIP_OF_THE_DAY_UPDATED, "")
             .toBoolean()
-        if (isInitialPlatformTipUpdated) return;
+        if (isInitialPlatformTipUpdated) return
 
         PropertiesComponent.getInstance().setValue(IS_INITIAL_TIP_OF_THE_DAY_UPDATED, true)
         GeneralSettings.getInstance().isShowTipsOnStartup =
             !WaifuMotivatorPluginState.getPluginState().isWaifuOfTheDayEnabled
     }
-
 }
