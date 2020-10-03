@@ -8,7 +8,7 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
 public class DialogTipPanel implements DialogWrapper.DoNotAskOption {
 
-    private WaifuMotivatorState pluginState;
+    private final WaifuMotivatorState pluginState;
 
     public DialogTipPanel() {
         this.pluginState = WaifuMotivatorPluginState.getInstance().getState();

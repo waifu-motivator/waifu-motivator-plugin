@@ -96,9 +96,8 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
         WaifuMotivatorState pluginState = WaifuMotivatorPluginState.getPluginState();
         boolean canBeShownToday = pluginState != null && pluginState.isWaifuOfTheDayEnabled() &&
             !GeneralSettings.getInstance().isShowTipsOnStartup() && !isDialogShownToday();
-        if ( canBeShownToday && !UserOnboarding.INSTANCE.isNewVersion() ) {
-            show( project );
-        }
+
+        if ( canBeShownToday ) show( project );
     }
 
     public static void show( Project project ) {
