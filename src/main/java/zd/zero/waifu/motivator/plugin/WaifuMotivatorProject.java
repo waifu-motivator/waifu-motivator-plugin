@@ -1,7 +1,5 @@
 package zd.zero.waifu.motivator.plugin;
 
-import com.intellij.ide.GeneralSettings;
-import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.project.Project;
@@ -39,8 +37,6 @@ import static zd.zero.waifu.motivator.plugin.tools.ToolBox.doOrElse;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
-    private static final String IS_INITIAL_PLATFORM_TIP_UPDATED = "WAIFU_UPDATE_TIP";
-
     private Project project;
 
     private WaifuUnitTester unitTestListener;
@@ -59,8 +55,6 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             this.unitTestListener = WaifuUnitTester.newInstance( projectOpened );
             this.idleEventListener = new IdleEventListener( projectOpened );
             this.exitCodeListener = new ExitCodeListener( projectOpened );
-
-            updatePlatformStartupConfig();
             initializeListeners();
             initializeStartupMotivator();
             UserOnboarding.INSTANCE.attemptToPerformNewUpdateActions();
@@ -92,9 +86,7 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     @Override
     public void projectClosing( @NotNull Project project ) {
-        if(project == this.project) {
-            dispose();
-        }
+        if ( project == this.project ) dispose();
 
         if ( !getPluginState().isSayonaraEnabled() ||
             areMultipleProjectsOpened() ||
@@ -114,15 +106,6 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
 
     private void initializeListeners() {
         this.unitTestListener.init();
-    }
-
-    private void updatePlatformStartupConfig() {
-        boolean isInitialPlatformTipUpdated = Boolean.parseBoolean( PropertiesComponent.getInstance()
-            .getValue( IS_INITIAL_PLATFORM_TIP_UPDATED, "" ) );
-        if ( !isInitialPlatformTipUpdated ) {
-            PropertiesComponent.getInstance().setValue( IS_INITIAL_PLATFORM_TIP_UPDATED, true );
-            GeneralSettings.getInstance().setShowTipsOnStartup( !getPluginState().isWaifuOfTheDayEnabled() );
-        }
     }
 
     private void initializeStartupMotivator() {
