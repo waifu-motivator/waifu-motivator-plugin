@@ -2,13 +2,16 @@ package zd.zero.waifu.motivator.plugin
 
 import com.intellij.ide.GeneralSettings
 import com.intellij.ide.util.PropertiesComponent
-import com.intellij.openapi.application.ModalityState
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.StartupActivity
-import com.intellij.util.Alarm
+import com.intellij.openapi.util.Disposer
+import com.intellij.util.concurrency.EdtScheduledExecutorService
 import zd.zero.waifu.motivator.plugin.alert.dialog.WaifuOfTheDayDialog
 import zd.zero.waifu.motivator.plugin.personality.Wendi
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicReference
 
 class WaifuOfTheDayStartupActivity : StartupActivity.DumbAware {
 
@@ -20,10 +23,21 @@ class WaifuOfTheDayStartupActivity : StartupActivity.DumbAware {
         Wendi.initialize()
         updatePlatformTipOfTheDayConfig()
 
-        Alarm(project).addRequest(
-            { WaifuOfTheDayDialog.canBeShownToday(project) },
-            0, ModalityState.any()
-        )
+        val disposableRef = AtomicReference<Disposable?>()
+        val future = EdtScheduledExecutorService.getInstance().schedule({
+            val disposable = disposableRef.getAndSet(null) ?: return@schedule
+            Disposer.dispose(disposable)
+
+            if (!project.isDisposed) WaifuOfTheDayDialog.canBeShownToday(project)
+        }, 0, TimeUnit.SECONDS)
+
+        val disposable = Disposable {
+            disposableRef.set(null)
+            future.cancel(false)
+        }
+
+        disposableRef.set(disposable)
+        Disposer.register(Disposer.newDisposable(), disposable)
     }
 
     private fun updatePlatformTipOfTheDayConfig() {
