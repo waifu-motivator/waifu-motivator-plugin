@@ -38,11 +38,32 @@ object VisualMotivationFactory : WaifuMotivationFactory {
         )
 }
 
+interface MotivationLifecycleListener {
+
+    fun onDisplay()
+
+    fun onDispose()
+}
+
+val defaultListener = object : MotivationLifecycleListener {
+    override fun onDisplay() {}
+
+    override fun onDispose() {}
+
+}
 
 object MotivationFactory {
 
     fun showMotivationEventForCategory(
         motivationEvent: MotivationEvent,
+        waifuAssetCategory: WaifuAssetCategory
+    ) = showMotivationEventForCategory(
+        motivationEvent, defaultListener, waifuAssetCategory
+    )
+
+    fun showMotivationEventForCategory(
+        motivationEvent: MotivationEvent,
+        lifecycleListener: MotivationLifecycleListener,
         waifuAssetCategory: WaifuAssetCategory
     ) {
         val project = motivationEvent.project
@@ -55,15 +76,17 @@ object MotivationFactory {
                 ).setListener(
                     object : MotivationListener {
                         override fun onDisposal() {
-
+                            lifecycleListener.onDispose()
                         }
                     }
                 )
                 if (project.isInitialized) {
+                    lifecycleListener.onDisplay()
                     motivation.motivate()
                 } else {
                     StartupManager.getInstance(project)
                         .registerPostStartupActivity {
+                            lifecycleListener.onDisplay()
                             motivation.motivate()
                         }
                 }

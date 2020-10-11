@@ -1,15 +1,11 @@
 package zd.zero.waifu.motivator.plugin.personality.core
 
 import com.intellij.openapi.project.Project
-import zd.zero.waifu.motivator.plugin.ProjectConstants
-import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
-import zd.zero.waifu.motivator.plugin.motivation.MotivationListener
-import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory
+import zd.zero.waifu.motivator.plugin.motivation.MotivationFactory
+import zd.zero.waifu.motivator.plugin.motivation.MotivationLifecycleListener
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
-import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
-import zd.zero.waifu.motivator.plugin.tools.doOrElse
 
 class IdlePersonalityCore : PersonalityCore {
 
@@ -21,27 +17,20 @@ class IdlePersonalityCore : PersonalityCore {
     ) {
         val project = motivationEvent.project
         if (displayedProjects.contains(motivationEvent.project).not()) {
-            VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.WAITING)
-                .doOrElse({ asset ->
-                    displayedProjects.add(project)
-                    VisualMotivationFactory.constructMotivation(
-                            project,
-                            asset,
-                            motivationEvent.alertConfigurationSupplier()
-                    ).setListener(
-                        object : MotivationListener {
-                            override fun onDisposal() {
-                                displayedProjects.remove(project)
-                            }
-                        }
-                    ).motivate()
-                }) {
-                    UpdateNotification.sendMessage(
-                            "'${motivationEvent.title}' unavailable offline.",
-                            ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
-                            project
-                    )
-                }
+            MotivationFactory.showMotivationEventForCategory(
+                motivationEvent,
+                object : MotivationLifecycleListener {
+                    override fun onDisplay() {
+                        displayedProjects.add(project)
+                    }
+
+                    override fun onDispose() {
+                        displayedProjects.remove(project)
+                    }
+
+                },
+                WaifuAssetCategory.WAITING
+            )
         }
     }
 }
