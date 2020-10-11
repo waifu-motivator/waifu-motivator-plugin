@@ -12,7 +12,9 @@ import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
 import zd.zero.waifu.motivator.plugin.player.WaifuSoundPlayerFactory
+import zd.zero.waifu.motivator.plugin.tools.AssetTools.resolveAssetFromCategories
 import zd.zero.waifu.motivator.plugin.tools.doOrElse
+import java.util.*
 
 object VisualMotivationFactory : WaifuMotivationFactory {
     override fun constructMotivation(
@@ -61,13 +63,30 @@ object MotivationFactory {
         motivationEvent, defaultListener, waifuAssetCategory
     )
 
+    fun showMotivationEventFromCategories(
+        motivationEvent: MotivationEvent,
+        lifecycleListener: MotivationLifecycleListener,
+        vararg waifuAssetCategory: WaifuAssetCategory
+    ) = showAssetForCategory(motivationEvent, lifecycleListener) {
+        resolveAssetFromCategories(*waifuAssetCategory)
+    }
+
+
     fun showMotivationEventForCategory(
         motivationEvent: MotivationEvent,
         lifecycleListener: MotivationLifecycleListener,
         waifuAssetCategory: WaifuAssetCategory
+    ) = showAssetForCategory(motivationEvent, lifecycleListener) {
+        VisualMotivationAssetProvider.createAssetByCategory(waifuAssetCategory)
+    }
+
+    private fun showAssetForCategory(
+        motivationEvent: MotivationEvent,
+        lifecycleListener: MotivationLifecycleListener,
+        assetSupplier: () -> Optional<MotivationAsset>
     ) {
         val project = motivationEvent.project
-        VisualMotivationAssetProvider.createAssetByCategory(waifuAssetCategory)
+        assetSupplier()
             .doOrElse({ asset ->
                 val motivation = VisualMotivationFactory.constructMotivation(
                     project,
