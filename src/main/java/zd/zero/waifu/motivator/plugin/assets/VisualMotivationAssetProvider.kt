@@ -17,6 +17,7 @@ enum class WaifuAssetCategory {
     DEPARTURE,
     ENCOURAGEMENT,
     TSUNDERE,
+    MOCKING,
     SHOCKED,
     DISAPPOINTMENT // you don't want to disappoint your waifu now do you?
 }

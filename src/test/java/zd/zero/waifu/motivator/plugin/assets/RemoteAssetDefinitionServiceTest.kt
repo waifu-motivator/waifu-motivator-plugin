@@ -203,7 +203,7 @@ class RemoteAssetDefinitionServiceTest {
         val bestLocalMotivation = VisualMotivationAssetDefinition(
             "Local Ishtar",
             "Local Ishtar",
-            "Global Best Girl",
+            "Global Goddess",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION),
             groupId
@@ -238,7 +238,7 @@ class RemoteAssetDefinitionServiceTest {
         val remoteAsset = VisualMotivationAssetDefinition(
             "Local Ishtar",
             "Local Ishtar",
-            "Global Best Girl",
+            "Global Goddess",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION),
             groupId
@@ -273,7 +273,7 @@ class RemoteAssetDefinitionServiceTest {
         val remoteAsset = VisualMotivationAssetDefinition(
             "Local Ishtar",
             "Local Ishtar",
-            "Global Best Girl",
+            "Global Goddess",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION),
             UUID.randomUUID()

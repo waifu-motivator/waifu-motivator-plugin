@@ -10,7 +10,7 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
 import zd.zero.waifu.motivator.plugin.tools.AssetTools
 import zd.zero.waifu.motivator.plugin.tools.doOrElse
-import java.util.*
+import java.util.Optional
 
 object MotivationFactory {
 
@@ -25,36 +25,43 @@ object MotivationFactory {
         motivationEvent: MotivationEvent,
         lifecycleListener: MotivationLifecycleListener,
         vararg waifuAssetCategory: WaifuAssetCategory
-    ) = showAssetForCategory(
-        motivationEvent,
-        lifecycleListener,
-        { motivationAsset: MotivationAsset ->
+    ) = showMotivationFromMultipleCategories(
+        motivationEvent, lifecycleListener, waifuAssetCategory
+    ) { motivationAsset: MotivationAsset ->
             VisualMotivationFactory.constructMotivation(
-                    motivationEvent.project,
-                    motivationAsset,
-                    motivationEvent.alertConfigurationSupplier()
+                motivationEvent.project,
+                motivationAsset,
+                motivationEvent.alertConfigurationSupplier()
             )
         }
-    ) {
-        AssetTools.resolveAssetFromCategories(*waifuAssetCategory)
-    }
 
     fun showUntitledMotivationEventFromCategories(
         motivationEvent: MotivationEvent,
         lifecycleListener: MotivationLifecycleListener?,
         vararg waifuAssetCategory: WaifuAssetCategory
-    ) = showAssetForCategory(
-        motivationEvent,
-        lifecycleListener ?: defaultListener,
-        { motivationAsset: MotivationAsset ->
-            VisualMotivationFactory.constructNonTitledMotivation(
-                    motivationEvent.project,
-                    motivationAsset,
-                    motivationEvent.alertConfigurationSupplier()
-            )
-        }
+    ) = showMotivationFromMultipleCategories(
+        motivationEvent, lifecycleListener ?: defaultListener, waifuAssetCategory
+    ) { motivationAsset: MotivationAsset ->
+        VisualMotivationFactory.constructNonTitledMotivation(
+            motivationEvent.project,
+            motivationAsset,
+            motivationEvent.alertConfigurationSupplier()
+        )
+    }
+
+    private fun showMotivationFromMultipleCategories(
+        motivationEvent: MotivationEvent,
+        lifecycleListener: MotivationLifecycleListener,
+        waifuAssetCategory: Array<out WaifuAssetCategory>,
+        motivationConstructor: (MotivationAsset) -> WaifuMotivation
     ) {
-        AssetTools.resolveAssetFromCategories(*waifuAssetCategory)
+        showAssetForCategory(
+            motivationEvent,
+            lifecycleListener,
+            motivationConstructor
+        ) {
+            AssetTools.resolveAssetFromCategories(*waifuAssetCategory)
+        }
     }
 
     fun showMotivationEventForCategory(
@@ -66,9 +73,9 @@ object MotivationFactory {
         lifecycleListener,
         { motivationAsset: MotivationAsset ->
             VisualMotivationFactory.constructMotivation(
-                    motivationEvent.project,
-                    motivationAsset,
-                    motivationEvent.alertConfigurationSupplier()
+                motivationEvent.project,
+                motivationAsset,
+                motivationEvent.alertConfigurationSupplier()
             )
         }
     ) {
