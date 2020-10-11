@@ -38,7 +38,8 @@ object VisualMotivationAssetProvider {
             WaifuAssetCategory.WELCOMING,
             WaifuAssetCategory.ENRAGED,
             WaifuAssetCategory.FRUSTRATION,
-            WaifuAssetCategory.HAPPY
+            WaifuAssetCategory.HAPPY,
+            WaifuAssetCategory.MOCKING
             -> pickRandomAssetByCategory(
                 category
             )

@@ -3,7 +3,7 @@ package zd.zero.waifu.motivator.plugin.assets
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkObject
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.AfterClass
 import org.junit.BeforeClass
 import org.junit.Test
@@ -35,7 +35,7 @@ class VisualMotivationAssetProviderTest {
     }
 
     @Test
-    fun createAssetByCategoryShouldReturnEmptyWhenTextAssetDoesNotExist() {
+    fun `createAssetByCategory should return empty when text does not resolve`() {
         every { TextAssetService.pickRandomAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns Optional.empty()
         every { VisualAssetDefinitionService.getRandomAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
             VisualMotivationAsset("Just", "Monika", ImageDimension(69, 420)).toOptional()
@@ -44,11 +44,11 @@ class VisualMotivationAssetProviderTest {
 
         val maybeMotivationAsset = VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.CELEBRATION)
 
-        Assertions.assertThat(maybeMotivationAsset.isEmpty).isTrue()
+        assertThat(maybeMotivationAsset.isEmpty).isTrue()
     }
 
     @Test
-    fun createAssetByCategoryShouldReturnEmptyWhenVisualAssetDoesNotExist() {
+    fun `createAssetByCategory should return empty when visual does not resolve`() {
         every { TextAssetService.pickRandomAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
             TextualMotivationAsset("Just Monika").toOptional()
         every { VisualAssetDefinitionService.getRandomAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
@@ -58,11 +58,11 @@ class VisualMotivationAssetProviderTest {
 
         val maybeMotivationAsset = VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.CELEBRATION)
 
-        Assertions.assertThat(maybeMotivationAsset.isEmpty).isTrue()
+        assertThat(maybeMotivationAsset.isEmpty).isTrue()
     }
 
     @Test
-    fun createAssetByCategoryShouldReturnEmptyWhenAudibleAssetDoesNotExist() {
+    fun `createAssetByCategory should return empty when audio does not exist`() {
         every { TextAssetService.pickRandomAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
             TextualMotivationAsset("Just Monika").toOptional()
         every { VisualAssetDefinitionService.getRandomAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
@@ -72,11 +72,11 @@ class VisualMotivationAssetProviderTest {
 
         val maybeMotivationAsset = VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.CELEBRATION)
 
-        Assertions.assertThat(maybeMotivationAsset.isEmpty).isTrue()
+        assertThat(maybeMotivationAsset.isEmpty).isTrue()
     }
 
     @Test
-    fun createAssetByCategoryShouldReturnExpectedMotivationWhenAllAssetsResolve() {
+    fun `createAssetByCategory should return expected motivation when all assets resolve`() {
         every { TextAssetService.pickRandomAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
             TextualMotivationAsset("Just Monika").toOptional()
         every { VisualAssetDefinitionService.getRandomAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
@@ -87,8 +87,80 @@ class VisualMotivationAssetProviderTest {
         val maybeMotivationAsset = VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.CELEBRATION)
             .get()
 
-        Assertions.assertThat(maybeMotivationAsset.title).contains("Just Monika")
-        Assertions.assertThat(maybeMotivationAsset.soundFilePath).isEqualTo(Paths.get("just", "monika"))
-        Assertions.assertThat(maybeMotivationAsset.message).contains("Just", "Monika")
+        assertThat(maybeMotivationAsset.title).contains("Just Monika")
+        assertThat(maybeMotivationAsset.soundFilePath).isEqualTo(Paths.get("just", "monika"))
+        assertThat(maybeMotivationAsset.message).contains("Just", "Monika")
+    }
+
+    @Test
+    fun `createAssetByCategory should return related group assets`() {
+        val groupId = UUID.randomUUID()
+        every { VisualAssetDefinitionService.getRandomAssetByCategory(WaifuAssetCategory.MOCKING) } returns
+            VisualMotivationAsset(
+                "/o_kawaii_koto.gif",
+                "O Kawaii Koto",
+                ImageDimension(69, 420),
+                groupId
+            ).toOptional()
+        every { TextAssetService.getAssetByGroupId(
+            groupId, WaifuAssetCategory.MOCKING
+        ) } returns TextualMotivationAsset("O Kawaii Koto").toOptional()
+        every { AudibleAssetDefinitionService.getAssetByGroupId(
+            groupId, WaifuAssetCategory.MOCKING
+        ) } returns AudibleMotivationAsset(Paths.get("/o_kawaii_koto.mp3")).toOptional()
+
+        val maybeMotivationAsset =
+            VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.MOCKING)
+            .get()
+
+        assertThat(maybeMotivationAsset.title).contains("O Kawaii Koto")
+        assertThat(maybeMotivationAsset.soundFilePath).isEqualTo(Paths.get("/o_kawaii_koto.mp3"))
+        assertThat(maybeMotivationAsset.message).contains("o_kawaii_koto.gif")
+    }
+
+    @Test
+    fun `createAssetByCategory should return empty when group text does not resolve`() {
+        val groupId = UUID.randomUUID()
+        every { VisualAssetDefinitionService.getRandomAssetByCategory(WaifuAssetCategory.MOCKING) } returns
+            VisualMotivationAsset(
+                "/o_kawaii_koto.gif",
+                "O Kawaii Koto",
+                ImageDimension(69, 420),
+                groupId
+            ).toOptional()
+        every { TextAssetService.getAssetByGroupId(
+            groupId, WaifuAssetCategory.MOCKING
+        ) } returns Optional.empty()
+        every { AudibleAssetDefinitionService.getAssetByGroupId(
+            groupId, WaifuAssetCategory.MOCKING
+        ) } returns AudibleMotivationAsset(Paths.get("/o_kawaii_koto.mp3")).toOptional()
+
+        assertThat(
+            VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.MOCKING)
+                .isEmpty
+        ).isTrue()
+    }
+
+    @Test
+    fun `createAssetByCategory should return empty when group audio does not resolve`() {
+        val groupId = UUID.randomUUID()
+        every { VisualAssetDefinitionService.getRandomAssetByCategory(WaifuAssetCategory.MOCKING) } returns
+            VisualMotivationAsset(
+                "/o_kawaii_koto.gif",
+                "O Kawaii Koto",
+                ImageDimension(69, 420),
+                groupId
+            ).toOptional()
+        every { TextAssetService.getAssetByGroupId(
+            groupId, WaifuAssetCategory.MOCKING
+        ) } returns TextualMotivationAsset("O Kawaii Koto").toOptional()
+        every { AudibleAssetDefinitionService.getAssetByGroupId(
+            groupId, WaifuAssetCategory.MOCKING
+        ) } returns Optional.empty()
+
+        assertThat(
+            VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.MOCKING)
+                .isEmpty
+        ).isTrue()
     }
 }

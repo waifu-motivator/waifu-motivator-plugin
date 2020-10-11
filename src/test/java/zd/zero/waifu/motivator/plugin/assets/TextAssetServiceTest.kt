@@ -48,7 +48,6 @@ class TextAssetServiceTest {
         verify(exactly = 1) { TextAssetDefinitionService.getRandomAssetByCategory(WaifuAssetCategory.SHOCKED) }
     }
 
-
     @Test
     fun `pickRandomAssetByCategory should return expected asset`() {
         every { TextAssetDefinitionService.getRandomAssetByCategory(WaifuAssetCategory.SHOCKED) } returns
