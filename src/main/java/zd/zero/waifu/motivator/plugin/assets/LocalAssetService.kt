@@ -14,6 +14,7 @@ import java.security.MessageDigest
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 private enum class AssetChangedStatus {
     SAME, DIFFERENT, LUL_DUNNO
@@ -22,7 +23,7 @@ private enum class AssetChangedStatus {
 object LocalAssetService {
     private val log = Logger.getInstance(this::class.java)
     private val gson = GsonBuilder().setPrettyPrinting().create()
-    private val assetChecks: MutableMap<String, Instant> = readPreviousAssetChecks()
+    private val assetChecks: ConcurrentHashMap<String, Instant> = readPreviousAssetChecks()
 
     fun hasAssetChanged(
         localInstallPath: Path,
@@ -75,29 +76,29 @@ object LocalAssetService {
             .ifPresent {
                 LocalStorageService.createDirectories(it)
                 Files.newBufferedWriter(
-                        it, Charset.defaultCharset(),
-                        StandardOpenOption.CREATE,
-                        StandardOpenOption.TRUNCATE_EXISTING
+                    it, Charset.defaultCharset(),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING
                 ).use { writer ->
                     writer.write(gson.toJson(assetChecks))
                 }
             }
     }
 
-    private fun readPreviousAssetChecks(): MutableMap<String, Instant> = try {
+    private fun readPreviousAssetChecks(): ConcurrentHashMap<String, Instant> = try {
         getAssetChecksFile()
             .filter { Files.exists(it) }
             .map {
                 Files.newBufferedReader(it).use { reader ->
-                    gson.fromJson<Map<String, Instant>>(
+                    gson.fromJson<ConcurrentHashMap<String, Instant>>(
                         reader,
-                        object : TypeToken<Map<String, Instant>>() {}.type
+                        object : TypeToken<ConcurrentHashMap<String, Instant>>() {}.type
                     )
-                }.toMutableMap()
-            }.orElseGet { mutableMapOf() }
+                }
+            }.orElseGet { ConcurrentHashMap() }
     } catch (e: Throwable) {
         log.warn("Unable to get local asset checks for raisins", e)
-        mutableMapOf()
+        ConcurrentHashMap()
     }
 
     private fun getAssetChecksFile() = LocalStorageService.getLocalAssetDirectory()
