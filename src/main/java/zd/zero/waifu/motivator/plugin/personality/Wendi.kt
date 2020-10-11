@@ -106,6 +106,7 @@ object Wendi : Disposable {
             MotivationEvents.TEST,
             MotivationEvents.TASK -> taskPersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
             MotivationEvents.IDLE -> idlePersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
+            else -> {}
         }
     }
 

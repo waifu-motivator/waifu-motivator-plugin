@@ -14,14 +14,15 @@ import zd.zero.waifu.motivator.plugin.assets.HasStatus;
 import zd.zero.waifu.motivator.plugin.assets.Status;
 import zd.zero.waifu.motivator.plugin.assets.TextAssetManager;
 import zd.zero.waifu.motivator.plugin.assets.VisualAssetManager;
-import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider;
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory;
 import zd.zero.waifu.motivator.plugin.listeners.ExitCodeListener;
 import zd.zero.waifu.motivator.plugin.listeners.IdleEventListener;
 import zd.zero.waifu.motivator.plugin.listeners.PluginInstallListener;
 import zd.zero.waifu.motivator.plugin.listeners.WaifuUnitTester;
-import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory;
-import zd.zero.waifu.motivator.plugin.motivation.WaifuMotivation;
+import zd.zero.waifu.motivator.plugin.motivation.MotivationFactory;
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent;
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory;
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents;
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification;
 import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
 import zd.zero.waifu.motivator.plugin.platform.LifeCycleManager;
@@ -33,7 +34,6 @@ import java.util.stream.Stream;
 
 import static java.util.Optional.ofNullable;
 import static zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState.getPluginState;
-import static zd.zero.waifu.motivator.plugin.tools.ToolBox.doOrElse;
 
 public class WaifuMotivatorProject implements ProjectManagerListener, Disposable {
 
@@ -119,28 +119,16 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
             pluginState.isStartupMotivationSoundEnabled()
         );
 
-        doOrElse(
-            VisualMotivationAssetProvider.INSTANCE.createAssetByCategory(
-                WaifuAssetCategory.WELCOMING
+        MotivationFactory.INSTANCE.showMotivationEventForCategory(
+            new MotivationEvent(
+                MotivationEvents.MISC,
+                MotivationEventCategory.NEUTRAL,
+                "Welcome Waifu",
+                project,
+                () -> config
             ),
-            asset -> {
-                WaifuMotivation waifuMotivation = VisualMotivationFactory.INSTANCE.constructMotivation(
-                    project,
-                    asset,
-                    config
-                );
-
-                if ( !project.isInitialized() ) {
-                    StartupManager.getInstance( project ).registerPostStartupActivity( waifuMotivation::motivate );
-                } else {
-                    waifuMotivation.motivate();
-                }
-            },
-            () -> UpdateNotification.INSTANCE.sendMessage(
-                "'Welcome Waifu' Unavailable Offline",
-                ProjectConstants.getWAIFU_UNAVAILABLE_MESSAGE(),
-                project
-            ) );
+            WaifuAssetCategory.WELCOMING
+        );
     }
 
     private boolean areMultipleProjectsOpened() {
