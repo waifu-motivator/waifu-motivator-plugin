@@ -51,7 +51,6 @@ val defaultListener = object : MotivationLifecycleListener {
     override fun onDisplay() {}
 
     override fun onDispose() {}
-
 }
 
 // todo: Async assets....
@@ -99,7 +98,6 @@ object MotivationFactory {
     ) {
         resolveAssetFromCategories(*waifuAssetCategory)
     }
-
 
     fun showMotivationEventForCategory(
         motivationEvent: MotivationEvent,

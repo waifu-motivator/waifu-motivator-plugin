@@ -27,7 +27,6 @@ class IdlePersonalityCore : PersonalityCore {
                     override fun onDispose() {
                         displayedProjects.remove(project)
                     }
-
                 },
                 WaifuAssetCategory.WAITING
             )

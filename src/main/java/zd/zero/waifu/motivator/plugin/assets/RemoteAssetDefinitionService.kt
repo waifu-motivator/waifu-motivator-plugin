@@ -13,7 +13,7 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
 
     fun getAssetByGroupId(
         groupId: UUID,
-        category: WaifuAssetCategory,
+        category: WaifuAssetCategory
     ): Optional<U> =
         resolveAsset(
             remoteAssetManager.supplyLocalAssetDefinitions()
