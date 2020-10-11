@@ -54,6 +54,7 @@ val defaultListener = object : MotivationLifecycleListener {
 
 }
 
+// todo: Async assets....
 object MotivationFactory {
 
     fun showMotivationEventForCategory(
@@ -67,7 +68,37 @@ object MotivationFactory {
         motivationEvent: MotivationEvent,
         lifecycleListener: MotivationLifecycleListener,
         vararg waifuAssetCategory: WaifuAssetCategory
-    ) = showAssetForCategory(motivationEvent, lifecycleListener) {
+    ) = showAssetForCategory(
+        motivationEvent,
+        lifecycleListener,
+        { motivationAsset: MotivationAsset ->
+            VisualMotivationFactory.constructMotivation(
+                motivationEvent.project,
+                motivationAsset,
+                motivationEvent.alertConfigurationSupplier()
+            )
+
+        }
+    ) {
+        resolveAssetFromCategories(*waifuAssetCategory)
+    }
+
+    fun showUntitledMotivationEventFromCategories(
+        motivationEvent: MotivationEvent,
+        lifecycleListener: MotivationLifecycleListener?,
+        vararg waifuAssetCategory: WaifuAssetCategory
+    ) = showAssetForCategory(
+        motivationEvent,
+        lifecycleListener ?: defaultListener,
+        { motivationAsset: MotivationAsset ->
+            VisualMotivationFactory.constructNonTitledMotivation(
+                motivationEvent.project,
+                motivationAsset,
+                motivationEvent.alertConfigurationSupplier()
+            )
+
+        }
+    ) {
         resolveAssetFromCategories(*waifuAssetCategory)
     }
 
@@ -76,29 +107,40 @@ object MotivationFactory {
         motivationEvent: MotivationEvent,
         lifecycleListener: MotivationLifecycleListener,
         waifuAssetCategory: WaifuAssetCategory
-    ) = showAssetForCategory(motivationEvent, lifecycleListener) {
+    ) = showAssetForCategory(
+        motivationEvent,
+        lifecycleListener,
+        { motivationAsset: MotivationAsset ->
+            VisualMotivationFactory.constructMotivation(
+                motivationEvent.project,
+                motivationAsset,
+                motivationEvent.alertConfigurationSupplier()
+            )
+
+        }
+    ) {
         VisualMotivationAssetProvider.createAssetByCategory(waifuAssetCategory)
     }
 
     private fun showAssetForCategory(
         motivationEvent: MotivationEvent,
         lifecycleListener: MotivationLifecycleListener,
+        motivationConstructor: (MotivationAsset) -> WaifuMotivation,
         assetSupplier: () -> Optional<MotivationAsset>
     ) {
         val project = motivationEvent.project
         assetSupplier()
             .doOrElse({ asset ->
-                val motivation = VisualMotivationFactory.constructMotivation(
-                    project,
-                    asset,
-                    motivationEvent.alertConfigurationSupplier()
-                ).setListener(
-                    object : MotivationListener {
-                        override fun onDisposal() {
-                            lifecycleListener.onDispose()
+                val motivation =
+                    motivationConstructor(
+                        asset
+                    ).setListener(
+                        object : MotivationListener {
+                            override fun onDisposal() {
+                                lifecycleListener.onDispose()
+                            }
                         }
-                    }
-                )
+                    )
                 if (project.isInitialized) {
                     lifecycleListener.onDisplay()
                     motivation.motivate()
@@ -117,4 +159,5 @@ object MotivationFactory {
                 )
             }
     }
+
 }
