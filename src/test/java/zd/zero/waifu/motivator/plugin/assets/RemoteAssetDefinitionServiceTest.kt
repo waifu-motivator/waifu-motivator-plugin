@@ -195,4 +195,99 @@ class RemoteAssetDefinitionServiceTest {
 
         assertThat(randomAsset.get()).isEqualTo(expectedAsset)
     }
+
+    @Test
+    fun `getAssetByGroupId should return asset when available locally`() {
+        val groupId = UUID.randomUUID()
+
+        val bestLocalMotivation = VisualMotivationAssetDefinition(
+            "Local Ishtar",
+            "Local Ishtar",
+            "Global Best Girl",
+            ImageDimension(69, 420),
+            listOf(WaifuAssetCategory.MOTIVATION),
+            groupId
+        )
+        every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf(bestLocalMotivation)
+        val expectedAsset = bestLocalMotivation.toAsset("file:///s-tier-waifus/ishtar.png")
+        every { remoteAssetManager.resolveAsset(bestLocalMotivation) } returns expectedAsset.deepClonePolymorphic()
+            .toOptional()
+
+        val groupAsset = fakeVisualAssetDefinitionService.getAssetByGroupId(
+            groupId,
+            WaifuAssetCategory.MOTIVATION
+        )
+
+        assertThat(groupAsset.get()).isEqualTo(expectedAsset)
+    }
+
+    @Test
+    fun `getAssetByGroupId should download group asset when cant find requested group`() {
+        val groupId = UUID.randomUUID()
+
+        val notTheMotivationYouAreLookingFor = VisualMotivationAssetDefinition(
+            "Local Aqua",
+            "Local Aqua",
+            "Aqua",
+            ImageDimension(69, 420),
+            listOf(WaifuAssetCategory.MOTIVATION),
+            UUID.randomUUID()
+        )
+        every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf(notTheMotivationYouAreLookingFor)
+
+        val remoteAsset = VisualMotivationAssetDefinition(
+            "Local Ishtar",
+            "Local Ishtar",
+            "Global Best Girl",
+            ImageDimension(69, 420),
+            listOf(WaifuAssetCategory.MOTIVATION),
+            groupId
+        )
+        every { remoteAssetManager.supplyRemoteAssetDefinitions() } returns listOf(remoteAsset)
+        val expectedAsset = remoteAsset.toAsset("file:///s-tier-waifus/ishtar.png")
+        every { remoteAssetManager.resolveAsset(remoteAsset) } returns expectedAsset.deepClonePolymorphic()
+            .toOptional()
+
+        val groupAsset = fakeVisualAssetDefinitionService.getAssetByGroupId(
+            groupId,
+            WaifuAssetCategory.MOTIVATION
+        )
+
+        assertThat(groupAsset.get()).isEqualTo(expectedAsset)
+    }
+
+    @Test
+    fun `getAssetByGroupId should pick random asset when cant find requested group locally or remote`() {
+        val groupId = UUID.randomUUID()
+
+        val notTheMotivationYouAreLookingFor = VisualMotivationAssetDefinition(
+            "Local Aqua",
+            "Local Aqua",
+            "Aqua",
+            ImageDimension(69, 420),
+            listOf(WaifuAssetCategory.MOTIVATION),
+            UUID.randomUUID()
+        )
+        every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf(notTheMotivationYouAreLookingFor)
+
+        val remoteAsset = VisualMotivationAssetDefinition(
+            "Local Ishtar",
+            "Local Ishtar",
+            "Global Best Girl",
+            ImageDimension(69, 420),
+            listOf(WaifuAssetCategory.MOTIVATION),
+            UUID.randomUUID()
+        )
+        every { remoteAssetManager.supplyRemoteAssetDefinitions() } returns listOf(remoteAsset)
+        val expectedAsset = remoteAsset.toAsset("file:///b-tier-waifus/aqua.png")
+        every { remoteAssetManager.resolveAsset(notTheMotivationYouAreLookingFor) } returns expectedAsset.deepClonePolymorphic()
+            .toOptional()
+
+        val groupAsset = fakeVisualAssetDefinitionService.getAssetByGroupId(
+            groupId,
+            WaifuAssetCategory.MOTIVATION
+        )
+
+        assertThat(groupAsset.get()).isEqualTo(expectedAsset)
+    }
 }

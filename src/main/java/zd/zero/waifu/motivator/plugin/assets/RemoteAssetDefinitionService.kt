@@ -15,36 +15,39 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
         groupId: UUID,
         category: WaifuAssetCategory
     ): Optional<U> =
-        resolveAsset(
             remoteAssetManager.supplyLocalAssetDefinitions()
                 .find {
                     it.groupId == groupId
-                }.toOptional(),
-            category
-        )
+                }.toOptional()
+                .map {
+                    resolveAsset(category, it)
+                }.orElseGet {
+                    remoteAssetManager.supplyRemoteAssetDefinitions()
+                        .find { it.groupId == groupId }
+                        .toOptional()
+                        .map { remoteAssetManager.resolveAsset(it) }
+                        .orElseGet {
+                            getRandomAssetByCategory(category)
+                        }
+                }
 
     fun getRandomAssetByCategory(
         waifuAssetCategory: WaifuAssetCategory
     ): Optional<U> =
-        resolveAsset(
-            pickRandomAsset(
-                remoteAssetManager.supplyLocalAssetDefinitions(),
-                waifuAssetCategory
-            ),
-            waifuAssetCategory
-        )
+        pickRandomAsset(remoteAssetManager.supplyLocalAssetDefinitions(), waifuAssetCategory)
+            .map {
+                resolveAsset(waifuAssetCategory, it)
+            }.orElseGet {
+                fetchRemoteAsset(waifuAssetCategory)
+            }
 
     private fun resolveAsset(
-        potentialAsset: Optional<T>,
-        category: WaifuAssetCategory
-    ): Optional<U> =
-        potentialAsset
-            .map {
-                downloadNewAsset(category)
-                remoteAssetManager.resolveAsset(it)
-            }.orElseGet {
-                fetchRemoteAsset(category)
-            }
+        waifuAssetCategory: WaifuAssetCategory,
+        it: T
+    ): Optional<U> {
+        downloadNewAsset(waifuAssetCategory)
+        return remoteAssetManager.resolveAsset(it)
+    }
 
     @VisibleForTesting
     protected open fun downloadNewAsset(waifuAssetCategory: WaifuAssetCategory) {
