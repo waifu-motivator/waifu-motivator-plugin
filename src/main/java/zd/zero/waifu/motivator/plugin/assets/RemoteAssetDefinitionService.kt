@@ -11,15 +11,39 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
 ) {
     private val random = Random(System.currentTimeMillis())
 
+    fun getAssetByGroupId(
+        groupId: UUID,
+        category: WaifuAssetCategory,
+    ): Optional<U> =
+        resolveAsset(
+            remoteAssetManager.supplyLocalAssetDefinitions()
+                .find {
+                    it.groupId == groupId
+                }.toOptional(),
+            category
+        )
+
     fun getRandomAssetByCategory(
         waifuAssetCategory: WaifuAssetCategory
     ): Optional<U> =
-        pickRandomAsset(remoteAssetManager.supplyLocalAssetDefinitions(), waifuAssetCategory)
+        resolveAsset(
+            pickRandomAsset(
+                remoteAssetManager.supplyLocalAssetDefinitions(),
+                waifuAssetCategory
+            ),
+            waifuAssetCategory
+        )
+
+    private fun resolveAsset(
+        potentialAsset: Optional<T>,
+        category: WaifuAssetCategory
+    ): Optional<U> =
+        potentialAsset
             .map {
-                downloadNewAsset(waifuAssetCategory)
+                downloadNewAsset(category)
                 remoteAssetManager.resolveAsset(it)
             }.orElseGet {
-                fetchRemoteAsset(waifuAssetCategory)
+                fetchRemoteAsset(category)
             }
 
     @VisibleForTesting

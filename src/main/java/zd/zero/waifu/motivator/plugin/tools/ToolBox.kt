@@ -15,6 +15,15 @@ fun <T, U, S> allOf(
             }
         }
     }
+fun <T, U> allOf(
+    o1: Optional<T>,
+    o2: Optional<U>,
+): Optional<Pair<T, U>> =
+    o1.flatMap { t ->
+        o2.map { u ->
+            Pair(t, u)
+        }
+    }
 
 object ToolBox {
 

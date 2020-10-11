@@ -53,13 +53,33 @@ object VisualMotivationAssetProvider {
             .flatMap { createAssetByCategory(it.random(random)) }
 
     private fun pickRandomAssetByCategory(category: WaifuAssetCategory): Optional<MotivationAsset> =
-        allOf(
-            TextAssetService.pickRandomAssetByCategory(category),
-            VisualAssetDefinitionService.getRandomAssetByCategory(category),
-            AudibleAssetDefinitionService.getRandomAssetByCategory(category)
-        ).map {
-            constructMotivation(it.first, it.second, it.third)
-        }
+        VisualAssetDefinitionService.getRandomAssetByCategory(category)
+            .flatMap { visualAsset ->
+                val assetBundler: (t: Pair<TextualMotivationAsset, AudibleMotivationAsset>) ->
+                Triple<TextualMotivationAsset, VisualMotivationAsset, AudibleMotivationAsset> = { textAndAudioAssets ->
+                    Triple(textAndAudioAssets.first, visualAsset, textAndAudioAssets.second)
+                }
+                visualAsset.groupId.toOptional()
+                    .flatMap { assetGroupId ->
+                        allOf(
+                            TextAssetService.getAssetByGroupId(
+                                assetGroupId, category
+                            ),
+                            AudibleAssetDefinitionService.getAssetByGroupId(
+                                assetGroupId, category
+                            )
+                        ).map(assetBundler)
+                    }.map { it.toOptional() } // todo: replace with `or` when on jre 11+
+                    .orElseGet {
+                        allOf(
+                            TextAssetService.pickRandomAssetByCategory(category),
+                            AudibleAssetDefinitionService.getRandomAssetByCategory(category)
+                        ).map(assetBundler)
+                    }
+            }
+            .map {
+                constructMotivation(it.first, it.second, it.third)
+            }
 
     private fun constructMotivation(
         textualAssetDefinition: TextualMotivationAsset,

@@ -16,7 +16,10 @@ object TextAssetManager : RemoteAssetManager<TextualMotivationAssetDefinition, T
         asset: TextualMotivationAssetDefinition,
         assetUrl: String
     ): TextualMotivationAssetPackage =
-        TextualMotivationAssetPackage(Paths.get(URI(assetUrl)))
+        TextualMotivationAssetPackage(
+            Paths.get(URI(assetUrl)),
+            asset.groupId
+        )
 
     override fun convertToDefinitions(defJson: String): Optional<List<TextualMotivationAssetDefinition>> =
         ExceptionTools.runSafely({

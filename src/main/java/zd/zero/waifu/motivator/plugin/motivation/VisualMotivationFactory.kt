@@ -77,7 +77,6 @@ object MotivationFactory {
                 motivationAsset,
                 motivationEvent.alertConfigurationSupplier()
             )
-
         }
     ) {
         resolveAssetFromCategories(*waifuAssetCategory)
@@ -96,7 +95,6 @@ object MotivationFactory {
                 motivationAsset,
                 motivationEvent.alertConfigurationSupplier()
             )
-
         }
     ) {
         resolveAssetFromCategories(*waifuAssetCategory)
@@ -116,7 +114,6 @@ object MotivationFactory {
                 motivationAsset,
                 motivationEvent.alertConfigurationSupplier()
             )
-
         }
     ) {
         VisualMotivationAssetProvider.createAssetByCategory(waifuAssetCategory)
@@ -159,5 +156,4 @@ object MotivationFactory {
                 )
             }
     }
-
 }
