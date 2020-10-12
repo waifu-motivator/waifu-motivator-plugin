@@ -19,6 +19,7 @@ class IdlePersonalityCore : PersonalityCore {
         if (displayedProjects.contains(motivationEvent.project).not()) {
             MotivationFactory.showMotivationEventForCategory(
                 motivationEvent,
+                WaifuAssetCategory.WAITING,
                 object : MotivationLifecycleListener {
                     override fun onDisplay() {
                         displayedProjects.add(project)
@@ -27,8 +28,7 @@ class IdlePersonalityCore : PersonalityCore {
                     override fun onDispose() {
                         displayedProjects.remove(project)
                     }
-                },
-                WaifuAssetCategory.WAITING
+                }
             )
         }
     }
