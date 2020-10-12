@@ -44,8 +44,12 @@ class TaskPersonalityCore : PersonalityCore {
             Mood.FRUSTRATED -> WaifuAssetCategory.FRUSTRATION.toArray()
             Mood.ENRAGED -> WaifuAssetCategory.ENRAGED.toArray()
             Mood.SHOCKED -> arrayOf(WaifuAssetCategory.SHOCKED)
-            else -> arrayOf(
+            Mood.DISAPPOINTED -> arrayOf(
                 WaifuAssetCategory.DISAPPOINTMENT,
+                WaifuAssetCategory.DISAPPOINTMENT,
+                WaifuAssetCategory.MOCKING
+            )
+            else -> arrayOf(
                 WaifuAssetCategory.SHOCKED
             )
         }
