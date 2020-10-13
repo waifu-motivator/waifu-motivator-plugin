@@ -2,6 +2,7 @@ package zd.zero.waifu.motivator.plugin.settings
 
 import zd.zero.waifu.motivator.plugin.listeners.FORCE_KILLED_EXIT_CODE
 import zd.zero.waifu.motivator.plugin.listeners.OK_EXIT_CODE
+import zd.zero.waifu.motivator.plugin.service.MotivationStatistics.Companion.DEFAULT_STATISTICS_VALUE
 
 class WaifuMotivatorState {
     companion object {
@@ -46,6 +47,10 @@ class WaifuMotivatorState {
     var isAllowFrustration = true
 
     var eventsBeforeFrustration = DEFAULT_EVENTS_BEFORE_FRUSTRATION
+
+    var eventsBeforeTestMotivation = DEFAULT_STATISTICS_VALUE
+
+    var eventsBeforeTaskMotivation = DEFAULT_STATISTICS_VALUE
 
     var probabilityOfFrustration = DEFAULT_FRUSTRATION_PROBABILITY
 

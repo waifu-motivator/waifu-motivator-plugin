@@ -2,6 +2,7 @@ package zd.zero.waifu.motivator.plugin.settings;
 
 import com.intellij.ide.GeneralSettings;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.util.text.StringUtil;
@@ -18,6 +19,7 @@ import zd.zero.waifu.motivator.plugin.MessageBundle;
 import zd.zero.waifu.motivator.plugin.WaifuMotivator;
 import zd.zero.waifu.motivator.plugin.assets.VisualAssetManager;
 import zd.zero.waifu.motivator.plugin.service.WaifuGatekeeper;
+import zd.zero.waifu.motivator.plugin.service.MotivationStatistics;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -33,6 +35,8 @@ import javax.swing.SpinnerNumberModel;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static zd.zero.waifu.motivator.plugin.service.MotivationStatistics.DEFAULT_STATISTICS_VALUE;
 
 public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Configurable.NoScroll {
 
@@ -90,7 +94,13 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JList<CheckListItem> preferredCharactersList;
 
+    private JSpinner eventsBeforeTestMotivationSpinner;
+
+    private JSpinner eventsBeforeTaskMotivationSpinner;
+
     private ListTableModel<Integer> exitCodeListModel;
+
+    private final MotivationStatistics motivationStatistics = ServiceManager.getService( MotivationStatistics.class );
 
     public WaifuMotivatorSettingsPage() {
         this.state = WaifuMotivatorPluginState.getPluginState();
@@ -112,10 +122,13 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     @Override
     public JComponent createComponent() {
         idleTimeoutSpinner.setModel( new SpinnerNumberModel( 1, 1, null, 1 ) );
+        eventsBeforeTaskMotivationSpinner.setModel( new SpinnerNumberModel( DEFAULT_STATISTICS_VALUE, DEFAULT_STATISTICS_VALUE, null, 1 ) );
+        eventsBeforeTestMotivationSpinner.setModel( new SpinnerNumberModel( DEFAULT_STATISTICS_VALUE, DEFAULT_STATISTICS_VALUE, null, 1 ) );
         eventsBeforeFrustrationSpinner.setModel( new SpinnerNumberModel( 5, 0, null, 1 ) );
+
         allowFrustrationCheckBox.addActionListener( e -> {
-            frustrationProbabilitySlider.setEnabled(allowFrustrationCheckBox.isSelected());
-            eventsBeforeFrustrationSpinner.setEnabled(allowFrustrationCheckBox.isSelected());
+            frustrationProbabilitySlider.setEnabled( allowFrustrationCheckBox.isSelected() );
+            eventsBeforeFrustrationSpinner.setEnabled( allowFrustrationCheckBox.isSelected() );
         } );
 
         frustrationProbabilitySlider.setForeground( UIUtil.getContextHelpForeground() );
@@ -146,6 +159,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableTaskEventSoundsCheckBox.isSelected() != this.state.isTaskSoundEnabled() ||
                 frustrationProbabilitySlider.getValue() != this.state.getProbabilityOfFrustration() ||
                 ((Integer) eventsBeforeFrustrationSpinner.getValue()) != this.state.getEventsBeforeFrustration() ||
+                ( ( Integer ) eventsBeforeTaskMotivationSpinner.getValue() ) != this.state.getEventsBeforeTaskMotivation() ||
+                ( ( Integer ) eventsBeforeTestMotivationSpinner.getValue() ) != this.state.getEventsBeforeTestMotivation() ||
                 enableExitCodeNotifications.isSelected() != this.state.isExitCodeNotificationEnabled() ||
                 enableExitCodeSound.isSelected() != this.state.isExitCodeSoundEnabled() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled() ||
@@ -186,12 +201,14 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setTaskSoundEnabled( enableTaskEventSoundsCheckBox.isSelected() );
         this.state.setAllowFrustration( allowFrustrationCheckBox.isSelected() );
         this.state.setEventsBeforeFrustration( ( Integer ) eventsBeforeFrustrationSpinner.getValue() );
+        this.state.setEventsBeforeTaskMotivation( (Integer) eventsBeforeTaskMotivationSpinner.getValue() );
+        this.state.setEventsBeforeTestMotivation( (Integer) eventsBeforeTestMotivationSpinner.getValue() );
         this.state.setProbabilityOfFrustration( frustrationProbabilitySlider.getValue() );
         this.state.setExitCodeNotificationEnabled( enableExitCodeNotifications.isSelected() );
         this.state.setExitCodeSoundEnabled( enableExitCodeSound.isSelected() );
         this.state.setAllowedExitCodes(
             IntStream.range( 0, exitCodeListModel.getRowCount() )
-            .map( exitCodeListModel::getRowValue )
+                .map( exitCodeListModel::getRowValue )
             .distinct()
             .sorted()
             .mapToObj( String::valueOf )
@@ -205,6 +222,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         ApplicationManager.getApplication().getMessageBus()
             .syncPublisher( PluginSettingsListener.Companion.getPLUGIN_SETTINGS_TOPIC() )
             .settingsUpdated( this.state );
+
+        motivationStatistics.resetStatistics();
     }
 
     @NotNull
@@ -236,6 +255,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.enableTaskEventSoundsCheckBox.setSelected( this.state.isTaskSoundEnabled() );
         this.allowFrustrationCheckBox.setSelected( this.state.isAllowFrustration() );
         this.eventsBeforeFrustrationSpinner.setValue( this.state.getEventsBeforeFrustration() );
+        this.eventsBeforeTaskMotivationSpinner.setValue( this.state.getEventsBeforeTaskMotivation() );
+        this.eventsBeforeTestMotivationSpinner.setValue( this.state.getEventsBeforeTestMotivation() );
         this.frustrationProbabilitySlider.setValue( this.state.getProbabilityOfFrustration() );
         this.enableExitCodeNotifications.setSelected( this.state.isExitCodeNotificationEnabled() );
         this.enableExitCodeSound.setSelected( this.state.isExitCodeSoundEnabled() );

@@ -1,18 +1,24 @@
 package zd.zero.waifu.motivator.plugin.motivation
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.startup.StartupManager
 import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.assets.MotivationAsset
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
+import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
+import zd.zero.waifu.motivator.plugin.service.MotivationStatistics
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.tools.AssetTools
 import zd.zero.waifu.motivator.plugin.tools.doOrElse
-import java.util.Optional
+import java.util.*
 
 object MotivationFactory {
+
+    private val motivationStatistics: MotivationStatistics = ServiceManager.getService(MotivationStatistics::class.java)
 
     fun showMotivationEventForCategory(
         motivationEvent: MotivationEvent,
@@ -28,12 +34,12 @@ object MotivationFactory {
     ) = showMotivationFromMultipleCategories(
         motivationEvent, lifecycleListener, waifuAssetCategory
     ) { motivationAsset: MotivationAsset ->
-            VisualMotivationFactory.constructMotivation(
-                motivationEvent.project,
-                motivationAsset,
-                motivationEvent.alertConfigurationSupplier()
-            )
-        }
+        VisualMotivationFactory.constructMotivation(
+            motivationEvent.project,
+            motivationAsset,
+            motivationEvent.alertConfigurationSupplier()
+        )
+    }
 
     fun showUntitledMotivationEventFromCategories(
         motivationEvent: MotivationEvent,
@@ -88,6 +94,9 @@ object MotivationFactory {
         motivationConstructor: (MotivationAsset) -> WaifuMotivation,
         assetSupplier: () -> Optional<MotivationAsset>
     ) {
+        motivationStatistics.registerEvent(motivationEvent)
+        if (shouldShowAlert(motivationEvent).not()) return
+
         ApplicationManager.getApplication().executeOnPooledThread {
             val project = motivationEvent.project
             assetSupplier()
@@ -120,5 +129,16 @@ object MotivationFactory {
                     )
                 }
         }
+    }
+
+    private fun shouldShowAlert(motivationEvent: MotivationEvent): Boolean {
+        val pluginState = WaifuMotivatorPluginState.getPluginState()
+        val numberOfEvents = when (motivationEvent.type) {
+            MotivationEvents.TASK -> pluginState.eventsBeforeTaskMotivation
+            MotivationEvents.TEST -> pluginState.eventsBeforeTestMotivation
+            else -> MotivationStatistics.DEFAULT_STATISTICS_VALUE
+        }
+
+        return motivationStatistics.getEventStat(motivationEvent.type) % (numberOfEvents + 1) == 0
     }
 }

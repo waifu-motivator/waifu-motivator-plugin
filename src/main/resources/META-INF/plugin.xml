@@ -16,6 +16,8 @@
   <extensions defaultExtensionNs="com.intellij">
     <applicationService
       serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState"/>
+    <applicationService
+      serviceImplementation="zd.zero.waifu.motivator.plugin.service.MotivationStatistics"/>
     <applicationConfigurable
       instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
     <errorHandler
