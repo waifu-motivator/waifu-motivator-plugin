@@ -18,7 +18,7 @@ class WaifuGatekeeper : Disposable {
     private var allowedWaifu: Set<String> = constructList(WaifuMotivatorPluginState.getPluginState())
 
     private fun constructList(pluginState: WaifuMotivatorState): Set<String> =
-        pluginState.allowedCharacters.split(WaifuMotivatorState.DEFAULT_DELIMITER)
+        pluginState.preferredCharacters.split(WaifuMotivatorState.DEFAULT_DELIMITER)
             .filter { it.isNotEmpty() }
             .map { it.toLowerCase() }
             .toSet()
@@ -34,6 +34,9 @@ class WaifuGatekeeper : Disposable {
     fun isAllowed(characters: List<String>?): Boolean =
         allowedWaifu.isEmpty() ||
             characters?.any { allowedWaifu.contains(it.toLowerCase()) } ?: false
+
+    fun isPreferred(character: String): Boolean =
+        allowedWaifu.contains(character)
 
     override fun dispose() {
         connection.dispose()

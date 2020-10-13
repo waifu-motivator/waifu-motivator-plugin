@@ -22,6 +22,11 @@ object VisualAssetManager : RemoteAssetManager<VisualMotivationAssetDefinition, 
         super.supplyRemoteAssetDefinitions()
             .filter { WaifuGatekeeper.instance.isAllowed(it.characters) }
 
+    fun supplyListOfAllCharacters(): Set<String> =
+        super.supplyAllAssetDefinitions()
+            .mapNotNull { it.characters }
+           .flatten().toSet()
+
     override fun convertToAsset(
         asset: VisualMotivationAssetDefinition,
         assetUrl: String

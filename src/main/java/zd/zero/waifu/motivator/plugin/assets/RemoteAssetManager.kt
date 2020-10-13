@@ -75,6 +75,9 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
             localAssets.contains(remoteOrLocalAsset)
         }
 
+    fun supplyAllAssetDefinitions(): List<T> =
+        remoteAndLocalAssets
+
     abstract fun convertToAsset(asset: T, assetUrl: String): U
 
     fun resolveAsset(asset: T): Optional<U> =

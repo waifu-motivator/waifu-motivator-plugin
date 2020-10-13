@@ -58,5 +58,5 @@ class WaifuMotivatorState {
 
     var userId = ""
 
-    var allowedCharacters = ""
+    var preferredCharacters = ""
 }

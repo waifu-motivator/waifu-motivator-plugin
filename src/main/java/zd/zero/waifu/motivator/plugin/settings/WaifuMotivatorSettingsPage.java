@@ -16,8 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import zd.zero.waifu.motivator.plugin.MessageBundle;
 import zd.zero.waifu.motivator.plugin.WaifuMotivator;
+import zd.zero.waifu.motivator.plugin.assets.VisualAssetManager;
+import zd.zero.waifu.motivator.plugin.service.WaifuGatekeeper;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -126,6 +127,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         preferredCharactersList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked( MouseEvent event) {
+                preferredCharactersChanged = true;
                 JBList<CheckListItem> list = (JBList<CheckListItem>) event.getSource();
                 int index = list.locationToIndex(event.getPoint());
                 CheckListItem item = list.getModel()
@@ -160,7 +162,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableExitCodeNotifications.isSelected() != this.state.isExitCodeNotificationEnabled() ||
                 enableExitCodeSound.isSelected() != this.state.isExitCodeSoundEnabled() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled() ||
-            exitCodesChanged;
+            exitCodesChanged || preferredCharactersChanged;
     }
 
     private long getIdleTimeout() {
@@ -205,6 +207,15 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
             .distinct()
             .sorted()
             .mapToObj( String::valueOf )
+            .collect( Collectors.joining(WaifuMotivatorState.DEFAULT_DELIMITER))
+        );
+        ListModel<CheckListItem> model = preferredCharactersList.getModel();
+        this.state.setPreferredCharacters(
+            IntStream.range( 0, model.getSize() )
+            .mapToObj( model::getElementAt )
+            .map( CheckListItem::getLabel )
+            .distinct()
+            .sorted()
             .collect( Collectors.joining(WaifuMotivatorState.DEFAULT_DELIMITER))
         );
 
@@ -254,33 +265,18 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     }
 
     private boolean exitCodesChanged = false;
+    private boolean preferredCharactersChanged = false;
 
     private void createUIComponents() {
+
         preferredCharactersList = new JBList<>(
-            new CheckListItem( "apple", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "orange", false ),
-            new CheckListItem( "mango", false ),
-            new CheckListItem( "mango", false ),
-            new CheckListItem( "mango", false ),
-            new CheckListItem( "mango", false ),
-            new CheckListItem( "mango", false ),
-            new CheckListItem( "mango", false ),
-            new CheckListItem( "mango", false ),
-            new CheckListItem( "mango", false ),
-            new CheckListItem( "mango", false ),
-            new CheckListItem( "paw paw", false ),
-            new CheckListItem( "banana", false ) );
+            VisualAssetManager.INSTANCE.supplyListOfAllCharacters()
+                .stream()
+                .map( character -> new CheckListItem(
+                    character, WaifuGatekeeper.Companion.getInstance().isPreferred( character )
+                ) )
+                .collect( Collectors.toList())
+        );
 
         exitCodeListModel = new ListTableModel<Integer>() {
             @Override
