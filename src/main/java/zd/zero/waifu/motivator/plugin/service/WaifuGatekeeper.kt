@@ -36,7 +36,7 @@ class WaifuGatekeeper : Disposable {
             characters?.any { allowedWaifu.contains(it.toLowerCase()) } ?: false
 
     fun isPreferred(character: String): Boolean =
-        allowedWaifu.contains(character)
+        allowedWaifu.contains(character.toLowerCase())
 
     override fun dispose() {
         connection.dispose()

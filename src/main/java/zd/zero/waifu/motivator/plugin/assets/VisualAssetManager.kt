@@ -25,7 +25,7 @@ object VisualAssetManager : RemoteAssetManager<VisualMotivationAssetDefinition, 
     fun supplyListOfAllCharacters(): Set<String> =
         super.supplyAllAssetDefinitions()
             .mapNotNull { it.characters }
-           .flatten().toSet()
+            .flatten().toSet()
 
     override fun convertToAsset(
         asset: VisualMotivationAssetDefinition,

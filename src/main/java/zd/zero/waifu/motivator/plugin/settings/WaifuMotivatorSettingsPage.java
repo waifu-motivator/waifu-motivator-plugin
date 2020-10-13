@@ -127,7 +127,6 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         preferredCharactersList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked( MouseEvent event) {
-                preferredCharactersChanged = true;
                 JBList<CheckListItem> list = (JBList<CheckListItem>) event.getSource();
                 int index = list.locationToIndex(event.getPoint());
                 CheckListItem item = list.getModel()
@@ -162,7 +161,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableExitCodeNotifications.isSelected() != this.state.isExitCodeNotificationEnabled() ||
                 enableExitCodeSound.isSelected() != this.state.isExitCodeSoundEnabled() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled() ||
-            exitCodesChanged || preferredCharactersChanged;
+                !getPreferredCharacters().equals( this.state.getPreferredCharacters() ) ||
+                exitCodesChanged;
     }
 
     private long getIdleTimeout() {
@@ -209,15 +209,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
             .mapToObj( String::valueOf )
             .collect( Collectors.joining(WaifuMotivatorState.DEFAULT_DELIMITER))
         );
-        ListModel<CheckListItem> model = preferredCharactersList.getModel();
-        this.state.setPreferredCharacters(
-            IntStream.range( 0, model.getSize() )
-            .mapToObj( model::getElementAt )
-            .map( CheckListItem::getLabel )
-            .distinct()
-            .sorted()
-            .collect( Collectors.joining(WaifuMotivatorState.DEFAULT_DELIMITER))
-        );
+        this.state.setPreferredCharacters( getPreferredCharacters() );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
@@ -225,6 +217,18 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         ApplicationManager.getApplication().getMessageBus()
             .syncPublisher( PluginSettingsListener.Companion.getPLUGIN_SETTINGS_TOPIC() )
             .settingsUpdated( this.state );
+    }
+
+    @NotNull
+    private String getPreferredCharacters() {
+        ListModel<CheckListItem> model = preferredCharactersList.getModel();
+        return IntStream.range( 0, model.getSize() )
+            .mapToObj( model::getElementAt )
+            .filter( CheckListItem::isSelected )
+            .map( CheckListItem::getLabel )
+            .distinct()
+            .sorted()
+            .collect( Collectors.joining( WaifuMotivatorState.DEFAULT_DELIMITER ) );
     }
 
     private void setFieldsFromState() {
@@ -265,7 +269,6 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     }
 
     private boolean exitCodesChanged = false;
-    private boolean preferredCharactersChanged = false;
 
     private void createUIComponents() {
 
