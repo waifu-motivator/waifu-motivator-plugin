@@ -61,10 +61,16 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
             }
     }
 
-    fun supplyLocalAssetDefinitions(): Set<T> =
+    open fun supplyLocalAssetDefinitions(): Set<T> =
+        supplyAllLocalAssetDefinitions()
+
+    open fun supplyRemoteAssetDefinitions(): List<T> =
+        supplyAllRemoteAssetDefinitions()
+
+    fun supplyAllLocalAssetDefinitions(): Set<T> =
         localAssets
 
-    fun supplyRemoteAssetDefinitions(): List<T> =
+    fun supplyAllRemoteAssetDefinitions(): List<T> =
         remoteAndLocalAssets.filterNot { remoteOrLocalAsset ->
             localAssets.contains(remoteOrLocalAsset)
         }

@@ -35,7 +35,9 @@ class RemoteAssetDefinitionServiceTest {
     @Test
     fun `get random asset by category should return empty when no assets`() {
         every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf()
+        every { remoteAssetManager.supplyAllLocalAssetDefinitions() } returns setOf()
         every { remoteAssetManager.supplyRemoteAssetDefinitions() } returns listOf()
+        every { remoteAssetManager.supplyAllRemoteAssetDefinitions() } returns listOf()
 
         val randomAsset = fakeVisualAssetDefinitionService.getRandomAssetByCategory(
             WaifuAssetCategory.MOTIVATION
@@ -77,8 +79,10 @@ class RemoteAssetDefinitionServiceTest {
             listOf(WaifuAssetCategory.MOTIVATION)
         )
         every { remoteAssetManager.supplyRemoteAssetDefinitions() } returns listOf()
+        every { remoteAssetManager.supplyAllRemoteAssetDefinitions() } returns listOf()
         every { remoteAssetManager.resolveAsset(bestMotivation) } returns Optional.empty()
         every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf()
+        every { remoteAssetManager.supplyAllLocalAssetDefinitions() } returns setOf()
 
         val randomAsset = fakeVisualAssetDefinitionService.getRandomAssetByCategory(
             WaifuAssetCategory.MOTIVATION
@@ -98,6 +102,7 @@ class RemoteAssetDefinitionServiceTest {
         )
         every { remoteAssetManager.supplyRemoteAssetDefinitions() } returns listOf(bestMotivation)
         every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf()
+        every { remoteAssetManager.supplyAllLocalAssetDefinitions() } returns setOf()
 
         val expectedAsset = bestMotivation.toAsset("file:///s-tier-waifus/ryuko.png")
         every { remoteAssetManager.resolveAsset(bestMotivation) } returns expectedAsset.deepClonePolymorphic()
@@ -120,6 +125,7 @@ class RemoteAssetDefinitionServiceTest {
             listOf(WaifuAssetCategory.MOTIVATION)
         )
         every { remoteAssetManager.supplyRemoteAssetDefinitions() } returns listOf()
+        every { remoteAssetManager.supplyAllRemoteAssetDefinitions() } returns listOf()
         every { remoteAssetManager.resolveAsset(bestMotivation) } returns Optional.empty()
 
         val garbageWaifu = VisualMotivationAssetDefinition(

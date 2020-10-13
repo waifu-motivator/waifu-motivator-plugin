@@ -24,11 +24,12 @@ data class VisualMotivationAssetDefinition(
     val imageAlt: String,
     val imageDimensions: ImageDimension,
     override val categories: List<WaifuAssetCategory>,
-    override val groupId: UUID? = null
+    override val groupId: UUID? = null,
+    val characters: List<String>? = null
 ) : AssetDefinition {
     fun toAsset(assetUrl: String): VisualMotivationAsset =
         VisualMotivationAsset(
-            assetUrl, imageAlt, imageDimensions, groupId
+            assetUrl, imageAlt, imageDimensions, groupId, characters
         )
 }
 
@@ -36,7 +37,8 @@ data class VisualMotivationAsset(
     val filePath: String,
     val imageAlt: String,
     val imageDimensions: ImageDimension,
-    override val groupId: UUID? = null
+    override val groupId: UUID? = null,
+    val characters: List<String>? = null
 ) : Asset
 
 data class AudibleMotivationAssetDefinition(

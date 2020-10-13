@@ -34,7 +34,12 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
     fun getRandomAssetByCategory(
         waifuAssetCategory: WaifuAssetCategory
     ): Optional<U> =
-        pickRandomAsset(remoteAssetManager.supplyLocalAssetDefinitions(), waifuAssetCategory)
+        pickRandomAsset(
+            remoteAssetManager.supplyLocalAssetDefinitions().ifEmpty {
+                remoteAssetManager.supplyAllLocalAssetDefinitions()
+            },
+            waifuAssetCategory
+        )
             .map {
                 resolveAsset(waifuAssetCategory, it)
             }.orElseGet {
@@ -57,8 +62,12 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
     private fun fetchRemoteAsset(
         waifuAssetCategory: WaifuAssetCategory
     ): Optional<U> =
-        pickRandomAsset(remoteAssetManager.supplyRemoteAssetDefinitions(), waifuAssetCategory)
-            .flatMap { remoteAssetManager.resolveAsset(it) }
+        pickRandomAsset(
+            remoteAssetManager.supplyRemoteAssetDefinitions().ifEmpty {
+                remoteAssetManager.supplyAllRemoteAssetDefinitions()
+            },
+            waifuAssetCategory
+        ).flatMap { remoteAssetManager.resolveAsset(it) }
 
     private fun pickRandomAsset(
         assetDefinitions: Collection<T>,
