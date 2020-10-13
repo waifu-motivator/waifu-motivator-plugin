@@ -1,12 +1,10 @@
 package zd.zero.waifu.motivator.plugin.personality.core
 
-import zd.zero.waifu.motivator.plugin.ProjectConstants
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
+import zd.zero.waifu.motivator.plugin.motivation.MotivationFactory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
-import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
-import zd.zero.waifu.motivator.plugin.tools.AssetTools
 import zd.zero.waifu.motivator.plugin.tools.toArray
 
 class TaskPersonalityCore : PersonalityCore {
@@ -15,17 +13,8 @@ class TaskPersonalityCore : PersonalityCore {
         motivationEvent: MotivationEvent,
         mood: Mood
     ) {
-        val project = motivationEvent.project
-        AssetTools.attemptToShowCategories(
-            project,
-            motivationEvent.alertConfigurationSupplier,
-            {
-                UpdateNotification.sendMessage(
-                    "'${motivationEvent.title}' Unavailable Offline",
-                    ProjectConstants.WAIFU_UNAVAILABLE_MESSAGE,
-                    project
-                )
-            },
+        MotivationFactory.showMotivationEventFromCategories(
+            motivationEvent,
             *getRelevantCategories(motivationEvent, mood)
         )
     }
@@ -55,8 +44,12 @@ class TaskPersonalityCore : PersonalityCore {
             Mood.FRUSTRATED -> WaifuAssetCategory.FRUSTRATION.toArray()
             Mood.ENRAGED -> WaifuAssetCategory.ENRAGED.toArray()
             Mood.SHOCKED -> arrayOf(WaifuAssetCategory.SHOCKED)
-            else -> arrayOf(
+            Mood.DISAPPOINTED -> arrayOf(
                 WaifuAssetCategory.DISAPPOINTMENT,
+                WaifuAssetCategory.DISAPPOINTMENT,
+                WaifuAssetCategory.MOCKING
+            )
+            else -> arrayOf(
                 WaifuAssetCategory.SHOCKED
             )
         }

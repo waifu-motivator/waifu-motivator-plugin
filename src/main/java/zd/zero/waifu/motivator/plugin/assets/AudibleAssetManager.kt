@@ -16,7 +16,10 @@ object AudibleAssetManager : RemoteAssetManager<AudibleMotivationAssetDefinition
         asset: AudibleMotivationAssetDefinition,
         assetUrl: String
     ): AudibleMotivationAsset =
-        AudibleMotivationAsset(Paths.get(URI(assetUrl)))
+        AudibleMotivationAsset(
+            Paths.get(URI(assetUrl)),
+            asset.groupId
+        )
 
     override fun convertToDefinitions(defJson: String): Optional<List<AudibleMotivationAssetDefinition>> =
         runSafely({

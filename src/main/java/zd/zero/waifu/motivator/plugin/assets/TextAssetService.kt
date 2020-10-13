@@ -19,11 +19,27 @@ object TextAssetService {
     private val random = Random(System.currentTimeMillis())
 
     fun pickRandomAssetByCategory(waifuAssetCategory: WaifuAssetCategory): Optional<TextualMotivationAsset> =
-        getListOfAssets(waifuAssetCategory)
-            .filter { it.isNotEmpty() }
+        fetchListOfTextAssets(waifuAssetCategory)
             .map {
                 it.random(random)
             }
+
+    fun getAssetByGroupId(
+        assetGroupId: UUID,
+        category: WaifuAssetCategory
+    ): Optional<TextualMotivationAsset> =
+        fetchListOfTextAssets(category)
+            .map {
+                it.find { phrase -> phrase.groupId == assetGroupId }
+            }
+            .map { it.toOptional() } // todo: replace with `or` when on jre 11+
+            .orElseGet {
+                pickRandomAssetByCategory(category)
+            }
+
+    private fun fetchListOfTextAssets(category: WaifuAssetCategory) =
+        getListOfAssets(category)
+            .filter { it.isNotEmpty() }
 
     private fun getListOfAssets(waifuAssetCategory: WaifuAssetCategory): Optional<List<TextualMotivationAsset>> =
         if (categoryToTextDefinitions.containsKey(waifuAssetCategory)) {

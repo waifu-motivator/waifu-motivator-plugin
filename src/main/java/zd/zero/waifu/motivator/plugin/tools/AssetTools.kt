@@ -1,58 +1,39 @@
 package zd.zero.waifu.motivator.plugin.tools
 
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.project.Project
-import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
+import zd.zero.waifu.motivator.plugin.assets.MotivationAsset
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
-import zd.zero.waifu.motivator.plugin.motivation.VisualMotivationFactory
+import java.util.*
 
 object AssetTools {
 
     private const val MAXIMUM_RETRY_ATTEMPTS = 6
 
-    fun attemptToShowCategories(
-        project: Project,
-        alertConfigurationSupplier: () -> AlertConfiguration,
-        onFailure: () -> Unit,
+    fun resolveAssetFromCategories(
         vararg categories: WaifuAssetCategory
-    ) {
-        attemptToDisplayMotivation(
-            project,
-            alertConfigurationSupplier,
-            onFailure,
+    ): Optional<MotivationAsset> {
+        return attemptToGetMotivationAssetFromCategories(
             0,
             *categories
         )
     }
 
-    private fun attemptToDisplayMotivation(
-        project: Project,
-        alertConfigurationSupplier: () -> AlertConfiguration,
-        onFailure: () -> Unit,
+    private fun attemptToGetMotivationAssetFromCategories(
         attempts: Int,
         vararg categories: WaifuAssetCategory
-    ) {
-        if (attempts < MAXIMUM_RETRY_ATTEMPTS) {
+    ): Optional<MotivationAsset> {
+        return if (attempts < MAXIMUM_RETRY_ATTEMPTS) {
             VisualMotivationAssetProvider.pickAssetFromCategories(
                 *categories
-            ).doOrElse({ asset ->
-                ApplicationManager.getApplication().executeOnPooledThread {
-                    VisualMotivationFactory.constructMotivation(project,
-                        asset,
-                        alertConfigurationSupplier()).motivate()
+            ).map { it.toOptional() }
+                .orElseGet {
+                    attemptToGetMotivationAssetFromCategories(
+                        attempts + 1,
+                        *categories
+                    )
                 }
-            }) {
-                attemptToDisplayMotivation(
-                    project,
-                    alertConfigurationSupplier,
-                    onFailure,
-                    attempts + 1,
-                    *categories
-                )
-            }
         } else {
-            onFailure()
+            Optional.empty()
         }
     }
 }
