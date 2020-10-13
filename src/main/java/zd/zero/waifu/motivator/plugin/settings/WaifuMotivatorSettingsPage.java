@@ -275,6 +275,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         preferredCharactersList = new JBList<>(
             VisualAssetManager.INSTANCE.supplyListOfAllCharacters()
                 .stream()
+                .sorted()
                 .map( character -> new CheckListItem(
                     character, WaifuGatekeeper.Companion.getInstance().isPreferred( character )
                 ) )
