@@ -4,29 +4,33 @@ import com.intellij.ide.GeneralSettings;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
-import com.intellij.openapi.ui.cellvalidators.CellComponentProvider;
-import com.intellij.openapi.ui.cellvalidators.CellTooltipManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.components.JBList;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.ColumnInfo;
 import com.intellij.util.ui.ListTableModel;
+import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import zd.zero.waifu.motivator.plugin.MessageBundle;
 import zd.zero.waifu.motivator.plugin.WaifuMotivator;
-import zd.zero.waifu.motivator.plugin.service.ApplicationService;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -83,6 +87,10 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JLabel allowedExitCodeLabel;
 
+    private JLabel preferredCharactersLabel;
+
+    private JList<CheckListItem> preferredCharactersList;
+
     private ListTableModel<Integer> exitCodeListModel;
 
     public WaifuMotivatorSettingsPage() {
@@ -110,6 +118,23 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
             frustrationProbabilitySlider.setEnabled(allowFrustrationCheckBox.isSelected());
             eventsBeforeFrustrationSpinner.setEnabled(allowFrustrationCheckBox.isSelected());
         } );
+
+        frustrationProbabilitySlider.setForeground( UIUtil.getContextHelpForeground() );
+
+        preferredCharactersList.setSelectionMode( ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
+        preferredCharactersList.setCellRenderer( new CheckboxListCellRenderer() );
+        preferredCharactersList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked( MouseEvent event) {
+                JBList<CheckListItem> list = (JBList<CheckListItem>) event.getSource();
+                int index = list.locationToIndex(event.getPoint());
+                CheckListItem item = list.getModel()
+                    .getElementAt(index);
+                item.setSelected(!item.isSelected());
+                list.repaint(list.getCellBounds(index, index));
+            }
+        });
+
         this.setFieldsFromState();
         return rootPanel;
     }
@@ -231,6 +256,32 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     private boolean exitCodesChanged = false;
 
     private void createUIComponents() {
+        preferredCharactersList = new JBList<>(
+            new CheckListItem( "apple", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "orange", false ),
+            new CheckListItem( "mango", false ),
+            new CheckListItem( "mango", false ),
+            new CheckListItem( "mango", false ),
+            new CheckListItem( "mango", false ),
+            new CheckListItem( "mango", false ),
+            new CheckListItem( "mango", false ),
+            new CheckListItem( "mango", false ),
+            new CheckListItem( "mango", false ),
+            new CheckListItem( "mango", false ),
+            new CheckListItem( "paw paw", false ),
+            new CheckListItem( "banana", false ) );
+
         exitCodeListModel = new ListTableModel<Integer>() {
             @Override
             public void addRow() {
