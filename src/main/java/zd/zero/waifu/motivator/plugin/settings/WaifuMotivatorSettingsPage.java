@@ -30,8 +30,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -124,17 +122,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
         preferredCharactersList.setSelectionMode( ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
         preferredCharactersList.setCellRenderer( new CheckboxListCellRenderer() );
-        preferredCharactersList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked( MouseEvent event) {
-                JBList<CheckListItem> list = (JBList<CheckListItem>) event.getSource();
-                int index = list.locationToIndex(event.getPoint());
-                CheckListItem item = list.getModel()
-                    .getElementAt(index);
-                item.setSelected(!item.isSelected());
-                list.repaint(list.getCellBounds(index, index));
-            }
-        });
+        preferredCharactersList.addMouseListener(SettingsTools.buildPreferredCharacterListener());
 
         this.setFieldsFromState();
         return rootPanel;
