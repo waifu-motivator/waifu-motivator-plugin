@@ -24,6 +24,7 @@
     <postStartupActivity id="WaifuOfTheDayStartupActivity"
                          implementation="zd.zero.waifu.motivator.plugin.WaifuOfTheDayStartupActivity"/>
     <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.ApplicationService"/>
+    <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.WaifuGatekeeper"/>
   </extensions>
 
   <actions>

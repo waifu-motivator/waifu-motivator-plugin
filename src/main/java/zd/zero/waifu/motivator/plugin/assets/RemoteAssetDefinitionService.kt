@@ -15,26 +15,33 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
         groupId: UUID,
         category: WaifuAssetCategory
     ): Optional<U> =
-            remoteAssetManager.supplyLocalAssetDefinitions()
-                .find {
-                    it.groupId == groupId
-                }.toOptional()
-                .map {
-                    resolveAsset(category, it)
-                }.orElseGet {
-                    remoteAssetManager.supplyRemoteAssetDefinitions()
-                        .find { it.groupId == groupId }
-                        .toOptional()
-                        .map { remoteAssetManager.resolveAsset(it) }
-                        .orElseGet {
-                            getRandomAssetByCategory(category)
-                        }
-                }
+        remoteAssetManager.supplyLocalAssetDefinitions()
+            .find {
+                it.groupId == groupId
+            }.toOptional()
+            .map {
+                resolveAsset(category, it)
+            }.orElseGet {
+                remoteAssetManager.supplyRemoteAssetDefinitions()
+                    .find { it.groupId == groupId }
+                    .toOptional()
+                    .map { remoteAssetManager.resolveAsset(it) }
+                    .orElseGet {
+                        getRandomAssetByCategory(category)
+                    }
+            }
 
     fun getRandomAssetByCategory(
         waifuAssetCategory: WaifuAssetCategory
     ): Optional<U> =
-        pickRandomAsset(remoteAssetManager.supplyLocalAssetDefinitions(), waifuAssetCategory)
+        pickRandomAsset(
+            remoteAssetManager.supplyLocalAssetDefinitions()
+                .filterByCategory(waifuAssetCategory)
+                .ifEmpty {
+                    remoteAssetManager.supplyAllLocalAssetDefinitions()
+                        .filterByCategory(waifuAssetCategory)
+                }
+        )
             .map {
                 resolveAsset(waifuAssetCategory, it)
             }.orElseGet {
@@ -57,16 +64,23 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
     private fun fetchRemoteAsset(
         waifuAssetCategory: WaifuAssetCategory
     ): Optional<U> =
-        pickRandomAsset(remoteAssetManager.supplyRemoteAssetDefinitions(), waifuAssetCategory)
-            .flatMap { remoteAssetManager.resolveAsset(it) }
+        pickRandomAsset(
+            remoteAssetManager.supplyRemoteAssetDefinitions()
+                .filterByCategory(waifuAssetCategory)
+                .ifEmpty {
+                    remoteAssetManager.supplyAllRemoteAssetDefinitions()
+                        .filterByCategory(waifuAssetCategory)
+                }
+        ).flatMap { remoteAssetManager.resolveAsset(it) }
 
     private fun pickRandomAsset(
-        assetDefinitions: Collection<T>,
-        waifuAssetCategory: WaifuAssetCategory
+        assetDefinitions: Collection<T>
     ): Optional<T> =
         assetDefinitions
-            .filter { it.categories.contains(waifuAssetCategory) }
             .toOptional()
             .filter { it.isNotEmpty() }
             .map { it.random(random) }
 }
+
+fun <T : AssetDefinition> Collection<T>.filterByCategory(category: WaifuAssetCategory): Collection<T> =
+    this.filter { it.categories.contains(category) }

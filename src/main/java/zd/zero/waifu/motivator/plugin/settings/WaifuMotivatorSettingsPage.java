@@ -4,27 +4,30 @@ import com.intellij.ide.GeneralSettings;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.SearchableConfigurable;
-import com.intellij.openapi.ui.cellvalidators.CellComponentProvider;
-import com.intellij.openapi.ui.cellvalidators.CellTooltipManager;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.components.JBList;
 import com.intellij.ui.table.JBTable;
 import com.intellij.util.ui.ColumnInfo;
 import com.intellij.util.ui.ListTableModel;
+import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import zd.zero.waifu.motivator.plugin.MessageBundle;
 import zd.zero.waifu.motivator.plugin.WaifuMotivator;
-import zd.zero.waifu.motivator.plugin.service.ApplicationService;
+import zd.zero.waifu.motivator.plugin.assets.VisualAssetManager;
+import zd.zero.waifu.motivator.plugin.service.WaifuGatekeeper;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import java.util.Arrays;
@@ -83,6 +86,10 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JLabel allowedExitCodeLabel;
 
+    private JLabel preferredCharactersLabel;
+
+    private JList<CheckListItem> preferredCharactersList;
+
     private ListTableModel<Integer> exitCodeListModel;
 
     public WaifuMotivatorSettingsPage() {
@@ -110,6 +117,13 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
             frustrationProbabilitySlider.setEnabled(allowFrustrationCheckBox.isSelected());
             eventsBeforeFrustrationSpinner.setEnabled(allowFrustrationCheckBox.isSelected());
         } );
+
+        frustrationProbabilitySlider.setForeground( UIUtil.getContextHelpForeground() );
+
+        preferredCharactersList.setSelectionMode( ListSelectionModel.MULTIPLE_INTERVAL_SELECTION );
+        preferredCharactersList.setCellRenderer( new CheckboxListCellRenderer() );
+        preferredCharactersList.addMouseListener(SettingsTools.buildPreferredCharacterListener());
+
         this.setFieldsFromState();
         return rootPanel;
     }
@@ -135,7 +149,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableExitCodeNotifications.isSelected() != this.state.isExitCodeNotificationEnabled() ||
                 enableExitCodeSound.isSelected() != this.state.isExitCodeSoundEnabled() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled() ||
-            exitCodesChanged;
+                !getPreferredCharacters().equals( this.state.getPreferredCharacters() ) ||
+                exitCodesChanged;
     }
 
     private long getIdleTimeout() {
@@ -182,6 +197,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
             .mapToObj( String::valueOf )
             .collect( Collectors.joining(WaifuMotivatorState.DEFAULT_DELIMITER))
         );
+        this.state.setPreferredCharacters( getPreferredCharacters() );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
@@ -189,6 +205,18 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         ApplicationManager.getApplication().getMessageBus()
             .syncPublisher( PluginSettingsListener.Companion.getPLUGIN_SETTINGS_TOPIC() )
             .settingsUpdated( this.state );
+    }
+
+    @NotNull
+    private String getPreferredCharacters() {
+        ListModel<CheckListItem> model = preferredCharactersList.getModel();
+        return IntStream.range( 0, model.getSize() )
+            .mapToObj( model::getElementAt )
+            .filter( CheckListItem::isSelected )
+            .map( CheckListItem::getLabel )
+            .distinct()
+            .sorted()
+            .collect( Collectors.joining( WaifuMotivatorState.DEFAULT_DELIMITER ) );
     }
 
     private void setFieldsFromState() {
@@ -231,6 +259,17 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
     private boolean exitCodesChanged = false;
 
     private void createUIComponents() {
+
+        preferredCharactersList = new JBList<>(
+            VisualAssetManager.INSTANCE.supplyListOfAllCharacters()
+                .stream()
+                .sorted()
+                .map( character -> new CheckListItem(
+                    character, WaifuGatekeeper.Companion.getInstance().isPreferred( character )
+                ) )
+                .collect( Collectors.toList())
+        );
+
         exitCodeListModel = new ListTableModel<Integer>() {
             @Override
             public void addRow() {
