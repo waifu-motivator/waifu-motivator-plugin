@@ -15,9 +15,9 @@ class WaifuGatekeeper : Disposable {
 
     private val connection = ApplicationManager.getApplication().messageBus.connect()
 
-    private var allowedWaifu: Set<String> = constructList(WaifuMotivatorPluginState.getPluginState())
+    private var allowedWaifu: Set<String> = extractAllowedCharactersFromState(WaifuMotivatorPluginState.getPluginState())
 
-    private fun constructList(pluginState: WaifuMotivatorState): Set<String> =
+    private fun extractAllowedCharactersFromState(pluginState: WaifuMotivatorState): Set<String> =
         pluginState.preferredCharacters.split(WaifuMotivatorState.DEFAULT_DELIMITER)
             .filter { it.isNotEmpty() }
             .map { it.toLowerCase() }
@@ -26,7 +26,7 @@ class WaifuGatekeeper : Disposable {
     init {
         connection.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, object : PluginSettingsListener {
             override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
-                allowedWaifu = constructList(newPluginState)
+                allowedWaifu = extractAllowedCharactersFromState(newPluginState)
             }
         })
     }
