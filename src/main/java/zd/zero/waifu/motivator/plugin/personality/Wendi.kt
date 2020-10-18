@@ -74,6 +74,8 @@ object Wendi : Disposable, EmotionalMutationActionListener {
                 }
             })
 
+            messageBusConnection.subscribe(EMOTIONAL_MUTATION_TOPIC, this)
+
             messageBusConnection.subscribe(MotivationEventListener.TOPIC, object : MotivationEventListener {
                 override fun onEventTrigger(motivationEvent: MotivationEvent) {
                     when (motivationEvent.type) {
@@ -102,8 +104,7 @@ object Wendi : Disposable, EmotionalMutationActionListener {
     }
 
     override fun onAction(emotionalMutationAction: EmotionalMutationAction) {
-        val currentMood = emotionCore.mutateMood(emotionalMutationAction)
-        publishMood(currentMood)
+        publishMood(emotionCore.mutateMood(emotionalMutationAction))
     }
 
     private fun publishMood(currentMood: Mood) {
