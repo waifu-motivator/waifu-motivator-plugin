@@ -26,10 +26,15 @@ class EmotionCore(
             it
         }
 
-    fun deriveMood(motivationEvent: MotivationEvent): Mood {
-        emotionalState = processEvent(motivationEvent, emotionalState)
-        return emotionalState.mood
-    }
+    fun deriveMood(motivationEvent: MotivationEvent): Mood =
+        deriveAndPersistEmotionalState {
+            processEvent(motivationEvent, emotionalState)
+        }
+
+    fun mutateMood(emotionalMutationAction: EmotionalMutationAction): Mood =
+        deriveAndPersistEmotionalState {
+            processMutation(emotionalMutationAction)
+        }
 
     private fun processEvent(
         motivationEvent: MotivationEvent,
@@ -43,12 +48,15 @@ class EmotionCore(
             previousEvent = motivationEvent
         )
 
-    fun mutateMood(emotionalMutationAction: EmotionalMutationAction): Mood {
-        emotionalState = when (emotionalMutationAction.moodCategory) {
+    private fun processMutation(emotionalMutationAction: EmotionalMutationAction) =
+        when (emotionalMutationAction.moodCategory) {
             MoodCategory.POSITIVE -> positiveDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
-            MoodCategory.NEGATIVE -> positiveDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
-            MoodCategory.NEUTRAL -> positiveDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
+            MoodCategory.NEGATIVE -> negativeDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
+            MoodCategory.NEUTRAL -> negativeDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
         }
+
+    private fun deriveAndPersistEmotionalState(stateSupplier: () -> EmotionalState): Mood {
+        emotionalState = stateSupplier()
         return emotionalState.mood
     }
 }

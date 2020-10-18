@@ -2,7 +2,7 @@ package zd.zero.waifu.motivator.plugin.personality.core.emotions
 
 import com.intellij.util.messages.Topic
 
-fun interface MoodListener {
+interface MoodListener {
     fun onDerivedMood(currentMood: Mood)
 }
 
@@ -21,7 +21,7 @@ data class EmotionalMutationAction(
     val type: EmotionalMutationType,
     val moodCategory: MoodCategory
 )
-fun interface EmotionalMutationActionListener {
+interface EmotionalMutationActionListener {
     fun onAction(emotionalMutationAction: EmotionalMutationAction)
 }
 val EMOTIONAL_MUTATION_TOPIC = Topic(

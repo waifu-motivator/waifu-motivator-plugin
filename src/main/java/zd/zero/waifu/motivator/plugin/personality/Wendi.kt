@@ -11,6 +11,7 @@ import zd.zero.waifu.motivator.plugin.personality.core.TaskPersonalityCore
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.*
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
+import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.AlarmDebouncer
 
 //                                   Waifu
@@ -67,21 +68,22 @@ object Wendi : Disposable, EmotionalMutationActionListener {
 
             emotionCore = EmotionCore(WaifuMotivatorPluginState.getPluginState())
 
-            messageBusConnection.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, PluginSettingsListener {
-                newPluginState -> this@Wendi.emotionCore = emotionCore.updateConfig(newPluginState)
+            messageBusConnection.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, object : PluginSettingsListener {
+                override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
+                    this@Wendi.emotionCore = emotionCore.updateConfig(newPluginState)
+                }
             })
 
-            messageBusConnection.subscribe(EMOTIONAL_MUTATION_TOPIC, this)
-
-            messageBusConnection.subscribe(MotivationEventListener.TOPIC, MotivationEventListener {
-                motivationEvent ->
-                when (motivationEvent.type) {
-                    MotivationEvents.IDLE ->
-                        idleEventDebouncer.debounceAndBuffer(motivationEvent) {
-                            consumeEvents(it)
+            messageBusConnection.subscribe(MotivationEventListener.TOPIC, object : MotivationEventListener {
+                override fun onEventTrigger(motivationEvent: MotivationEvent) {
+                    when (motivationEvent.type) {
+                        MotivationEvents.IDLE ->
+                            idleEventDebouncer.debounceAndBuffer(motivationEvent) {
+                                consumeEvents(it)
+                            }
+                        else -> singleEventDebouncer.debounce {
+                            consumeEvent(motivationEvent)
                         }
-                    else -> singleEventDebouncer.debounce {
-                        consumeEvent(motivationEvent)
                     }
                 }
             })
@@ -106,8 +108,8 @@ object Wendi : Disposable, EmotionalMutationActionListener {
 
     private fun publishMood(currentMood: Mood) {
         ApplicationManager.getApplication().messageBus
-                .syncPublisher(EMOTION_TOPIC)
-                .onDerivedMood(currentMood)
+            .syncPublisher(EMOTION_TOPIC)
+            .onDerivedMood(currentMood)
     }
 
     private fun reactToEvent(motivationEvent: MotivationEvent, emotionalState: Mood) {
@@ -115,7 +117,8 @@ object Wendi : Disposable, EmotionalMutationActionListener {
             MotivationEvents.TEST,
             MotivationEvents.TASK -> taskPersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
             MotivationEvents.IDLE -> idlePersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
-            else -> {}
+            else -> {
+            }
         }
     }
 

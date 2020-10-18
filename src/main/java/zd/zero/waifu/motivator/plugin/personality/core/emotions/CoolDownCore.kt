@@ -46,15 +46,16 @@ class CoolDownCore : MoodListener, Disposable {
                     ApplicationManager.getApplication().messageBus
                         .syncPublisher(EMOTIONAL_MUTATION_TOPIC)
                         .onAction(EmotionalMutationAction(COOL_DOWN, NEGATIVE))
-                }, TimeUnit.MILLISECONDS.convert(
+                },
+            TimeUnit.MILLISECONDS.convert(
                 Duration.ofMinutes(COOL_DOWN_DURATION_IN_MINUTES)
-        ))
+            )
+        )
     }
 
     private fun handleMoodWhileInCoolDown(currentMood: Mood) {
-        if (currentMood == Mood.CALM) {
-            coolDownAlarm.cancelAllRequests()
-        } else {
+        coolDownAlarm.cancelAllRequests()
+        if (currentMood != Mood.CALM) {
             registerCoolDownEvent()
         }
     }

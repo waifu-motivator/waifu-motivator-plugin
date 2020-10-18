@@ -44,7 +44,9 @@ internal class NegativeEmotionDerivationUnit(
         val observedNegativeEvents = emotionalState.observedNegativeEvents
         val cooledDownNegativeEvents = max(0, observedNegativeEvents - 1)
         return emotionalState.copy(
-            mood = pickNegativeMood(cooledDownNegativeEvents),
+            mood =
+                if(hasCalmedDown(cooledDownNegativeEvents)) Mood.CALM
+                else pickNegativeMood(cooledDownNegativeEvents),
             observedNegativeEvents = cooledDownNegativeEvents
         )
     }
@@ -75,6 +77,9 @@ internal class NegativeEmotionDerivationUnit(
     private fun shouldBeFrustrated(observedFrustrationEvents: Int) =
         pluginState.isAllowFrustration &&
             pluginState.eventsBeforeFrustration <= observedFrustrationEvents
+
+    private fun hasCalmedDown(observedFrustrationEvents: Int) =
+            pluginState.eventsBeforeFrustration / 2 >= observedFrustrationEvents
 
     private fun shouldBeEnraged(observedFrustrationEvents: Int) =
         shouldBeFrustrated(observedFrustrationEvents) &&
