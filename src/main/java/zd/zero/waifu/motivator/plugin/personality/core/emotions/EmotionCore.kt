@@ -42,6 +42,15 @@ class EmotionCore(
         }.copy(
             previousEvent = motivationEvent
         )
+
+    fun mutateMood(emotionalMutationAction: EmotionalMutationAction): Mood {
+        emotionalState = when (emotionalMutationAction.moodCategory) {
+            MoodCategory.POSITIVE -> positiveDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
+            MoodCategory.NEGATIVE -> positiveDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
+            MoodCategory.NEUTRAL -> positiveDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
+        }
+        return emotionalState.mood
+    }
 }
 
 enum class Mood {

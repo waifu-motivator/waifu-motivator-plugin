@@ -2,7 +2,7 @@ package zd.zero.waifu.motivator.plugin.motivation.event
 
 import com.intellij.util.messages.Topic
 
-interface MotivationEventListener {
+fun interface MotivationEventListener {
 
     companion object {
         val TOPIC: Topic<MotivationEventListener> = Topic.create(

@@ -29,6 +29,13 @@ internal class PositiveEmotionDerivationUnit(
         }
     }
 
+    override fun deriveFromMutation(
+        emotionalMutationAction: EmotionalMutationAction,
+        emotionalState: EmotionalState
+    ): EmotionalState {
+        TODO("Not yet implemented")
+    }
+
     private fun shouldProcessPositiveEvent(motivationEvent: MotivationEvent): Boolean {
         return motivationEvent.type != MotivationEvents.IDLE
     }

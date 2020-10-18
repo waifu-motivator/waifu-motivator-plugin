@@ -21,4 +21,11 @@ internal class NeutralEmotionDerivationUnit(
         }.copy(
             observedNeutralEvents = emotionalState.observedNeutralEvents + 1
         )
+
+    override fun deriveFromMutation(
+        emotionalMutationAction: EmotionalMutationAction,
+        emotionalState: EmotionalState
+    ): EmotionalState {
+        TODO("Not yet implemented")
+    }
 }

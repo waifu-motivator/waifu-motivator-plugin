@@ -5,6 +5,7 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.tools.ProbabilityTools
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.toStream
+import java.lang.Integer.max
 import java.util.stream.Stream
 import kotlin.random.Random
 
@@ -30,27 +31,45 @@ internal class NegativeEmotionDerivationUnit(
             else -> emotionalState
         }
 
+    override fun deriveFromMutation(
+        emotionalMutationAction: EmotionalMutationAction,
+        emotionalState: EmotionalState
+    ): EmotionalState =
+        when (emotionalMutationAction.type) {
+            EmotionalMutationType.COOL_DOWN -> coolDown(emotionalState)
+            else -> emotionalState
+        }
+
+    private fun coolDown(emotionalState: EmotionalState): EmotionalState {
+        val observedNegativeEvents = emotionalState.observedNegativeEvents
+        val cooledDownNegativeEvents = max(0, observedNegativeEvents - 1)
+        return emotionalState.copy(
+            mood = pickNegativeMood(cooledDownNegativeEvents),
+            observedNegativeEvents = cooledDownNegativeEvents
+        )
+    }
+
     private fun shouldProcessNegativeEvent(motivationEvent: MotivationEvent): Boolean =
         motivationEvent.type != MotivationEvents.IDLE
 
     private fun processNegativeEvent(emotionalState: EmotionalState): EmotionalState {
         val observedFrustrationEvents = emotionalState.observedNegativeEvents
-        val newMood =
-            when {
-                shouldBeEnraged(observedFrustrationEvents) ->
-                    hurryFindCover()
-
-                shouldBeFrustrated(observedFrustrationEvents) ->
-                    tryToRemainCalm()
-
-                // todo: more appropriate choice based off of previous state
-                else -> OTHER_NEGATIVE_EMOTIONS.random(random)
-            }
-
         return emotionalState.copy(
-            mood = newMood,
+            mood = pickNegativeMood(observedFrustrationEvents),
             observedNegativeEvents = observedFrustrationEvents + 1
         )
+    }
+
+    private fun pickNegativeMood(observedFrustrationEvents: Int) =
+        when {
+        shouldBeEnraged(observedFrustrationEvents) ->
+            hurryFindCover()
+
+        shouldBeFrustrated(observedFrustrationEvents) ->
+            tryToRemainCalm()
+
+        // todo: more appropriate choice based off of previous state
+        else -> OTHER_NEGATIVE_EMOTIONS.random(random)
     }
 
     private fun shouldBeFrustrated(observedFrustrationEvents: Int) =
