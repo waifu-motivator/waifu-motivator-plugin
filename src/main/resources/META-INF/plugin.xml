@@ -63,6 +63,8 @@
   <applicationListeners>
     <listener class="zd.zero.waifu.motivator.plugin.listeners.PluginInstallListener"
               topic="com.intellij.ide.plugins.DynamicPluginListener"/>
+    <listener class="zd.zero.waifu.motivator.plugin.personality.core.emotions.CoolDownCore"
+              topic="zd.zero.waifu.motivator.plugin.personality.core.emotions.MoodListener"/>
   </applicationListeners>
   <projectListeners>
     <listener class="zd.zero.waifu.motivator.plugin.WaifuMotivatorProject"

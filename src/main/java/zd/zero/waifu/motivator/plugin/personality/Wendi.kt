@@ -8,8 +8,7 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.personality.core.IdlePersonalityCore
 import zd.zero.waifu.motivator.plugin.personality.core.TaskPersonalityCore
-import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionCore
-import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.*
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
@@ -53,7 +52,7 @@ import zd.zero.waifu.motivator.plugin.tools.AlarmDebouncer
 // %%%%%%%%%%%%%%%%%%%%%%%*                               #%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%..                     ....,%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%.......           .........(%%%%%%%%%%%%%%%%%%%%%%%%%
-object Wendi : Disposable {
+object Wendi : Disposable, EmotionalMutationActionListener {
 
     private lateinit var messageBusConnection: MessageBusConnection
     private lateinit var emotionCore: EmotionCore
@@ -74,6 +73,8 @@ object Wendi : Disposable {
                     this@Wendi.emotionCore = emotionCore.updateConfig(newPluginState)
                 }
             })
+
+            messageBusConnection.subscribe(EMOTIONAL_MUTATION_TOPIC, this)
 
             messageBusConnection.subscribe(MotivationEventListener.TOPIC, object : MotivationEventListener {
                 override fun onEventTrigger(motivationEvent: MotivationEvent) {
@@ -97,8 +98,19 @@ object Wendi : Disposable {
     }
 
     private fun consumeEvent(motivationEvent: MotivationEvent) {
-        val emotionalState = emotionCore.deriveMood(motivationEvent)
-        reactToEvent(motivationEvent, emotionalState)
+        val currentMood = emotionCore.deriveMood(motivationEvent)
+        reactToEvent(motivationEvent, currentMood)
+        publishMood(currentMood)
+    }
+
+    override fun onAction(emotionalMutationAction: EmotionalMutationAction) {
+        publishMood(emotionCore.mutateMood(emotionalMutationAction))
+    }
+
+    private fun publishMood(currentMood: Mood) {
+        ApplicationManager.getApplication().messageBus
+            .syncPublisher(EMOTION_TOPIC)
+            .onDerivedMood(currentMood)
     }
 
     private fun reactToEvent(motivationEvent: MotivationEvent, emotionalState: Mood) {
@@ -106,7 +118,8 @@ object Wendi : Disposable {
             MotivationEvents.TEST,
             MotivationEvents.TASK -> taskPersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
             MotivationEvents.IDLE -> idlePersonalityCore.processMotivationEvent(motivationEvent, emotionalState)
-            else -> {}
+            else -> {
+            }
         }
     }
 

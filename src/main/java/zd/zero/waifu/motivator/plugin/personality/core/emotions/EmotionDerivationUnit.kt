@@ -7,4 +7,9 @@ internal interface EmotionDerivationUnit {
         motivationEvent: MotivationEvent,
         emotionalState: EmotionalState
     ): EmotionalState
+
+    fun deriveFromMutation(
+        emotionalMutationAction: EmotionalMutationAction,
+        emotionalState: EmotionalState
+    ): EmotionalState
 }
