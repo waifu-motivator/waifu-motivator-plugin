@@ -13,6 +13,8 @@ import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.AlarmDebouncer
+import zd.zero.waifu.motivator.plugin.tools.toOptional
+import java.util.*
 
 //                                   Waifu
 //                                   Emotion
@@ -61,7 +63,6 @@ object Wendi : Disposable, EmotionalMutationActionListener {
     private const val DEBOUNCE_INTERVAL = 80
     private val singleEventDebouncer = AlarmDebouncer<MotivationEvent>(DEBOUNCE_INTERVAL)
     private val idleEventDebouncer = AlarmDebouncer<MotivationEvent>(DEBOUNCE_INTERVAL)
-
     fun initialize() {
         if (this::messageBusConnection.isInitialized.not()) {
             messageBusConnection = ApplicationManager.getApplication().messageBus.connect()
@@ -91,6 +92,10 @@ object Wendi : Disposable, EmotionalMutationActionListener {
             })
         }
     }
+
+    val currentMood: Optional<Mood>
+        get() = if (this::emotionCore.isInitialized) emotionCore.currentMood.toOptional()
+        else Optional.empty()
 
     private fun consumeEvents(bufferedMotivationEvents: List<MotivationEvent>) {
         val emotionalState = emotionCore.deriveMood(bufferedMotivationEvents.first())

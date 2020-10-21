@@ -20,6 +20,9 @@ class EmotionCore(
     )
     private var emotionalState = EmotionalState(Mood.CALM)
 
+    val currentMood: Mood
+        get() = emotionalState.mood
+
     fun updateConfig(pluginState: WaifuMotivatorState): EmotionCore =
         EmotionCore(pluginState, random).let {
             it.emotionalState = this.emotionalState
