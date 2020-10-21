@@ -7,6 +7,7 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.personality.core.IdlePersonalityCore
+import zd.zero.waifu.motivator.plugin.personality.core.ResetCore
 import zd.zero.waifu.motivator.plugin.personality.core.TaskPersonalityCore
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.*
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
@@ -60,6 +61,7 @@ object Wendi : Disposable, EmotionalMutationActionListener {
     private lateinit var emotionCore: EmotionCore
     private val taskPersonalityCore = TaskPersonalityCore()
     private val idlePersonalityCore = IdlePersonalityCore()
+    private val resetCore = ResetCore()
     private const val DEBOUNCE_INTERVAL = 80
     private val singleEventDebouncer = AlarmDebouncer<MotivationEvent>(DEBOUNCE_INTERVAL)
     private val idleEventDebouncer = AlarmDebouncer<MotivationEvent>(DEBOUNCE_INTERVAL)
@@ -109,7 +111,19 @@ object Wendi : Disposable, EmotionalMutationActionListener {
     }
 
     override fun onAction(emotionalMutationAction: EmotionalMutationAction) {
-        publishMood(emotionCore.mutateMood(emotionalMutationAction))
+        val mutatedMood = emotionCore.mutateMood(emotionalMutationAction)
+        reactToMutation(emotionalMutationAction)
+        publishMood(mutatedMood)
+    }
+
+    private fun reactToMutation(
+        emotionalMutationAction: EmotionalMutationAction
+    ) {
+        when (emotionalMutationAction.type) {
+            EmotionalMutationType.RESET -> resetCore.processMutationEvent(emotionalMutationAction)
+            else -> {
+            }
+        }
     }
 
     private fun publishMood(currentMood: Mood) {

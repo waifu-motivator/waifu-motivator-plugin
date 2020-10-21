@@ -59,6 +59,12 @@
 
       <add-to-group group-id="HelpMenu" anchor="last"/>
     </group>
+    <action id="waifuRelaxAction" class="zd.zero.waifu.motivator.plugin.actions.RelaxAction" text="Relax your Waifu"
+            description="Action calms down your frustrated/enraged waifu">
+      <add-to-group group-id="zd.zero.waifu.motivator.WaifuMotivatorGroup" anchor="after"
+                    relative-to-action="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="shift alt R"/>
+    </action>
   </actions>
 
   <applicationListeners>
