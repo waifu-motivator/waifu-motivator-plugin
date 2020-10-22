@@ -11,7 +11,7 @@
 
   <!--    Leave this in here so the IDE gives you feedback on-->
   <!--    What APIs are available-->
-  <idea-version since-build="201.4515.24"/>
+  <idea-version since-build="201.6668.113"/>
 
   <extensions defaultExtensionNs="com.intellij">
     <applicationConfigurable

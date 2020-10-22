@@ -4,7 +4,6 @@ import com.intellij.openapi.util.IconLoader
 
 object WaifuMotivatorIcons {
     val MENU = IconLoader.getIcon("/icons/wmp.svg", javaClass)
-    val CRY = IconLoader.getIcon("/icons/emojis/1f62d.svg", javaClass)
     val E1F60A = IconLoader.getIcon("/icons/emojis/1f60a.svg", javaClass)
     val E1F60C = IconLoader.getIcon("/icons/emojis/1f60c.svg", javaClass)
     val E1F60F = IconLoader.getIcon("/icons/emojis/1f60f.svg", javaClass)
