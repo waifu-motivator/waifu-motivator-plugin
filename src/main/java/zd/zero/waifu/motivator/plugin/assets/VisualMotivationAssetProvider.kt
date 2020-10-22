@@ -6,6 +6,7 @@ import java.util.*
 import kotlin.random.Random
 
 enum class WaifuAssetCategory {
+    ACKNOWLEDGEMENT,
     FRUSTRATION,
     ENRAGED,
     CELEBRATION,
@@ -39,7 +40,8 @@ object VisualMotivationAssetProvider {
             WaifuAssetCategory.ENRAGED,
             WaifuAssetCategory.FRUSTRATION,
             WaifuAssetCategory.HAPPY,
-            WaifuAssetCategory.MOCKING
+            WaifuAssetCategory.MOCKING,
+            WaifuAssetCategory.ACKNOWLEDGEMENT
             -> pickRandomAssetByCategory(
                 category
             )

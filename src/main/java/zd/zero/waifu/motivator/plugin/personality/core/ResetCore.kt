@@ -15,14 +15,18 @@ class ResetCore {
         MotivationFactory.showUntitledMotivationEventFromCategories(
                 MotivationEvent(MotivationEvents.MISC,
                         MotivationEventCategory.NEUTRAL,
-                        "",
+                        "Relax Acknowledgment",
                         emotionalMutationAction.project ?: ProjectManager.getInstance().openProjects.first()) {
                     AlertConfiguration(
                             isAlertEnabled = true,
                             isDisplayNotificationEnabled = true,
                             isSoundAlertEnabled = false
                     )
-                }, WaifuAssetCategory.HAPPY
+                },
+            WaifuAssetCategory.ACKNOWLEDGEMENT,
+            WaifuAssetCategory.ACKNOWLEDGEMENT,
+            WaifuAssetCategory.ACKNOWLEDGEMENT,
+            WaifuAssetCategory.HAPPY
         )
     }
 }
