@@ -59,6 +59,7 @@ class MoodStatusBarWidget(private val project: Project) :
     override fun getTooltipText(): String = Wendi.currentMood
         .filter { WaifuMotivatorPluginState.getPluginState().isShowMood }
         .map { it.toString().toLowerCase().capitalize() }
+        .map { "Your Waifu is: $it" }
         .orElse("")
 
     override fun ID(): String = ID
