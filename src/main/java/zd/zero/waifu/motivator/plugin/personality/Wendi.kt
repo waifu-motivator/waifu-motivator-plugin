@@ -15,7 +15,7 @@ import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.AlarmDebouncer
 import zd.zero.waifu.motivator.plugin.tools.toOptional
-import java.util.*
+import java.util.Optional
 
 //                                   Waifu
 //                                   Emotion

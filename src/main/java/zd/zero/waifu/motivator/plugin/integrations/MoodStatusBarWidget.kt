@@ -1,6 +1,5 @@
 package zd.zero.waifu.motivator.plugin.integrations
 
-import com.intellij.icons.AllIcons
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
@@ -11,6 +10,7 @@ import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.openapi.wm.WindowManager
 import com.intellij.util.Consumer
+import icons.WaifuMotivatorIcons
 import zd.zero.waifu.motivator.plugin.personality.Wendi
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.EMOTION_TOPIC
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
@@ -58,8 +58,8 @@ class MoodStatusBarWidget(private val project: Project) :
 
     override fun getTooltipText(): String = Wendi.currentMood
         .filter { WaifuMotivatorPluginState.getPluginState().showMood }
-        .map { it.toString() }
-        .orElse(null)
+        .map { it.toString().toLowerCase().capitalize() }
+        .orElse("")
 
     override fun ID(): String = ID
 
@@ -75,8 +75,23 @@ class MoodStatusBarWidget(private val project: Project) :
     override fun getIcon(): Icon? =
         Wendi.currentMood
             .filter { WaifuMotivatorPluginState.getPluginState().showMood }
-            .map { AllIcons.Ide.Rating }
+            .map { getEmoji(it) }
             .orElse(null)
+
+    private fun getEmoji(mood: Mood): Icon {
+        return when (mood) {
+            Mood.ENRAGED -> WaifuMotivatorIcons.E1F92C
+            Mood.FRUSTRATED -> WaifuMotivatorIcons.E1F620
+            Mood.AGITATED -> WaifuMotivatorIcons.E1F612
+            Mood.HAPPY -> WaifuMotivatorIcons.E1F60A
+            Mood.RELIEVED -> WaifuMotivatorIcons.E1F60C
+            Mood.EXCITED -> WaifuMotivatorIcons.E1F973
+            Mood.SMUG -> WaifuMotivatorIcons.E1F60F
+            Mood.SHOCKED -> WaifuMotivatorIcons.E1F632
+            Mood.DISAPPOINTED -> WaifuMotivatorIcons.E1F62D
+            else -> WaifuMotivatorIcons.E1F642
+        }
+    }
 
     override fun getClickConsumer(): Consumer<MouseEvent> = Consumer {
         ApplicationManager.getApplication().invokeLater({
