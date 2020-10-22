@@ -57,7 +57,7 @@ class MoodStatusBarWidget(private val project: Project) :
     }
 
     override fun getTooltipText(): String = Wendi.currentMood
-        .filter { WaifuMotivatorPluginState.getPluginState().showMood }
+        .filter { WaifuMotivatorPluginState.getPluginState().isShowMood }
         .map { it.toString().toLowerCase().capitalize() }
         .orElse("")
 
@@ -74,7 +74,7 @@ class MoodStatusBarWidget(private val project: Project) :
 
     override fun getIcon(): Icon? =
         Wendi.currentMood
-            .filter { WaifuMotivatorPluginState.getPluginState().showMood }
+            .filter { WaifuMotivatorPluginState.getPluginState().isShowMood }
             .map { getEmoji(it) }
             .orElse(null)
 

@@ -30,5 +30,5 @@ class MoodStatusBarProvider : StatusBarWidgetFactory {
     override fun isConfigurable(): Boolean = true
 
     override fun isEnabledByDefault(): Boolean =
-        WaifuMotivatorPluginState.getPluginState().showMood
+        WaifuMotivatorPluginState.getPluginState().isShowMood
 }

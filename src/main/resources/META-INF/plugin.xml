@@ -31,7 +31,7 @@
   <actions>
     <group id="zd.zero.waifu.motivator.WaifuMotivatorGroup"
            text="Waifu Motivator" popup="true"
-           icon="WaifuMotivatorIcons.MENU">
+           icon="/icons/wmp.svg">
       <action id="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
               class="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
               text="Motivate Me"

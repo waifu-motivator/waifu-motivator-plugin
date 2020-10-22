@@ -90,6 +90,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JList<CheckListItem> preferredCharactersList;
 
+    private JCheckBox showStatusBarIcon;
+
     private ListTableModel<Integer> exitCodeListModel;
 
     public WaifuMotivatorSettingsPage() {
@@ -150,6 +152,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableExitCodeSound.isSelected() != this.state.isExitCodeSoundEnabled() ||
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled() ||
                 !getPreferredCharacters().equals( this.state.getPreferredCharacters() ) ||
+                showStatusBarIcon.isSelected() != this.state.isShowMood() ||
                 exitCodesChanged;
     }
 
@@ -198,6 +201,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
             .collect( Collectors.joining(WaifuMotivatorState.DEFAULT_DELIMITER))
         );
         this.state.setPreferredCharacters( getPreferredCharacters() );
+        this.state.setShowMood( showStatusBarIcon.isSelected() );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
@@ -239,6 +243,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.frustrationProbabilitySlider.setValue( this.state.getProbabilityOfFrustration() );
         this.enableExitCodeNotifications.setSelected( this.state.isExitCodeNotificationEnabled() );
         this.enableExitCodeSound.setSelected( this.state.isExitCodeSoundEnabled() );
+        this.showStatusBarIcon.setSelected( this.state.isShowMood() );
         initializeExitCodes();
     }
 
