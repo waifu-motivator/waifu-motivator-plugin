@@ -165,5 +165,10 @@ Art by [@gweninja](https://www.instagram.com/gweninja/)
 ## License
 The license of this project is under MIT License - see [LICENSE](./LICENSE) file for details.
 
+# Attributions
+
+Project uses icons from [Twemoji](https://github.com/twitter/twemoji).
+Graphics licensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/
+
 ## Disclaimer
 There are resources used in the [sound](./src/main/resources/sound) directory that is pulled randomly from the internet, I do *not* own it as they are clipped/trimmed, if you own it please contact me so that I could remove it from here.
