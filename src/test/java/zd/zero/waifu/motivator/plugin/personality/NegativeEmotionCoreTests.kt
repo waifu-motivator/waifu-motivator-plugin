@@ -483,7 +483,7 @@ class NegativeEmotionCoreTests {
             EmotionalMutationAction(
                 EmotionalMutationType.RESET,
                 MoodCategory.NEGATIVE
-            ) to calm,
+            ) to calm
         ).forEachIndexed { index, arguments ->
             val deriveMood = when (val input = arguments.first) {
                 is MotivationEvent -> emotionCore.deriveMood(input)
