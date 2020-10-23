@@ -3,6 +3,7 @@ package zd.zero.waifu.motivator.plugin.actions
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.DumbAware
+import icons.WaifuMotivatorIcons
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
 import zd.zero.waifu.motivator.plugin.motivation.MotivationFactory.showUntitledMotivationEventFromCategories
@@ -12,7 +13,7 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import java.util.*
 
-class MotivateMeAction : AnAction(), DumbAware {
+class MotivateMeAction : AnAction(WaifuMotivatorIcons.MENU), DumbAware {
     override fun actionPerformed(e: AnActionEvent) {
         val pluginState = WaifuMotivatorPluginState.getPluginState()
         val config = AlertConfiguration(

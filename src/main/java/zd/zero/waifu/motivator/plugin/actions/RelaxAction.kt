@@ -3,12 +3,13 @@ package zd.zero.waifu.motivator.plugin.actions
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.project.DumbAware
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.EMOTIONAL_MUTATION_TOPIC
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionalMutationAction
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionalMutationType.*
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.MoodCategory.*
 
-class RelaxAction : AnAction() {
+class RelaxAction : AnAction(), DumbAware {
     override fun actionPerformed(e: AnActionEvent) {
         ApplicationManager.getApplication().messageBus
             .syncPublisher(EMOTIONAL_MUTATION_TOPIC)
