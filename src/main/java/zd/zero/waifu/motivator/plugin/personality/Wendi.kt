@@ -119,11 +119,8 @@ object Wendi : Disposable, EmotionalMutationActionListener {
     private fun reactToMutation(
         emotionalMutationAction: EmotionalMutationAction
     ) {
-        when (emotionalMutationAction.type) {
-            EmotionalMutationType.RESET -> resetCore.processMutationEvent(emotionalMutationAction)
-            else -> {
-            }
-        }
+        if (emotionalMutationAction.type == EmotionalMutationType.RESET)
+            resetCore.processMutationEvent(emotionalMutationAction)
     }
 
     private fun publishMood(currentMood: Mood) {
