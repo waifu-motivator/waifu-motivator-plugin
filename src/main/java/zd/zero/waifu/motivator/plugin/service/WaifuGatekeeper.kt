@@ -26,11 +26,7 @@ class WaifuGatekeeper : Disposable {
     init {
         connection.subscribe(
             PluginSettingsListener.PLUGIN_SETTINGS_TOPIC,
-            object : PluginSettingsListener {
-                override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
-                    allowedWaifu = extractAllowedCharactersFromState(newPluginState)
-                }
-            }
+            PluginSettingsListener { newPluginState -> allowedWaifu = extractAllowedCharactersFromState(newPluginState) }
         )
     }
 

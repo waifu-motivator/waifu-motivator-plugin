@@ -101,13 +101,7 @@ object MotivationFactory {
                     val motivation =
                         motivationConstructor(
                             asset
-                        ).setListener(
-                            object : MotivationListener {
-                                override fun onDisposal() {
-                                    lifecycleListener.onDispose()
-                                }
-                            }
-                        )
+                        ).setListener { lifecycleListener.onDispose() }
                     if (project.isInitialized) {
                         lifecycleListener.onDisplay()
                         motivation.motivate()

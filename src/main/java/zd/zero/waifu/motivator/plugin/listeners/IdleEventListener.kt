@@ -11,7 +11,6 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
-import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState.Companion.DEFAULT_IDLE_TIMEOUT_IN_MINUTES
 import java.util.concurrent.TimeUnit
 
@@ -22,17 +21,15 @@ class IdleEventListener(private val project: Project) : Runnable, Disposable {
         val self = this
         messageBus.subscribe(
             PluginSettingsListener.PLUGIN_SETTINGS_TOPIC,
-            object : PluginSettingsListener {
-                override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
-                    IdeEventQueue.getInstance().removeIdleListener(self)
-                    IdeEventQueue.getInstance().addIdleListener(
-                        self,
-                        TimeUnit.MILLISECONDS.convert(
-                            newPluginState.idleTimeoutInMinutes,
-                            TimeUnit.MINUTES
-                        ).toInt()
-                    )
-                }
+            PluginSettingsListener { newPluginState ->
+                IdeEventQueue.getInstance().removeIdleListener(self)
+                IdeEventQueue.getInstance().addIdleListener(
+                    self,
+                    TimeUnit.MILLISECONDS.convert(
+                        newPluginState.idleTimeoutInMinutes,
+                        TimeUnit.MINUTES
+                    ).toInt()
+                )
             }
         )
         IdeEventQueue.getInstance().addIdleListener(

@@ -18,7 +18,6 @@ import zd.zero.waifu.motivator.plugin.personality.core.emotions.MoodListener
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage
-import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.awt.event.MouseEvent
 import javax.swing.Icon
@@ -41,19 +40,11 @@ class MoodStatusBarWidget(private val project: Project) :
         )
         connect.subscribe(
             PluginSettingsListener.PLUGIN_SETTINGS_TOPIC,
-            object : PluginSettingsListener {
-                override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
-                    updateWidget()
-                }
-            }
+            PluginSettingsListener { updateWidget() }
         )
         connect.subscribe(
             EMOTION_TOPIC,
-            object : MoodListener {
-                override fun onDerivedMood(currentMood: Mood) {
-                    updateWidget()
-                }
-            }
+            MoodListener { updateWidget() }
         )
         StartupManager.getInstance(project).runWhenProjectIsInitialized { updateWidget() }
     }

@@ -18,7 +18,6 @@ import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionalMutatio
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
-import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.AlarmDebouncer
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.util.Optional
@@ -79,27 +78,21 @@ object Wendi : Disposable, EmotionalMutationActionListener {
 
             messageBusConnection.subscribe(
                 PluginSettingsListener.PLUGIN_SETTINGS_TOPIC,
-                object : PluginSettingsListener {
-                    override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
-                        this@Wendi.emotionCore = emotionCore.updateConfig(newPluginState)
-                    }
-                }
+                PluginSettingsListener { newPluginState -> this@Wendi.emotionCore = emotionCore.updateConfig(newPluginState) }
             )
 
             messageBusConnection.subscribe(EMOTIONAL_MUTATION_TOPIC, this)
 
             messageBusConnection.subscribe(
                 MotivationEventListener.TOPIC,
-                object : MotivationEventListener {
-                    override fun onEventTrigger(motivationEvent: MotivationEvent) {
-                        when (motivationEvent.type) {
-                            MotivationEvents.IDLE ->
-                                idleEventDebouncer.debounceAndBuffer(motivationEvent) {
-                                    consumeEvents(it)
-                                }
-                            else -> singleEventDebouncer.debounce {
-                                consumeEvent(motivationEvent)
+                MotivationEventListener { motivationEvent ->
+                    when (motivationEvent.type) {
+                        MotivationEvents.IDLE ->
+                            idleEventDebouncer.debounceAndBuffer(motivationEvent) {
+                                consumeEvents(it)
                             }
+                        else -> singleEventDebouncer.debounce {
+                            consumeEvent(motivationEvent)
                         }
                     }
                 }

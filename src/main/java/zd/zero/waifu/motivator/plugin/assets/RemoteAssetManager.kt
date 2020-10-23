@@ -2,7 +2,6 @@ package zd.zero.waifu.motivator.plugin.assets
 
 import com.intellij.openapi.diagnostic.Logger
 import zd.zero.waifu.motivator.plugin.platform.LifeCycleManager
-import zd.zero.waifu.motivator.plugin.platform.UpdateAssetsListener
 import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import java.net.URI
 import java.nio.file.Files
@@ -29,19 +28,15 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
 
     init {
         initializeAssetCaches(AssetManager.resolveAssetUrl(assetCategory, "assets.json"))
-        LifeCycleManager.registerUpdateListener(
-            object : UpdateAssetsListener {
-                override fun onRequestedUpdate() {
-                    initializeAssetCaches(
-                        AssetManager.forceResolveAssetUrl(
-                            assetCategory,
-                            "assets.json"
-                        ),
-                        breakOnFailure = false
-                    )
-                }
-            }
-        )
+        LifeCycleManager.registerUpdateListener {
+            initializeAssetCaches(
+                AssetManager.forceResolveAssetUrl(
+                    assetCategory,
+                    "assets.json"
+                ),
+                breakOnFailure = false
+            )
+        }
     }
 
     private fun initializeAssetCaches(assetFileUrl: Optional<String>, breakOnFailure: Boolean = true) {
