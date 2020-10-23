@@ -9,5 +9,5 @@ class NonTitledVisualNotification(motivationAsset: MotivationAsset, project: Pro
 
     override fun buildNotification(): Notification =
         notificationGroup.createNotification()
-        .setContent(motivationAsset.message.ifEmpty { "" })
+            .setContent(motivationAsset.message.ifEmpty { "" })
 }

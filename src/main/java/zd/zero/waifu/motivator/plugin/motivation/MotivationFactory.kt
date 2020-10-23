@@ -18,7 +18,9 @@ object MotivationFactory {
         motivationEvent: MotivationEvent,
         waifuAssetCategory: WaifuAssetCategory
     ) = showMotivationEventForCategory(
-        motivationEvent, waifuAssetCategory, defaultListener
+        motivationEvent,
+        waifuAssetCategory,
+        defaultListener
     )
 
     fun showMotivationEventFromCategories(
@@ -26,21 +28,25 @@ object MotivationFactory {
         vararg waifuAssetCategory: WaifuAssetCategory,
         lifecycleListener: MotivationLifecycleListener = defaultListener
     ) = showMotivationFromMultipleCategories(
-        motivationEvent, lifecycleListener, waifuAssetCategory
+        motivationEvent,
+        lifecycleListener,
+        waifuAssetCategory
     ) { motivationAsset: MotivationAsset ->
-            VisualMotivationFactory.constructMotivation(
-                motivationEvent.project,
-                motivationAsset,
-                motivationEvent.alertConfigurationSupplier()
-            )
-        }
+        VisualMotivationFactory.constructMotivation(
+            motivationEvent.project,
+            motivationAsset,
+            motivationEvent.alertConfigurationSupplier()
+        )
+    }
 
     fun showUntitledMotivationEventFromCategories(
         motivationEvent: MotivationEvent,
         vararg waifuAssetCategory: WaifuAssetCategory,
         lifecycleListener: MotivationLifecycleListener = defaultListener
     ) = showMotivationFromMultipleCategories(
-        motivationEvent, lifecycleListener, waifuAssetCategory
+        motivationEvent,
+        lifecycleListener,
+        waifuAssetCategory
     ) { motivationAsset: MotivationAsset ->
         VisualMotivationFactory.constructNonTitledMotivation(
             motivationEvent.project,

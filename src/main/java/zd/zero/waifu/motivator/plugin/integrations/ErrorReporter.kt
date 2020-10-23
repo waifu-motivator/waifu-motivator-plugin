@@ -25,7 +25,8 @@ import zd.zero.waifu.motivator.plugin.tools.RestClient
 import java.awt.Component
 import java.lang.management.ManagementFactory
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Arrays
+import java.util.Properties
 import java.util.stream.Collectors
 
 class ErrorReporter : ErrorReportSubmitter() {
@@ -34,13 +35,15 @@ class ErrorReporter : ErrorReportSubmitter() {
     companion object {
         private val gson = GsonBuilder().setPrettyPrinting().create()
         private val sentryClient: SentryClient =
-            DefaultSentryClientFactory().createSentryClient(Dsn(
-                RestClient.performGet(
-                    "https://jetbrains.assets.unthrottled.io/waifu-motivator/sentry-dsn.txt"
+            DefaultSentryClientFactory().createSentryClient(
+                Dsn(
+                    RestClient.performGet(
+                        "https://jetbrains.assets.unthrottled.io/waifu-motivator/sentry-dsn.txt"
+                    )
+                        .map { it.trim() }
+                        .orElse("https://3630573c245444f8b49ef498b24d1405@o403546.ingest.sentry.io/5374288?maxmessagelength=50000")
                 )
-                    .map { it.trim() }
-                    .orElse("https://3630573c245444f8b49ef498b24d1405@o403546.ingest.sentry.io/5374288?maxmessagelength=50000")
-            ))
+            )
     }
 
     override fun submit(

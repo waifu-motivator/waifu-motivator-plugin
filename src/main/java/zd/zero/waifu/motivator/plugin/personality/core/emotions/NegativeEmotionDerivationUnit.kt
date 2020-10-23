@@ -16,7 +16,8 @@ internal class NegativeEmotionDerivationUnit(
 
     companion object {
         val OTHER_NEGATIVE_EMOTIONS = listOf(
-            Mood.SHOCKED, Mood.DISAPPOINTED
+            Mood.SHOCKED,
+            Mood.DISAPPOINTED
         )
     }
 
@@ -70,22 +71,22 @@ internal class NegativeEmotionDerivationUnit(
 
     private fun pickNegativeMood(observedFrustrationEvents: Int) =
         when {
-        shouldBeEnraged(observedFrustrationEvents) ->
-            hurryFindCover()
+            shouldBeEnraged(observedFrustrationEvents) ->
+                hurryFindCover()
 
-        shouldBeFrustrated(observedFrustrationEvents) ->
-            tryToRemainCalm()
+            shouldBeFrustrated(observedFrustrationEvents) ->
+                tryToRemainCalm()
 
-        // todo: more appropriate choice based off of previous state
-        else -> OTHER_NEGATIVE_EMOTIONS.random(random)
-    }
+            // todo: more appropriate choice based off of previous state
+            else -> OTHER_NEGATIVE_EMOTIONS.random(random)
+        }
 
     private fun shouldBeFrustrated(observedFrustrationEvents: Int) =
         pluginState.isAllowFrustration &&
             pluginState.eventsBeforeFrustration <= observedFrustrationEvents
 
     private fun hasCalmedDown(observedFrustrationEvents: Int) =
-            pluginState.eventsBeforeFrustration / 2 >= observedFrustrationEvents
+        pluginState.eventsBeforeFrustration / 2 >= observedFrustrationEvents
 
     private fun shouldBeEnraged(observedFrustrationEvents: Int) =
         shouldBeFrustrated(observedFrustrationEvents) &&
@@ -96,7 +97,8 @@ internal class NegativeEmotionDerivationUnit(
         val primaryEmotions =
             Stream.of(
                 Mood.ENRAGED to rageProbability,
-                Mood.FRUSTRATED to pluginState.probabilityOfFrustration - rageProbability)
+                Mood.FRUSTRATED to pluginState.probabilityOfFrustration - rageProbability
+            )
 
         return pickNegativeEmotion(primaryEmotions)
     }

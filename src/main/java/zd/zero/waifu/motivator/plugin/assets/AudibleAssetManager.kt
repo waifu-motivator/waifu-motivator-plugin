@@ -6,7 +6,7 @@ import com.intellij.openapi.diagnostic.Logger
 import zd.zero.waifu.motivator.plugin.tools.ExceptionTools.runSafely
 import java.net.URI
 import java.nio.file.Paths
-import java.util.*
+import java.util.Optional
 
 object AudibleAssetManager : RemoteAssetManager<AudibleMotivationAssetDefinition, AudibleMotivationAsset>(
     AssetCategory.AUDIBLE
@@ -24,7 +24,8 @@ object AudibleAssetManager : RemoteAssetManager<AudibleMotivationAssetDefinition
     override fun convertToDefinitions(defJson: String): Optional<List<AudibleMotivationAssetDefinition>> =
         runSafely({
             Gson().fromJson<List<AudibleMotivationAssetDefinition>>(
-                defJson, object : TypeToken<List<AudibleMotivationAssetDefinition>>() {}.type
+                defJson,
+                object : TypeToken<List<AudibleMotivationAssetDefinition>>() {}.type
             )
         }) {
             log.warn("Unable to read Audible Assets for reasons $defJson", it)

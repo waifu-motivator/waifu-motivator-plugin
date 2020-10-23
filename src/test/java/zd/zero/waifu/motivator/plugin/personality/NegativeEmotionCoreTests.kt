@@ -9,7 +9,11 @@ import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventCategory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
-import zd.zero.waifu.motivator.plugin.personality.core.emotions.*
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionCore
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionalMutationAction
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionalMutationType
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.Mood
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.MoodCategory
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.NegativeEmotionDerivationUnit.Companion.OTHER_NEGATIVE_EMOTIONS
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.toList

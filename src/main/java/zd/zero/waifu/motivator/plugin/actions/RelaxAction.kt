@@ -6,8 +6,8 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.DumbAware
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.EMOTIONAL_MUTATION_TOPIC
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionalMutationAction
-import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionalMutationType.*
-import zd.zero.waifu.motivator.plugin.personality.core.emotions.MoodCategory.*
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionalMutationType.RESET
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.MoodCategory.NEGATIVE
 
 class RelaxAction : AnAction(), DumbAware {
     override fun actionPerformed(e: AnActionEvent) {

@@ -6,7 +6,7 @@ import com.intellij.openapi.diagnostic.Logger
 import zd.zero.waifu.motivator.plugin.tools.ExceptionTools
 import java.net.URI
 import java.nio.file.Paths
-import java.util.*
+import java.util.Optional
 
 object TextAssetManager : RemoteAssetManager<TextualMotivationAssetDefinition, TextualMotivationAssetPackage>(
     AssetCategory.TEXT
@@ -24,7 +24,8 @@ object TextAssetManager : RemoteAssetManager<TextualMotivationAssetDefinition, T
     override fun convertToDefinitions(defJson: String): Optional<List<TextualMotivationAssetDefinition>> =
         ExceptionTools.runSafely({
             Gson().fromJson<List<TextualMotivationAssetDefinition>>(
-                defJson, object : TypeToken<List<TextualMotivationAssetDefinition>>() {}.type
+                defJson,
+                object : TypeToken<List<TextualMotivationAssetDefinition>>() {}.type
             )
         }) {
             log.warn("Unable to read Text Assets for reasons $defJson", it)

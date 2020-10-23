@@ -7,7 +7,7 @@ import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.*
+import java.util.Optional
 import java.util.Optional.ofNullable
 
 enum class Status {
@@ -29,16 +29,19 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
 
     init {
         initializeAssetCaches(AssetManager.resolveAssetUrl(assetCategory, "assets.json"))
-        LifeCycleManager.registerUpdateListener(object : UpdateAssetsListener {
-            override fun onRequestedUpdate() {
-                initializeAssetCaches(
-                    AssetManager.forceResolveAssetUrl(
-                        assetCategory, "assets.json"
-                    ),
-                    breakOnFailure = false
-                )
+        LifeCycleManager.registerUpdateListener(
+            object : UpdateAssetsListener {
+                override fun onRequestedUpdate() {
+                    initializeAssetCaches(
+                        AssetManager.forceResolveAssetUrl(
+                            assetCategory,
+                            "assets.json"
+                        ),
+                        breakOnFailure = false
+                    )
+                }
             }
-        })
+        )
     }
 
     private fun initializeAssetCaches(assetFileUrl: Optional<String>, breakOnFailure: Boolean = true) {

@@ -38,8 +38,8 @@ class ProbabilityTools(
     ): List<Pair<Mood, Int>> {
         val secondaryEmotionWeights = weightRemaining / secondaryEmotions.size
         return concat(
-                primaryEmotions,
-                secondaryEmotions.stream().map { it to secondaryEmotionWeights }
+            primaryEmotions,
+            secondaryEmotions.stream().map { it to secondaryEmotionWeights }
         ).collect(Collectors.toList())
             .shuffled<Pair<Mood, Int>>()
     }

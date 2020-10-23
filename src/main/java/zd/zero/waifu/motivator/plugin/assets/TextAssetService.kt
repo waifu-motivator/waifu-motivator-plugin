@@ -7,7 +7,8 @@ import zd.zero.waifu.motivator.plugin.tools.ExceptionTools.runSafely
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.io.BufferedReader
 import java.nio.file.Files
-import java.util.*
+import java.util.Optional
+import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.random.Random
 

@@ -3,7 +3,8 @@ package zd.zero.waifu.motivator.plugin.assets
 import com.google.common.annotations.VisibleForTesting
 import com.intellij.openapi.application.ApplicationManager
 import zd.zero.waifu.motivator.plugin.tools.toOptional
-import java.util.*
+import java.util.Optional
+import java.util.UUID
 import kotlin.random.Random
 
 abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(

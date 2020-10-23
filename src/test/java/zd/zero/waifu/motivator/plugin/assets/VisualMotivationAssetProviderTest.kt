@@ -10,7 +10,8 @@ import org.junit.Test
 import zd.zero.waifu.motivator.plugin.test.tools.TestTools
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.nio.file.Paths
-import java.util.*
+import java.util.Optional
+import java.util.UUID
 
 class VisualMotivationAssetProviderTest {
 
@@ -102,16 +103,22 @@ class VisualMotivationAssetProviderTest {
                 ImageDimension(69, 420),
                 groupId
             ).toOptional()
-        every { TextAssetService.getAssetByGroupId(
-            groupId, WaifuAssetCategory.MOCKING
-        ) } returns TextualMotivationAsset("O Kawaii Koto").toOptional()
-        every { AudibleAssetDefinitionService.getAssetByGroupId(
-            groupId, WaifuAssetCategory.MOCKING
-        ) } returns AudibleMotivationAsset(Paths.get("/o_kawaii_koto.mp3")).toOptional()
+        every {
+            TextAssetService.getAssetByGroupId(
+                groupId,
+                WaifuAssetCategory.MOCKING
+            )
+        } returns TextualMotivationAsset("O Kawaii Koto").toOptional()
+        every {
+            AudibleAssetDefinitionService.getAssetByGroupId(
+                groupId,
+                WaifuAssetCategory.MOCKING
+            )
+        } returns AudibleMotivationAsset(Paths.get("/o_kawaii_koto.mp3")).toOptional()
 
         val maybeMotivationAsset =
             VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.MOCKING)
-            .get()
+                .get()
 
         assertThat(maybeMotivationAsset.title).contains("O Kawaii Koto")
         assertThat(maybeMotivationAsset.soundFilePath).isEqualTo(Paths.get("/o_kawaii_koto.mp3"))
@@ -128,12 +135,18 @@ class VisualMotivationAssetProviderTest {
                 ImageDimension(69, 420),
                 groupId
             ).toOptional()
-        every { TextAssetService.getAssetByGroupId(
-            groupId, WaifuAssetCategory.MOCKING
-        ) } returns Optional.empty()
-        every { AudibleAssetDefinitionService.getAssetByGroupId(
-            groupId, WaifuAssetCategory.MOCKING
-        ) } returns AudibleMotivationAsset(Paths.get("/o_kawaii_koto.mp3")).toOptional()
+        every {
+            TextAssetService.getAssetByGroupId(
+                groupId,
+                WaifuAssetCategory.MOCKING
+            )
+        } returns Optional.empty()
+        every {
+            AudibleAssetDefinitionService.getAssetByGroupId(
+                groupId,
+                WaifuAssetCategory.MOCKING
+            )
+        } returns AudibleMotivationAsset(Paths.get("/o_kawaii_koto.mp3")).toOptional()
 
         assertThat(
             VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.MOCKING)
@@ -151,12 +164,18 @@ class VisualMotivationAssetProviderTest {
                 ImageDimension(69, 420),
                 groupId
             ).toOptional()
-        every { TextAssetService.getAssetByGroupId(
-            groupId, WaifuAssetCategory.MOCKING
-        ) } returns TextualMotivationAsset("O Kawaii Koto").toOptional()
-        every { AudibleAssetDefinitionService.getAssetByGroupId(
-            groupId, WaifuAssetCategory.MOCKING
-        ) } returns Optional.empty()
+        every {
+            TextAssetService.getAssetByGroupId(
+                groupId,
+                WaifuAssetCategory.MOCKING
+            )
+        } returns TextualMotivationAsset("O Kawaii Koto").toOptional()
+        every {
+            AudibleAssetDefinitionService.getAssetByGroupId(
+                groupId,
+                WaifuAssetCategory.MOCKING
+            )
+        } returns Optional.empty()
 
         assertThat(
             VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.MOCKING)

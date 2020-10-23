@@ -6,7 +6,7 @@ import com.intellij.openapi.diagnostic.Logger
 import zd.zero.waifu.motivator.plugin.assets.AssetCategory.VISUAL
 import zd.zero.waifu.motivator.plugin.service.WaifuGatekeeper
 import zd.zero.waifu.motivator.plugin.tools.ExceptionTools.runSafely
-import java.util.*
+import java.util.Optional
 
 object VisualAssetManager : RemoteAssetManager<VisualMotivationAssetDefinition, VisualMotivationAsset>(
     VISUAL
@@ -36,7 +36,8 @@ object VisualAssetManager : RemoteAssetManager<VisualMotivationAssetDefinition, 
     override fun convertToDefinitions(defJson: String): Optional<List<VisualMotivationAssetDefinition>> =
         runSafely({
             Gson().fromJson<List<VisualMotivationAssetDefinition>>(
-                defJson, object : TypeToken<List<VisualMotivationAssetDefinition>>() {}.type
+                defJson,
+                object : TypeToken<List<VisualMotivationAssetDefinition>>() {}.type
             )
         }) {
             log?.warn("Unable to read Visual Assets for reasons $defJson", it)

@@ -29,7 +29,11 @@ data class VisualMotivationAssetDefinition(
 ) : AssetDefinition {
     fun toAsset(assetUrl: String): VisualMotivationAsset =
         VisualMotivationAsset(
-            assetUrl, imageAlt, imageDimensions, groupId, characters
+            assetUrl,
+            imageAlt,
+            imageDimensions,
+            groupId,
+            characters
         )
 }
 

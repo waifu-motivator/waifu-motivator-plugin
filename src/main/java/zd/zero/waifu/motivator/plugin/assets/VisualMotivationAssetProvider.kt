@@ -2,7 +2,7 @@ package zd.zero.waifu.motivator.plugin.assets
 
 import zd.zero.waifu.motivator.plugin.tools.allOf
 import zd.zero.waifu.motivator.plugin.tools.toOptional
-import java.util.*
+import java.util.Optional
 import kotlin.random.Random
 
 enum class WaifuAssetCategory {
@@ -67,10 +67,12 @@ object VisualMotivationAssetProvider {
                     .flatMap { assetGroupId ->
                         allOf(
                             TextAssetService.getAssetByGroupId(
-                                assetGroupId, category
+                                assetGroupId,
+                                category
                             ),
                             AudibleAssetDefinitionService.getAssetByGroupId(
-                                assetGroupId, category
+                                assetGroupId,
+                                category
                             )
                         ).map(assetBundler)
                     }.map { it.toOptional() } // todo: replace with `or` when on jre 11+

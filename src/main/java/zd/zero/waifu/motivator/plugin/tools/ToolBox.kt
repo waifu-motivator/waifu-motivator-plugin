@@ -1,6 +1,6 @@
 package zd.zero.waifu.motivator.plugin.tools
 
-import java.util.*
+import java.util.Optional
 import java.util.function.Consumer
 
 fun <T, U, S> allOf(
@@ -15,6 +15,7 @@ fun <T, U, S> allOf(
             }
         }
     }
+
 fun <T, U> allOf(
     o1: Optional<T>,
     o2: Optional<U>

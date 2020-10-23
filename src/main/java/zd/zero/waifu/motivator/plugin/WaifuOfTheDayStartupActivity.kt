@@ -24,12 +24,16 @@ class WaifuOfTheDayStartupActivity : StartupActivity.DumbAware {
         updatePlatformTipOfTheDayConfig()
 
         val disposableRef = AtomicReference<Disposable?>()
-        val future = EdtScheduledExecutorService.getInstance().schedule({
-            val disposable = disposableRef.getAndSet(null) ?: return@schedule
-            Disposer.dispose(disposable)
+        val future = EdtScheduledExecutorService.getInstance().schedule(
+            {
+                val disposable = disposableRef.getAndSet(null) ?: return@schedule
+                Disposer.dispose(disposable)
 
-            if (!project.isDisposed) WaifuOfTheDayDialog.canBeShownToday(project)
-        }, 0, TimeUnit.SECONDS)
+                if (!project.isDisposed) WaifuOfTheDayDialog.canBeShownToday(project)
+            },
+            0,
+            TimeUnit.SECONDS
+        )
 
         val disposable = Disposable {
             disposableRef.set(null)
