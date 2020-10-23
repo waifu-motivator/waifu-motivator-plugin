@@ -27,7 +27,7 @@ class MoodStatusBarWidget(private val project: Project) :
     StatusBarWidget,
     StatusBarWidget.IconPresentation {
     companion object {
-        private const val ID = "Waifu Mood Status Component"
+        private const val ID = "zd.zero.waifu.motivator.plugin.integrations.MoodStatusBarWidget"
     }
 
     private val connect = ApplicationManager.getApplication().messageBus.connect()

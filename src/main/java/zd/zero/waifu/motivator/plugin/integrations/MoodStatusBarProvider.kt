@@ -7,9 +7,11 @@ import com.intellij.openapi.wm.StatusBarWidgetFactory
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 
 class MoodStatusBarProvider : StatusBarWidgetFactory {
+    companion object {
+        private const val ID = "zd.zero.waifu.motivator.plugin.integrations.MoodStatusBarProvider"
+    }
 
-    override fun getId(): String =
-        "zd.zero.waifu.motivator.plugin.integrations.MoodStatus"
+    override fun getId(): String = ID
 
     override fun getDisplayName(): String =
         "Waifu Mood Display"
