@@ -1,7 +1,7 @@
 package zd.zero.waifu.motivator.plugin.settings
 
 import com.intellij.util.messages.Topic
-import java.util.*
+import java.util.EventListener
 
 interface PluginSettingsListener : EventListener {
     companion object {

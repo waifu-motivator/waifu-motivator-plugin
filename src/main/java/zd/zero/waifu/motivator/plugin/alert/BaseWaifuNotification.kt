@@ -12,7 +12,9 @@ abstract class BaseWaifuNotification(
 
     companion object {
         val notificationGroup = NotificationGroup(
-            WaifuMotivator.PLUGIN_NAME, NotificationDisplayType.BALLOON, false
+            WaifuMotivator.PLUGIN_NAME,
+            NotificationDisplayType.BALLOON,
+            false
         )
     }
 

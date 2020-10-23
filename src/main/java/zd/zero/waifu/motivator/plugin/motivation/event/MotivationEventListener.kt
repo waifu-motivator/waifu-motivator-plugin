@@ -6,8 +6,8 @@ interface MotivationEventListener {
 
     companion object {
         val TOPIC: Topic<MotivationEventListener> = Topic.create(
-                "Motivation Events",
-                MotivationEventListener::class.java
+            "Motivation Events",
+            MotivationEventListener::class.java
         )
     }
 

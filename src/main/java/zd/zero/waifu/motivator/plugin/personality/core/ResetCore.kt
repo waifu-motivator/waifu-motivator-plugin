@@ -13,16 +13,18 @@ class ResetCore {
 
     fun processMutationEvent(emotionalMutationAction: EmotionalMutationAction) {
         MotivationFactory.showUntitledMotivationEventFromCategories(
-                MotivationEvent(MotivationEvents.MISC,
-                        MotivationEventCategory.NEUTRAL,
-                        "Relax Acknowledgment",
-                        emotionalMutationAction.project ?: ProjectManager.getInstance().openProjects.first()) {
-                    AlertConfiguration(
-                            isAlertEnabled = true,
-                            isDisplayNotificationEnabled = true,
-                            isSoundAlertEnabled = false
-                    )
-                },
+            MotivationEvent(
+                MotivationEvents.MISC,
+                MotivationEventCategory.NEUTRAL,
+                "Relax Acknowledgment",
+                emotionalMutationAction.project ?: ProjectManager.getInstance().openProjects.first()
+            ) {
+                AlertConfiguration(
+                    isAlertEnabled = true,
+                    isDisplayNotificationEnabled = true,
+                    isSoundAlertEnabled = false
+                )
+            },
             WaifuAssetCategory.ACKNOWLEDGEMENT,
             WaifuAssetCategory.ACKNOWLEDGEMENT,
             WaifuAssetCategory.ACKNOWLEDGEMENT,

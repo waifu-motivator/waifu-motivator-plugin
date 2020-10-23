@@ -4,7 +4,7 @@ import com.intellij.openapi.diagnostic.Logger
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClients
-import java.util.*
+import java.util.Optional
 import java.util.concurrent.TimeUnit
 
 object RestClient {

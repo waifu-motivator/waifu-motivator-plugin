@@ -32,26 +32,32 @@ class ExitCodeListener(private val project: Project) : Runnable, Disposable {
     private var allowedExitCodes = WaifuMotivatorPluginState.getPluginState()
         .allowedExitCodes.toExitCodes()
     init {
-        messageBus.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, object : PluginSettingsListener {
-            override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
-                allowedExitCodes = newPluginState
-                    .allowedExitCodes.toExitCodes()
-            }
-        })
-
-        messageBus.subscribe(ExecutionManager.EXECUTION_TOPIC, object : ExecutionListener {
-            override fun processTerminated(
-                executorId: String,
-                env: ExecutionEnvironment,
-                handler: ProcessHandler,
-                exitCode: Int
-            ) {
-                log.debug("Observed exit code of $exitCode")
-                if (allowedExitCodes.contains(exitCode).not() && env.project == project) {
-                    run()
+        messageBus.subscribe(
+            PluginSettingsListener.PLUGIN_SETTINGS_TOPIC,
+            object : PluginSettingsListener {
+                override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
+                    allowedExitCodes = newPluginState
+                        .allowedExitCodes.toExitCodes()
                 }
             }
-        })
+        )
+
+        messageBus.subscribe(
+            ExecutionManager.EXECUTION_TOPIC,
+            object : ExecutionListener {
+                override fun processTerminated(
+                    executorId: String,
+                    env: ExecutionEnvironment,
+                    handler: ProcessHandler,
+                    exitCode: Int
+                ) {
+                    log.debug("Observed exit code of $exitCode")
+                    if (allowedExitCodes.contains(exitCode).not() && env.project == project) {
+                        run()
+                    }
+                }
+            }
+        )
     }
 
     override fun dispose() {

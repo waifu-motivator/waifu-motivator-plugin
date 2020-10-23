@@ -33,19 +33,28 @@ class MoodStatusBarWidget(private val project: Project) :
     private val connect = ApplicationManager.getApplication().messageBus.connect()
 
     init {
-        connect.subscribe(LafManagerListener.TOPIC, LafManagerListener {
-            updateWidget()
-        })
-        connect.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, object : PluginSettingsListener {
-            override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
+        connect.subscribe(
+            LafManagerListener.TOPIC,
+            LafManagerListener {
                 updateWidget()
             }
-        })
-        connect.subscribe(EMOTION_TOPIC, object : MoodListener {
-            override fun onDerivedMood(currentMood: Mood) {
-                updateWidget()
+        )
+        connect.subscribe(
+            PluginSettingsListener.PLUGIN_SETTINGS_TOPIC,
+            object : PluginSettingsListener {
+                override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
+                    updateWidget()
+                }
             }
-        })
+        )
+        connect.subscribe(
+            EMOTION_TOPIC,
+            object : MoodListener {
+                override fun onDerivedMood(currentMood: Mood) {
+                    updateWidget()
+                }
+            }
+        )
         StartupManager.getInstance(project).runWhenProjectIsInitialized { updateWidget() }
     }
 
@@ -95,11 +104,14 @@ class MoodStatusBarWidget(private val project: Project) :
     }
 
     override fun getClickConsumer(): Consumer<MouseEvent> = Consumer {
-        ApplicationManager.getApplication().invokeLater({
-            ShowSettingsUtil.getInstance().showSettingsDialog(
-                project,
-                WaifuMotivatorSettingsPage::class.java
-            )
-        }, ModalityState.NON_MODAL)
+        ApplicationManager.getApplication().invokeLater(
+            {
+                ShowSettingsUtil.getInstance().showSettingsDialog(
+                    project,
+                    WaifuMotivatorSettingsPage::class.java
+                )
+            },
+            ModalityState.NON_MODAL
+        )
     }
 }

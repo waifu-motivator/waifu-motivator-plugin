@@ -2,7 +2,7 @@ package zd.zero.waifu.motivator.plugin.tools
 
 import org.assertj.core.api.Assertions
 import org.junit.Test
-import java.util.*
+import java.util.Optional
 
 internal class BestGirl(val name: String)
 class ToolBoxKtTest {

@@ -1,6 +1,11 @@
 package zd.zero.waifu.motivator.plugin.assets
 
-import io.mockk.*
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockkObject
+import io.mockk.runs
+import io.mockk.slot
+import io.mockk.unmockkObject
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.AfterClass
 import org.junit.BeforeClass
@@ -10,7 +15,7 @@ import zd.zero.waifu.motivator.plugin.platform.UpdateAssetsListener
 import zd.zero.waifu.motivator.plugin.test.tools.TestTools
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.nio.file.Paths
-import java.util.*
+import java.util.Optional
 
 internal class FakeAssetManager :
     RemoteAssetManager<VisualMotivationAssetDefinition, VisualMotivationAsset>(

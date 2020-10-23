@@ -2,7 +2,7 @@ package zd.zero.waifu.motivator.plugin.tools
 
 import com.intellij.openapi.Disposable
 import com.intellij.util.Alarm
-import java.util.*
+import java.util.LinkedList
 
 interface Debouncer {
     fun debounce(toDebounce: () -> Unit)
@@ -14,7 +14,8 @@ interface BufferedDebouncer<T> {
 
 class AlarmDebouncer<T>(private val interval: Int) :
     Debouncer,
-    BufferedDebouncer<T>, Disposable {
+    BufferedDebouncer<T>,
+    Disposable {
     private val alarm: Alarm = Alarm()
 
     @Volatile
@@ -31,10 +32,13 @@ class AlarmDebouncer<T>(private val interval: Int) :
     override fun debounceAndBuffer(t: T, onDebounced: (List<T>) -> Unit) {
         performDebounce({
             buffer.add(t)
-            alarm.addRequest({
-                onDebounced(buffer.toMutableList())
-                buffer.clear()
-            }, interval)
+            alarm.addRequest(
+                {
+                    onDebounced(buffer.toMutableList())
+                    buffer.clear()
+                },
+                interval
+            )
         }) {
             buffer.push(t)
         }

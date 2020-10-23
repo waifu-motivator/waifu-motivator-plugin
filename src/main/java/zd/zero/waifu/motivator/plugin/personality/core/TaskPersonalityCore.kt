@@ -33,7 +33,8 @@ class TaskPersonalityCore : PersonalityCore {
         return when (mood) {
             Mood.SMUG -> WaifuAssetCategory.SMUG.toArray()
             Mood.HAPPY -> arrayOf(
-                WaifuAssetCategory.CELEBRATION, WaifuAssetCategory.HAPPY
+                WaifuAssetCategory.CELEBRATION,
+                WaifuAssetCategory.HAPPY
             )
             else -> WaifuAssetCategory.CELEBRATION.toArray()
         }

@@ -24,11 +24,14 @@ class WaifuGatekeeper : Disposable {
             .toSet()
 
     init {
-        connection.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, object : PluginSettingsListener {
-            override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
-                allowedWaifu = extractAllowedCharactersFromState(newPluginState)
+        connection.subscribe(
+            PluginSettingsListener.PLUGIN_SETTINGS_TOPIC,
+            object : PluginSettingsListener {
+                override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
+                    allowedWaifu = extractAllowedCharactersFromState(newPluginState)
+                }
             }
-        })
+        )
     }
 
     fun isAllowed(characters: List<String>?): Boolean =

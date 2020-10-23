@@ -9,7 +9,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 import zd.zero.waifu.motivator.plugin.tools.toOptional
-import java.util.*
+import java.util.Optional
+import java.util.UUID
 
 internal class FakeVisualAssetDefinitionService(
     assetManager: RemoteAssetManager<VisualMotivationAssetDefinition, VisualMotivationAsset>

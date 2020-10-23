@@ -13,7 +13,7 @@ import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.Optional
 import java.util.concurrent.ConcurrentHashMap
 
 private enum class AssetChangedStatus {
@@ -30,8 +30,10 @@ object LocalAssetService {
         remoteAssetUrl: String
     ): Boolean =
         !Files.exists(localInstallPath) ||
-            (!hasBeenCheckedToday(localInstallPath) &&
-                isLocalDifferentFromRemote(localInstallPath, remoteAssetUrl) == AssetChangedStatus.DIFFERENT)
+            (
+                !hasBeenCheckedToday(localInstallPath) &&
+                    isLocalDifferentFromRemote(localInstallPath, remoteAssetUrl) == AssetChangedStatus.DIFFERENT
+                )
 
     private fun getOnDiskCheckSum(localAssetPath: Path): String =
         computeCheckSum(Files.readAllBytes(localAssetPath))
@@ -43,7 +45,7 @@ object LocalAssetService {
     }
 
     private fun getRemoteAssetChecksum(remoteAssetUrl: String): Optional<String> =
-            RestClient.performGet("$remoteAssetUrl.checksum.txt")
+        RestClient.performGet("$remoteAssetUrl.checksum.txt")
 
     private fun isLocalDifferentFromRemote(
         localInstallPath: Path,
@@ -56,12 +58,14 @@ object LocalAssetService {
                 if (it == onDiskCheckSum) {
                     AssetChangedStatus.SAME
                 } else {
-                    log.warn("""
+                    log.warn(
+                        """
                       Local asset: $localInstallPath
                       is different from remote asset $remoteAssetUrl
                       Local Checksum: $onDiskCheckSum
                       Remote Checksum: $it
-                    """.trimIndent())
+                        """.trimIndent()
+                    )
                     AssetChangedStatus.DIFFERENT
                 }
             }.orElseGet { AssetChangedStatus.LUL_DUNNO }
@@ -76,7 +80,8 @@ object LocalAssetService {
             .ifPresent {
                 LocalStorageService.createDirectories(it)
                 Files.newBufferedWriter(
-                    it, Charset.defaultCharset(),
+                    it,
+                    Charset.defaultCharset(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING
                 ).use { writer ->

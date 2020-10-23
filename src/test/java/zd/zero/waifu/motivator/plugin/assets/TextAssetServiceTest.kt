@@ -6,13 +6,12 @@ import io.mockk.unmockkObject
 import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.junit.AfterClass
-import org.junit.Test
-
 import org.junit.BeforeClass
+import org.junit.Test
 import zd.zero.waifu.motivator.plugin.test.tools.TestTools
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.nio.file.Paths
-import java.util.*
+import java.util.UUID
 
 class TextAssetServiceTest {
 

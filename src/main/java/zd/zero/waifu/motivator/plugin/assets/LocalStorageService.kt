@@ -6,7 +6,7 @@ import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
+import java.util.Optional
 
 object LocalStorageService {
     private val log = Logger.getInstance(this::class.java)
@@ -21,7 +21,7 @@ object LocalStorageService {
 
     fun getLocalAssetDirectory(): Optional<String> =
         Optional.ofNullable(
-                PathManager.getConfigPath()
+            PathManager.getConfigPath()
         ).map {
             Paths.get(it, "waifuMotivationAssets").toAbsolutePath().toString()
         }

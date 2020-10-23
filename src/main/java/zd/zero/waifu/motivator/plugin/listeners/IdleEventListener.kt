@@ -20,17 +20,21 @@ class IdleEventListener(private val project: Project) : Runnable, Disposable {
 
     init {
         val self = this
-        messageBus.subscribe(PluginSettingsListener.PLUGIN_SETTINGS_TOPIC, object : PluginSettingsListener {
-            override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
-                IdeEventQueue.getInstance().removeIdleListener(self)
-                IdeEventQueue.getInstance().addIdleListener(self,
-                    TimeUnit.MILLISECONDS.convert(
-                        newPluginState.idleTimeoutInMinutes,
-                        TimeUnit.MINUTES
-                    ).toInt()
-                )
+        messageBus.subscribe(
+            PluginSettingsListener.PLUGIN_SETTINGS_TOPIC,
+            object : PluginSettingsListener {
+                override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
+                    IdeEventQueue.getInstance().removeIdleListener(self)
+                    IdeEventQueue.getInstance().addIdleListener(
+                        self,
+                        TimeUnit.MILLISECONDS.convert(
+                            newPluginState.idleTimeoutInMinutes,
+                            TimeUnit.MINUTES
+                        ).toInt()
+                    )
+                }
             }
-        })
+        )
         IdeEventQueue.getInstance().addIdleListener(
             this,
             TimeUnit.MILLISECONDS.convert(

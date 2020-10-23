@@ -8,7 +8,8 @@ import zd.zero.waifu.motivator.plugin.WaifuMotivator
 import zd.zero.waifu.motivator.plugin.platform.UpdateAssetsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.tools.toOptional
-import java.util.*
+import java.util.Optional
+import java.util.UUID
 
 object UserOnboarding {
 

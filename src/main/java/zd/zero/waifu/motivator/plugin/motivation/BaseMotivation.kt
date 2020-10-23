@@ -45,18 +45,24 @@ abstract class BaseMotivation(
     override fun displayNotification() {
         val notification = notifier.createNotification()
         notification.balloon.toOptional().ifPresent {
-            it.addListener(object : JBPopupListener {
-                override fun onClosed(event: LightweightWindowEvent) {
-                    onAlertClosed(notification)
+            it.addListener(
+                object : JBPopupListener {
+                    override fun onClosed(event: LightweightWindowEvent) {
+                        onAlertClosed(notification)
+                    }
                 }
-            })
+            )
         }
     }
 
     override fun isDistractionAllowed(): Boolean =
-        !(WaifuMotivatorPluginState.getInstance().state?.isDisabledInDistractionFreeMode ?: true &&
-            (Registry.get(KEY_DISTRACTION_FREE_MODE).asBoolean() ||
-            UISettings.instance.presentationMode))
+        !(
+            WaifuMotivatorPluginState.getInstance().state?.isDisabledInDistractionFreeMode ?: true &&
+                (
+                    Registry.get(KEY_DISTRACTION_FREE_MODE).asBoolean() ||
+                        UISettings.instance.presentationMode
+                    )
+            )
 
     override fun onAlertClosed(notification: Notification) {
         val duration = System.currentTimeMillis() - notification.timestamp

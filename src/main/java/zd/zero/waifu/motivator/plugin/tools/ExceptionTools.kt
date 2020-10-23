@@ -1,7 +1,7 @@
 package zd.zero.waifu.motivator.plugin.tools
 
 import com.intellij.openapi.diagnostic.Logger
-import java.util.*
+import java.util.Optional
 
 object ExceptionTools {
     private val log: Logger? = Logger.getInstance(ExceptionTools::class.java)

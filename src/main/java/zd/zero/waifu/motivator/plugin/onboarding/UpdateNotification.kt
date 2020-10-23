@@ -1,6 +1,10 @@
 package zd.zero.waifu.motivator.plugin.onboarding
 
-import com.intellij.notification.*
+import com.intellij.notification.Notification
+import com.intellij.notification.NotificationDisplayType
+import com.intellij.notification.NotificationGroup
+import com.intellij.notification.NotificationListener
+import com.intellij.notification.NotificationType
 import com.intellij.notification.impl.NotificationsManagerImpl
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.Balloon
@@ -11,7 +15,8 @@ import zd.zero.waifu.motivator.plugin.WaifuMotivator.PLUGIN_NAME
 import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParameters
 import zd.zero.waifu.motivator.plugin.service.ApplicationService
 
-val UPDATE_MESSAGE: String = """
+val UPDATE_MESSAGE: String =
+    """
       What's New?<br>
       <ul>
         <li>Added reactions to: exit code, build, and idle events.</li>
@@ -27,7 +32,7 @@ val UPDATE_MESSAGE: String = """
       <br><br>
       Want more of your Waifu?<br>
       Make a request for <a href="https://github.com/zd-zero/waifu-motivator-plugin/projects/3">more assets of your Waifu!</a>
-""".trimIndent()
+    """.trimIndent()
 
 object UpdateNotification {
 
@@ -74,7 +79,8 @@ object UpdateNotification {
         listener: NotificationListener? = defaultListener
     ) {
         notificationGroup.createNotification(
-            title, content,
+            title,
+            content,
             listener = listener
         ).setIcon(WaifuMotivatorIcons.MENU)
             .notify(project)

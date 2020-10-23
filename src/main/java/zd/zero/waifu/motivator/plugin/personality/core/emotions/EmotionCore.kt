@@ -10,13 +10,16 @@ class EmotionCore(
     private val random: Random = Random(Random(System.currentTimeMillis()).nextLong())
 ) {
     private val negativeDerivationUnit = NegativeEmotionDerivationUnit(
-        pluginState, random
+        pluginState,
+        random
     )
     private val positiveDerivationUnit = PositiveEmotionDerivationUnit(
-        pluginState, random
+        pluginState,
+        random
     )
     private val neutralDerivationUnit = NeutralEmotionDerivationUnit(
-        pluginState, random
+        pluginState,
+        random
     )
     private var emotionalState = EmotionalState(Mood.CALM)
 
@@ -54,10 +57,10 @@ class EmotionCore(
     private fun processMutation(
         emotionalMutationAction: EmotionalMutationAction
     ) = when (emotionalMutationAction.moodCategory) {
-            MoodCategory.POSITIVE -> positiveDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
-            MoodCategory.NEGATIVE -> negativeDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
-            MoodCategory.NEUTRAL -> neutralDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
-        }
+        MoodCategory.POSITIVE -> positiveDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
+        MoodCategory.NEGATIVE -> negativeDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
+        MoodCategory.NEUTRAL -> neutralDerivationUnit.deriveFromMutation(emotionalMutationAction, emotionalState)
+    }
 
     private fun deriveAndPersistEmotionalState(stateSupplier: () -> EmotionalState): Mood {
         emotionalState = stateSupplier()

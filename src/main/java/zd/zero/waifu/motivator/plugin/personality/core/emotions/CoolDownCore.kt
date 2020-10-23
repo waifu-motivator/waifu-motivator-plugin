@@ -4,7 +4,7 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.util.Alarm
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.EmotionalMutationType.COOL_DOWN
-import zd.zero.waifu.motivator.plugin.personality.core.emotions.MoodCategory.*
+import zd.zero.waifu.motivator.plugin.personality.core.emotions.MoodCategory.NEGATIVE
 import java.util.concurrent.TimeUnit
 
 internal enum class CoolDownStatus {
@@ -41,13 +41,14 @@ class CoolDownCore : MoodListener, Disposable {
 
     private fun registerCoolDownEvent() {
         coolDownAlarm.addRequest(
-                {
-                    ApplicationManager.getApplication().messageBus
-                        .syncPublisher(EMOTIONAL_MUTATION_TOPIC)
-                        .onAction(EmotionalMutationAction(COOL_DOWN, NEGATIVE))
-                },
+            {
+                ApplicationManager.getApplication().messageBus
+                    .syncPublisher(EMOTIONAL_MUTATION_TOPIC)
+                    .onAction(EmotionalMutationAction(COOL_DOWN, NEGATIVE))
+            },
             TimeUnit.MILLISECONDS.convert(
-                COOL_DOWN_DURATION_IN_MINUTES, TimeUnit.MINUTES
+                COOL_DOWN_DURATION_IN_MINUTES,
+                TimeUnit.MINUTES
             )
         )
     }

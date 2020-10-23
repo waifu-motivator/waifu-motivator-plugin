@@ -16,7 +16,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
-import java.util.*
+import java.util.Optional
 import java.util.concurrent.TimeUnit
 
 enum class AssetCategory(val category: String) {
@@ -64,7 +64,8 @@ object AssetManager {
         constructLocalAssetPath(assetCategory, assetPath)
             .flatMap {
                 val remoteAssetUrl = constructRemoteAssetUrl(
-                    assetCategory, assetPath
+                    assetCategory,
+                    assetPath
                 )
                 resolveAsset(it, remoteAssetUrl)
             }
@@ -95,7 +96,9 @@ object AssetManager {
         getLocalAssetDirectory()
             .map { localInstallDirectory ->
                 Paths.get(
-                    localInstallDirectory, assetCategory.category, assetPath
+                    localInstallDirectory,
+                    assetCategory.category,
+                    assetPath
                 ).normalize().toAbsolutePath()
             }
 

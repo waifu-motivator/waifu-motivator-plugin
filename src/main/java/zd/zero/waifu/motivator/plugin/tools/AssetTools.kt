@@ -3,7 +3,7 @@ package zd.zero.waifu.motivator.plugin.tools
 import zd.zero.waifu.motivator.plugin.assets.MotivationAsset
 import zd.zero.waifu.motivator.plugin.assets.VisualMotivationAssetProvider
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
-import java.util.*
+import java.util.Optional
 
 object AssetTools {
 
