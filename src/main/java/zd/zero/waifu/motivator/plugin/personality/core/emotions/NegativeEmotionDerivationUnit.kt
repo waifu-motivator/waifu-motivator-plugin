@@ -2,8 +2,8 @@ package zd.zero.waifu.motivator.plugin.personality.core.emotions
 
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
-import zd.zero.waifu.motivator.plugin.tools.ProbabilityTools
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
+import zd.zero.waifu.motivator.plugin.tools.ProbabilityTools
 import zd.zero.waifu.motivator.plugin.tools.toStream
 import java.lang.Integer.max
 import java.util.stream.Stream
@@ -37,8 +37,14 @@ internal class NegativeEmotionDerivationUnit(
     ): EmotionalState =
         when (emotionalMutationAction.type) {
             EmotionalMutationType.COOL_DOWN -> coolDown(emotionalState)
-            else -> emotionalState
+            EmotionalMutationType.RESET -> takeAChillPill(emotionalState)
         }
+
+    private fun takeAChillPill(emotionalState: EmotionalState): EmotionalState =
+        emotionalState.copy(
+            mood = Mood.CALM,
+            observedNegativeEvents = 0
+        )
 
     private fun coolDown(emotionalState: EmotionalState): EmotionalState {
         val observedNegativeEvents = emotionalState.observedNegativeEvents

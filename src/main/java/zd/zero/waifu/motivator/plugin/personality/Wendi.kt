@@ -7,12 +7,15 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.personality.core.IdlePersonalityCore
+import zd.zero.waifu.motivator.plugin.personality.core.ResetCore
 import zd.zero.waifu.motivator.plugin.personality.core.TaskPersonalityCore
 import zd.zero.waifu.motivator.plugin.personality.core.emotions.*
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.tools.AlarmDebouncer
+import zd.zero.waifu.motivator.plugin.tools.toOptional
+import java.util.Optional
 
 //                                   Waifu
 //                                   Emotion
@@ -58,10 +61,10 @@ object Wendi : Disposable, EmotionalMutationActionListener {
     private lateinit var emotionCore: EmotionCore
     private val taskPersonalityCore = TaskPersonalityCore()
     private val idlePersonalityCore = IdlePersonalityCore()
+    private val resetCore = ResetCore()
     private const val DEBOUNCE_INTERVAL = 80
     private val singleEventDebouncer = AlarmDebouncer<MotivationEvent>(DEBOUNCE_INTERVAL)
     private val idleEventDebouncer = AlarmDebouncer<MotivationEvent>(DEBOUNCE_INTERVAL)
-
     fun initialize() {
         if (this::messageBusConnection.isInitialized.not()) {
             messageBusConnection = ApplicationManager.getApplication().messageBus.connect()
@@ -92,6 +95,10 @@ object Wendi : Disposable, EmotionalMutationActionListener {
         }
     }
 
+    val currentMood: Optional<Mood>
+        get() = if (this::emotionCore.isInitialized) emotionCore.currentMood.toOptional()
+        else Optional.empty()
+
     private fun consumeEvents(bufferedMotivationEvents: List<MotivationEvent>) {
         val emotionalState = emotionCore.deriveMood(bufferedMotivationEvents.first())
         bufferedMotivationEvents.forEach { motivationEvent -> reactToEvent(motivationEvent, emotionalState) }
@@ -104,7 +111,16 @@ object Wendi : Disposable, EmotionalMutationActionListener {
     }
 
     override fun onAction(emotionalMutationAction: EmotionalMutationAction) {
-        publishMood(emotionCore.mutateMood(emotionalMutationAction))
+        val mutatedMood = emotionCore.mutateMood(emotionalMutationAction)
+        reactToMutation(emotionalMutationAction)
+        publishMood(mutatedMood)
+    }
+
+    private fun reactToMutation(
+        emotionalMutationAction: EmotionalMutationAction
+    ) {
+        if (emotionalMutationAction.type == EmotionalMutationType.RESET)
+            resetCore.processMutationEvent(emotionalMutationAction)
     }
 
     private fun publishMood(currentMood: Mood) {

@@ -429,6 +429,77 @@ class NegativeEmotionCoreTests {
             ).isIn(arguments.second)
         }
     }
+
+    @Test
+    fun `frustration should reset  when reset mutation events happen`() {
+        val emotionCore = EmotionCore(
+            WaifuMotivatorState().apply {
+                eventsBeforeFrustration = 1
+                probabilityOfFrustration = 100
+            }
+        )
+
+        val negativeEmotions =
+            OTHER_NEGATIVE_EMOTIONS
+        val frustrated = Mood.FRUSTRATED.toList()
+        val calm = Mood.CALM.toList()
+        listOf(
+            buildMotivationEvent(
+                MotivationEvents.TASK,
+                MotivationEventCategory.NEGATIVE
+            ) to negativeEmotions,
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to frustrated,
+            EmotionalMutationAction(
+                EmotionalMutationType.RESET,
+                MoodCategory.NEGATIVE
+            ) to calm,
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to negativeEmotions,
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to frustrated,
+            EmotionalMutationAction(
+                EmotionalMutationType.COOL_DOWN,
+                MoodCategory.NEGATIVE
+            ) to frustrated,
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to frustrated,
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to listOf(Mood.FRUSTRATED, Mood.ENRAGED),
+            buildMotivationEvent(
+                MotivationEvents.TEST,
+                MotivationEventCategory.NEGATIVE
+            ) to listOf(Mood.FRUSTRATED, Mood.ENRAGED),
+            EmotionalMutationAction(
+                EmotionalMutationType.RESET,
+                MoodCategory.NEGATIVE
+            ) to calm
+        ).forEachIndexed { index, arguments ->
+            val deriveMood = when (val input = arguments.first) {
+                is MotivationEvent -> emotionCore.deriveMood(input)
+                is EmotionalMutationAction -> emotionCore.mutateMood(input)
+                else -> throw NotImplementedError("Test not configured for $input")
+            }
+            Assertions.assertThat(
+                deriveMood
+            ).withFailMessage(
+                """At index #$index
+                    |${arguments.first}
+                    |did not create ${arguments.second} but did $deriveMood
+                """.trimMargin()
+            ).isIn(arguments.second)
+        }
+    }
 }
 
 private val projectMock = mockk<Project>()

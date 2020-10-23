@@ -11,20 +11,21 @@
 
   <!--    Leave this in here so the IDE gives you feedback on-->
   <!--    What APIs are available-->
-  <idea-version since-build="201.4515.24"/>
+  <idea-version since-build="201.6668.113"/>
 
   <extensions defaultExtensionNs="com.intellij">
-    <applicationService
-      serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState"/>
     <applicationConfigurable
       instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
+    <applicationService
+      serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState"/>
+    <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.ApplicationService"/>
+    <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.WaifuGatekeeper"/>
     <errorHandler
       id="7111f9b9-f252-483e-9496-72d649347b6d"
       implementation="zd.zero.waifu.motivator.plugin.integrations.ErrorReporter"/>
     <postStartupActivity id="WaifuOfTheDayStartupActivity"
                          implementation="zd.zero.waifu.motivator.plugin.WaifuOfTheDayStartupActivity"/>
-    <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.ApplicationService"/>
-    <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.WaifuGatekeeper"/>
+    <statusBarWidgetFactory implementation="zd.zero.waifu.motivator.plugin.integrations.MoodStatusBarProvider" />
   </extensions>
 
   <actions>
@@ -36,6 +37,13 @@
               text="Motivate Me"
               description="My waifu please motivate me.">
         <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
+      </action>
+      <action id="zd.zero.waifu.motivator.plugin.actions.RelaxAction"
+              class="zd.zero.waifu.motivator.plugin.actions.RelaxAction"
+              text="Relax your Waifu"
+              icon="/icons/heart.svg"
+              description="Action calms down your frustrated/enraged waifu">
+        <keyboard-shortcut keymap="$default" first-keystroke="shift alt R"/>
       </action>
       <action id="zd.zero.waifu.motivator.plugin.actions.ShowWaifuOfTheDayAction"
               class="zd.zero.waifu.motivator.plugin.actions.ShowWaifuOfTheDayAction"

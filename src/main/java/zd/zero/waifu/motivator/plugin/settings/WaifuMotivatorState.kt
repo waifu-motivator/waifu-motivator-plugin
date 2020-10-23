@@ -59,4 +59,6 @@ class WaifuMotivatorState {
     var userId = ""
 
     var preferredCharacters = ""
+
+    var isShowMood = true
 }
