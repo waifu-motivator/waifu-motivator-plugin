@@ -1,6 +1,6 @@
 package zd.zero.waifu.motivator.plugin.motivation
 
-interface MotivationListener {
+fun interface MotivationListener {
 
     fun onDisposal()
 }

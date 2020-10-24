@@ -82,5 +82,5 @@ enum class Mood {
     SURPRISED,
     CALM,
     BORED,
-    DISAPPOINTED
+    DISAPPOINTED,
 }

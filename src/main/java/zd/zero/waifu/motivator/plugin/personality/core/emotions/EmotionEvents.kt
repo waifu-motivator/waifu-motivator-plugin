@@ -3,7 +3,7 @@ package zd.zero.waifu.motivator.plugin.personality.core.emotions
 import com.intellij.openapi.project.Project
 import com.intellij.util.messages.Topic
 
-interface MoodListener {
+fun interface MoodListener {
     fun onDerivedMood(currentMood: Mood)
 }
 

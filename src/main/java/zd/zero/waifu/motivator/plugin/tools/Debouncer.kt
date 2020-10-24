@@ -4,11 +4,11 @@ import com.intellij.openapi.Disposable
 import com.intellij.util.Alarm
 import java.util.LinkedList
 
-interface Debouncer {
+fun interface Debouncer {
     fun debounce(toDebounce: () -> Unit)
 }
 
-interface BufferedDebouncer<T> {
+fun interface BufferedDebouncer<T> {
     fun debounceAndBuffer(t: T, onDebounced: (List<T>) -> Unit)
 }
 

@@ -15,7 +15,6 @@ import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEventListener
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvents
 import zd.zero.waifu.motivator.plugin.settings.PluginSettingsListener
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
-import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState.Companion.DEFAULT_DELIMITER
 
 const val OK_EXIT_CODE = 0
@@ -34,11 +33,9 @@ class ExitCodeListener(private val project: Project) : Runnable, Disposable {
     init {
         messageBus.subscribe(
             PluginSettingsListener.PLUGIN_SETTINGS_TOPIC,
-            object : PluginSettingsListener {
-                override fun settingsUpdated(newPluginState: WaifuMotivatorState) {
-                    allowedExitCodes = newPluginState
-                        .allowedExitCodes.toExitCodes()
-                }
+            PluginSettingsListener { newPluginState ->
+                allowedExitCodes = newPluginState
+                    .allowedExitCodes.toExitCodes()
             }
         )
 
