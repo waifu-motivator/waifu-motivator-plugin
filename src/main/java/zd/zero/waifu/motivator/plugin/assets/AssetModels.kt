@@ -7,6 +7,9 @@ interface AssetDefinition {
     val categories: List<WaifuAssetCategory>
     val path: String
     val groupId: UUID?
+
+    fun isValid(): Boolean =
+        !(path.isNullOrBlank() || categories.isNullOrEmpty())
 }
 
 interface Asset {
@@ -16,10 +19,12 @@ interface Asset {
 data class ImageDimension(
     val width: Int,
     val height: Int
-)
+) {
+    fun isValid(): Boolean =
+        width > 0 && height > 0
+}
 
 data class VisualMotivationAssetDefinition(
-    val imagePath: String, // todo: remove this once migrated
     override val path: String,
     val imageAlt: String,
     val imageDimensions: ImageDimension,
@@ -35,6 +40,10 @@ data class VisualMotivationAssetDefinition(
             groupId,
             characters
         )
+
+    override fun isValid(): Boolean =
+        super.isValid() && imageAlt != null &&
+            imageDimensions?.isValid()
 }
 
 data class VisualMotivationAsset(
