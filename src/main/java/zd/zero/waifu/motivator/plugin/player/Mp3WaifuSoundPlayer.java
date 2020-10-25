@@ -41,8 +41,9 @@ public final class Mp3WaifuSoundPlayer implements WaifuSoundPlayer {
 
     @Override
     public void stop() {
-        if ( player == null ) {
-            throw new IllegalStateException( "AdvancedPlayer must be started." );
+        if ( player == null || audioDevice == null ) {
+            LOGGER.warn( "Unable to stop player because player has not started!" );
+            return;
         }
 
         if ( audioDevice.isOpen() ) player.close();
@@ -58,7 +59,7 @@ public final class Mp3WaifuSoundPlayer implements WaifuSoundPlayer {
             InputStream soundStream = new BufferedInputStream( Files.newInputStream( soundFilePath ));
             playSound( runnableConsumer, soundStream );
         } catch ( IOException e ) {
-            LOGGER.error( e.getMessage(), e );
+            LOGGER.warn( e.getMessage(), e );
         }
     }
 
@@ -69,7 +70,7 @@ public final class Mp3WaifuSoundPlayer implements WaifuSoundPlayer {
             player.setPlayBackListener( buildPlaybackListener( soundStream ) );
             runnableConsumer.accept( this::invokePlay );
         } catch ( Exception e ) {
-            LOGGER.error( e.getMessage(), e );
+            LOGGER.warn( e.getMessage(), e );
             soundStream.close();
         }
     }
@@ -92,7 +93,7 @@ public final class Mp3WaifuSoundPlayer implements WaifuSoundPlayer {
         try {
             player.play();
         } catch ( JavaLayerException e ) {
-            LOGGER.error( "Cannot play sound '" + soundFilePath + "': " + e.getMessage(), e );
+            LOGGER.warn( "Cannot play sound '" + soundFilePath + "': " + e.getMessage(), e );
         }
     }
 
