@@ -53,7 +53,6 @@ class RemoteAssetDefinitionServiceTest {
 
         val bestLocalMotivation = VisualMotivationAssetDefinition(
             "Ryuko",
-            "Ryuko",
             "Best Girl",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
@@ -76,14 +75,12 @@ class RemoteAssetDefinitionServiceTest {
 
         val bestLocalMotivation = VisualMotivationAssetDefinition(
             "Ryuko",
-            "Ryuko",
             "Best Girl",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
         )
         every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf(
             VisualMotivationAssetDefinition(
-                "Ryuko Waiting",
                 "Ryuko Waiting",
                 "Best Girl",
                 ImageDimension(69, 420),
@@ -107,7 +104,6 @@ class RemoteAssetDefinitionServiceTest {
     fun `get random asset by category should return empty when unable to fetch remote asset with no local assets`() {
         val bestMotivation = VisualMotivationAssetDefinition(
             "Ryuko",
-            "Ryuko",
             "Best Girl",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
@@ -128,7 +124,6 @@ class RemoteAssetDefinitionServiceTest {
     @Test
     fun `get random asset by category should return remote when available`() {
         val bestMotivation = VisualMotivationAssetDefinition(
-            "Ryuko",
             "Ryuko",
             "Best Girl",
             ImageDimension(69, 420),
@@ -153,14 +148,12 @@ class RemoteAssetDefinitionServiceTest {
     fun `get random asset by category should return random remote when preferred remote asset is not available`() {
         val bestMotivation = VisualMotivationAssetDefinition(
             "Ryuko",
-            "Ryuko",
             "Best Girl",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
         )
         every { remoteAssetManager.supplyRemoteAssetDefinitions() } returns listOf(
             VisualMotivationAssetDefinition(
-                "Ryuko Disappointed",
                 "Ryuko Disappointed",
                 "Best Girl",
                 ImageDimension(69, 420),
@@ -171,7 +164,6 @@ class RemoteAssetDefinitionServiceTest {
         every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf(
             VisualMotivationAssetDefinition(
                 "Ryuko Waiting",
-                "Ryuko Waiting",
                 "Best Girl",
                 ImageDimension(69, 420),
                 listOf(WaifuAssetCategory.WAITING)
@@ -179,7 +171,6 @@ class RemoteAssetDefinitionServiceTest {
         )
         every { remoteAssetManager.supplyAllLocalAssetDefinitions() } returns setOf(
             VisualMotivationAssetDefinition(
-                "Ryuko Frustrated",
                 "Ryuko Frustrated",
                 "Best Girl",
                 ImageDimension(69, 420),
@@ -201,7 +192,6 @@ class RemoteAssetDefinitionServiceTest {
     fun `get random asset by category should return empty when unable to fetch remote asset with no matching local assets`() {
         val bestMotivation = VisualMotivationAssetDefinition(
             "Ryuko",
-            "Ryuko",
             "Best Girl",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
@@ -213,7 +203,6 @@ class RemoteAssetDefinitionServiceTest {
         every { remoteAssetManager.resolveAsset(bestMotivation) } returns Optional.empty()
 
         val garbageWaifu = VisualMotivationAssetDefinition(
-            "Trash Chan",
             "Trash Chan",
             "Literal Garbage",
             ImageDimension(42, 9001),
@@ -232,7 +221,6 @@ class RemoteAssetDefinitionServiceTest {
     fun `get random asset by category should return empty when local asset is not local`() {
         val bestMotivation = VisualMotivationAssetDefinition(
             "Ryuko",
-            "Ryuko",
             "Best Girl",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
@@ -240,7 +228,6 @@ class RemoteAssetDefinitionServiceTest {
         every { remoteAssetManager.resolveAsset(bestMotivation) } returns Optional.empty()
 
         val bestLocalMotivation = VisualMotivationAssetDefinition(
-            "Local Ryuko",
             "Local Ryuko",
             "Global Best Girl",
             ImageDimension(69, 420),
@@ -260,7 +247,6 @@ class RemoteAssetDefinitionServiceTest {
     fun `get random asset by category should return local asset remote asset is not available`() {
         val bestMotivation = VisualMotivationAssetDefinition(
             "Ryuko",
-            "Ryuko",
             "Best Girl",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION)
@@ -268,7 +254,6 @@ class RemoteAssetDefinitionServiceTest {
         every { remoteAssetManager.resolveAsset(bestMotivation) } returns Optional.empty()
 
         val bestLocalMotivation = VisualMotivationAssetDefinition(
-            "Local Ryuko",
             "Local Ryuko",
             "Global Best Girl",
             ImageDimension(69, 420),
@@ -291,7 +276,6 @@ class RemoteAssetDefinitionServiceTest {
         val groupId = UUID.randomUUID()
 
         val bestLocalMotivation = VisualMotivationAssetDefinition(
-            "Local Ishtar",
             "Local Ishtar",
             "Global Goddess",
             ImageDimension(69, 420),
@@ -317,7 +301,6 @@ class RemoteAssetDefinitionServiceTest {
 
         val notTheMotivationYouAreLookingFor = VisualMotivationAssetDefinition(
             "Local Aqua",
-            "Local Aqua",
             "Aqua",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION),
@@ -326,7 +309,6 @@ class RemoteAssetDefinitionServiceTest {
         every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf(notTheMotivationYouAreLookingFor)
 
         val remoteAsset = VisualMotivationAssetDefinition(
-            "Local Ishtar",
             "Local Ishtar",
             "Global Goddess",
             ImageDimension(69, 420),
@@ -352,7 +334,6 @@ class RemoteAssetDefinitionServiceTest {
 
         val notTheMotivationYouAreLookingFor = VisualMotivationAssetDefinition(
             "Local Aqua",
-            "Local Aqua",
             "Aqua",
             ImageDimension(69, 420),
             listOf(WaifuAssetCategory.MOTIVATION),
@@ -361,7 +342,6 @@ class RemoteAssetDefinitionServiceTest {
         every { remoteAssetManager.supplyLocalAssetDefinitions() } returns setOf(notTheMotivationYouAreLookingFor)
 
         val remoteAsset = VisualMotivationAssetDefinition(
-            "Local Ishtar",
             "Local Ishtar",
             "Global Goddess",
             ImageDimension(69, 420),

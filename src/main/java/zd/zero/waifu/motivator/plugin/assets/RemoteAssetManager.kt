@@ -91,6 +91,7 @@ abstract class RemoteAssetManager<T : AssetDefinition, U : Asset>(
                 .flatMap {
                     convertToDefinitions(it)
                 }
+                .map { it.filter { assetDefinition -> assetDefinition.isValid() } }
         } catch (e: Throwable) {
             log.error("Unable to initialize asset metadata.", e)
             Optional.empty()
