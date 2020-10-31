@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.DumbAware
 import icons.WaifuMotivatorIcons
+import zd.zero.waifu.motivator.plugin.MessageBundle;
 import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
 import zd.zero.waifu.motivator.plugin.motivation.MotivationFactory.showUntitledMotivationEventFromCategories
@@ -25,7 +26,7 @@ class MotivateMeAction : AnAction(WaifuMotivatorIcons.MENU), DumbAware {
             MotivationEvent(
                 MotivationEvents.MISC,
                 MotivationEventCategory.POSITIVE,
-                "Motivate Me",
+                MessageBundle.message("settings.main.motivate.me"),
                 Objects.requireNonNull(e.project)!!
             ) { config },
             WaifuAssetCategory.CELEBRATION,

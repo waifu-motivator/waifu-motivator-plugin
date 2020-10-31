@@ -6,6 +6,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.DumbAware
 import zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification
 import zd.zero.waifu.motivator.plugin.platform.UpdateAssetsListener
+import zd.zero.waifu.motivator.plugin.MessageBundle
 
 class AssetSyncAction : AnAction(), DumbAware {
     override fun actionPerformed(e: AnActionEvent) {
@@ -13,8 +14,8 @@ class AssetSyncAction : AnAction(), DumbAware {
             .syncPublisher(UpdateAssetsListener.TOPIC)
             .onRequestedUpdate()
         UpdateNotification.sendMessage(
-            "Assets Synchronized",
-            "Your local lists of assets should now be up to date with the remote repository.",
+            MessageBundle.message("notifications.message.assets.synchronized"),
+            MessageBundle.message("notifications.descriptions.assets.uptodate"),
             e.project
         )
     }
