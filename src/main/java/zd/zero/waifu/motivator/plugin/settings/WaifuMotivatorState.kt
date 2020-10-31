@@ -61,4 +61,6 @@ class WaifuMotivatorState {
     var preferredCharacters = ""
 
     var isShowMood = true
+
+    var isOnboardingFinished = false
 }

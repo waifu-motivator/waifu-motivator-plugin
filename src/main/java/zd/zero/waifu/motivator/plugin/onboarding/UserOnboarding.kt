@@ -38,4 +38,8 @@ object UserOnboarding {
         PluginManagerCore.getPlugin(PluginId.getId(WaifuMotivator.PLUGIN_ID))
             .toOptional()
             .map { it.version }
+
+    fun finishOnBoarding() {
+        WaifuMotivatorPluginState.getPluginState().isOnboardingFinished = true
+    }
 }
