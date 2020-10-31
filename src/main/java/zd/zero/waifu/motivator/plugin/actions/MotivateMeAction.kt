@@ -25,7 +25,7 @@ class MotivateMeAction : AnAction(WaifuMotivatorIcons.MENU), DumbAware {
             MotivationEvent(
                 MotivationEvents.MISC,
                 MotivationEventCategory.POSITIVE,
-                "Motivate Me",
+                MessageBundle.message("settings.main.motivate.me"),
                 Objects.requireNonNull(e.project)!!
             ) { config },
             WaifuAssetCategory.CELEBRATION,

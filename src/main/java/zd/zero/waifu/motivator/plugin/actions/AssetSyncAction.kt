@@ -13,8 +13,8 @@ class AssetSyncAction : AnAction(), DumbAware {
             .syncPublisher(UpdateAssetsListener.TOPIC)
             .onRequestedUpdate()
         UpdateNotification.sendMessage(
-            "Assets Synchronized",
-            "Your local lists of assets should now be up to date with the remote repository.",
+            MessageBundle.message("notifications.message.assets.synchronized"),
+            MessageBundle.message("notifications.descriptions.assets.uptodate"),
             e.project
         )
     }
