@@ -61,4 +61,10 @@ class WaifuMotivatorState {
     var preferredCharacters = ""
 
     var isShowMood = true
+
+    var isLogWatcherEnabled = false
+
+    var isLogWatcherCaseSensitivityIgnored = true
+
+    var logWatcherKeyword = ""
 }

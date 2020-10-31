@@ -20,6 +20,7 @@
       serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState"/>
     <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.ApplicationService"/>
     <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.WaifuGatekeeper"/>
+    <consoleFilterProvider implementation="zd.zero.waifu.motivator.plugin.integrations.WaifuConsoleFilterProvider"/>
     <errorHandler
       id="7111f9b9-f252-483e-9496-72d649347b6d"
       implementation="zd.zero.waifu.motivator.plugin.integrations.ErrorReporter"/>

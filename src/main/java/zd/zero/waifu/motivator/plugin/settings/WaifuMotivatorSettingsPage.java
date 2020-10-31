@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
@@ -92,6 +93,12 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JCheckBox showStatusBarIcon;
 
+    private JCheckBox ignoreCaseSensitivityCheckBox;
+
+    private JTextField logWatcherKeywordTextField;
+
+    private JCheckBox enableLogWatcherCheckBox;
+
     private ListTableModel<Integer> exitCodeListModel;
 
     public WaifuMotivatorSettingsPage() {
@@ -118,6 +125,11 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         allowFrustrationCheckBox.addActionListener( e -> {
             frustrationProbabilitySlider.setEnabled(allowFrustrationCheckBox.isSelected());
             eventsBeforeFrustrationSpinner.setEnabled(allowFrustrationCheckBox.isSelected());
+        } );
+
+        enableLogWatcherCheckBox.addActionListener( e -> {
+            ignoreCaseSensitivityCheckBox.setEnabled( enableLogWatcherCheckBox.isSelected() );
+            logWatcherKeywordTextField.setEnabled( enableLogWatcherCheckBox.isSelected() );
         } );
 
         frustrationProbabilitySlider.setForeground( UIUtil.getContextHelpForeground() );
@@ -153,6 +165,9 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 enableSayonara.isSelected() != this.state.isSayonaraEnabled() ||
                 !getPreferredCharacters().equals( this.state.getPreferredCharacters() ) ||
                 showStatusBarIcon.isSelected() != this.state.isShowMood() ||
+                enableLogWatcherCheckBox.isSelected() != this.state.isLogWatcherEnabled() ||
+                ignoreCaseSensitivityCheckBox.isSelected() != this.state.isLogWatcherCaseSensitivityIgnored() ||
+                !logWatcherKeywordTextField.getText().equals( this.state.getLogWatcherKeyword())  ||
                 exitCodesChanged;
     }
 
@@ -202,6 +217,9 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         );
         this.state.setPreferredCharacters( getPreferredCharacters() );
         this.state.setShowMood( showStatusBarIcon.isSelected() );
+        this.state.setLogWatcherEnabled( enableLogWatcherCheckBox.isSelected() );
+        this.state.setLogWatcherCaseSensitivityIgnored( ignoreCaseSensitivityCheckBox.isSelected() );
+        this.state.setLogWatcherKeyword( logWatcherKeywordTextField.getText() );
 
         // updates the Tip of the Day setting
         GeneralSettings.getInstance().setShowTipsOnStartup( !enableWaifuOfTheDay.isSelected() );
@@ -238,12 +256,22 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.enableIdleSoundCheckBox.setSelected( this.state.isIdleSoundEnabled() );
         this.enableTaskEventNotificationsCheckBox.setSelected( this.state.isTaskMotivationEnabled() );
         this.enableTaskEventSoundsCheckBox.setSelected( this.state.isTaskSoundEnabled() );
-        this.allowFrustrationCheckBox.setSelected( this.state.isAllowFrustration() );
-        this.eventsBeforeFrustrationSpinner.setValue( this.state.getEventsBeforeFrustration() );
-        this.frustrationProbabilitySlider.setValue( this.state.getProbabilityOfFrustration() );
         this.enableExitCodeNotifications.setSelected( this.state.isExitCodeNotificationEnabled() );
         this.enableExitCodeSound.setSelected( this.state.isExitCodeSoundEnabled() );
         this.showStatusBarIcon.setSelected( this.state.isShowMood() );
+
+        this.allowFrustrationCheckBox.setSelected( this.state.isAllowFrustration() );
+        this.eventsBeforeFrustrationSpinner.setValue( this.state.getEventsBeforeFrustration() );
+        this.eventsBeforeFrustrationSpinner.setEnabled( allowFrustrationCheckBox.isSelected() );
+        this.frustrationProbabilitySlider.setValue( this.state.getProbabilityOfFrustration() );
+        this.frustrationProbabilitySlider.setEnabled( allowFrustrationCheckBox.isSelected() );
+
+        this.enableLogWatcherCheckBox.setSelected( this.state.isLogWatcherEnabled() );
+        this.ignoreCaseSensitivityCheckBox.setSelected( this.state.isLogWatcherCaseSensitivityIgnored() );
+        this.ignoreCaseSensitivityCheckBox.setEnabled( enableLogWatcherCheckBox.isSelected() );
+        this.logWatcherKeywordTextField.setText( this.state.getLogWatcherKeyword() );
+        this.logWatcherKeywordTextField.setEnabled( enableLogWatcherCheckBox.isSelected() );
+
         initializeExitCodes();
     }
 

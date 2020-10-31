@@ -5,3 +5,11 @@ data class AlertConfiguration(
     val isDisplayNotificationEnabled: Boolean = false,
     val isSoundAlertEnabled: Boolean = false
 )
+
+object AlertConfigurationAllEnabled {
+    fun create() = AlertConfiguration(
+        isAlertEnabled = true,
+        isDisplayNotificationEnabled = true,
+        isSoundAlertEnabled = true
+    )
+}
