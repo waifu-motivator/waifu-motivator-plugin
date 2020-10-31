@@ -137,6 +137,12 @@ Thankfully, you have the ability to configure what your waifu does via the setti
 
 ![Waifu Settings](screenshots/waifu_motivator_settings.png)
 
+## Doki-Theme Integration
+
+You can also install [Doki Theme](https://github.com/doki-theme/doki-theme-jetbrains) to have a better *Waifu* development experience!
+
+![Doki Theme](screenshots/doki-theme.gif)
+
 # Development
 
 ## Getting Started
