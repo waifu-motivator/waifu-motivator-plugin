@@ -64,7 +64,7 @@ class WaifuMotivatorState {
 
     var isLogWatcherEnabled = false
 
-    var isLogWatcherCaseSensitivityIgnored = true
+    var isLogWatcherCaseIgnored = true
 
     var logWatcherKeyword = ""
 }

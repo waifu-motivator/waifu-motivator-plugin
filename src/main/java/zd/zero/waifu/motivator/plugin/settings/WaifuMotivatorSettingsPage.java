@@ -93,7 +93,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
 
     private JCheckBox showStatusBarIcon;
 
-    private JCheckBox ignoreCaseSensitivityCheckBox;
+    private JCheckBox ignoreCaseCheckBox;
 
     private JTextField logWatcherKeywordTextField;
 
@@ -128,7 +128,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         } );
 
         enableLogWatcherCheckBox.addActionListener( e -> {
-            ignoreCaseSensitivityCheckBox.setEnabled( enableLogWatcherCheckBox.isSelected() );
+            ignoreCaseCheckBox.setEnabled( enableLogWatcherCheckBox.isSelected() );
             logWatcherKeywordTextField.setEnabled( enableLogWatcherCheckBox.isSelected() );
         } );
 
@@ -166,7 +166,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
                 !getPreferredCharacters().equals( this.state.getPreferredCharacters() ) ||
                 showStatusBarIcon.isSelected() != this.state.isShowMood() ||
                 enableLogWatcherCheckBox.isSelected() != this.state.isLogWatcherEnabled() ||
-                ignoreCaseSensitivityCheckBox.isSelected() != this.state.isLogWatcherCaseSensitivityIgnored() ||
+                ignoreCaseCheckBox.isSelected() != this.state.isLogWatcherCaseIgnored() ||
                 !logWatcherKeywordTextField.getText().equals( this.state.getLogWatcherKeyword())  ||
                 exitCodesChanged;
     }
@@ -218,7 +218,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.state.setPreferredCharacters( getPreferredCharacters() );
         this.state.setShowMood( showStatusBarIcon.isSelected() );
         this.state.setLogWatcherEnabled( enableLogWatcherCheckBox.isSelected() );
-        this.state.setLogWatcherCaseSensitivityIgnored( ignoreCaseSensitivityCheckBox.isSelected() );
+        this.state.setLogWatcherCaseIgnored( ignoreCaseCheckBox.isSelected() );
         this.state.setLogWatcherKeyword( logWatcherKeywordTextField.getText() );
 
         // updates the Tip of the Day setting
@@ -267,8 +267,8 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         this.frustrationProbabilitySlider.setEnabled( allowFrustrationCheckBox.isSelected() );
 
         this.enableLogWatcherCheckBox.setSelected( this.state.isLogWatcherEnabled() );
-        this.ignoreCaseSensitivityCheckBox.setSelected( this.state.isLogWatcherCaseSensitivityIgnored() );
-        this.ignoreCaseSensitivityCheckBox.setEnabled( enableLogWatcherCheckBox.isSelected() );
+        this.ignoreCaseCheckBox.setSelected( this.state.isLogWatcherCaseIgnored() );
+        this.ignoreCaseCheckBox.setEnabled( enableLogWatcherCheckBox.isSelected() );
         this.logWatcherKeywordTextField.setText( this.state.getLogWatcherKeyword() );
         this.logWatcherKeywordTextField.setEnabled( enableLogWatcherCheckBox.isSelected() );
 

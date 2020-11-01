@@ -25,7 +25,7 @@ class WaifuConsoleFilterProvider : ConsoleFilterProvider {
 
                 val pluginState = getPluginState()
                 if (alertShown.not() && pluginState.logWatcherKeyword.isNotEmpty() &&
-                    line.contains(pluginState.logWatcherKeyword, ignoreCase = pluginState.isLogWatcherCaseSensitivityIgnored)
+                    line.contains(pluginState.logWatcherKeyword, ignoreCase = pluginState.isLogWatcherCaseIgnored)
                 ) {
                     MotivationFactory.showUntitledMotivationEventFromCategories(
                         MotivationEvent(
