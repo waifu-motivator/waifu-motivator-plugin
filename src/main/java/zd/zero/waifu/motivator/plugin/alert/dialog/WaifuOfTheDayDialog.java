@@ -266,7 +266,7 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
                     BrowserUtil.browse( url );
                 } else {
                     throw new WaifuMotivatorViewAnimeException(
-                            "Cannot view current Waifu Of The Day: '" + currentWaifuOfTheDay + "'" );
+                            MessageBundle.message("exceptions.messages.cannot.view.waifu.day") + currentWaifuOfTheDay + "'" );
                 }
             }
         };

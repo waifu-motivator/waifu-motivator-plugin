@@ -3,6 +3,7 @@ package zd.zero.waifu.motivator.plugin.alert.dialog;
 import com.intellij.ide.GeneralSettings;
 import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.NotNull;
+import zd.zero.waifu.motivator.plugin.MessageBundle;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
@@ -38,6 +39,6 @@ public class DialogTipPanel implements DialogWrapper.DoNotAskOption {
     @NotNull
     @Override
     public String getDoNotShowMessage() {
-        return "Don't show at startup";
+        return MessageBundle.message("dont.show.startup");
     }
 }
