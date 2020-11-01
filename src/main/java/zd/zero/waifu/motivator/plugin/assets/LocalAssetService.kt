@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.util.text.StringUtil
+import zd.zero.waifu.motivator.plugin.MessageBundle
 import zd.zero.waifu.motivator.plugin.tools.RestClient
 import java.nio.charset.Charset
 import java.nio.file.Files
@@ -59,12 +60,11 @@ object LocalAssetService {
                     AssetChangedStatus.SAME
                 } else {
                     log.warn(
-                        """
-                      Local asset: $localInstallPath
-                      is different from remote asset $remoteAssetUrl
-                      Local Checksum: $onDiskCheckSum
-                      Remote Checksum: $it
-                        """.trimIndent()
+                        "\n"+
+                      MessageBundle.message("logs.warn.local.asset") + "$localInstallPath" + "\n" +
+                      MessageBundle.message("logs.warn.different.remote.asset") + "$remoteAssetUrl" + "\n"+
+                      MessageBundle.message("logs.warn.local.checksum") + "$onDiskCheckSum" + "\n" +
+                      MessageBundle.message("logs.warn.remote.checksum") + "$it" + "\n".trimIndent()
                     )
                     AssetChangedStatus.DIFFERENT
                 }
@@ -102,7 +102,7 @@ object LocalAssetService {
                 }
             }.orElseGet { ConcurrentHashMap() }
     } catch (e: Throwable) {
-        log.warn("Unable to get local asset checks for raisins", e)
+        log.warn(MessageBundle.message("logs.warn.unable.get.local.asset"), e)
         ConcurrentHashMap()
     }
 

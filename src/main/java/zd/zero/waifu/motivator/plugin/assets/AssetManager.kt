@@ -8,6 +8,7 @@ import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClients
+import zd.zero.waifu.motivator.plugin.MessageBundle
 import zd.zero.waifu.motivator.plugin.assets.LocalAssetService.hasAssetChanged
 import zd.zero.waifu.motivator.plugin.assets.LocalStorageService.createDirectories
 import zd.zero.waifu.motivator.plugin.assets.LocalStorageService.getLocalAssetDirectory
@@ -109,7 +110,7 @@ object AssetManager {
         createDirectories(localAssetPath)
         val remoteAssetRequest = createGetRequest(remoteAssetUrl)
         return try {
-            log.warn("Attempting to download asset $remoteAssetUrl")
+            log.warn(MessageBundle.message("logs.warn.attemting.download") + "$remoteAssetUrl")
             val remoteAssetResponse = httpClient.execute(remoteAssetRequest)
             if (remoteAssetResponse.statusLine.statusCode == 200) {
                 remoteAssetResponse.entity.content.use { inputStream ->
@@ -123,11 +124,11 @@ object AssetManager {
                 }
                 localAssetPath.toUri().toString().toOptional()
             } else {
-                log.warn("Asset request for $remoteAssetUrl responded with $remoteAssetResponse")
+                log.warn(MessageBundle.message("logs.warn.asset.request") + "$remoteAssetUrl" MessageBundle.message(" responded with ") + "$remoteAssetResponse")
                 Optional.empty()
             }
         } catch (e: Throwable) {
-            log.warn("Unable to get remote remote asset $remoteAssetUrl for raisins ${e.message}")
+            log.warn(MessageBundle.message("logs.warn.unable.get.remote.asset") + "$remoteAssetUrl" MessageBundle.message("logs.warn.for.raisins") + "${e.message}")
             Optional.empty()
         } finally {
             remoteAssetRequest.releaseConnection()
