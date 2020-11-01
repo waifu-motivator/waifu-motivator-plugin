@@ -3,7 +3,7 @@ package zd.zero.waifu.motivator.plugin.integrations
 import com.intellij.execution.filters.ConsoleFilterProvider
 import com.intellij.execution.filters.Filter
 import com.intellij.openapi.project.Project
-import zd.zero.waifu.motivator.plugin.alert.AlertConfigurationAllEnabled
+import zd.zero.waifu.motivator.plugin.alert.AlertConfiguration
 import zd.zero.waifu.motivator.plugin.assets.WaifuAssetCategory
 import zd.zero.waifu.motivator.plugin.motivation.MotivationFactory
 import zd.zero.waifu.motivator.plugin.motivation.event.MotivationEvent
@@ -33,7 +33,7 @@ class WaifuConsoleFilterProvider : ConsoleFilterProvider {
                             MotivationEventCategory.POSITIVE,
                             "Waifu Log Watcher Event",
                             project
-                        ) { AlertConfigurationAllEnabled.create() },
+                        ) { AlertConfiguration.allEnabled() },
                         WaifuAssetCategory.ACKNOWLEDGEMENT,
                         WaifuAssetCategory.CELEBRATION,
                         WaifuAssetCategory.HAPPY,
