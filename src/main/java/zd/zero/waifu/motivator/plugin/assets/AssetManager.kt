@@ -124,11 +124,11 @@ object AssetManager {
                 }
                 localAssetPath.toUri().toString().toOptional()
             } else {
-                log.warn(MessageBundle.message("logs.warn.asset.request") + "$remoteAssetUrl" MessageBundle.message(" responded with ") + "$remoteAssetResponse")
+                log.warn(MessageBundle.message("logs.warn.asset.request") + "$remoteAssetUrl"+ MessageBundle.message(" responded with ") + "$remoteAssetResponse")
                 Optional.empty()
             }
         } catch (e: Throwable) {
-            log.warn(MessageBundle.message("logs.warn.unable.get.remote.asset") + "$remoteAssetUrl" MessageBundle.message("logs.warn.for.raisins") + "${e.message}")
+            log.warn(MessageBundle.message("logs.warn.unable.get.remote.asset") + "$remoteAssetUrl"+ MessageBundle.message("logs.warn.for.raisins") + "${e.message}")
             Optional.empty()
         } finally {
             remoteAssetRequest.releaseConnection()
