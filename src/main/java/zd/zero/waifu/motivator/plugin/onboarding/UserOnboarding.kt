@@ -15,6 +15,7 @@ object UserOnboarding {
 
     fun attemptToPerformNewUpdateActions() {
         getNewVersion().ifPresent { newVersion ->
+            startOnboarding()
             WaifuMotivatorPluginState.getPluginState().version = newVersion
             ApplicationManager.getApplication().messageBus
                 .syncPublisher(UpdateAssetsListener.TOPIC)
@@ -39,7 +40,11 @@ object UserOnboarding {
             .toOptional()
             .map { it.version }
 
-    fun finishOnBoarding() {
+    private fun startOnboarding() {
+        WaifuMotivatorPluginState.getPluginState().isOnboardingFinished = false
+    }
+
+    fun finishOnboarding() {
         WaifuMotivatorPluginState.getPluginState().isOnboardingFinished = true
     }
 }
