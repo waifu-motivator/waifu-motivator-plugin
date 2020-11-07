@@ -1,7 +1,7 @@
-<idea-plugin url="https://github.com/zd-zero/waifu-motivator-plugin">
+<idea-plugin url="https://github.com/waifu-motivator/waifu-motivator-plugin">
   <id>zd.zero.waifu-motivator-plugin</id>
   <name>Waifu Motivator</name>
-  <vendor email="zaerald.zd@gmail.com" url="https://github.com/zd-zero">zd-zero</vendor>
+  <vendor email="zaerald.zd@gmail.com" url="https://github.com/zaerald">zaerald</vendor>
 
   <description><![CDATA[
         Open Sourced <i>Waifu</i> Motivator Plugin to help boost your motivation while coding!
