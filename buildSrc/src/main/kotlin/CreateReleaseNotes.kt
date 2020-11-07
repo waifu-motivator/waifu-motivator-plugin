@@ -22,7 +22,7 @@ open class CreateReleaseNotes : DefaultTask() {
             ))
             it.write("""
 
-For more information please [see the changelog](https://github.com/zd-zero/waifu-motivator-plugin/blob/master/docs/CHANGELOG.md).""")
+For more information please [see the changelog](https://github.com/waifu-motivator/waifu-motivator-plugin/blob/master/docs/CHANGELOG.md).""")
         }
     }
 }

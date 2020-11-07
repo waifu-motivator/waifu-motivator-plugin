@@ -4,9 +4,9 @@
 
 <!--suppress HtmlDeprecatedAttribute, HtmlRequiredAltAttribute -->
 <p align="center">
-    <a href="https://github.com/zd-zero/waifu-motivator-plugin/actions"><img src="https://github.com/zd-zero/waifu-motivator-plugin/workflows/Java%20CI/badge.svg"></a>
+    <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/actions"><img src="https://github.com/waifu-motivator/waifu-motivator-plugin/workflows/Java%20CI/badge.svg"></a>
   <a href="https://plugins.jetbrains.com/plugin/13381-waifu-motivator"><img alt="JetBrains IntelliJ Plugins" src="https://img.shields.io/jetbrains/plugin/v/13381-waifu-motivator"></a>
-  <a href="./LICENSE"><img src="https://img.shields.io/github/license/zd-zero/waifu-motivator-plugin"></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/github/license/waifu-motivator/waifu-motivator-plugin"></a>
 </p>
 
 <p align="center">
