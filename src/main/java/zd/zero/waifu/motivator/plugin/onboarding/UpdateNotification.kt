@@ -19,11 +19,9 @@ val UPDATE_MESSAGE: String =
     """
       What's New?<br>
       <ul>
-        <li>Added reactions to: exit code, build, and idle events.</li>
-        <li>Added configurable personality to your virtual companion.</li>
-        <li>Enabled offline mode.</li>
-        <li>Re-organized settings menu</li>
-        <li>Fixed various bugs.</li>
+        <li>Waifu alert with context</li>
+        <li>Preferred Waifus!</li>
+        <li>Improved mood behavior</li>
       </ul>
       <br>Please see the <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/blob/master/docs/CHANGELOG.md">changelog</a> for more details.
       <br><br>

@@ -1,5 +1,27 @@
 # Changelog
 
+## [v1.4](https://github.com/waifu-motivator/waifu-motivator-plugin/releases/tag/v1.4)
+#### 08/11/2020
+
+✨ Features:
+
+* [WMP-235](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/235) Relax, it's not that big of a deal
+* [WMP-193](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/193) Frustration Cool down over time
+* [WMP-174](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/174) Just your Waifu
+* [WMP-142](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/142) Alert Motivation Context
+* [WMP-248](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/248) Support for Intellij IDEA 2021.1
+
+🙌 Improvements:
+
+* [WMP-241](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/241) Enhanced plugin installation experience for new users!
+* [WMP-251](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/251) Improved toolbar menus
+
+🐛 Bug Fixes:
+
+* [WMP-229](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/229) Issue writing local asset checks on mult-thread
+* [WMP-224](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/224) Waifu of the Day doesn't show up on a fresh install
+
+
 ## [v1.3](https://github.com/waifu-motivator/waifu-motivator-plugin/releases/tag/v1.3)
 #### 27/09/2020
 
