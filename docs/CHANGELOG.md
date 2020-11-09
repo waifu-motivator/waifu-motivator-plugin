@@ -18,8 +18,8 @@
 
 🐛 Bug Fixes:
 
-* [WMP-229](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/229) Issue writing local asset checks on mult-thread
-* [WMP-224](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/224) Waifu of the Day doesn't show up on a fresh install
+* Fixed [WMP-229](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/229) Issue writing local asset checks on mult-thread
+* Fixed [WMP-224](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/224) Waifu of the Day doesn't show up on a fresh install
 
 
 ## [v1.3](https://github.com/waifu-motivator/waifu-motivator-plugin/releases/tag/v1.3)
