@@ -104,15 +104,22 @@ This only happens when you have been triggering events in the frustration state 
 Not every person wants their *Waifu* to get frustrated.
 Thankfully, you have the ability to disable this part of her personality, by preventing her from ever being frustrated in the first place! 😄
 
+### Waifu Mood
+You can check your *Waifu's* current mood at the status bar.
+
+![Waifu Mood](screenshots/waifu_mood.png)
+
+*You can of course disable it from the settings*
+
 ## Motivation On-demand
 Whenever you feel demotivated on your task, you can request motivation from your *Waifu*.
 Your companion will randomly play a sound and show a *Waifu* to cheer you up.
-You can invoke it on `Help | Waifu Motivator | Motivate Me` or the shortcut key with (`alt + M` for Windows/Linux and `option + M` for MacOs).
+You can invoke it on `Help | Waifu Motivator | Motivate Me` or the shortcut key with `alt + M` for Windows/Linux and `option + M` for MacOs.
 
 ![Motivate Me Demo](screenshots/motivate_me_demo.gif)
 
 ## Waifu Toolbar and Actions
-When you feel like commanding your waifu, there are multiple actions she can do for you! You can access it from the toolbar.
+When you feel like commanding your waifu, there are multiple actions she can do for you! You can access it from the toolbar. (`Help | Waifu Motivator`)
 
 <p align="center">
   <img src="screenshots/waifu_toolbar.png" alt="Waifu Toolbar and Actions">
@@ -128,6 +135,14 @@ Of course, you can also invoke it with `Find Action...` (`ctrl + shift + A` for 
 
 Take your *Waifu* with you as you go.
 You have the ability to write code off the grid and still get motivation events!
+
+## Just Your Waifu
+
+Choose the *Waifu* you'd like a priority to always show up! You can do it from the settings. (`Settings | Waifu Motivator | Main`)
+
+<p align="center">
+  <img src="screenshots/just_your_waifu.png" alt="Just Your Waifu">
+</p>
 
 ## Plugin Settings
 
