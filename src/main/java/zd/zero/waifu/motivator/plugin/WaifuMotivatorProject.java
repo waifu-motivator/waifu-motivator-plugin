@@ -88,6 +88,11 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     public void projectClosing( @NotNull Project project ) {
         if ( project == this.project ) dispose();
 
+        if ( !getPluginState().isOnboardingFinished() ) {
+            UserOnboarding.INSTANCE.finishOnboarding();
+            return;
+        }
+
         if ( !getPluginState().isSayonaraEnabled() ||
             areMultipleProjectsOpened() ||
             PluginInstallListener.Companion.isRunningUpdate() ) return;
