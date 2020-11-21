@@ -78,11 +78,11 @@ class VisualMotivationAssetProviderTest {
 
     @Test
     fun `createAssetByCategory should return expected motivation when all assets resolve`() {
-        every { TextAssetService.pickRandomAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
+        every { TextAssetService.getRandomUngroupedAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
             TextualMotivationAsset("Just Monika").toOptional()
         every { VisualAssetDefinitionService.getRandomAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
             VisualMotivationAsset("Just", "Monika", ImageDimension(69, 420)).toOptional()
-        every { AudibleAssetDefinitionService.getRandomAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
+        every { AudibleAssetDefinitionService.getRandomUngroupedAssetByCategory(WaifuAssetCategory.CELEBRATION) } returns
             AudibleMotivationAsset(Paths.get("just", "monika")).toOptional()
 
         val maybeMotivationAsset = VisualMotivationAssetProvider.createAssetByCategory(WaifuAssetCategory.CELEBRATION)

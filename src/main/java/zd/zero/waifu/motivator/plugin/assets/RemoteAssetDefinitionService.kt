@@ -35,9 +35,21 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
     fun getRandomAssetByCategory(
         waifuAssetCategory: WaifuAssetCategory
     ): Optional<U> =
+        pickRandomAsset(waifuAssetCategory)
+
+    fun getRandomUngroupedAssetByCategory(
+        waifuAssetCategory: WaifuAssetCategory
+    ): Optional<U> =
+        pickRandomAsset(waifuAssetCategory) { it.groupId == null }
+
+    private fun pickRandomAsset(
+        waifuAssetCategory: WaifuAssetCategory,
+        assetPredicate: (T) -> Boolean = { true }
+    ) =
         pickRandomAsset(
             remoteAssetManager.supplyLocalAssetDefinitions()
                 .filterByCategory(waifuAssetCategory)
+                .filter(assetPredicate)
                 .ifEmpty {
                     remoteAssetManager.supplyAllLocalAssetDefinitions()
                         .filterByCategory(waifuAssetCategory)
@@ -46,7 +58,7 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
             .map {
                 resolveAsset(waifuAssetCategory, it)
             }.orElseGet {
-                fetchRemoteAsset(waifuAssetCategory)
+                fetchRemoteAsset(waifuAssetCategory, assetPredicate)
             }
 
     private fun resolveAsset(
@@ -59,15 +71,18 @@ abstract class RemoteAssetDefinitionService<T : AssetDefinition, U : Asset>(
 
     @VisibleForTesting
     protected open fun downloadNewAsset(waifuAssetCategory: WaifuAssetCategory) {
-        ApplicationManager.getApplication().executeOnPooledThread { fetchRemoteAsset(waifuAssetCategory) }
+        ApplicationManager.getApplication()
+            .executeOnPooledThread { fetchRemoteAsset(waifuAssetCategory) }
     }
 
     private fun fetchRemoteAsset(
-        waifuAssetCategory: WaifuAssetCategory
+        waifuAssetCategory: WaifuAssetCategory,
+        assetPredicate: (T) -> Boolean = { true }
     ): Optional<U> =
         pickRandomAsset(
             remoteAssetManager.supplyRemoteAssetDefinitions()
                 .filterByCategory(waifuAssetCategory)
+                .filter(assetPredicate)
                 .ifEmpty {
                     remoteAssetManager.supplyAllRemoteAssetDefinitions()
                         .filterByCategory(waifuAssetCategory)

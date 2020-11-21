@@ -78,8 +78,8 @@ object VisualMotivationAssetProvider {
                     }.map { it.toOptional() } // todo: replace with `or` when on jre 11+
                     .orElseGet {
                         allOf(
-                            TextAssetService.pickRandomAssetByCategory(category),
-                            AudibleAssetDefinitionService.getRandomAssetByCategory(category)
+                            TextAssetService.getRandomUngroupedAssetByCategory(category),
+                            AudibleAssetDefinitionService.getRandomUngroupedAssetByCategory(category)
                         ).map(assetBundler)
                     }
             }
