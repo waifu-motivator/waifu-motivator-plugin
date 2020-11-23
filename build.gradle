@@ -50,7 +50,7 @@ intellij {
 
     if ("DOKI" == System.getenv("DEV_ENV")) {
         setPlugins(
-            'io.acari.DDLCTheme:11.0.0'
+            'io.acari.DDLCTheme:11.3.1'
         )
     }
 }

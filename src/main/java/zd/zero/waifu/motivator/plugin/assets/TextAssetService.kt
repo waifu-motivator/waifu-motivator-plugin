@@ -19,10 +19,21 @@ object TextAssetService {
         ConcurrentHashMap()
     private val random = Random(System.currentTimeMillis())
 
-    fun pickRandomAssetByCategory(waifuAssetCategory: WaifuAssetCategory): Optional<TextualMotivationAsset> =
+    fun pickRandomAssetByCategory(
+        waifuAssetCategory: WaifuAssetCategory
+    ): Optional<TextualMotivationAsset> =
         fetchListOfTextAssets(waifuAssetCategory)
             .map {
                 it.random(random)
+            }
+
+    fun getRandomUngroupedAssetByCategory(
+        category: WaifuAssetCategory
+    ): Optional<TextualMotivationAsset> =
+        fetchListOfTextAssets(category)
+            .map { textAssets ->
+                textAssets.filter { it.groupId == null }
+                    .random(random)
             }
 
     fun getAssetByGroupId(
