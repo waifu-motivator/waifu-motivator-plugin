@@ -94,8 +94,10 @@ object MotivationFactory {
         motivationConstructor: (MotivationAsset) -> WaifuMotivation,
         assetSupplier: () -> Optional<MotivationAsset>
     ) {
+        val project = motivationEvent.project
+        if (project.isDisposed) return
+
         ApplicationManager.getApplication().executeOnPooledThread {
-            val project = motivationEvent.project
             assetSupplier()
                 .doOrElse({ asset ->
                     val motivation =
