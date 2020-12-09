@@ -21,6 +21,8 @@ abstract class BaseMotivation(
         private const val KEY_DISTRACTION_FREE_MODE = "editor.distraction.free.mode"
     }
 
+    private lateinit var notification: Notification
+
     private lateinit var listener: MotivationListener
 
     override fun motivate() {
@@ -43,12 +45,12 @@ abstract class BaseMotivation(
     }
 
     override fun displayNotification() {
-        val notification = notifier.createNotification()
+        notification = notifier.createNotification()
         notification.balloon.toOptional().ifPresent {
             it.addListener(
                 object : JBPopupListener {
                     override fun onClosed(event: LightweightWindowEvent) {
-                        onAlertClosed(notification)
+                        closeNotification()
                     }
                 }
             )
@@ -64,14 +66,22 @@ abstract class BaseMotivation(
                     )
             )
 
-    override fun onAlertClosed(notification: Notification) {
+    override fun closeNotification() {
+        if (::notification.isInitialized && isNotificationShowing) {
+            if (isNotificationShowing) notification.expire()
+            stopSoundPlayer()
+            notifyDisposal()
+        }
+    }
+
+    override fun isNotificationShowing(): Boolean = ::notification.isInitialized && notification.isExpired.not()
+
+    private fun stopSoundPlayer() {
         val duration = System.currentTimeMillis() - notification.timestamp
         val isExpired = duration / 1000 >= 10
         if (!isExpired && config.isSoundAlertEnabled) {
             player.stop()
         }
-
-        notifyDisposal()
     }
 
     override fun setListener(motivationListener: MotivationListener): WaifuMotivation {

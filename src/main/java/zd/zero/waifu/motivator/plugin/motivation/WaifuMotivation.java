@@ -1,7 +1,5 @@
 package zd.zero.waifu.motivator.plugin.motivation;
 
-import com.intellij.notification.Notification;
-
 public interface WaifuMotivation {
 
     boolean isDisplayNotificationEnabled();
@@ -16,9 +14,12 @@ public interface WaifuMotivation {
 
     boolean isDistractionAllowed();
 
-    void onAlertClosed( Notification notification );
+    boolean isNotificationShowing();
+
+    void closeNotification();
 
     void motivate();
 
     WaifuMotivation setListener( MotivationListener motivationListener);
+
 }

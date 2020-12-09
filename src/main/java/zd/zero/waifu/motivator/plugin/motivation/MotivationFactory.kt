@@ -14,6 +14,9 @@ import java.util.Optional
 
 object MotivationFactory {
 
+    @Volatile
+    private lateinit var alertMotivation: WaifuMotivation
+
     fun showMotivationEventForCategory(
         motivationEvent: MotivationEvent,
         waifuAssetCategory: WaifuAssetCategory
@@ -100,18 +103,20 @@ object MotivationFactory {
         ApplicationManager.getApplication().executeOnPooledThread {
             assetSupplier()
                 .doOrElse({ asset ->
-                    val motivation =
-                        motivationConstructor(
-                            asset
-                        ).setListener { lifecycleListener.onDispose() }
+                    if (::alertMotivation.isInitialized) {
+                        alertMotivation.closeNotification()
+                    }
+
+                    alertMotivation = motivationConstructor(asset)
+                    alertMotivation.setListener { lifecycleListener.onDispose() }
                     if (project.isInitialized) {
                         lifecycleListener.onDisplay()
-                        motivation.motivate()
+                        alertMotivation.motivate()
                     } else {
                         StartupManager.getInstance(project)
                             .registerPostStartupActivity {
                                 lifecycleListener.onDisplay()
-                                motivation.motivate()
+                                alertMotivation.motivate()
                             }
                     }
                 }) {
