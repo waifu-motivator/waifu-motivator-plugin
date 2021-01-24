@@ -8,5 +8,4 @@ object WaifuMotivatorIcons {
 
     @JvmField
     val CALENDAR = IconLoader.getIcon("/icons/emojis/1f5d3.svg", javaClass)
-
 }

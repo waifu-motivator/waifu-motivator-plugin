@@ -30,5 +30,4 @@ object UserOnboarding {
         PluginManagerCore.getPlugin(PluginId.getId(WaifuMotivator.PLUGIN_ID))
             .toOptional()
             .map { it.version }
-
 }

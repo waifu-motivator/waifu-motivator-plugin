@@ -38,8 +38,7 @@ object UpdateNotification {
         UPDATE_CHANNEL_NAME,
         NotificationDisplayType.STICKY_BALLOON,
         false,
-        UPDATE_CHANNEL_NAME,
-        icon = WaifuMotivatorIcons.MENU
+        UPDATE_CHANNEL_NAME
     )
 
     fun display(
