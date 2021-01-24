@@ -6,6 +6,7 @@ import com.intellij.notification.NotificationGroup
 import com.intellij.notification.NotificationListener
 import com.intellij.notification.NotificationType
 import com.intellij.notification.impl.NotificationsManagerImpl
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.Balloon
 import com.intellij.ui.BalloonLayoutData
@@ -13,7 +14,6 @@ import icons.WaifuMotivatorIcons
 import org.jetbrains.annotations.Nls
 import zd.zero.waifu.motivator.plugin.WaifuMotivator.PLUGIN_NAME
 import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParameters
-import zd.zero.waifu.motivator.plugin.service.ApplicationService
 
 val UPDATE_MESSAGE: String =
     """
@@ -96,7 +96,8 @@ object UpdateNotification {
                 true,
                 false,
                 BalloonLayoutData.fullContent(),
-                ApplicationService.instance
+                // todo: replace with created disposable.
+                Disposable {  },
             )
             balloon.show(notificationPosition, Balloon.Position.atLeft)
         } catch (e: Throwable) {

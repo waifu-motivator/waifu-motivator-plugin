@@ -8,7 +8,6 @@ import com.intellij.openapi.startup.StartupActivity
 import com.intellij.openapi.util.Disposer
 import com.intellij.util.concurrency.EdtScheduledExecutorService
 import zd.zero.waifu.motivator.plugin.alert.dialog.WaifuOfTheDayDialog
-import zd.zero.waifu.motivator.plugin.personality.Wendi
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
@@ -20,9 +19,9 @@ class WaifuOfTheDayStartupActivity : StartupActivity.DumbAware {
     }
 
     override fun runActivity(project: Project) {
-        Wendi.initialize()
         updatePlatformTipOfTheDayConfig()
 
+        // todo: use in update notification
         val disposableRef = AtomicReference<Disposable?>()
         val future = EdtScheduledExecutorService.getInstance().schedule(
             {
