@@ -16,16 +16,17 @@ The Anime Meme plugin includes the following changes:
 * Haven't implemented `Sayonara sound` on project exit yet.
 * Haven't implemented `Disable in Distraction Free Mode or Presentation Mode` yet.
 * `Motivate Me (alt+m)` is now `Show random Ani-Meme (alt+r)`
+* Sound is either on or off, no granular control across events.
 
 ✨ Features:
 
-* [WMP-225](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/225) Log Watching
 * [WMP-225](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/225) Log Watching
 * [New display options](https://github.com/Unthrottled/AMII#display️)
     - Notification positioning
     - Timed or Focus loss dismissal options
 * [Silence Breaker](https://github.com/Unthrottled/AMII/pull/43)
 * Added Anime Openings on project open
+* Volume adjustment
 
 🙌 Improvements:
 
