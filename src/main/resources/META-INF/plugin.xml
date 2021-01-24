@@ -8,55 +8,33 @@
     ]]></description>
 
   <depends>com.intellij.modules.platform</depends>
+  <depends>io.unthrottled.amii</depends>
 
   <!--    Leave this in here so the IDE gives you feedback on-->
   <!--    What APIs are available-->
-  <idea-version since-build="201.6668.113"/>
+  <idea-version since-build="202.6397.94"/>
 
   <extensions defaultExtensionNs="com.intellij">
     <applicationConfigurable
       instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
     <applicationService
       serviceImplementation="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState"/>
-    <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.ApplicationService"/>
-    <applicationService serviceImplementation="zd.zero.waifu.motivator.plugin.service.WaifuGatekeeper"/>
     <errorHandler
       id="7111f9b9-f252-483e-9496-72d649347b6d"
       implementation="zd.zero.waifu.motivator.plugin.integrations.ErrorReporter"/>
     <postStartupActivity id="WaifuOfTheDayStartupActivity"
                          implementation="zd.zero.waifu.motivator.plugin.WaifuOfTheDayStartupActivity"/>
-    <statusBarWidgetFactory implementation="zd.zero.waifu.motivator.plugin.integrations.MoodStatusBarProvider"/>
   </extensions>
 
   <actions>
     <group id="zd.zero.waifu.motivator.WaifuMotivatorGroup"
            text="Waifu Motivator" popup="true"
            icon="WaifuMotivatorIcons.MENU">
-      <action id="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
-              class="zd.zero.waifu.motivator.plugin.actions.MotivateMeAction"
-              icon="WaifuMotivatorIcons.MENU"
-              text="Motivate Me"
-              description="My waifu please motivate me.">
-        <keyboard-shortcut keymap="$default" first-keystroke="alt M"/>
-      </action>
       <action id="zd.zero.waifu.motivator.plugin.actions.ShowWaifuOfTheDayAction"
               class="zd.zero.waifu.motivator.plugin.actions.ShowWaifuOfTheDayAction"
               icon="WaifuMotivatorIcons.CALENDAR"
               text="Waifu of the Day"
               description="Show me today's Waifu.">
-      </action>
-      <action id="zd.zero.waifu.motivator.plugin.actions.RelaxAction"
-              class="zd.zero.waifu.motivator.plugin.actions.RelaxAction"
-              text="Relax Your Waifu"
-              icon="WaifuMotivatorIcons.HEART"
-              description="Action calms down your frustrated/enraged waifu">
-        <keyboard-shortcut keymap="$default" first-keystroke="shift alt R"/>
-      </action>
-      <action id="zd.zero.waifu.motivator.plugin.actions.AssetSyncAction"
-              class="zd.zero.waifu.motivator.plugin.actions.AssetSyncAction"
-              icon="AllIcons.Actions.Refresh"
-              text="Synchronize Motivation Assets"
-              description="Updates the list of assets to be used for motivation from the central repository.">
       </action>
       <action id="zd.zero.waifu.motivator.plugin.actions.PluginSettingsAction"
               class="zd.zero.waifu.motivator.plugin.actions.PluginSettingsAction"
@@ -72,14 +50,10 @@
   <applicationListeners>
     <listener class="zd.zero.waifu.motivator.plugin.listeners.PluginInstallListener"
               topic="com.intellij.ide.plugins.DynamicPluginListener"/>
-    <listener class="zd.zero.waifu.motivator.plugin.personality.core.emotions.CoolDownCore"
-              topic="zd.zero.waifu.motivator.plugin.personality.core.emotions.MoodListener"/>
   </applicationListeners>
   <projectListeners>
     <listener class="zd.zero.waifu.motivator.plugin.WaifuMotivatorProject"
               topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    <listener class="zd.zero.waifu.motivator.plugin.listeners.TaskListener"
-              topic="com.intellij.task.ProjectTaskListener"/>
   </projectListeners>
 
 </idea-plugin>
