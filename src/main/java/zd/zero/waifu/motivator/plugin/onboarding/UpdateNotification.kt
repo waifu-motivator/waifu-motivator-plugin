@@ -38,7 +38,8 @@ object UpdateNotification {
         UPDATE_CHANNEL_NAME,
         NotificationDisplayType.STICKY_BALLOON,
         false,
-        UPDATE_CHANNEL_NAME
+        UPDATE_CHANNEL_NAME,
+        icon = WaifuMotivatorIcons.MENU
     )
 
     fun display(
@@ -48,9 +49,11 @@ object UpdateNotification {
         val updateNotification = notificationGroup.createNotification(
             "$PLUGIN_NAME updated to v$newVersion",
             UPDATE_MESSAGE,
-            NotificationType.INFORMATION
+            NotificationType.INFORMATION,
         )
             .setListener(NotificationListener.UrlOpeningListener(false))
+
+        updateNotification.icon = WaifuMotivatorIcons.MENU
 
         showNotification(project, updateNotification)
     }
