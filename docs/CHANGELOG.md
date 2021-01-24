@@ -10,16 +10,21 @@ The Anime Meme plugin includes the following changes:
 
 ❤️‍🩹 Breaking Changes:
 
-* Removed titled notifications
-* Only select notifications have sound the rest are silent
-* Your previous configurations will be lost (Sorry!)
+* Removed titled notifications.
+* Only select notifications have sound the rest are silent.
+* Your previous configurations will be lost (Sorry!).
+* Haven't implemented `Sayonara sound` on project exit yet.
+* Haven't implemented `Disable in Distraction Free Mode or Presentation Mode` yet.
+* `Motivate Me (alt+m)` is now `Show random Ani-Meme (alt+r)`
 
 ✨ Features:
 
 * [WMP-225](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/225) Log Watching
+* [WMP-225](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/225) Log Watching
 * [New display options](https://github.com/Unthrottled/AMII#display️)
     - Notification positioning
     - Timed or Focus loss dismissal options
+* [Silence Breaker](https://github.com/Unthrottled/AMII/pull/43)
 * Added Anime Openings on project open
 
 🙌 Improvements:
@@ -35,6 +40,7 @@ The Anime Meme plugin includes the following changes:
 * [WMP-285](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/285) Sound playback issue
 * [WMP-282](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/282) Concurrent Modification Errors
 * [WMP-273](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/273) Notification Display Awareness
+* Task failure events no longer occur on `Build Canceled` events
 
 ## [v1.4](https://github.com/waifu-motivator/waifu-motivator-plugin/releases/tag/v1.4)
 #### 08/11/2020
