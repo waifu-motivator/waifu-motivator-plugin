@@ -1,5 +1,41 @@
 # Changelog
 
+## [v2.0](https://github.com/waifu-motivator/waifu-motivator-plugin/releases/tag/v2.0)
+
+#### 01/02/2020
+
+* [WMP-288](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/288) Depending on the [Anime Meme plugin](https://github.com/Unthrottled/AMII) for motivation now.
+
+The Anime Meme plugin includes the following changes:
+
+❤️‍🩹 Breaking Changes:
+
+* Removed titled notifications
+* Only select notifications have sound the rest are silent
+* Your previous configurations will be lost (Sorry!)
+
+✨ Features:
+
+* [WMP-225](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/225) Log Watching
+* [New display options](https://github.com/Unthrottled/AMII#display️)
+    - Notification positioning
+    - Timed or Focus loss dismissal options
+* Added Anime Openings on project open
+
+🙌 Improvements:
+
+* [WMP-247](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/247) Enhanced content preference selection
+* [WMP-262](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/262) String literals to bundle migration
+* [WMP-163](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/163) Migrate to `ExteralSystemTaskState`
+* Better random asset distribution
+* A lot more assets!
+
+🐛 Bug Fixes:
+
+* [WMP-285](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/285) Sound playback issue
+* [WMP-282](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/282) Concurrent Modification Errors
+* [WMP-273](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/273) Notification Display Awareness
+
 ## [v1.4](https://github.com/waifu-motivator/waifu-motivator-plugin/releases/tag/v1.4)
 #### 08/11/2020
 
