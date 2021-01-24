@@ -13,7 +13,6 @@ object UserOnboarding {
 
     fun attemptToPerformNewUpdateActions() {
         getNewVersion().ifPresent { newVersion ->
-            startOnboarding()
             WaifuMotivatorPluginState.getPluginState().version = newVersion
             UpdateNotification.display(ProjectManager.getInstance().defaultProject, newVersion)
         }
@@ -32,11 +31,4 @@ object UserOnboarding {
             .toOptional()
             .map { it.version }
 
-    private fun startOnboarding() {
-        WaifuMotivatorPluginState.getPluginState().isOnboardingFinished = false
-    }
-
-    fun finishOnboarding() {
-        WaifuMotivatorPluginState.getPluginState().isOnboardingFinished = true
-    }
 }

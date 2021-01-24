@@ -21,7 +21,6 @@ class WaifuOfTheDayStartupActivity : StartupActivity.DumbAware {
     override fun runActivity(project: Project) {
         updatePlatformTipOfTheDayConfig()
 
-        // todo: use in update notification
         val disposableRef = AtomicReference<Disposable?>()
         val future = EdtScheduledExecutorService.getInstance().schedule(
             {

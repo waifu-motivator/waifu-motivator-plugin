@@ -6,22 +6,21 @@ import com.intellij.notification.NotificationGroup
 import com.intellij.notification.NotificationListener
 import com.intellij.notification.NotificationType
 import com.intellij.notification.impl.NotificationsManagerImpl
-import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.Balloon
 import com.intellij.ui.BalloonLayoutData
 import icons.WaifuMotivatorIcons
+import org.intellij.lang.annotations.Language
 import org.jetbrains.annotations.Nls
 import zd.zero.waifu.motivator.plugin.WaifuMotivator.PLUGIN_NAME
 import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParameters
 
+@Language("HTML")
 val UPDATE_MESSAGE: String =
     """
       What's New?<br>
       <ul>
-        <li>Waifu alert with context</li>
-        <li>Preferred Waifus!</li>
-        <li>Improved mood behavior</li>
+        <li>Migrated all notifications to <a href="https://github.com/Unthrottled/AMII">The Anime Meme Plugin</a></li>
       </ul>
       <br>Please see the <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/blob/master/docs/CHANGELOG.md">changelog</a> for more details.
       <br><br>
@@ -96,9 +95,7 @@ object UpdateNotification {
                 true,
                 false,
                 BalloonLayoutData.fullContent(),
-                // todo: replace with created disposable.
-                Disposable {  },
-            )
+            ) { }
             balloon.show(notificationPosition, Balloon.Position.atLeft)
         } catch (e: Throwable) {
             updateNotification.notify(project)

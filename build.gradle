@@ -51,13 +51,12 @@ intellij {
     if ("DOKI" == System.getenv("DEV_ENV")) {
         setPlugins(
             'io.unthrottled.amii:0.5.0',
-            'io.acari.DDLCTheme:11.3.1'
+            'io.acari.DDLCTheme:12.4.1'
         )
     } else {
         setPlugins(
             'io.unthrottled.amii:0.5.0'
         )
-
     }
 }
 

@@ -7,6 +7,4 @@ class WaifuMotivatorState {
     var version = "v0.0.0"
 
     var userId = ""
-
-    var isOnboardingFinished = false
 }
