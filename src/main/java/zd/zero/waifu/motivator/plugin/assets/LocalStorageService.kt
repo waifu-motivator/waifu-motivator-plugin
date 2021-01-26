@@ -2,6 +2,8 @@ package zd.zero.waifu.motivator.plugin.assets
 
 import com.intellij.openapi.application.PathManager
 import com.intellij.openapi.diagnostic.Logger
+import zd.zero.waifu.motivator.plugin.tools.ExceptionTools.runSafely
+import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -19,10 +21,40 @@ object LocalStorageService {
         }
     }
 
-    fun getLocalAssetDirectory(): Optional<String> =
-        Optional.ofNullable(
+    private const val ASSET_DIRECTORY = "waifuMotivationAssets"
+
+    fun getLocalAssetDirectory(): Optional<String> {
+        return Optional.ofNullable(
             PathManager.getConfigPath()
         ).map {
-            Paths.get(it, "waifuMotivationAssets").toAbsolutePath().toString()
+            Paths.get(it, ASSET_DIRECTORY).toAbsolutePath().toString()
         }
+    }
+
+    fun getLocalAssetDirectoryNoOptional(): String {
+        return Paths.get(
+            PathManager.getConfigPath(),
+            ASSET_DIRECTORY
+        ).toAbsolutePath().toString()
+    }
+
+    fun getGlobalAssetDirectory(): Optional<String> =
+        Paths.get(
+            PathManager.getConfigPath(),
+            "..",
+            ASSET_DIRECTORY
+        ).toAbsolutePath()
+            .normalize()
+            .toOptional()
+            .filter { Files.isWritable(it.parent) }
+            .map {
+                if (Files.exists(it).not()) {
+                    runSafely({
+                        Files.createDirectories(it)
+                    }) {
+                        log.warn("Unable to create global directory for raisins", it)
+                    }
+                }
+                it.toString()
+            }
 }

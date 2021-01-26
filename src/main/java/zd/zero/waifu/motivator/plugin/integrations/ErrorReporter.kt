@@ -20,7 +20,6 @@ import io.sentry.SentryLevel
 import io.sentry.SentryOptions
 import io.sentry.protocol.Message
 import io.sentry.protocol.User
-import io.unthrottled.amii.config.Config
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.tools.RestClient
 import java.awt.Component
@@ -46,7 +45,7 @@ class ErrorReporter : ErrorReportSubmitter() {
             }
             Sentry.setUser(
                 User().apply {
-                    this.id = Config.instance.userId
+                    this.id = WaifuMotivatorPluginState.getPluginState().userId
                 }
             )
         }

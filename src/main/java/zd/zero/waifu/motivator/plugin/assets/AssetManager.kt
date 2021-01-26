@@ -10,7 +10,9 @@ import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClients
 import zd.zero.waifu.motivator.plugin.assets.LocalAssetService.hasAssetChanged
 import zd.zero.waifu.motivator.plugin.assets.LocalStorageService.createDirectories
+import zd.zero.waifu.motivator.plugin.assets.LocalStorageService.getGlobalAssetDirectory
 import zd.zero.waifu.motivator.plugin.assets.LocalStorageService.getLocalAssetDirectory
+import zd.zero.waifu.motivator.plugin.assets.LocalStorageService.getLocalAssetDirectoryNoOptional
 import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.nio.file.Files
 import java.nio.file.Path
@@ -20,7 +22,10 @@ import java.util.Optional
 import java.util.concurrent.TimeUnit
 
 enum class AssetCategory(val category: String) {
-    VISUAL("visuals"), AUDIBLE("audible"), TEXT("text")
+    VISUAL("visuals"),
+    PROMOTION("promotion"),
+    AUDIBLE("audible"),
+    TEXT("text")
 }
 
 object HttpClientFactory {
@@ -31,7 +36,8 @@ object HttpClientFactory {
 }
 
 object AssetManager {
-    private const val ASSETS_SOURCE = "https://waifu.assets.unthrottled.io"
+    const val ASSETS_SOURCE = "https://waifu.assets.unthrottled.io"
+    const val FALLBACK_ASSET_SOURCE = "https://raw.githubusercontent.com/doki-theme/doki-theme-assets/master"
 
     private val httpClient = HttpClientFactory.createHttpClient()
     private val log = Logger.getInstance(this::class.java)
@@ -89,6 +95,19 @@ object AssetManager {
             else -> downloadAndGetAssetUrl(localAssetPath, remoteAssetUrl)
         }
 
+    fun constructGlobalAssetPath(
+        assetCategory: AssetCategory,
+        assetPath: String
+    ): Optional<Path> =
+        getGlobalAssetDirectory()
+            .map {
+                Paths.get(
+                    it,
+                    assetCategory.category,
+                    assetPath
+                )
+            }
+
     fun constructLocalAssetPath(
         assetCategory: AssetCategory,
         assetPath: String
@@ -101,6 +120,16 @@ object AssetManager {
                     assetPath
                 ).normalize().toAbsolutePath()
             }
+
+    fun constructLocalAssetPathNoOptional(
+        assetCategory: AssetCategory,
+        assetPath: String
+    ): Path =
+        Paths.get(
+            getLocalAssetDirectoryNoOptional(),
+            assetCategory.category,
+            assetPath
+        ).normalize().toAbsolutePath()
 
     private fun downloadAndGetAssetUrl(
         localAssetPath: Path,
