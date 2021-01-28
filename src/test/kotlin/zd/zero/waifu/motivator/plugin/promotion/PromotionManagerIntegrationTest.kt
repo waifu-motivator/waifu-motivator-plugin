@@ -13,9 +13,8 @@ import org.junit.AfterClass
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
-import zd.zero.waifu.motivator.plugin.assets.AssetManager.ASSETS_SOURCE
-import zd.zero.waifu.motivator.plugin.assets.AssetManager.FALLBACK_ASSET_SOURCE
 import zd.zero.waifu.motivator.plugin.assets.LocalStorageService
+import zd.zero.waifu.motivator.plugin.service.AppService
 import zd.zero.waifu.motivator.plugin.service.PluginService
 import zd.zero.waifu.motivator.plugin.test.tools.TestTools
 import zd.zero.waifu.motivator.plugin.test.tools.TestTools.setUpMocksForManager
@@ -25,7 +24,6 @@ import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.nio.file.Files
 import java.time.Instant
 import java.time.Period
-import java.util.Optional
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlin.test.assertTrue
@@ -41,6 +39,7 @@ class PromotionManagerIntegrationTest {
             mockkObject(AniMemePromotionService)
             mockkObject(RestClient)
             mockkObject(PluginService)
+            mockkObject(AppService)
         }
 
         @JvmStatic
@@ -50,12 +49,14 @@ class PromotionManagerIntegrationTest {
             unmockkObject(AniMemePromotionService)
             unmockkObject(RestClient)
             unmockkObject(PluginService)
+            unmockkObject(AppService)
         }
     }
 
     @Before
     fun cleanUp() {
         clearMocks(AniMemePromotionService)
+        every { AppService.getApplicationName() } returns "零二"
         Files.walk(TestTools.getTestAssetPath(testDirectory))
             .filter { it.isFile() }
             .forEach { Files.deleteIfExists(it) }
@@ -65,12 +66,7 @@ class PromotionManagerIntegrationTest {
     fun `should write new version`() {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
+        every { PluginService.isAmiiInstalled() } returns false
 
         val beforePromotion = Instant.now()
 
@@ -88,19 +84,16 @@ class PromotionManagerIntegrationTest {
             Instant.now()
         )
 
-        verify { AniMemePromotionService wasNot Called }
+        validateLedgerCallback(postLedger, beforePromotion)
+
+        assertTrue { LockMaster.acquireLock("Syrena") }
     }
 
     @Test
     fun `should always write new version`() {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
+        every { PluginService.isAmiiInstalled() } returns false
 
         val beforeRyuko = Instant.now()
 
@@ -137,68 +130,9 @@ class PromotionManagerIntegrationTest {
             Instant.now()
         )
 
-        verify { AniMemePromotionService wasNot Called }
-    }
+        validateLedgerCallback(postRinLedger, beforeRin)
 
-    @Test
-    fun `should not do anything when install is less than a day old`() {
-        every { LocalStorageService.getGlobalAssetDirectory() } returns
-            TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
-
-        val currentLedger = PromotionLedger(
-            UUID.randomUUID(),
-            mutableMapOf("Ryuko" to Instant.now()),
-            mutableMapOf(),
-            true
-        )
-        LedgerMaster.persistLedger(currentLedger)
-
-        val promotionManager = PromotionManagerImpl()
-        promotionManager.registerPromotion("Ryuko", true)
-
-        val postLedger = LedgerMaster.readLedger()
-
-        assertThat(postLedger).isEqualTo(currentLedger)
-
-        verify { AniMemePromotionService wasNot Called }
-    }
-
-    @Test
-    fun `should not do anything when motivator is installed`() {
-        every { LocalStorageService.getGlobalAssetDirectory() } returns
-            TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-
-//    every { PluginService.isMotivatorInstalled() } returns true
-        every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
-
-        val currentLedger = PromotionLedger(
-            UUID.randomUUID(),
-            mutableMapOf("Ryuko" to Instant.now().minus(Period.ofDays(3))),
-            mutableMapOf(),
-            true
-        )
-
-        LedgerMaster.persistLedger(currentLedger)
-
-        val promotionManager = PromotionManagerImpl()
-        promotionManager.registerPromotion("Ryuko", true)
-
-        val postLedger = LedgerMaster.readLedger()
-
-        assertThat(postLedger).isEqualTo(currentLedger)
-
-        verify { AniMemePromotionService wasNot Called }
+        assertTrue { LockMaster.acquireLock("Syrena") }
     }
 
     @Test
@@ -206,45 +140,7 @@ class PromotionManagerIntegrationTest {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
 
-//    every { PluginService.isMotivatorInstalled() } returns false
         every { PluginService.isAmiiInstalled() } returns true
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
-
-        val currentLedger = PromotionLedger(
-            UUID.randomUUID(),
-            mutableMapOf("Ryuko" to Instant.now().minus(Period.ofDays(3))),
-            mutableMapOf(),
-            true
-        )
-
-        LedgerMaster.persistLedger(currentLedger)
-
-        val promotionManager = PromotionManagerImpl()
-        promotionManager.registerPromotion("Ryuko", true)
-
-        val postLedger = LedgerMaster.readLedger()
-
-        assertThat(postLedger).isEqualTo(currentLedger)
-
-        verify { AniMemePromotionService wasNot Called }
-    }
-
-    @Test
-    fun `should not do anything when AMII and Motivator are installed`() {
-        every { LocalStorageService.getGlobalAssetDirectory() } returns
-            TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-
-//    every { PluginService.isMotivatorInstalled() } returns true
-        every { PluginService.isAmiiInstalled() } returns true
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
 
         val currentLedger = PromotionLedger(
             UUID.randomUUID(),
@@ -269,13 +165,7 @@ class PromotionManagerIntegrationTest {
     fun `should not do anything when has been promoted before`() {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
         every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
 
         val currentLedger = PromotionLedger(
             UUID.randomUUID(),
@@ -303,47 +193,10 @@ class PromotionManagerIntegrationTest {
     }
 
     @Test
-    fun `should not do anything when not online`() {
-        every { LocalStorageService.getGlobalAssetDirectory() } returns
-            TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
-        every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            "no".toOptional() andThen Optional.empty()
-//        every { RestClient.performGet("$FALLBACK_ASSET_SOURCE/misc/am-i-online.txt") } returns
-//            "no".toOptional() andThen Optional.empty()
-
-        val currentLedger = PromotionLedger(
-            UUID.randomUUID(),
-            mutableMapOf("Ryuko" to Instant.now().minus(Period.ofDays(3))),
-            mutableMapOf(),
-            true
-        )
-
-        LedgerMaster.persistLedger(currentLedger)
-
-        val promotionManager = PromotionManagerImpl()
-        promotionManager.registerPromotion("Ryuko", true)
-        promotionManager.registerPromotion("Ryuko", true)
-
-        val postLedger = LedgerMaster.readLedger()
-
-        assertThat(postLedger).isEqualTo(currentLedger)
-
-        verify { AniMemePromotionService wasNot Called }
-    }
-
-    @Test
     fun `should not do anything when not owner of lock`() {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
         every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
 
         assertThat(LockMaster.acquireLock("Misato")).isTrue
 
@@ -370,13 +223,7 @@ class PromotionManagerIntegrationTest {
     fun `should not promote when not allowed`() {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
         every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
 
         val currentLedger = PromotionLedger(
             UUID.randomUUID(),
@@ -403,13 +250,7 @@ class PromotionManagerIntegrationTest {
     fun `should not promote when previous promotion was rejected`() {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
         every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
 
         val currentLedger = PromotionLedger(
             UUID.randomUUID(),
@@ -435,51 +276,10 @@ class PromotionManagerIntegrationTest {
     }
 
     @Test
-    fun `should not promote when AniMeme plugin is not compatible`() {
-        every { LocalStorageService.getGlobalAssetDirectory() } returns
-            TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
-        every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
-
-        val currentLedger = PromotionLedger(
-            UUID.randomUUID(),
-            mutableMapOf("Ryuko" to Instant.now().minus(Period.ofDays(3))),
-            mutableMapOf(
-                ANI_MEME_PROMOTION_ID to Promotion(ANI_MEME_PROMOTION_ID, Instant.now(), PromotionStatus.ACCEPTED)
-            ),
-            true
-        )
-
-        LedgerMaster.persistLedger(currentLedger)
-
-        val promotionManager = PromotionManagerImpl()
-        promotionManager.registerPromotion("Ryuko", true)
-
-        val postLedger = LedgerMaster.readLedger()
-
-        assertThat(postLedger).isEqualTo(currentLedger)
-
-        verify { AniMemePromotionService wasNot Called }
-
-        assertTrue { LockMaster.acquireLock("Syrena") }
-    }
-
-    @Test
     fun `should promote when previous promotion was accepted`() {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
         every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
 
         val currentLedger = PromotionLedger(
             UUID.randomUUID(),
@@ -509,13 +309,7 @@ class PromotionManagerIntegrationTest {
     fun `should promote when previous promotion was not shown`() {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
         every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
 
         val currentLedger = PromotionLedger(
             UUID.randomUUID(),
@@ -561,13 +355,7 @@ class PromotionManagerIntegrationTest {
     fun `should promote when not locked`() {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
         every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
 
         val currentLedger = PromotionLedger(
             UUID.randomUUID(),
@@ -595,18 +383,7 @@ class PromotionManagerIntegrationTest {
     fun `should promote when primary assets are down`() {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
         every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        no
-//
-//      """.toOptional()
-//        every { RestClient.performGet("$FALLBACK_ASSET_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
 
         val currentLedger = PromotionLedger(
             UUID.randomUUID(),
@@ -634,13 +411,7 @@ class PromotionManagerIntegrationTest {
     fun `should break old lock`() {
         every { LocalStorageService.getGlobalAssetDirectory() } returns
             TestTools.getTestAssetPath(testDirectory).toString().toOptional()
-//    every { PluginService.isMotivatorInstalled() } returns false
         every { PluginService.isAmiiInstalled() } returns false
-//        every { RestClient.performGet("$ASSETS_SOURCE/misc/am-i-online.txt") } returns
-//            """
-//        yes
-//
-//      """.toOptional()
 
         LockMaster.writeLock(
             Lock(
