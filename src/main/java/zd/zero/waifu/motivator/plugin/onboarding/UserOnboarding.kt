@@ -18,11 +18,11 @@ object UserOnboarding {
             UpdateNotification.display(ProjectManager.getInstance().defaultProject, newVersion)
         }
 
+        val isNewUser = WaifuMotivatorPluginState.getPluginState().userId.isEmpty()
         getVersion().ifPresent { version ->
-            PromotionManager.registerPromotion(version)
+            PromotionManager.registerPromotion(version, isNewUser = isNewUser)
         }
-
-        if (WaifuMotivatorPluginState.getPluginState().userId.isEmpty()) {
+        if (isNewUser) {
             WaifuMotivatorPluginState.getPluginState().userId = UUID.randomUUID().toString()
         }
     }

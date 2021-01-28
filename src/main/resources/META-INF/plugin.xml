@@ -42,6 +42,12 @@
               text="Settings"
               description="Show me how to handle my Waifu.">
       </action>
+      <action id="zd.zero.waifu.motivator.plugin.actions.ShowMemePromotion"
+              class="zd.zero.waifu.motivator.plugin.actions.ShowMemePromotion"
+              icon="WaifuMotivatorIcons.Plugins.AMII.TOOL_WINDOW"
+              text="Show Meme Promotion Dialog"
+              description="Shows the initial meme promotion dialog">
+      </action>
 
       <add-to-group group-id="HelpMenu" anchor="last"/>
     </group>

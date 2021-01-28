@@ -17,14 +17,16 @@ data class PromotionResults(
 object AniMemePromotionService {
 
     fun runPromotion(
+        isNewUser: Boolean,
         onPromotion: (PromotionResults) -> Unit,
         onReject: () -> Unit,
     ) {
-        AniMemePluginPromotionRunner(onPromotion, onReject)
+        AniMemePluginPromotionRunner(isNewUser, onPromotion, onReject)
     }
 }
 
 class AniMemePluginPromotionRunner(
+    private val isNewUser: Boolean,
     private val onPromotion: (PromotionResults) -> Unit,
     private val onReject: () -> Unit
 ) : Runnable {
@@ -34,12 +36,13 @@ class AniMemePluginPromotionRunner(
     }
 
     override fun run() {
-        AniMemePluginPromotion.runPromotion(onPromotion, onReject)
+        AniMemePluginPromotion.runPromotion(isNewUser, onPromotion, onReject)
     }
 }
 
 object AniMemePluginPromotion {
     fun runPromotion(
+        isNewUser: Boolean,
         onPromotion: (PromotionResults) -> Unit,
         onReject: () -> Unit,
     ) {
@@ -55,7 +58,7 @@ object AniMemePluginPromotion {
                 }
                 .doOrElse(
                     {
-                        val promotionAssets = PromotionAssets()
+                        val promotionAssets = PromotionAssets(isNewUser)
                         ApplicationManager.getApplication().invokeLater {
                             AniMemePromotionDialog(
                                 promotionAssets,

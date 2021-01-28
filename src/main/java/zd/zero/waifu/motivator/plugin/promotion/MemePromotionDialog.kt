@@ -8,6 +8,7 @@ import com.intellij.ui.JBColor
 import com.intellij.ui.layout.panel
 import com.intellij.util.ui.UIUtil
 import icons.WaifuMotivatorIcons
+import org.intellij.lang.annotations.Language
 import zd.zero.waifu.motivator.plugin.MessageBundle
 import zd.zero.waifu.motivator.plugin.assets.AssetCategory
 import zd.zero.waifu.motivator.plugin.assets.AssetManager
@@ -25,7 +26,9 @@ import javax.swing.JEditorPane
 import javax.swing.JTextPane
 import javax.swing.event.HyperlinkEvent
 
-class PromotionAssets() {
+class PromotionAssets(
+    val isNewUser: Boolean
+) {
 
     val pluginLogoURL: String
     val promotionAssetURL: String
@@ -121,7 +124,6 @@ class AniMemePromotionDialog(
         ).toHexString()
         val infoForegroundHex = UIUtil.getContextHelpForeground().toHexString()
         val pluginLogoURL = promotionAssets.pluginLogoURL
-        val promotionAssetURL = promotionAssets.promotionAssetURL
         pane.background = JBColor.namedColor(
             "Menu.background",
             UIUtil.getEditorPaneBackground()
@@ -142,7 +144,7 @@ class AniMemePromotionDialog(
                   color: $accentHex;
                   font-weight: bold;
               }
-              p {
+              p, div, ul, li {
                 color: ${UIUtil.getLabelForeground().toHexString()};
               }
               h2 {
@@ -180,21 +182,7 @@ class AniMemePromotionDialog(
       <body>
       <div class='logo-container'><img src="$pluginLogoURL" class='display-image' alt='Ani-Meme Plugin Logo'/>
       </div>
-      <h2 class='header'>Your new virtual companion!</h2>
-      <div style='margin: 8px 0 0 100px'>
-        <p>
-          <a href='https://plugins.jetbrains.com/plugin/15865-amii'>The Anime Meme</a>
-          gives your IDE more personality by using anime memes. <br/> You will get an assistant that will interact
-          with you as you build code.
-          <br/>Such as when your programs fail to run or tests pass/fail. Your companion<br/>
-          has the ability to react to these events. Which will most likely take the form <br/> of a reaction gif of
-          your favorite character(s)!
-        </p>
-      </div>
-      <br/>
-      <h3 class='info-foreground'>Bring Anime Memes to your IDE today!</h3>
-      <div class='display-image'><img src='$promotionAssetURL' height="150"/></div>
-      <br/>
+      ${getPromotionContent(promotionAssets.isNewUser)}
       <br/>
       </body>
       </html>
@@ -206,6 +194,65 @@ class AniMemePromotionDialog(
             }
         }
         return pane
+    }
+
+    private fun getPromotionContent(newUser: Boolean): String {
+        return if (newUser) newUserPromotion()
+        else existingUserPromotion()
+    }
+
+    private fun newUserPromotion(): String {
+        val promotionAssetURL = promotionAssets.promotionAssetURL
+
+        @Language("HTML")
+        val html = """
+            <h2 class='header'>Your new virtual companion!</h2>
+      <div style='margin: 8px 0 0 100px'>
+        <p>
+          <a href='https://plugins.jetbrains.com/plugin/15865-amii'>The Anime Meme plugin</a>
+          gives your IDE more personality by using anime memes. <br/> You will get an assistant that will interact
+          with you as you build code.
+          <br/>Such as when your programs fail to run or tests pass/fail. Your companion<br/>
+          has the ability to react to these events. Which will most likely take the form <br/> of a reaction gif of
+          your favorite character(s)!
+        </p>
+      </div>
+      <br/>
+      <h3 class='info-foreground'>Bring Anime Memes to your IDE today!</h3>
+      <div class='display-image'><img src='$promotionAssetURL' height="150"/></div>
+      <br/>
+        """.trimIndent()
+        return html
+    }
+
+    private fun existingUserPromotion(): String {
+        @Language("HTML")
+        val html = """
+            <h2 class='header'>A brand new experience!</h2>
+      <div style='margin: 8px 0 0 100px'>
+        <p>
+          As of Waifu Motivator v2.0, notifications have been moved to
+<a href='https://plugins.jetbrains.com/plugin/15865-amii'>the Anime Meme</a> plugin. <br><br>
+          <div>Whats better?<br/>
+            <ul>
+                <li>More Content!</li>
+                <li>More Customization!</li>
+            </ul>
+          Breaking Changes:
+            <ul>
+                <li>Removed titled notifications.</li>
+                <li>Your previous configurations will be lost (Sorry!).</li>
+            </ul>
+            </div>
+          For a list of more breaking changes and enhancements please see
+          <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/blob/master/docs/CHANGELOG.md">the changelog</a>
+        </p>
+      </div>
+      <br/>
+      <h3 class='info-foreground'>I hope you enjoy!</h3>
+      <br/>
+        """.trimIndent()
+        return html
     }
 }
 

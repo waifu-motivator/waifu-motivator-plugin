@@ -20,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import zd.zero.waifu.motivator.plugin.MessageBundle;
-import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding;
 import zd.zero.waifu.motivator.plugin.providers.UniqueValueProvider;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;

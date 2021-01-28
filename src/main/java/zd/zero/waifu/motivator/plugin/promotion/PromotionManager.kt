@@ -23,33 +23,38 @@ open class PromotionManagerImpl {
 
     private val promotionLedger: PromotionLedger = getInitialLedger()
 
-    fun registerPromotion(newVersion: String, forceRegister: Boolean = false) {
+    fun registerPromotion(
+        newVersion: String,
+        forceRegister: Boolean = false,
+        isNewUser: Boolean = false,
+    ) {
         if (initialized.not() || forceRegister) {
-            promotionRegistry(newVersion)
+            promotionRegistry(newVersion, isNewUser)
             initialized = true
         }
     }
 
-    private fun promotionRegistry(newVersion: String) {
+    private fun promotionRegistry(newVersion: String, isNewUser: Boolean) {
         val versionInstallDates = promotionLedger.versionInstallDates
         if (versionInstallDates.containsKey(newVersion).not()) {
             versionInstallDates[newVersion] = Instant.now()
             persistLedger(promotionLedger)
         }
-        setupPromotion()
+        setupPromotion(isNewUser)
     }
 
-    private fun setupPromotion() {
+    private fun setupPromotion(isNewUser: Boolean) {
         if (isAniMemePluginInstalled().not() && shouldPromote()) {
             try {
                 if (acquireLock(id)) {
-                    runPromotion({
-                        promotionLedger.allowedToPromote = it.status != PromotionStatus.BLOCKED
-                        promotionLedger.seenPromotions[ANI_MEME_PROMOTION_ID] =
-                            Promotion(ANI_MEME_PROMOTION_ID, Instant.now(), it.status)
-                        persistLedger(promotionLedger)
-                        releaseLock(id)
-                    }) {
+                    runPromotion(isNewUser,
+                        {
+                            promotionLedger.allowedToPromote = it.status != PromotionStatus.BLOCKED
+                            promotionLedger.seenPromotions[ANI_MEME_PROMOTION_ID] =
+                                Promotion(ANI_MEME_PROMOTION_ID, Instant.now(), it.status)
+                            persistLedger(promotionLedger)
+                            releaseLock(id)
+                        }) {
                         releaseLock(id)
                     }
                 }
