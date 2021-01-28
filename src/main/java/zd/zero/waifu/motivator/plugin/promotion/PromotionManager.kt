@@ -47,14 +47,16 @@ open class PromotionManagerImpl {
         if (isAniMemePluginInstalled().not() && shouldPromote()) {
             try {
                 if (acquireLock(id)) {
-                    runPromotion(isNewUser,
+                    runPromotion(
+                        isNewUser,
                         {
                             promotionLedger.allowedToPromote = it.status != PromotionStatus.BLOCKED
                             promotionLedger.seenPromotions[ANI_MEME_PROMOTION_ID] =
                                 Promotion(ANI_MEME_PROMOTION_ID, Instant.now(), it.status)
                             persistLedger(promotionLedger)
                             releaseLock(id)
-                        }) {
+                        }
+                    ) {
                         releaseLock(id)
                     }
                 }

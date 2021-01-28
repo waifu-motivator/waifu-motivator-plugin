@@ -205,7 +205,8 @@ class AniMemePromotionDialog(
         val promotionAssetURL = promotionAssets.promotionAssetURL
 
         @Language("HTML")
-        val html = """
+        val html =
+            """
             <h2 class='header'>Your new virtual companion!</h2>
       <div style='margin: 8px 0 0 100px'>
         <p>
@@ -221,13 +222,14 @@ class AniMemePromotionDialog(
       <h3 class='info-foreground'>Bring Anime Memes to your IDE today!</h3>
       <div class='display-image'><img src='$promotionAssetURL' height="150"/></div>
       <br/>
-        """.trimIndent()
+            """.trimIndent()
         return html
     }
 
     private fun existingUserPromotion(): String {
         @Language("HTML")
-        val html = """
+        val html =
+            """
             <h2 class='header'>A brand new experience!</h2>
       <div style='margin: 8px 0 0 100px'>
         <p>
@@ -251,7 +253,7 @@ class AniMemePromotionDialog(
       <br/>
       <h3 class='info-foreground'>I hope you enjoy!</h3>
       <br/>
-        """.trimIndent()
+            """.trimIndent()
         return html
     }
 }
