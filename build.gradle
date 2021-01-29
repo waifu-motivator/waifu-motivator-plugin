@@ -48,16 +48,7 @@ intellij {
 
     alternativeIdePath idePath
 
-    if ("DOKI" == System.getenv("DEV_ENV")) {
-        setPlugins(
-//            'io.unthrottled.amii:0.5.0',
-//            'io.acari.DDLCTheme:12.4.1'
-        )
-    } else {
-        setPlugins(
-//            'io.unthrottled.amii:0.5.0'
-        )
-    }
+    setPlugins('io.unthrottled.amii:0.5.1')
 }
 
 compileKotlin {
