@@ -1,5 +1,7 @@
 package zd.zero.waifu.motivator.plugin.tools
 
+import com.intellij.ui.ColorUtil
+import java.awt.Color
 import java.util.Optional
 import java.util.function.Consumer
 
@@ -38,3 +40,12 @@ object ToolBox {
         maybeOptional.doOrElse({ ifPresent.accept(it) }) { orElse.run() }
     }
 }
+
+fun Color.toHexString() = "#${ColorUtil.toHex(this)}"
+
+fun <T> runSafelyWithResult(runner: () -> T, onError: (Throwable) -> T): T =
+    try {
+        runner()
+    } catch (e: Throwable) {
+        onError(e)
+    }

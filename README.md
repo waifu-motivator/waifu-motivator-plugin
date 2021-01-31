@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/BUILT%20WITH-COFFEE-blue?style=for-the-badge">
 </p>
 
-<p align="center">An open-sourced Jetbrains IDE plugin that brings your <i>Waifu</i> in to help keep your motivation to complete during your coding challenges.</p>
+<p align="center">A collection of open-sourced Jetbrains IDE plugins that bring <i>Waifus</i> in to help keep your motivation to complete during your coding challenges.</p>
 
 **What is a Waifu?** 🤷
 
@@ -25,6 +25,10 @@ You can install it from [the plugin marketplace.](https://plugins.jetbrains.com/
 
 ![Waifu plugin installation](screenshots/plugin_installation.png)
 
+## Configuration
+
+To configure the plugin, go to `Settings | Other Settings | Waifu Motivator`
+
 ## Waifu of the Day
 Why would you want the _Tip of the Day_, when instead you can have a _Waifu of the Day_?
 This feature replaces the out-of-the-box Tip of the Day feature of IntelliJ with a top-tier *Waifu*!
@@ -35,122 +39,20 @@ This feature replaces the out-of-the-box Tip of the Day feature of IntelliJ with
 
 *This only shows up once a day at the project startup, and you can also view it at the 'Waifu Motivator' tool menu.*
 
-## Motivation Events
-
-Your new virtual companion has the ability to react to various events triggered by your IDE.
-As you build your code, they will present various visual indications of their reactions.
-
-### Starting Up
-Your *Waifu* loves to welcome you, make sure to keep coming back!
-![Waifu Startup Motivation](screenshots/waifu_welcome_demo.gif)
-
-### Test Runs
-
-Your *Waifu* will motivate you whenever your tests pass or fail.
-
-**Passing tests**
-![Test Pass](screenshots/waifu_unit_test_pass.gif)
-
-*When a test passes your companion will rejoice with you.*
-
-**Failing Tests**
-![Test Fails](screenshots/waifu_unit_test_fail.gif)
-
-*When a test fails they will do their best to cheer you up. So you can overcome your challenges/frustrations.*
-
-### Idling
-
-Your *Waifu* enjoys spending time with you, and they will miss you when you are gone.
-When you go away, after some time your *Waifu* will show that they are waiting patiently for your return.
-It's either that, or they got tired from waiting!
-
-![Waiting Waifu](screenshots/waifu_waiting.gif)
-
-### Exit Codes
-
-Not every program, that you start, runs correctly or completes successfully.
-You *Waifu* knows that for a fact.
-They will act just as surprised as you are when your applications fail to run!
-
-![Surprised on Run Failure](screenshots/waifu_app_run_surprise.gif)
-
-*You can update the allowed exit codes from the plugin settings. (`Settings | Waifu Motivator | Events tab | Exit Code Event section`)*
-
-### Tasks
-
-Writing code is hard sometimes, and your *Waifu* understands.
-When you trigger various tasks that fail, they will cheer you up when things don't go your way.
-Such as when you build/compile your application, and it fails because you **are missing a darned ;** .
-Your *Waifu* in is the job and has got you covered!
-
-![Build Failure](screenshots/waifu_build_failure_reaction.gif)
-
-## Personality
-
-Your *Waifu* is a fairly moody state machine and has many reactions to various events such as:
-- She waits for you to come back when you are away for some time
-- She is happy when your test pass.
-- She gets sad when your builds break and tests fail.
-- She gets over come with joy when you fix your tests and make your code compile.
-
-She also has the ability to feel your frustration when **things aren't working, WHY ARE THEY NOT WORKING!!**.
-Your *Waifu* figures its good to inject a little humor into the mix and show you that she is frustrated as well.
-
-![Frustrated Waifu](screenshots/waifu_frustated.gif)
-
-They also have the capability from evolving from being frustrated to full-blown rage.
-This only happens when you have been triggering events in the frustration state for a given period.
-
-Not every person wants their *Waifu* to get frustrated.
-Thankfully, you have the ability to disable this part of her personality, by preventing her from ever being frustrated in the first place! 😄
-
-### Waifu Mood
-You can check your *Waifu's* current mood at the status bar.
-
-![Waifu Mood](screenshots/waifu_mood.png)
-
-*You can of course disable it from the settings*
-
-## Motivation On-demand
-Whenever you feel demotivated on your task, you can request motivation from your *Waifu*.
-Your companion will randomly play a sound and show a *Waifu* to cheer you up.
-You can invoke it on `Help | Waifu Motivator | Motivate Me` or the shortcut key with `alt + M` for Windows/Linux and `option + M` for MacOs.
-
-![Motivate Me Demo](screenshots/motivate_me_demo.gif)
-
-## Waifu Toolbar and Actions
-When you feel like commanding your waifu, there are multiple actions she can do for you! You can access it from the toolbar. (`Help | Waifu Motivator`)
+## Anime Memes (AMII)
 
 <p align="center">
-  <img src="screenshots/waifu_toolbar.png" alt="Waifu Toolbar and Actions">
+  <img src="https://raw.githubusercontent.com/Unthrottled/AMII/main/readmeAssets/exit_code.gif" alt="Waifu of the Day">
 </p>
 
-Of course, you can also invoke it with `Find Action...` (`ctrl + shift + A` for Windows/Linux and `cmd + shift + A` for MacOs)
+Give your IDE more personality and have <emphasis>more</emphasis> fun programming with the **A**nime **M**eme **I**DE **I**ntegration! (AMII)<br/><br/>
+Upon installation, our Meme Inference Knowledge Unit (or MIKU for short)
+will begin interact with you as you build code.
+MIKU knows when your programs fail to run or tests pass/fail.
+Your new companion has the ability to react to these events.
+Which will most likely take the form of an anime meme of your: waifu, husbando, and/or favorite character(s)!<br/><br/>
 
-<p align="center">
-  <img src="screenshots/waifu_find_actions.png" alt="Waifu Invoke Find Actions...">
-</p>
-
-## Offline Capabilities
-
-Take your *Waifu* with you as you go.
-You have the ability to write code off the grid and still get motivation events!
-
-## Just Your Waifu
-
-Choose the *Waifu* you'd like a priority to always show up! You can do it from the settings. (`Settings | Waifu Motivator | Main`)
-
-<p align="center">
-  <img src="screenshots/just_your_waifu.png" alt="Just Your Waifu">
-</p>
-
-## Plugin Settings
-
-Your new *Waifu* is pretty chatty.
-Sometimes that is okay and sometimes it is not.
-Thankfully, you have the ability to configure what your waifu does via the settings menu (`Settings | Other Settings | Waifu Motivator`).
-
-![Waifu Settings](screenshots/waifu_motivator_settings.png)
+Please see [AMII's feature documentation](https://github.com/Unthrottled/AMII#documentation) for more information.
 
 ## Doki-Theme Integration
 
