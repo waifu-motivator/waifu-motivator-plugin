@@ -72,8 +72,8 @@ object UpdateNotification {
 
     private val defaultListener = NotificationListener.UrlOpeningListener(false)
     private fun showRegularNotification(
-        @Nls(capitalization = Nls.Capitalization.Sentence) title: String = "",
-        @Nls(capitalization = Nls.Capitalization.Sentence) content: String,
+        @Nls title: String = "",
+        @Nls content: String,
         project: Project? = null,
         listener: NotificationListener? = defaultListener
     ) {

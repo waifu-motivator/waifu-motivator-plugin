@@ -34,7 +34,7 @@ public class WaifuMotivatorSettingsPage implements SearchableConfigurable, Confi
         return WaifuMotivator.PLUGIN_ID;
     }
 
-    @Nls( capitalization = Nls.Capitalization.Title )
+    @Nls
     @Override
     public String getDisplayName() {
         return WaifuMotivator.PLUGIN_NAME;

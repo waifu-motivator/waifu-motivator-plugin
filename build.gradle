@@ -1,15 +1,15 @@
 plugins {
     id 'waifu-motivator-build-plugin'
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.18'
+    id 'org.jetbrains.intellij' version '0.7.1'
     id 'io.franzbecker.gradle-lombok' version '3.3.0'
     id 'org.jetbrains.kotlin.jvm' version '1.4.0'
-    id "org.jlleitschuh.gradle.ktlint" version "9.4.1"
+    id 'org.jlleitschuh.gradle.ktlint' version '10.0.0'
     id 'org.kordamp.gradle.markdown' version '2.2.0'
 }
 
 group pluginGroup
-version System.getenv().getOrDefault('VERSION', '').replace('refs/tags/v', '')
+version pluginVersion
 
 sourceCompatibility = 1.8
 
@@ -35,11 +35,14 @@ configurations {
     implementation.exclude group: 'org.slf4j'
 }
 
+runPluginVerifier {
+    ideVersions(pluginVerifierIdeVersions)
+}
+
 publishPlugin {
     token System.getenv().getOrDefault('PUBLISH_TOKEN', '')
     channels System.getenv().getOrDefault('PUBLISH_CHANNEL', '')
 }
-
 
 intellij {
     version ideaVersion
