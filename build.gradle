@@ -51,7 +51,7 @@ intellij {
 
     alternativeIdePath idePath
 
-    setPlugins('io.unthrottled.amii:0.5.1')
+    setPlugins('io.unthrottled.amii:0.8.2')
 }
 
 compileKotlin {

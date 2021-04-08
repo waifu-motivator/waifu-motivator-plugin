@@ -20,7 +20,7 @@ val UPDATE_MESSAGE: String =
     """
       What's New?<br>
       <ul>
-        <li>Migrated all notifications to <a href="https://github.com/Unthrottled/AMII">The Anime Meme Plugin</a></li>
+        <li>Fixed new user on-boarding issues in the 2021.1 build</li>
       </ul>
       <br>Please see the <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/blob/master/docs/CHANGELOG.md">changelog</a> for more details.
       <br><br>

@@ -3,8 +3,10 @@ package zd.zero.waifu.motivator.plugin.promotion
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.wm.WindowManager
+import com.intellij.util.concurrency.EdtScheduledExecutorService
 import zd.zero.waifu.motivator.plugin.tools.doOrElse
 import zd.zero.waifu.motivator.plugin.tools.toOptional
+import java.util.concurrent.TimeUnit
 
 enum class PromotionStatus {
     ACCEPTED, REJECTED, BLOCKED
@@ -47,28 +49,38 @@ object AniMemePluginPromotion {
         onReject: () -> Unit,
     ) {
         ApplicationManager.getApplication().executeOnPooledThread {
-            ProjectManager.getInstance().openProjects
-                .toOptional()
-                .filter { it.isNotEmpty() }
-                .map { it.first() }
-                .map {
-                    WindowManager.getInstance().suggestParentWindow(
-                        it
-                    )
-                }
-                .doOrElse(
-                    {
-                        val promotionAssets = PromotionAssets(isNewUser)
-                        ApplicationManager.getApplication().invokeLater {
-                            AniMemePromotionDialog(
-                                promotionAssets,
-                                it!!,
-                                onPromotion
-                            ).show()
+            // download assets on non-awt thread
+            val promotionAssets = PromotionAssets(isNewUser)
+
+            // schedule code execution to run on the EDT thread
+            // so we can suggest a window
+            EdtScheduledExecutorService.getInstance().schedule(
+                {
+                    ProjectManager.getInstance().openProjects
+                        .toOptional()
+                        .filter { it.isNotEmpty() }
+                        .map { it.first() }
+                        .map {
+                            WindowManager.getInstance().suggestParentWindow(
+                                it
+                            )
                         }
-                    },
-                    onReject
-                )
+                        .doOrElse(
+                            {
+                                ApplicationManager.getApplication().invokeLater {
+                                    AniMemePromotionDialog(
+                                        promotionAssets,
+                                        it!!,
+                                        onPromotion
+                                    ).show()
+                                }
+                            },
+                            onReject
+                        )
+                },
+                0,
+                TimeUnit.SECONDS
+            )
         }
     }
 }

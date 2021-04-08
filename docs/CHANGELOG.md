@@ -1,5 +1,11 @@
 # Changelog
 
+## [v2.0.1](https://github.com/waifu-motivator/waifu-motivator-plugin/releases/tag/v2.0.1)
+
+🐛 Bug Fixes:
+
+* [WMP-304](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/304) Fixed new user on-boarding on the 2021.1 Builds.
+
 ## [v2.0](https://github.com/waifu-motivator/waifu-motivator-plugin/releases/tag/v2.0)
 
 #### 01/02/2020
