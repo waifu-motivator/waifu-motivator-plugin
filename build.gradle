@@ -1,3 +1,9 @@
+import java.util.stream.Collectors
+
+def properties(String key) {
+    return project.findProperty(key).toString()
+}
+
 plugins {
     id 'waifu-motivator-build-plugin'
     id 'java'
@@ -15,7 +21,7 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    jcenter()
+    mavenLocal()
 }
 
 dependencies {
@@ -35,23 +41,13 @@ configurations {
     implementation.exclude group: 'org.slf4j'
 }
 
-runPluginVerifier {
-    ideVersions(pluginVerifierIdeVersions)
-}
-
-publishPlugin {
-    token System.getenv().getOrDefault('PUBLISH_TOKEN', '')
-    channels System.getenv().getOrDefault('PUBLISH_CHANNEL', '')
-}
 
 intellij {
-    version ideaVersion
-    type System.getenv().getOrDefault("INTELLIJ_TYPE", "IC")
+    version.set(ideaVersion)
+    type.set(System.getenv().getOrDefault("INTELLIJ_TYPE", "IC"))
     println "Building for IntelliJ version: ${version}"
 
-    alternativeIdePath idePath
-
-    setPlugins('io.unthrottled.amii:0.8.2')
+    plugins.set(Collections.singletonList('io.unthrottled.amii:0.10.2'))
 }
 
 compileKotlin {
@@ -67,18 +63,39 @@ markdownToHtml {
     outputDir file("${project.buildDir}/html")
 }
 
-patchPluginXml {
-    sinceBuild sinceBuildVersion
-    untilBuild untilBuildVersion
+tasks.runPluginVerifier {
+    ideVersions.set(
+        pluginVerifierIdeVersions.split(',').stream()
+            .map(String::trim)
+            .filter(version -> !version.isEmpty())
+            .collect(Collectors.toList())
+    )
+}
+
+tasks.runIde {
+    idePath = properties("idePath")
+    if (!idePath.isEmpty()) {
+        ideDir.set(file(idePath))
+    }
+}
+
+tasks.publishPlugin {
+    token.set(System.getenv().getOrDefault('PUBLISH_TOKEN', ''))
+    channels.set(Collections.singletonList(System.getenv().getOrDefault('PUBLISH_CHANNEL', '')))
+}
+
+tasks.patchPluginXml {
+    sinceBuild.set(sinceBuildVersion)
+    untilBuild.set(untilBuildVersion)
 
     def description = "${project.buildDir}/html/plugin.html"
     if (file(description).exists()) {
-        pluginDescription(file(description).text)
+        pluginDescription.set(file(description).text)
     }
 
     def changelog = "${project.buildDir}/html/RELEASE-NOTES.html"
     if (file(changelog).exists()) {
-        changeNotes(file(changelog).text)
+        changeNotes.set(file(changelog).text)
     }
 }
 
