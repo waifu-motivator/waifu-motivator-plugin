@@ -102,7 +102,7 @@ jobs:
 
       # Build artifact using buildPlugin Gradle task
       - name: Build Plugin
-        run: ./gradlew buildPlugin
+        run: ./ciScripts/buildPlugin.sh
 
       # Upload plugin artifact to make it available in the next jobs
       - name: Upload artifact
