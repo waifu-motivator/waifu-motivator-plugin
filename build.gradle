@@ -5,13 +5,13 @@ def properties(String key) {
 }
 
 plugins {
-    id 'waifu-motivator-build-plugin'
-    id 'java'
-    id 'org.jetbrains.intellij' version '1.0'
-    id 'io.franzbecker.gradle-lombok' version '4.0.0'
-    id 'org.jetbrains.kotlin.jvm' version '1.4.31'
-    id 'org.jlleitschuh.gradle.ktlint' version '10.0.0'
-    id 'org.kordamp.gradle.markdown' version '2.2.0'
+    id "waifu-motivator-build-plugin"
+    id "java"
+    id "org.jetbrains.intellij" version "1.0"
+    id "io.franzbecker.gradle-lombok" version "4.0.0"
+    id "org.jetbrains.kotlin.jvm" version "1.5.10"
+    id "org.jlleitschuh.gradle.ktlint" version "10.0.0"
+    id "org.kordamp.gradle.markdown" version "2.2.0"
 }
 
 group pluginGroup
@@ -25,12 +25,11 @@ repositories {
 }
 
 dependencies {
-    compile group: 'com.googlecode.soundlibs', name: 'mp3spi', version: '1.9.5.4'
-    implementation 'commons-io:commons-io:2.10.0'
-    implementation 'io.sentry:sentry:5.0.1'
-    testCompile group: 'junit', name: 'junit',
-        version: '4.12'
-    testCompile "org.mockito:mockito-core:3.+"
+    implementation "com.googlecode.soundlibs:mp3spi:1.9.5.4"
+    implementation "commons-io:commons-io:2.10.0"
+    implementation "io.sentry:sentry:5.0.1"
+    testImplementation "junit:junit:4.12"
+    testImplementation "org.mockito:mockito-core:3.+"
     testImplementation "org.assertj:assertj-core:3.19.0"
     testImplementation "io.mockk:mockk:1.11.0"
 }
@@ -43,8 +42,9 @@ configurations {
 
 
 intellij {
-    version.set(ideaVersion)
-    type.set(System.getenv().getOrDefault("INTELLIJ_TYPE", "IC"))
+    version.set(platformVersion)
+    type.set(System.getenv().getOrDefault("platformType", "IC"))
+    downloadSources.set(properties("platformDownloadSources").toBoolean())
     println "Building for IntelliJ version: ${version}"
 
     plugins.set(Collections.singletonList('io.unthrottled.amii:0.10.2'))
