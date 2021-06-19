@@ -1,4 +1,3 @@
-# Waifu Motivator plugin
+# Waifu Motivator Plugin
 
-Simple and open-sourced Jetbrains IDE plugin that your waifu motivates you and helps you work on your coding
-    challenges.
+A collection of open-sourced Jetbrains IDE plugins that bring <i>Waifus</i> in to help keep your motivation to complete during your coding challenges.

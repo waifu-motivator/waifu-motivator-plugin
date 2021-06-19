@@ -5,14 +5,16 @@ def properties(String key) {
 }
 
 plugins {
-    id "waifu-motivator-build-plugin"
     id "java"
-    id "org.jetbrains.intellij" version "1.0"
-    id "io.franzbecker.gradle-lombok" version "4.0.0"
     id "org.jetbrains.kotlin.jvm" version "1.5.10"
+    id "org.jetbrains.intellij" version "1.0"
+    id "org.jetbrains.changelog" version "1.1.2"
     id "org.jlleitschuh.gradle.ktlint" version "10.0.0"
+    id "io.franzbecker.gradle-lombok" version "4.0.0"
     id "org.kordamp.gradle.markdown" version "2.2.0"
 }
+
+apply plugin: "org.jetbrains.changelog"
 
 group pluginGroup
 version pluginVersion
@@ -37,17 +39,28 @@ dependencies {
 configurations {
     // sentry brings in a slf4j that breaks when
     // with the platform slf4j
-    implementation.exclude group: 'org.slf4j'
+    implementation.exclude group: "org.slf4j"
 }
 
-
 intellij {
-    version.set(platformVersion)
-    type.set(System.getenv().getOrDefault("platformType", "IC"))
+    pluginName.set(properties("pluginName"))
+    version.set(properties("platformVersion"))
+    type.set(properties("platformType"))
     downloadSources.set(properties("platformDownloadSources").toBoolean())
-    println "Building for IntelliJ version: ${version}"
 
-    plugins.set(Collections.singletonList('io.unthrottled.amii:0.10.2'))
+    println "Building for IntelliJ version: ${version}"
+}
+
+// Configure gradle-changelog-plugin plugin.
+// Read more: https://github.com/JetBrains/gradle-changelog-plugin
+changelog {
+    version = properties("pluginVersion")
+    groups = []
+}
+
+markdownToHtml {
+    sourceDir file("${project.projectDir}/docs")
+    outputDir file("${project.buildDir}/html")
 }
 
 compileKotlin {
@@ -56,11 +69,6 @@ compileKotlin {
 
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-markdownToHtml {
-    sourceDir file("${project.buildDir}/markdown")
-    outputDir file("${project.buildDir}/html")
 }
 
 tasks.runPluginVerifier {
@@ -80,26 +88,20 @@ tasks.runIde {
 }
 
 tasks.publishPlugin {
-    token.set(System.getenv().getOrDefault('PUBLISH_TOKEN', ''))
-    channels.set(Collections.singletonList(System.getenv().getOrDefault('PUBLISH_CHANNEL', '')))
+    token.set(System.getenv().getOrDefault("PUBLISH_TOKEN", ""))
+    channels.set(Collections.singletonList(System.getenv().getOrDefault("PUBLISH_CHANNEL", "")))
 }
 
 tasks.patchPluginXml {
     sinceBuild.set(sinceBuildVersion)
     untilBuild.set(untilBuildVersion)
 
+    changeNotes.set(changelog.getUnreleased().toHTML())
+
     def description = "${project.buildDir}/html/plugin.html"
     if (file(description).exists()) {
         pluginDescription.set(file(description).text)
     }
-
-    def changelog = "${project.buildDir}/html/RELEASE-NOTES.html"
-    if (file(changelog).exists()) {
-        changeNotes.set(file(changelog).text)
-    }
 }
 
-tasks.markdownToHtml.dependsOn("createReleaseNotes")
-tasks.markdownToHtml.dependsOn("copyPluginDescription")
-tasks.htmlToMarkdownExtension.dependsOn("markdownToHtml")
-tasks.patchPluginXml.dependsOn("htmlToMarkdownExtension")
+tasks.patchPluginXml.dependsOn("markdownToHtml")
