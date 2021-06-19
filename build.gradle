@@ -103,6 +103,7 @@ tasks.patchPluginXml {
     def description = "${project.buildDir}/html/plugin.html"
     if (file(description).exists()) {
         pluginDescription.set(file(description).text)
+        println "Successfully patched plugin description."
     }
 }
 

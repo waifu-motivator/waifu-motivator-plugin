@@ -3,6 +3,10 @@
   <name>Waifu Motivator</name>
   <vendor email="zaerald.zd@gmail.com" url="https://github.com/zaerald">zaerald</vendor>
 
+  <description><![CDATA[
+        Open Sourced <i>Waifu</i> Motivator Plugin to help boost your motivation while coding!
+    ]]></description>
+
   <depends>com.intellij.modules.platform</depends>
   <depends optional="true" config-file="zd.zero.waifu-motivator-plugin-io.unthrottled.amii.xml">io.unthrottled.amii</depends>
 
