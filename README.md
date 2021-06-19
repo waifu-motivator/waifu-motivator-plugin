@@ -4,7 +4,7 @@
 
 <!--suppress HtmlDeprecatedAttribute, HtmlRequiredAltAttribute -->
 <p align="center">
-    <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/actions"><img src="https://github.com/waifu-motivator/waifu-motivator-plugin/workflows/Java%20CI/badge.svg"></a>
+  <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/actions"><img src="https://github.com/waifu-motivator/waifu-motivator-plugin/workflows/Java%20CI/badge.svg"></a>
   <a href="https://plugins.jetbrains.com/plugin/13381-waifu-motivator"><img alt="JetBrains IntelliJ Plugins" src="https://img.shields.io/jetbrains/plugin/v/13381-waifu-motivator"></a>
   <a href="./LICENSE"><img src="https://img.shields.io/github/license/waifu-motivator/waifu-motivator-plugin"></a>
 </p>
@@ -42,8 +42,11 @@ This feature replaces the out-of-the-box Tip of the Day feature of IntelliJ with
 ## Anime Memes (AMII)
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Unthrottled/AMII/main/readmeAssets/exit_code.gif" alt="Waifu of the Day">
+  <img src="https://raw.githubusercontent.com/Unthrottled/AMII/main/readmeAssets/exit_code.gif" alt="AMII Exit Code Event">
 </p>
+
+Since Waifu Motivator `v2.0`, the [AMII plugin](https://github.com/ani-memes/AMII) now handles the notification events.
+This includes not only Waifus, it has anything you can think of within the anime space!
 
 Give your IDE more personality and have <emphasis>more</emphasis> fun programming with the **A**nime **M**eme **I**DE **I**ntegration! (AMII)<br/><br/>
 Upon installation, our Meme Inference Knowledge Unit (or MIKU for short)
@@ -52,7 +55,7 @@ MIKU knows when your programs fail to run or tests pass/fail.
 Your new companion has the ability to react to these events.
 Which will most likely take the form of an anime meme of your: waifu, husbando, and/or favorite character(s)!<br/><br/>
 
-Please see [AMII's feature documentation](https://github.com/Unthrottled/AMII#documentation) for more information.
+Please see [AMII's feature documentation](https://github.com/ani-memes/AMII/#documentation) for more information.
 
 ## Doki-Theme Integration
 
@@ -83,15 +86,7 @@ This will fire up a new IntelliJ IDE instance with the plugin already installed.
 ### Plugin Image
 <img src="images/wmp_logo.png" height="144px" alt="Waifu Motivator Plugin Logo">
 
-Art by [@gweninja](https://www.instagram.com/gweninja/)
+Art by [@gweninja](https://www.instagram.com/gweninja)
 
 ## License
 The license of this project is under MIT License - see [LICENSE](./LICENSE) file for details.
-
-# Attributions
-
-Project uses icons from [Twemoji](https://github.com/twitter/twemoji).
-Graphics licensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/
-
-## Disclaimer
-There are resources used in the [sound](./src/main/resources/sound) directory that is pulled randomly from the internet, I do *not* own it as they are clipped/trimmed, if you own it please contact me so that I could remove it from here.
