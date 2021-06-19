@@ -101,20 +101,20 @@ class ErrorReporter : ErrorReportSubmitter() {
         }
     }
 
-    private fun getJRE(properties: Properties): String? {
+    private fun getJRE(properties: Properties): String {
         val javaVersion =
             properties.getProperty("java.runtime.version", properties.getProperty("java.version", "unknown"))
         val arch = properties.getProperty("os.arch", "")
         return IdeBundle.message("about.box.jre", javaVersion, arch)
     }
 
-    private fun getVM(properties: Properties): String? {
+    private fun getVM(properties: Properties): String {
         val vmVersion = properties.getProperty("java.vm.name", "unknown")
         val vmVendor = properties.getProperty("java.vendor", "unknown")
         return IdeBundle.message("about.box.vm", vmVersion, vmVendor)
     }
 
-    private fun getNonBundledPlugins(): String? {
+    private fun getNonBundledPlugins(): String {
         return Arrays.stream(PluginManagerCore.getPlugins())
             .filter { it.isBundled.not() && it.isEnabled }
             .map { it.pluginId.idString }.collect(Collectors.joining(","))
@@ -126,7 +126,7 @@ class ErrorReporter : ErrorReportSubmitter() {
     private fun getGC() = ManagementFactory.getGarbageCollectorMXBeans().stream()
         .map { it.name }.collect(Collectors.joining(","))
 
-    private fun getBuildInfo(appInfo: ApplicationInfo): String? {
+    private fun getBuildInfo(appInfo: ApplicationInfo): String {
         var buildInfo = IdeBundle.message("about.box.build.number", appInfo.build.asString())
         val cal = appInfo.buildDate
         var buildDate = ""
