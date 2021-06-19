@@ -48,6 +48,8 @@ intellij {
     type.set(properties("platformType"))
     downloadSources.set(properties("platformDownloadSources").toBoolean())
 
+    plugins.set(Collections.singletonList('io.unthrottled.amii:0.10.2'))
+
     println "Building for IntelliJ version: ${version}"
 }
 
