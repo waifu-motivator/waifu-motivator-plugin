@@ -1,5 +1,11 @@
 name: Build
-on: [ push, pull_request ]
+on:
+  push:
+    branches:
+      - main
+      - canary/*
+      - release/*
+  pull_request:
 
 jobs:
 
@@ -106,7 +112,7 @@ jobs:
 
       # Upload plugin artifact to make it available in the next jobs
       - name: Upload artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: plugin-artifact
           path: ./build/distributions/${{ steps.properties.outputs.artifact }}
