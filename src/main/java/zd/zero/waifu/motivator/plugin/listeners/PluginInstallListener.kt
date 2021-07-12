@@ -4,6 +4,7 @@ import com.intellij.ide.plugins.DynamicPluginListener
 import com.intellij.ide.plugins.IdeaPluginDescriptor
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.startup.StartupManager
+import com.intellij.util.containers.stream
 import zd.zero.waifu.motivator.plugin.WaifuMotivator
 import zd.zero.waifu.motivator.plugin.WaifuOfTheDayStartupActivity
 import zd.zero.waifu.motivator.plugin.onboarding.UserOnboarding
@@ -21,11 +22,14 @@ class PluginInstallListener : DynamicPluginListener {
 
     override fun pluginLoaded(pluginDescriptor: IdeaPluginDescriptor) {
         if (pluginDescriptor.pluginId.idString == WaifuMotivator.PLUGIN_ID) {
-            val project = ProjectManager.getInstance().openProjects.first() ?: return
-            StartupManager.getInstance(project)
-                .runWhenProjectIsInitialized {
-                    UserOnboarding.attemptToPerformNewUpdateActions()
-                    WaifuOfTheDayStartupActivity().runActivity(project)
+            ProjectManager.getInstance().openProjects.stream()
+                .findFirst()
+                .ifPresent { project ->
+                    StartupManager.getInstance(project)
+                        .runWhenProjectIsInitialized {
+                            UserOnboarding.attemptToPerformNewUpdateActions()
+                            WaifuOfTheDayStartupActivity().runActivity(project)
+                        }
                 }
         }
     }
