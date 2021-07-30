@@ -8,7 +8,6 @@
     ]]></description>
 
   <depends>com.intellij.modules.platform</depends>
-  <depends optional="true" config-file="zd.zero.waifu-motivator-plugin-io.unthrottled.amii.xml">io.unthrottled.amii</depends>
 
   <!--    Leave this in here so the IDE gives you feedback on-->
   <!--    What APIs are available-->
