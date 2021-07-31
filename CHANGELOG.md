@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- [WMP-314](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/314) 2021.2 build support
+
 ### Fixed
 
 - [WMP-335](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/335) Installing the plugin from the welcome screen.
