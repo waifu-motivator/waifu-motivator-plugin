@@ -242,7 +242,7 @@ class AniMemePromotionDialog(
         </ul>
         </div>
       For a list of more breaking changes and enhancements please see
-      <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/blob/master/docs/CHANGELOG.md">the changelog</a>
+      <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/blob/main/CHANGELOG.md">the changelog</a>
     </p>
   </div>
   <br/>

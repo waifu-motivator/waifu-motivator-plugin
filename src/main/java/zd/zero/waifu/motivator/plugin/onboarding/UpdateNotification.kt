@@ -20,15 +20,11 @@ val UPDATE_MESSAGE: String =
     """
       What's New?<br>
       <ul>
+        <li>Add support for the 2021.2 build</li>
         <li>Fixed new user on-boarding issues in the 2021.1 build</li>
       </ul>
-      <br>Please see the <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/blob/master/docs/CHANGELOG.md">changelog</a> for more details.
+      <br>Please see the <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/blob/main/CHANGELOG.md">changelog</a> for more details.
       <br><br>
-      Is your Waifu missing?<br>
-      Make a request for her to be featured in the <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/projects/3">Waifu of the Day!</a>
-      <br><br>
-      Want more of your Waifu?<br>
-      Make a request for <a href="https://github.com/waifu-motivator/waifu-motivator-plugin/projects/2">more assets of your Waifu!</a>
     """.trimIndent()
 
 object UpdateNotification {
