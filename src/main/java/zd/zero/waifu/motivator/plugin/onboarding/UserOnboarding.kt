@@ -14,22 +14,22 @@ object UserOnboarding {
 
     fun attemptToPerformNewUpdateActions() {
         getNewVersion().ifPresent { newVersion ->
-            WaifuMotivatorPluginState.getPluginState().version = newVersion
+            WaifuMotivatorPluginState.pluginState.version = newVersion
             UpdateNotification.display(ProjectManager.getInstance().defaultProject, newVersion)
         }
 
-        val isNewUser = WaifuMotivatorPluginState.getPluginState().userId.isEmpty()
+        val isNewUser = WaifuMotivatorPluginState.pluginState.userId.isEmpty()
         getVersion().ifPresent { version ->
             PromotionManager.registerPromotion(version, isNewUser = isNewUser)
         }
         if (isNewUser) {
-            WaifuMotivatorPluginState.getPluginState().userId = UUID.randomUUID().toString()
+            WaifuMotivatorPluginState.pluginState.userId = UUID.randomUUID().toString()
         }
     }
 
     private fun getNewVersion() =
         getVersion()
-            .filter { it != WaifuMotivatorPluginState.getPluginState().version }
+            .filter { it != WaifuMotivatorPluginState.pluginState.version }
 
     private fun getVersion(): Optional<String> =
         PluginManagerCore.getPlugin(PluginId.getId(WaifuMotivator.PLUGIN_ID))

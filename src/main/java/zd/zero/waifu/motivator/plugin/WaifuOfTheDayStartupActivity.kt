@@ -50,6 +50,6 @@ class WaifuOfTheDayStartupActivity : StartupActivity.DumbAware {
 
         PropertiesComponent.getInstance().setValue(IS_INITIAL_TIP_OF_THE_DAY_UPDATED, true)
         GeneralSettings.getInstance().isShowTipsOnStartup =
-            !WaifuMotivatorPluginState.getPluginState().isWaifuOfTheDayEnabled
+            !WaifuMotivatorPluginState.pluginState.isWaifuOfTheDayEnabled
     }
 }

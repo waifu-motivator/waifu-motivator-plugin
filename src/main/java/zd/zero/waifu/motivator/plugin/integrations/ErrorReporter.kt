@@ -45,7 +45,7 @@ class ErrorReporter : ErrorReportSubmitter() {
             }
             Sentry.setUser(
                 User().apply {
-                    this.id = WaifuMotivatorPluginState.getPluginState().userId
+                    this.id = WaifuMotivatorPluginState.pluginState.userId
                 }
             )
         }
@@ -87,7 +87,7 @@ class ErrorReporter : ErrorReportSubmitter() {
         val properties = System.getProperties()
         return event.apply {
             setExtra("App Name", appName)
-            setExtra("Version", WaifuMotivatorPluginState.getPluginState().version)
+            setExtra("Version", WaifuMotivatorPluginState.pluginState.version)
             setExtra("Build Info", getBuildInfo(appInfo))
             setExtra("JRE", getJRE(properties))
             setExtra("VM", getVM(properties))
@@ -162,7 +162,7 @@ class ErrorReporter : ErrorReportSubmitter() {
             else -> s
         }
 
-        val pluginState = WaifuMotivatorPluginState.getPluginState()
+        val pluginState = WaifuMotivatorPluginState.pluginState
 
         val minifiedConfig = StringBuilder()
         val excludedProperties = listOf("userId", "version", "preferredCharacters")
