@@ -30,3 +30,38 @@ jobs:
           # empty channel for default
           PUBLISH_CHANNEL:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+
+  # Patch changelog, commit and push to the current repository
+  changelog:
+    name: Update Changelog
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: zulu
+          java-version: 11
+
+      # Check out current repository
+      - name: Fetch Sources
+        uses: actions/checkout@v2.3.4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      # Update Unreleased section with the current version
+      - name: Patch Changelog
+        run: ./gradlew patchChangelog
+
+      # Commit patched Changelog
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "docs: update changelog" -a
+      # Push changes
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
