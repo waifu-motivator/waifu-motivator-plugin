@@ -6,9 +6,9 @@ def properties(String key) {
 
 plugins {
     id "java"
-    id "org.jetbrains.kotlin.jvm" version "1.5.21"
-    id "org.jetbrains.intellij" version "1.1.4"
-    id "org.jetbrains.changelog" version "1.2.1"
+    id "org.jetbrains.kotlin.jvm" version "1.5.10"
+    id "org.jetbrains.intellij" version "1.0"
+    id "org.jetbrains.changelog" version "1.1.2"
     id "org.jlleitschuh.gradle.ktlint" version "10.0.0"
     id "io.franzbecker.gradle-lombok" version "4.0.0"
     id "org.kordamp.gradle.markdown" version "2.2.0"
@@ -27,7 +27,6 @@ repositories {
 }
 
 dependencies {
-    implementation "com.googlecode.soundlibs:mp3spi:1.9.5.4"
     implementation "commons-io:commons-io:2.11.0"
     implementation "io.sentry:sentry:5.0.1"
     testImplementation "junit:junit:4.13.2"
@@ -47,6 +46,7 @@ intellij {
     version.set(properties("platformVersion"))
     type.set(properties("platformType"))
     downloadSources.set(properties("platformDownloadSources").toBoolean())
+    updateSinceUntilBuild.set(true)
 
     plugins.set(Collections.singletonList('io.unthrottled.amii:0.10.6'))
 
@@ -107,4 +107,5 @@ tasks.patchPluginXml {
     }
 }
 
+tasks.publishPlugin.dependsOn("patchChangelog")
 tasks.patchPluginXml.dependsOn("markdownToHtml")
