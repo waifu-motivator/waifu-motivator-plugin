@@ -12,8 +12,6 @@ jobs:
           distribution: zulu
           java-version: 11
       - run: ./ciScripts/buildPlugin.sh
-        env:
-          VERSION: ${{ github.ref }}
       - name: Copy zip file for Github release
         run: cp build/distributions/*.zip waifu-motivator.zip
       - uses: actions/upload-release-asset@v1
