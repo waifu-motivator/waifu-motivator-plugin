@@ -19,7 +19,6 @@ jobs:
       - name: Publish Plugin
         run: ./gradlew publishPlugin
         env:
-          VERSION: ${{ github.ref }}
           # empty channel for default
           PUBLISH_CHANNEL:
           PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
