@@ -13,7 +13,7 @@ jobs:
           distribution: zulu
           java-version: 11
       - name: Fetch Sources
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.release.tag_name }}
       - name: Publish Plugin
@@ -47,7 +47,7 @@ jobs:
 
       # Check out current repository
       - name: Fetch Sources
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.release.tag_name }}
 
