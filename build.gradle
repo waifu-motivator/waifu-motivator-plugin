@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
     implementation "commons-io:commons-io:2.11.0"
-    implementation "io.sentry:sentry:5.6.2"
+    implementation "io.sentry:sentry:5.6.3"
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.mockito:mockito-core:4.+"
     testImplementation "org.assertj:assertj-core:3.20.2"
