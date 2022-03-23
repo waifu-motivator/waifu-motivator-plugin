@@ -235,7 +235,7 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
     private String getCssContent() throws IOException {
         return getContent( "style.css" )
             .replace( "{{foregroundColor}}", ColorUtil.toHex( UIUtil.getLabelForeground() ) )
-            .replace( "{{linkColor}}", ColorUtil.toHex( JBUI.CurrentTheme.Link.linkColor() ) );
+            .replace( "{{linkColor}}", ColorUtil.toHex( JBUI.CurrentTheme.Link.Foreground.ENABLED ) );
     }
 
     @Nullable
