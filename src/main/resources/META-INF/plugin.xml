@@ -9,10 +9,6 @@
 
   <depends>com.intellij.modules.platform</depends>
 
-  <!--    Leave this in here so the IDE gives you feedback on-->
-  <!--    What APIs are available-->
-  <idea-version since-build="202.6397.94"/>
-
   <extensions defaultExtensionNs="com.intellij">
     <applicationConfigurable
       instance="zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorSettingsPage"/>
@@ -23,6 +19,7 @@
       implementation="zd.zero.waifu.motivator.plugin.integrations.ErrorReporter"/>
     <postStartupActivity id="WaifuOfTheDayStartupActivity"
                          implementation="zd.zero.waifu.motivator.plugin.WaifuOfTheDayStartupActivity"/>
+    <notificationGroup  id="zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification" displayType="STICKY_BALLOON"/>
   </extensions>
 
   <actions>
