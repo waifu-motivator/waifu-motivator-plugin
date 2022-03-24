@@ -55,15 +55,20 @@ jobs:
       - name: Patch Changelog
         run: ./gradlew patchChangelog
 
-      # Commit patched Changelog
-      - name: Commit files
+      # Create pull request
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git commit -m "docs: update changelog" -a
-      # Push changes
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          branch: main
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          VERSION="${{ github.event.release.tag_name }}"
+          BRANCH="chore/changelog-update-$VERSION"
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+          git checkout -b $BRANCH
+          git commit -am "docs: update changelog - $VERSION"
+          git push --set-upstream origin $BRANCH
+          gh pr create \
+            --title "Changelog update - \`$VERSION\`" \
+            --body "Current pull request contains patched \`CHANGELOG.md\` file for the \`$VERSION\` version." \
+            --base main \
+            --head $BRANCH

@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat
 import java.util.stream.Collectors
 
 def properties(String key) {
@@ -58,6 +59,7 @@ intellij {
 // Read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {
     version = properties("pluginVersion")
+    header = "[$version] - ${new SimpleDateFormat("yyyy-MM-dd").format(new Date())}"
     groups = []
 }
 
