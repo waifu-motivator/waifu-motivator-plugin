@@ -30,7 +30,7 @@ dependencies {
     implementation "commons-io:commons-io:2.11.0"
     implementation "io.sentry:sentry:5.6.3"
     testImplementation "junit:junit:4.13.2"
-    testImplementation "org.jetbrains.kotlin:kotlin-test:1.6.10"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:1.6.20"
     testImplementation "org.mockito:mockito-core:4.+"
     testImplementation "org.assertj:assertj-core:3.22.0"
     testImplementation "io.mockk:mockk:1.12.0"
