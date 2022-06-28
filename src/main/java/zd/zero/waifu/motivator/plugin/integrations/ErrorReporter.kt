@@ -22,6 +22,7 @@ import io.sentry.protocol.Message
 import io.sentry.protocol.User
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState
 import zd.zero.waifu.motivator.plugin.tools.RestClient
+import zd.zero.waifu.motivator.plugin.tools.runSafely
 import java.awt.Component
 import java.lang.management.ManagementFactory
 import java.text.SimpleDateFormat
@@ -36,13 +37,6 @@ class ErrorReporter : ErrorReportSubmitter() {
         private val gson = GsonBuilder().create()
 
         init {
-            Sentry.init { options: SentryOptions ->
-                options.dsn = RestClient.performGet(
-                    "https://jetbrains.assets.unthrottled.io/waifu-motivator/sentry-dsn.txt"
-                )
-                    .map { it.trim() }
-                    .orElse("https://3630573c245444f8b49ef498b24d1405@o403546.ingest.sentry.io/5374288?maxmessagelength=50000")
-            }
             Sentry.setUser(
                 User().apply {
                     this.id = WaifuMotivatorPluginState.getPluginState().userId
@@ -59,6 +53,15 @@ class ErrorReporter : ErrorReportSubmitter() {
     ): Boolean {
         ApplicationManager.getApplication()
             .executeOnPooledThread {
+                runSafely({
+                    Sentry.init { options: SentryOptions ->
+                        options.dsn = RestClient.performGet(
+                            "https://jetbrains.assets.unthrottled.io/waifu-motivator/sentry-dsn.txt"
+                        )
+                            .map { it.trim() }
+                            .orElse("https://3630573c245444f8b49ef498b24d1405@o403546.ingest.sentry.io/5374288?maxmessagelength=50000")
+                    }
+                })
                 events.forEach {
                     Sentry.captureEvent(
                         addSystemInfo(
