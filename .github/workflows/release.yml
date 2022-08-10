@@ -55,7 +55,8 @@ jobs:
       - name: Patch Changelog
         run: ./gradlew patchChangelog
 
-      # Create pull request
+      # Create pull request with the changes from the previous
+      # action step.
       - name: Create Pull Request
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
