@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat
 import java.util.stream.Collectors
 
 def properties(String key) {
@@ -17,7 +18,11 @@ plugins {
 apply plugin: "org.jetbrains.changelog"
 
 group pluginGroup
-version System.getenv().getOrDefault("VERSION", pluginVersion)
+
+// Value will be set in pipeline
+// if not pick it up from the properties.
+def resolvedPluginVersion = System.getenv().getOrDefault("VERSION", getProperty("pluginVersion"))
+version resolvedPluginVersion
 
 sourceCompatibility = 1.8
 
@@ -57,7 +62,8 @@ intellij {
 // Configure gradle-changelog-plugin plugin.
 // Read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {
-    version = properties("pluginVersion")
+    version = resolvedPluginVersion
+    header = "[$resolvedPluginVersion] - ${new SimpleDateFormat("yyyy-MM-dd").format(new Date())}"
     groups = []
 }
 
