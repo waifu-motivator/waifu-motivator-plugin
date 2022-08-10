@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - [WMP-433](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/433) 2022.2 build support
+- [Zero Two](https://darling-in-the-franxx.fandom.com/wiki/Zero_Two).
 
 ## [2.2.0]
 ### Added
