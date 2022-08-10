@@ -20,7 +20,7 @@ val UPDATE_MESSAGE: String =
       What's New?
       <br>
       <ul>
-        <li>Add support for the 2022.1 build</li>
+        <li>Add support for the 2022.2 build</li>
       </ul>
       <br>
       Please see the changelog for more details.
