@@ -15,7 +15,7 @@ jobs:
           distribution: zulu
           java-version: 11
       - name: Setting up environment
-        uses: waifu-motivator/wmp-env-action@v1.3.1
+        uses: waifu-motivator/wmp-env-action@v1.3.2
         with:
           release-type: non-prod
       - run: ./ciScripts/buildPlugin.sh
