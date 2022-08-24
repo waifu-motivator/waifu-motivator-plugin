@@ -38,7 +38,7 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test:1.7.10"
     testImplementation "org.mockito:mockito-core:4.+"
     testImplementation "org.assertj:assertj-core:3.23.1"
-    testImplementation "io.mockk:mockk:1.12.5"
+    testImplementation "io.mockk:mockk:1.12.7"
 }
 
 configurations {
