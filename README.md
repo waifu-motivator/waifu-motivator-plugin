@@ -74,7 +74,6 @@ If want to run it on your local machine for development, please see the followin
 * JDK 11+
 * IntelliJ IDEA
 * Plugin DevKit
-* Lombok Plugin
 
 ### Running
 Execute the `intellij/runIde` task from Gradle.
