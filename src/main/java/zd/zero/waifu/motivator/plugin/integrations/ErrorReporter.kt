@@ -2,6 +2,7 @@ package zd.zero.waifu.motivator.plugin.integrations
 
 import com.google.gson.GsonBuilder
 import com.intellij.ide.IdeBundle
+import com.intellij.ide.nls.NlsMessages
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.application.ApplicationInfo
 import com.intellij.openapi.application.ApplicationManager
@@ -13,7 +14,6 @@ import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.util.io.FileUtilRt
 import com.intellij.openapi.util.registry.Registry
 import com.intellij.util.Consumer
-import com.intellij.util.text.DateFormatUtil
 import io.sentry.Sentry
 import io.sentry.SentryEvent
 import io.sentry.SentryLevel
@@ -136,7 +136,7 @@ class ErrorReporter : ErrorReportSubmitter() {
         if (appInfo.build.isSnapshot) {
             buildDate = SimpleDateFormat("HH:mm, ").format(cal.time)
         }
-        buildDate += DateFormatUtil.formatAboutDialogDate(cal.time)
+        buildDate += NlsMessages.formatDateLong(cal.time)
         buildInfo += IdeBundle.message("about.box.build.date", buildDate)
         return buildInfo
     }
