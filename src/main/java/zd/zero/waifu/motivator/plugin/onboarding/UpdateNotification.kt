@@ -11,6 +11,7 @@ import com.intellij.openapi.ui.popup.Balloon
 import com.intellij.ui.BalloonLayoutData
 import icons.WaifuMotivatorIcons
 import org.intellij.lang.annotations.Language
+import zd.zero.waifu.motivator.plugin.MessageBundle
 import zd.zero.waifu.motivator.plugin.WaifuMotivator.PLUGIN_NAME
 import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParameters
 
@@ -39,9 +40,9 @@ object UpdateNotification {
         val updateNotification = notificationGroup.createNotification(
             UPDATE_MESSAGE,
             NotificationType.INFORMATION,
-        ).setTitle("$PLUGIN_NAME updated to v$newVersion")
+        ).setTitle(MessageBundle.message("update.new.version", PLUGIN_NAME, newVersion))
             .addAction(
-                NotificationAction.createSimple("View changelog") {
+                NotificationAction.createSimple(MessageBundle.message("update.view.changelog")) {
                     BrowserUtil.browse("https://github.com/waifu-motivator/waifu-motivator-plugin/blob/main/CHANGELOG.md")
                 }
             )
