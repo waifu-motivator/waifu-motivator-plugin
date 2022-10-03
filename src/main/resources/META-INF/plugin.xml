@@ -3,7 +3,7 @@
   <name>Waifu Motivator</name>
   <vendor email="zaerald.zd@gmail.com" url="https://github.com/zaerald">zaerald</vendor>
 
-  <idea-version since-build="211"/>
+  <idea-version since-build="213.*"/>
 
   <description><![CDATA[
         Open Sourced <i>Waifu</i> Motivator Plugin to help boost your motivation while coding!
