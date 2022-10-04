@@ -62,17 +62,20 @@ object AniMemePluginPromotion {
                         .filter { it.isNotEmpty() }
                         .map { it.first() }
                         .map { project: Project ->
-                            Pair(
-                                WindowManager.getInstance().suggestParentWindow(project),
-                                project
-                            )
+                            val window = WindowManager.getInstance().suggestParentWindow(project)
+                            window?.let {
+                                Pair(
+                                    it,
+                                    project
+                                )
+                            }
                         }
                         .doOrElse(
                             {
                                 ApplicationManager.getApplication().invokeLater {
                                     AniMemePromotionDialog(
                                         promotionAssets,
-                                        it.first!!,
+                                        it.first,
                                         onPromotion,
                                         it.second
                                     ).show()
