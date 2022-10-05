@@ -51,8 +51,8 @@ object LocalStorageService {
                 if (Files.exists(it).not()) {
                     runSafely({
                         Files.createDirectories(it)
-                    }) {
-                        log.warn("Unable to create global directory for raisins", it)
+                    }) { throwable: Throwable ->
+                        log.warn("Unable to create global directory for raisins", throwable)
                     }
                 }
                 it.toString()

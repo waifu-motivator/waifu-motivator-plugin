@@ -2,7 +2,9 @@ package zd.zero.waifu.motivator.plugin.promotion
 
 import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.extensions.PluginId
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
+import com.intellij.openapi.ui.DoNotAskOption
 import com.intellij.openapi.updateSettings.impl.pluginsAdvertisement.installAndEnable
 import com.intellij.ui.JBColor
 import com.intellij.util.ui.UIUtil
@@ -50,7 +52,8 @@ class PromotionAssets(
 class AniMemePromotionDialog(
     private val promotionAssets: PromotionAssets,
     parent: Window,
-    private val onPromotion: (PromotionResults) -> Unit
+    private val onPromotion: (PromotionResults) -> Unit,
+    private val project: Project
 ) : DialogWrapper(parent, true) {
 
     companion object {
@@ -93,6 +96,7 @@ class AniMemePromotionDialog(
 
             override fun actionPerformed(e: ActionEvent) {
                 installAndEnable(
+                    project,
                     setOf(PluginId.getId(AMII_PLUGIN_ID))
                 ) {
                     close(INSTALLED_EXIT_CODE, true)
@@ -254,7 +258,7 @@ class AniMemePromotionDialog(
 
 class DoNotPromote(
     private val onToBeShown: (Boolean, Int) -> Unit
-) : DialogWrapper.DoNotAskOption {
+) : DoNotAskOption {
     override fun isToBeShown(): Boolean = true
 
     override fun setToBeShown(toBeShown: Boolean, exitCode: Int) {

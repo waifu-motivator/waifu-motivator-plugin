@@ -1,13 +1,13 @@
 package zd.zero.waifu.motivator.plugin.alert.dialog;
 
 import com.intellij.ide.GeneralSettings;
-import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.DoNotAskOption;
 import org.jetbrains.annotations.NotNull;
 import zd.zero.waifu.motivator.plugin.MessageBundle;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorPluginState;
 import zd.zero.waifu.motivator.plugin.settings.WaifuMotivatorState;
 
-public class DialogTipPanel implements DialogWrapper.DoNotAskOption {
+public class DialogTipPanel implements DoNotAskOption {
 
     private final WaifuMotivatorState pluginState;
 

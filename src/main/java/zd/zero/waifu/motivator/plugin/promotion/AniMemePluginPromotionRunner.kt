@@ -1,6 +1,7 @@
 package zd.zero.waifu.motivator.plugin.promotion
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.wm.WindowManager
 import com.intellij.util.concurrency.EdtScheduledExecutorService
@@ -60,18 +61,23 @@ object AniMemePluginPromotion {
                         .toOptional()
                         .filter { it.isNotEmpty() }
                         .map { it.first() }
-                        .map {
-                            WindowManager.getInstance().suggestParentWindow(
-                                it
-                            )
+                        .map { project: Project ->
+                            val window = WindowManager.getInstance().suggestParentWindow(project)
+                            window?.let {
+                                Pair(
+                                    it,
+                                    project
+                                )
+                            }
                         }
                         .doOrElse(
                             {
                                 ApplicationManager.getApplication().invokeLater {
                                     AniMemePromotionDialog(
                                         promotionAssets,
-                                        it!!,
-                                        onPromotion
+                                        it.first,
+                                        onPromotion,
+                                        it.second
                                     ).show()
                                 }
                             },
