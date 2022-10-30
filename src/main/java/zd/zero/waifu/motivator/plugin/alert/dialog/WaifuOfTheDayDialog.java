@@ -1,6 +1,6 @@
 package zd.zero.waifu.motivator.plugin.alert.dialog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.intellij.CommonBundle;
 import com.intellij.ide.BrowserUtil;
 import com.intellij.ide.GeneralSettings;
@@ -35,6 +35,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Random;
@@ -129,8 +130,8 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
                     throw new IOException( "Cannot find the waifu content." );
                 }
 
-                ObjectMapper mapper = new ObjectMapper();
-                waifuOfTheDays = mapper.readValue( resource, WaifuOfTheDay[].class );
+                Gson gson = new Gson();
+                waifuOfTheDays = gson.fromJson( new InputStreamReader( resource ), WaifuOfTheDay[].class );
             }
         }
 
