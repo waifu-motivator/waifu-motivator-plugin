@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.0] - 2022-10-30
 - [WMP-462](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/462) 2022.3 build support
 - [WMP-262](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/262) Migrate user displayed string literals to message bundle.
 - [WMP-464](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/464) Fix deprecations and scheduled removal API
