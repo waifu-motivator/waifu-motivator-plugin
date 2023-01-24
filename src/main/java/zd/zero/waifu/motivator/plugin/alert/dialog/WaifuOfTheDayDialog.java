@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -131,7 +132,7 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
                 }
 
                 Gson gson = new Gson();
-                waifuOfTheDays = gson.fromJson( new InputStreamReader( resource ), WaifuOfTheDay[].class );
+                waifuOfTheDays = gson.fromJson( new InputStreamReader( resource, StandardCharsets.UTF_8), WaifuOfTheDay[].class );
             }
         }
 

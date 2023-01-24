@@ -22,6 +22,7 @@ val UPDATE_MESSAGE: String =
       <br>
       <ul>
         <li>Add support for the 2023.1 build</li>
+        <li>Rendering 漢字 better</li>
       </ul>
       <br>
       Please see the changelog for more details.
