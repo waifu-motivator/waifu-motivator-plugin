@@ -1,46 +1,49 @@
 # Changelog
-
 All notable changes to this project will be documented in this file.
-
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## Unreleased
 
+## [2.4.1] - 2023-01-24
 - [WMP-484](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/484) Rendering 漢字 better.
 - [WMP-499](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/499) 2023.1 build support
 
-## [2.4.0] - 2022-10-30
+## 2.4.0 - 2022-10-30
 - [WMP-462](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/462) 2022.3 build support
 - [WMP-262](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/262) Migrate user displayed string literals to message bundle.
 - [WMP-464](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/464) Fix deprecations and scheduled removal API
 - [WMP-461](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/461) chore: Migrate strings literals into message bundle
 
-## [2.3.0] - 2022-08-11
+## 2.3.0 - 2022-08-11
+
 ### Added
 - [WMP-433](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/433) 2022.2 build support
 - [Zero Two](https://darling-in-the-franxx.fandom.com/wiki/Zero_Two).
 
-## [2.2.0]
+## 2.2.0
+
 ### Added
 - [WMP-399](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/399) 2022.1 build support
 
-## [2.1.2]
+## 2.1.2
+
 ### Added
 - [WMP-314](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/314) 2021.2 build support
 
 ### Fixed
 - [WMP-335](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/335) Installing the plugin from the welcome screen.
 
-## [2.0.1] - 2021-04-12
+## 2.0.1 - 2021-04-12
+
 ### Fixed
 - [WMP-304](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/304) Fixed new user on-boarding on the 2021.1 Builds.
 
-## [2.0.0] - 2021-02-01
+## 2.0.0 - 2021-02-01
+
 ### Added
 - [WMP-225](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/225) Log Watching
-- [New display options](https://github.com/Unthrottled/AMII#display️)
-    - Notification positioning
+- - Notification positioning
     - Timed or Focus loss dismissal options
 - [Silence Breaker](https://github.com/Unthrottled/AMII/pull/43)
 - Added Anime Openings on project open
@@ -51,15 +54,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - [WMP-288](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/288) Depending on the [Anime Meme plugin](https://github.com/Unthrottled/AMII) for motivation now.
 
-The Anime Meme (AMII) plugin includes the following changes:
-- Removed titled notifications.
-- Only select notifications have sound the rest are silent.
-- Your previous configurations will be lost (Sorry!).
-- Haven't implemented `Sayonara sound` on project exit yet.
-- Haven't implemented `Disable in Distraction Free Mode or Presentation Mode` yet.
-- `Motivate Me (alt+m)` is now `Show random Ani-Meme (alt+r)`
-- Sound is either on or off, no granular control across events.
-
 ### Fixed
 - [WMP-247](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/247) Enhanced content preference selection
 - [WMP-262](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/262) String literals to bundle migration
@@ -69,7 +63,8 @@ The Anime Meme (AMII) plugin includes the following changes:
 - [WMP-273](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/273) Notification Display Awareness
 - Task failure events no longer occur on `Build Canceled` events
 
-## [1.4.0] - 2020-11-08
+## 1.4.0 - 2020-11-08
+
 ### Added
 - [WMP-235](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/235) Relax, it's not that big of a deal
 - [WMP-193](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/193) Frustration Cool down over time
@@ -83,7 +78,8 @@ The Anime Meme (AMII) plugin includes the following changes:
 - Fixed [WMP-229](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/229) Issue writing local asset checks on mult-thread
 - Fixed [WMP-224](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/224) Waifu of the Day doesn't show up on a fresh install
 
-## [1.3.0] - 2020-09-27
+## 1.3.0 - 2020-09-27
+
 ### Added
 - [WMP-190](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/190) Organized settings menu.
 - [WMP-155](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/155) When any executed process through the IDE fails with an un-allowed exit code then you get a motivation event.
@@ -102,7 +98,8 @@ The Anime Meme (AMII) plugin includes the following changes:
 - Fixed [WMP-209](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/209) Waifu of the Day colors should come from theme look and feel
 - Fixed [WMP-167](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/167) Sound player runtime exception
 
-## [1.2.0] - 2020-08-21
+## 1.2.0 - 2020-08-21
+
 ### Added
 - [WMP-097](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/97) Ability to disable 'Motivate Me' notification
 - [WMP-080](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/80) Improvements on toolbar menu
@@ -116,16 +113,19 @@ The Anime Meme (AMII) plugin includes the following changes:
 - Fix [WMP-124](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/124) Multiple test notifications
 - Fix [WMP-144](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/144) Cancelled tests registers as passed event
 
-## [1.1.2] - 2020-04-24
+## 1.1.2 - 2020-04-24
+
 ### Fixed
 - Fix: WMP-083 Plugin state AssertionError
 - Fix: WMP-084 Webstorm 2020.1 NoClassDefFoundError
 
-## [1.1.1] - 2020-04-18
+## 1.1.1 - 2020-04-18
+
 ### Fixed
 - Fix: WMP-075 No image for Nejire Hado for Waifu of the Day
 
-## [1.1.0] - 2020-04-12
+## 1.1.0 - 2020-04-12
+
 ### Added
 - WMP-073 Properly style Waifu of the Day based on theme
 - WMP-069 Add settings navigation menu on Plugin toolbar menu
@@ -138,51 +138,17 @@ The Anime Meme (AMII) plugin includes the following changes:
 - WMP-037 Create Waifu of the Day provider
 - WMP-050 Update text 'source' to 'sauce
 - WMP-051 Include more assets for waifu of the day and events
-<details>
-  <summary>Waifu of The Day</summary>
 
-    * Update Aqua image
-    * Shinobu Kocho
-    * Mitsuri Kanroji
-    * Kanae Kocho
-    * Kanao Tsuyuri
-    * Toru Hagakure
-    * Ochaco Uraraka
-    * Kyoka Jiro
-    * Nejire Hado
-    * Eri
-    * Himiko Toga
-    * Ishtar
-    * Lucy Heartfilia
-    * Erza Scarlet
-    * Wendy Marvell
-    * Nao Tomori
-    * Kotoko Iwanaga
-    * Inori Yuzuriha
-    * Miku Nakano
-    * Ichika Nakano
-    * Nino Nakano
-    * Itsuki Nakano
-    * Yotsuba Nakano
-</details>
+## 1.0.1 - 2020-01-01
 
-<details>
-  <summary>Alert Assets</summary>
-
-    * Nyaaan
-    * Wwwwwwaaaaaaaaaaaaaaaaaaaaah
-    * Wwwwaaaaaooowww
-    * OH MY GAH
-</details>
-
-## [1.0.1] - 2020-01-01
 ### Added
 - Add more assets for Waifu of the Day
 - WMP-039 asset provider not properly categorizing on the next invocation
 - WMP-041 update images for dark theme
 - WMP-042 resolve sound stopping when the alert is expired
 
-## [1.0.0] - 2019-12-30
+## 1.0.0 - 2019-12-30
+
 ### Added
 - WMP-008 waifu of the day
 - WMP-022 random motivations on all alerts
@@ -190,10 +156,12 @@ The Anime Meme (AMII) plugin includes the following changes:
 - WMP-028 persist the consumed assets to play until all of it are consumed
 - WMP-029 stop playing the audio if the alert was closed
 
-## [0.1.1] - 2019-12-03
+## 0.1.1 - 2019-12-03
+
 ### Changed
 - Bumped IDEA for compatibility to >= 2019.3
 
-## [0.1.0] - 2019-12-03
+## 0.1.0 - 2019-12-03
+
 ### Added
 - Initial EAP Release for IDEA >= 2019.2.3
