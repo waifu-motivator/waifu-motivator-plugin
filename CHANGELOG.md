@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- [WMP-484](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/484) Rendering 漢字 better.
 - [WMP-499](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/499) 2023.1 build support
 
 ## [2.4.0] - 2022-10-30
