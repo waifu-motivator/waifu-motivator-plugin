@@ -2,7 +2,6 @@ package zd.zero.waifu.motivator.plugin.promotion
 
 import com.google.gson.GsonBuilder
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.util.io.exists
 import zd.zero.waifu.motivator.plugin.assets.AssetCategory
 import zd.zero.waifu.motivator.plugin.assets.AssetManager
 import zd.zero.waifu.motivator.plugin.assets.LocalStorageService
@@ -14,6 +13,7 @@ import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 import java.time.Instant
 import java.util.UUID
+import kotlin.io.path.exists
 
 data class Promotion(
     val id: UUID,
