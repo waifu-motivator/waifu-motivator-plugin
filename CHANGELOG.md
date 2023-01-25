@@ -43,7 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - [WMP-225](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/225) Log Watching
-- - Notification positioning
+- [New display options](https://github.com/Unthrottled/AMII#display️)
+    - Notification positioning
     - Timed or Focus loss dismissal options
 - [Silence Breaker](https://github.com/Unthrottled/AMII/pull/43)
 - Added Anime Openings on project open
@@ -53,6 +54,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - [WMP-288](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/288) Depending on the [Anime Meme plugin](https://github.com/Unthrottled/AMII) for motivation now.
+The Anime Meme (AMII) plugin includes the following changes:
+- Removed titled notifications.
+- Only select notifications have sound the rest are silent.
+- Your previous configurations will be lost (Sorry!).
+- Haven't implemented `Sayonara sound` on project exit yet.
+- Haven't implemented `Disable in Distraction Free Mode or Presentation Mode` yet.
+- `Motivate Me (alt+m)` is now `Show random Ani-Meme (alt+r)`
+- Sound is either on or off, no granular control across events.
 
 ### Fixed
 - [WMP-247](https://github.com/waifu-motivator/waifu-motivator-plugin/issues/247) Enhanced content preference selection
@@ -138,6 +147,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - WMP-037 Create Waifu of the Day provider
 - WMP-050 Update text 'source' to 'sauce
 - WMP-051 Include more assets for waifu of the day and events
+<details>
+  <summary>Waifu of The Day</summary>
+
+    * Update Aqua image
+    * Shinobu Kocho
+    * Mitsuri Kanroji
+    * Kanae Kocho
+    * Kanao Tsuyuri
+    * Toru Hagakure
+    * Ochaco Uraraka
+    * Kyoka Jiro
+    * Nejire Hado
+    * Eri
+    * Himiko Toga
+    * Ishtar
+    * Lucy Heartfilia
+    * Erza Scarlet
+    * Wendy Marvell
+    * Nao Tomori
+    * Kotoko Iwanaga
+    * Inori Yuzuriha
+    * Miku Nakano
+    * Ichika Nakano
+    * Nino Nakano
+    * Itsuki Nakano
+    * Yotsuba Nakano
+</details>
+<details>
+  <summary>Alert Assets</summary>
+
+    * Nyaaan
+    * Wwwwwwaaaaaaaaaaaaaaaaaaaaah
+    * Wwwwaaaaaooowww
+    * OH MY GAH
+</details>
+
 
 ## 1.0.1 - 2020-01-01
 
