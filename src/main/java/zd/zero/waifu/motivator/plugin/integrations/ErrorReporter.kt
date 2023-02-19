@@ -156,8 +156,11 @@ class ErrorReporter : ErrorReportSubmitter() {
                 .mapToObj { Character.toChars(it).joinToString() }
                 .collect(Collectors.joining())
 
-            return if (capitals.isEmpty()) return s[0].toString()
-            else capitals.lowercase()
+            return if (capitals.isEmpty()) {
+                return s[0].toString()
+            } else {
+                capitals.lowercase()
+            }
         }
         val valueMapper = fun(s: String): String = when {
             "true".equals(s, ignoreCase = true) -> "1"

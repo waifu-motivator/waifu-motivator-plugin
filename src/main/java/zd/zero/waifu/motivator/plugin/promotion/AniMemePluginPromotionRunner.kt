@@ -22,7 +22,7 @@ object AniMemePromotionService {
     fun runPromotion(
         isNewUser: Boolean,
         onPromotion: (PromotionResults) -> Unit,
-        onReject: () -> Unit,
+        onReject: () -> Unit
     ) {
         AniMemePluginPromotionRunner(isNewUser, onPromotion, onReject)
     }
@@ -47,7 +47,7 @@ object AniMemePluginPromotion {
     fun runPromotion(
         isNewUser: Boolean,
         onPromotion: (PromotionResults) -> Unit,
-        onReject: () -> Unit,
+        onReject: () -> Unit
     ) {
         ApplicationManager.getApplication().executeOnPooledThread {
             // download assets on non-awt thread

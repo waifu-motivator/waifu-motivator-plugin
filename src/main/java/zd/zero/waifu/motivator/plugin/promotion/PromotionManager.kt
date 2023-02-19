@@ -26,7 +26,7 @@ open class PromotionManagerImpl {
     fun registerPromotion(
         newVersion: String,
         forceRegister: Boolean = false,
-        isNewUser: Boolean = false,
+        isNewUser: Boolean = false
     ) {
         if (initialized.not() || forceRegister) {
             promotionRegistry(newVersion, isNewUser)

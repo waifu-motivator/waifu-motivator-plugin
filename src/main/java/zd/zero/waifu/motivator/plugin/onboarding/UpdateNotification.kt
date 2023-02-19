@@ -40,7 +40,7 @@ object UpdateNotification {
     ) {
         val updateNotification = notificationGroup.createNotification(
             UPDATE_MESSAGE,
-            NotificationType.INFORMATION,
+            NotificationType.INFORMATION
         ).setTitle(MessageBundle.message("update.new.version", PLUGIN_NAME, newVersion))
             .addAction(
                 NotificationAction.createSimple(MessageBundle.message("update.view.changelog")) {
@@ -64,7 +64,7 @@ object UpdateNotification {
                 updateNotification,
                 true,
                 false,
-                BalloonLayoutData.fullContent(),
+                BalloonLayoutData.fullContent()
             ) { }
             balloon.show(notificationPosition, Balloon.Position.atLeft)
         } catch (e: Throwable) {

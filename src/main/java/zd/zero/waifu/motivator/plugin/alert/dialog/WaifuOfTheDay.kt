@@ -6,5 +6,5 @@ class WaifuOfTheDay(
     val description: String,
     val image: String,
     val sourceUrl: String,
-    val animeUrl: String,
+    val animeUrl: String
 )
