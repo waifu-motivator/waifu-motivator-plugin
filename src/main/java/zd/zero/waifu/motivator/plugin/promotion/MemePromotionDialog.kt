@@ -196,8 +196,11 @@ class AniMemePromotionDialog(
     }
 
     private fun getPromotionContent(newUser: Boolean): String {
-        return if (newUser) newUserPromotion()
-        else existingUserPromotion()
+        return if (newUser) {
+            newUserPromotion()
+        } else {
+            existingUserPromotion()
+        }
     }
 
     @Language("HTML")
