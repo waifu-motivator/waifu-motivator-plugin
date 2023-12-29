@@ -7,10 +7,10 @@ def properties(String key) {
 
 plugins {
     id "java"
-    id "org.jetbrains.kotlin.jvm" version "1.8.20"
-    id "org.jetbrains.intellij" version "1.13.3"
+    id "org.jetbrains.kotlin.jvm" version "1.9.22"
+    id "org.jetbrains.intellij" version "1.16.1"
     id "org.jetbrains.changelog" version "2.0.0"
-    id "org.jlleitschuh.gradle.ktlint" version "11.3.2"
+    id "org.jlleitschuh.gradle.ktlint" version "12.0.3"
     id "org.kordamp.gradle.markdown" version "2.2.0"
 }
 
@@ -20,10 +20,13 @@ group pluginGroup
 
 // Value will be set in pipeline
 // if not pick it up from the properties.
-def resolvedPluginVersion = System.getenv().getOrDefault("VERSION", getProperty("pluginVersion"))
+def resolvedPluginVersion = System.getenv('VERSION') ?: getProperty("pluginVersion")
 version resolvedPluginVersion
 
-sourceCompatibility = 1.8
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 repositories {
     mavenCentral()
@@ -31,13 +34,13 @@ repositories {
 }
 
 dependencies {
-    implementation "commons-io:commons-io:2.11.0"
-    implementation 'io.sentry:sentry:6.18.1'
+    implementation "commons-io:commons-io:2.15.1"
+    implementation 'io.sentry:sentry:7.1.0'
     testImplementation "junit:junit:4.13.2"
-    testImplementation "org.jetbrains.kotlin:kotlin-test:1.8.20"
-    testImplementation "org.mockito:mockito-core:5.+"
-    testImplementation "org.assertj:assertj-core:3.24.2"
-    testImplementation "io.mockk:mockk:1.13.5"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:1.9.22"
+    testImplementation "org.mockito:mockito-core:5.8.0"
+    testImplementation "org.assertj:assertj-core:3.21.0"
+    testImplementation "io.mockk:mockk:1.13.7"
 }
 
 configurations {
@@ -68,7 +71,7 @@ changelog {
 
 markdownToHtml {
     sourceDir file("${project.projectDir}/docs")
-    outputDir file("${project.buildDir}/html")
+    outputDir file("${project.layout.buildDirectory}/html")
 }
 
 compileKotlin {
@@ -106,7 +109,7 @@ tasks.patchPluginXml {
 
     changeNotes.set(changelog.getUnreleased().toHTML())
 
-    def description = "${project.buildDir}/html/plugin.html"
+    def description = "${project.layout.buildDirectory}/html/plugin.html"
     if (file(description).exists()) {
         pluginDescription.set(file(description).text)
         println "Successfully patched plugin description."
