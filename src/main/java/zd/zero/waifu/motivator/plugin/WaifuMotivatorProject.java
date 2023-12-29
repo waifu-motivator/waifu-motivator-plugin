@@ -12,11 +12,10 @@ public class WaifuMotivatorProject implements ProjectManagerListener, Disposable
     private Project project;
 
     @Override
-    public void projectOpened( @NotNull Project projectOpened ) {
-        if ( this.project != null ) return;
+    public void projectOpened(@NotNull Project projectOpened) {
+        if (this.project != null) return;
         project = projectOpened;
-        StartupManager.getInstance( project )
-            .runWhenProjectIsInitialized( UserOnboarding.INSTANCE::attemptToPerformNewUpdateActions );
+        UserOnboarding.INSTANCE.attemptToPerformNewUpdateActions();
     }
 
     @Override

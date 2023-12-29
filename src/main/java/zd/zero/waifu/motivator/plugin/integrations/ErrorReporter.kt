@@ -40,7 +40,7 @@ class ErrorReporter : ErrorReportSubmitter() {
             Sentry.setUser(
                 User().apply {
                     this.id = WaifuMotivatorPluginState.getPluginState().userId
-                }
+                },
             )
         }
     }
@@ -49,17 +49,18 @@ class ErrorReporter : ErrorReportSubmitter() {
         events: Array<out IdeaLoggingEvent>,
         additionalInfo: String?,
         parentComponent: Component,
-        consumer: Consumer<in SubmittedReportInfo>
+        consumer: Consumer<in SubmittedReportInfo>,
     ): Boolean {
         ApplicationManager.getApplication()
             .executeOnPooledThread {
                 runSafely({
                     Sentry.init { options: SentryOptions ->
-                        options.dsn = RestClient.performGet(
-                            "https://jetbrains.assets.unthrottled.io/waifu-motivator/sentry-dsn.txt"
-                        )
-                            .map { it.trim() }
-                            .orElse("https://3630573c245444f8b49ef498b24d1405@o403546.ingest.sentry.io/5374288?maxmessagelength=50000")
+                        options.dsn =
+                            RestClient.performGet(
+                                "https://jetbrains.assets.unthrottled.io/waifu-motivator/sentry-dsn.txt",
+                            )
+                                .map { it.trim() }
+                                .orElse("https://3630573c245444f8b49ef498b24d1405@o403546.ingest.sentry.io/5374288?maxmessagelength=50000")
                     }
                 })
                 events.forEach {
@@ -70,12 +71,13 @@ class ErrorReporter : ErrorReportSubmitter() {
                                     this.level = SentryLevel.ERROR
                                     this.serverName = getAppName().second
                                     this.setExtra("Additional Info", additionalInfo ?: "None")
-                                }
+                                },
                         ).apply {
-                            this.message = Message().apply {
-                                this.message = it.throwableText
-                            }
-                        }
+                            this.message =
+                                Message().apply {
+                                    this.message = it.throwableText
+                                }
+                        },
                     )
                 }
                 consumer.consume(SubmittedReportInfo(SubmittedReportInfo.SubmissionStatus.NEW_ISSUE))
@@ -123,11 +125,13 @@ class ErrorReporter : ErrorReportSubmitter() {
             .map { it.pluginId.idString }.collect(Collectors.joining(","))
     }
 
-    private fun getRegistry() = Registry.getAll().stream().filter { it.isChangedFromDefault }
-        .map { "${it.key}=${it.asString()}" }.collect(Collectors.joining(","))
+    private fun getRegistry() =
+        Registry.getAll().stream().filter { it.isChangedFromDefault }
+            .map { "${it.key}=${it.asString()}" }.collect(Collectors.joining(","))
 
-    private fun getGC() = ManagementFactory.getGarbageCollectorMXBeans().stream()
-        .map { it.name }.collect(Collectors.joining(","))
+    private fun getGC() =
+        ManagementFactory.getGarbageCollectorMXBeans().stream()
+            .map { it.name }.collect(Collectors.joining(","))
 
     private fun getBuildInfo(appInfo: ApplicationInfo): String {
         var buildInfo = IdeBundle.message("about.box.build.number", appInfo.build.asString())
@@ -151,10 +155,11 @@ class ErrorReporter : ErrorReportSubmitter() {
 
     private fun getMinifiedConfig(): String {
         val keyMapper = fun(s: String): String {
-            val capitals = s.codePoints()
-                .filter { Character.isUpperCase(it) }
-                .mapToObj { Character.toChars(it).joinToString() }
-                .collect(Collectors.joining())
+            val capitals =
+                s.codePoints()
+                    .filter { Character.isUpperCase(it) }
+                    .mapToObj { Character.toChars(it).joinToString() }
+                    .collect(Collectors.joining())
 
             return if (capitals.isEmpty()) {
                 return s[0].toString()
@@ -162,11 +167,12 @@ class ErrorReporter : ErrorReportSubmitter() {
                 capitals.lowercase()
             }
         }
-        val valueMapper = fun(s: String): String = when {
-            "true".equals(s, ignoreCase = true) -> "1"
-            "false".equals(s, ignoreCase = true) -> "0"
-            else -> s
-        }
+        val valueMapper = fun(s: String): String =
+            when {
+                "true".equals(s, ignoreCase = true) -> "1"
+                "false".equals(s, ignoreCase = true) -> "0"
+                else -> s
+            }
 
         val pluginState = WaifuMotivatorPluginState.getPluginState()
 

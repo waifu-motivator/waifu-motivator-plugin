@@ -17,7 +17,9 @@ import java.util.Optional
 import java.util.concurrent.ConcurrentHashMap
 
 private enum class AssetChangedStatus {
-    SAME, DIFFERENT, LUL_DUNNO
+    SAME,
+    DIFFERENT,
+    LUL_DUNNO,
 }
 
 object LocalAssetService {
@@ -27,16 +29,15 @@ object LocalAssetService {
 
     fun hasAssetChanged(
         localInstallPath: Path,
-        remoteAssetUrl: String
+        remoteAssetUrl: String,
     ): Boolean =
         !Files.exists(localInstallPath) ||
             (
                 !hasBeenCheckedToday(localInstallPath) &&
                     isLocalDifferentFromRemote(localInstallPath, remoteAssetUrl) == AssetChangedStatus.DIFFERENT
-                )
+            )
 
-    private fun getOnDiskCheckSum(localAssetPath: Path): String =
-        computeCheckSum(Files.readAllBytes(localAssetPath))
+    private fun getOnDiskCheckSum(localAssetPath: Path): String = computeCheckSum(Files.readAllBytes(localAssetPath))
 
     private fun computeCheckSum(byteArray: ByteArray): String {
         val messageDigest = MessageDigest.getInstance("MD5")
@@ -44,12 +45,11 @@ object LocalAssetService {
         return StringUtil.toHexString(messageDigest.digest())
     }
 
-    private fun getRemoteAssetChecksum(remoteAssetUrl: String): Optional<String> =
-        RestClient.performGet("$remoteAssetUrl.checksum.txt")
+    private fun getRemoteAssetChecksum(remoteAssetUrl: String): Optional<String> = RestClient.performGet("$remoteAssetUrl.checksum.txt")
 
     private fun isLocalDifferentFromRemote(
         localInstallPath: Path,
-        remoteAssetUrl: String
+        remoteAssetUrl: String,
     ): AssetChangedStatus =
         getRemoteAssetChecksum(remoteAssetUrl)
             .map {
@@ -60,11 +60,11 @@ object LocalAssetService {
                 } else {
                     log.warn(
                         """
-                      Local asset: $localInstallPath
-                      is different from remote asset $remoteAssetUrl
-                      Local Checksum: $onDiskCheckSum
-                      Remote Checksum: $it
-                        """.trimIndent()
+                        Local asset: $localInstallPath
+                        is different from remote asset $remoteAssetUrl
+                        Local Checksum: $onDiskCheckSum
+                        Remote Checksum: $it
+                        """.trimIndent(),
                     )
                     AssetChangedStatus.DIFFERENT
                 }
@@ -83,32 +83,33 @@ object LocalAssetService {
                     it,
                     Charset.defaultCharset(),
                     StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING
+                    StandardOpenOption.TRUNCATE_EXISTING,
                 ).use { writer ->
                     writer.write(gson.toJson(assetChecks))
                 }
             }
     }
 
-    private fun readPreviousAssetChecks(): ConcurrentHashMap<String, Instant> = try {
-        getAssetChecksFile()
-            .filter { Files.exists(it) }
-            .map {
-                Files.newBufferedReader(it).use { reader ->
-                    gson.fromJson<ConcurrentHashMap<String, Instant>>(
-                        reader,
-                        object : TypeToken<ConcurrentHashMap<String, Instant>>() {}.type
-                    )
-                }
-            }.orElseGet { ConcurrentHashMap() }
-    } catch (e: Throwable) {
-        log.warn("Unable to get local asset checks for raisins", e)
-        ConcurrentHashMap()
-    }
+    private fun readPreviousAssetChecks(): ConcurrentHashMap<String, Instant> =
+        try {
+            getAssetChecksFile()
+                .filter { Files.exists(it) }
+                .map {
+                    Files.newBufferedReader(it).use { reader ->
+                        gson.fromJson<ConcurrentHashMap<String, Instant>>(
+                            reader,
+                            object : TypeToken<ConcurrentHashMap<String, Instant>>() {}.type,
+                        )
+                    }
+                }.orElseGet { ConcurrentHashMap() }
+        } catch (e: Throwable) {
+            log.warn("Unable to get local asset checks for raisins", e)
+            ConcurrentHashMap()
+        }
 
-    private fun getAssetChecksFile() = LocalStorageService.getLocalAssetDirectory()
-        .map { Paths.get(it, "assetChecks.json") }
+    private fun getAssetChecksFile() =
+        LocalStorageService.getLocalAssetDirectory()
+            .map { Paths.get(it, "assetChecks.json") }
 
-    private fun getAssetCheckKey(localInstallPath: Path) =
-        localInstallPath.toAbsolutePath().toString()
+    private fun getAssetCheckKey(localInstallPath: Path) = localInstallPath.toAbsolutePath().toString()
 }

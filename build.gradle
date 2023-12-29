@@ -9,9 +9,10 @@ plugins {
     id "java"
     id "org.jetbrains.kotlin.jvm" version "1.9.22"
     id "org.jetbrains.intellij" version "1.16.1"
-    id "org.jetbrains.changelog" version "2.0.0"
+    id "org.jetbrains.changelog" version "2.2.0"
     id "org.jlleitschuh.gradle.ktlint" version "12.0.3"
     id "org.kordamp.gradle.markdown" version "2.2.0"
+    id 'org.springframework.boot' version '3.2.1'
 }
 
 apply plugin: "org.jetbrains.changelog"
@@ -25,7 +26,7 @@ version resolvedPluginVersion
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
@@ -39,8 +40,8 @@ dependencies {
     testImplementation "junit:junit:4.13.2"
     testImplementation "org.jetbrains.kotlin:kotlin-test:1.9.22"
     testImplementation "org.mockito:mockito-core:5.8.0"
-    testImplementation "org.assertj:assertj-core:3.21.0"
-    testImplementation "io.mockk:mockk:1.13.7"
+    testImplementation "org.assertj:assertj-core:3.24.2"
+    testImplementation "io.mockk:mockk:1.13.8"
 }
 
 configurations {
@@ -75,11 +76,15 @@ markdownToHtml {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "17"
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "17"
+}
+
+bootJar {
+    enabled = false
 }
 
 tasks.runPluginVerifier {

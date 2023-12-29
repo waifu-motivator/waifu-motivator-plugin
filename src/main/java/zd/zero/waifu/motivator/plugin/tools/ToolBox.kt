@@ -8,7 +8,7 @@ import java.util.function.Consumer
 fun <T, U, S> allOf(
     o1: Optional<T>,
     o2: Optional<U>,
-    o3: Optional<S>
+    o3: Optional<S>,
 ): Optional<Triple<T, U, S>> =
     o1.flatMap { t ->
         o2.flatMap { u ->
@@ -20,7 +20,7 @@ fun <T, U, S> allOf(
 
 fun <T, U> allOf(
     o1: Optional<T>,
-    o2: Optional<U>
+    o2: Optional<U>,
 ): Optional<Pair<T, U>> =
     o1.flatMap { t ->
         o2.map { u ->
@@ -29,13 +29,12 @@ fun <T, U> allOf(
     }
 
 object ToolBox {
-
     // todo: can be replaced by java 11 apis
     @JvmStatic
     fun <T> doOrElse(
         maybeOptional: Optional<T>,
         ifPresent: Consumer<T>,
-        orElse: Runnable
+        orElse: Runnable,
     ) {
         maybeOptional.doOrElse({ ifPresent.accept(it) }) { orElse.run() }
     }
@@ -43,14 +42,20 @@ object ToolBox {
 
 fun Color.toHexString() = "#${ColorUtil.toHex(this)}"
 
-fun <T> runSafelyWithResult(runner: () -> T, onError: (Throwable) -> T): T =
+fun <T> runSafelyWithResult(
+    runner: () -> T,
+    onError: (Throwable) -> T,
+): T =
     try {
         runner()
     } catch (e: Throwable) {
         onError(e)
     }
 
-fun runSafely(runner: () -> Unit, onError: (Throwable) -> Unit = {}): Unit =
+fun runSafely(
+    runner: () -> Unit,
+    onError: (Throwable) -> Unit = {},
+): Unit =
     try {
         runner()
     } catch (e: Throwable) {

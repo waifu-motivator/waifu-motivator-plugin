@@ -18,32 +18,34 @@ import kotlin.io.path.exists
 data class Promotion(
     val id: UUID,
     val datePromoted: Instant,
-    val result: PromotionStatus
+    val result: PromotionStatus,
 )
 
 data class PromotionLedger(
     val user: UUID,
     val versionInstallDates: MutableMap<String, Instant>,
     val seenPromotions: MutableMap<UUID, Promotion>,
-    var allowedToPromote: Boolean
+    var allowedToPromote: Boolean,
 )
 
 object LedgerMaster {
     private val log = Logger.getInstance(LedgerMaster::class.java)
 
-    private val gson = GsonBuilder()
-        .setPrettyPrinting()
-        .create()
+    private val gson =
+        GsonBuilder()
+            .setPrettyPrinting()
+            .create()
 
-    private val ledgerPath = AssetManager.constructGlobalAssetPath(
-        AssetCategory.PROMOTION,
-        "ledger.json"
-    ).orElseGet {
-        AssetManager.constructLocalAssetPathNoOptional(
+    private val ledgerPath =
+        AssetManager.constructGlobalAssetPath(
             AssetCategory.PROMOTION,
-            "ledger.json"
-        )
-    }
+            "ledger.json",
+        ).orElseGet {
+            AssetManager.constructLocalAssetPathNoOptional(
+                AssetCategory.PROMOTION,
+                "ledger.json",
+            )
+        }
 
     fun getInitialLedger(): PromotionLedger =
         if (ledgerPath.exists()) {
@@ -58,7 +60,7 @@ object LedgerMaster {
                 .use {
                     gson.fromJson(
                         InputStreamReader(it, StandardCharsets.UTF_8),
-                        PromotionLedger::class.java
+                        PromotionLedger::class.java,
                     )
                 }
         }) {
@@ -75,10 +77,10 @@ object LedgerMaster {
             Files.newBufferedWriter(
                 ledgerPath,
                 StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING
+                StandardOpenOption.TRUNCATE_EXISTING,
             ).use {
                 it.write(
-                    gson.toJson(promotionLedger)
+                    gson.toJson(promotionLedger),
                 )
             }
         }) {

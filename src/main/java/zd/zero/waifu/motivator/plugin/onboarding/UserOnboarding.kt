@@ -11,7 +11,6 @@ import java.util.Optional
 import java.util.UUID
 
 object UserOnboarding {
-
     fun attemptToPerformNewUpdateActions() {
         getNewVersion().ifPresent { newVersion ->
             WaifuMotivatorPluginState.getPluginState().version = newVersion

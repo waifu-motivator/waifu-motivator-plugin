@@ -18,34 +18,35 @@ import zd.zero.waifu.motivator.plugin.onboarding.BalloonTools.fetchBalloonParame
 @Language("HTML")
 val UPDATE_MESSAGE: String =
     """
-      What's New?
-      <br>
-      <ul>
-        <li>Add support for the 2023.2 build</li>
-      </ul>
-      <br>
-      Please see the changelog for more details.
-      <br><br>
+    What's New?
+    <br>
+    <ul>
+      <li>Add support for the 2023.2 build</li>
+    </ul>
+    <br>
+    Please see the changelog for more details.
+    <br><br>
     """.trimIndent()
 
 object UpdateNotification {
-
-    private val notificationGroup = NotificationGroupManager.getInstance()
-        .getNotificationGroup("zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification")
+    private val notificationGroup =
+        NotificationGroupManager.getInstance()
+            .getNotificationGroup("zd.zero.waifu.motivator.plugin.onboarding.UpdateNotification")
 
     fun display(
         project: Project,
-        newVersion: String
+        newVersion: String,
     ) {
-        val updateNotification = notificationGroup.createNotification(
-            UPDATE_MESSAGE,
-            NotificationType.INFORMATION
-        ).setTitle(MessageBundle.message("update.new.version", PLUGIN_NAME, newVersion))
-            .addAction(
-                NotificationAction.createSimple(MessageBundle.message("update.view.changelog")) {
-                    BrowserUtil.browse("https://github.com/waifu-motivator/waifu-motivator-plugin/blob/main/CHANGELOG.md")
-                }
-            )
+        val updateNotification =
+            notificationGroup.createNotification(
+                UPDATE_MESSAGE,
+                NotificationType.INFORMATION,
+            ).setTitle(MessageBundle.message("update.new.version", PLUGIN_NAME, newVersion))
+                .addAction(
+                    NotificationAction.createSimple(MessageBundle.message("update.view.changelog")) {
+                        BrowserUtil.browse("https://github.com/waifu-motivator/waifu-motivator-plugin/blob/main/CHANGELOG.md")
+                    },
+                )
 
         updateNotification.icon = WaifuMotivatorIcons.MENU
 
@@ -54,17 +55,18 @@ object UpdateNotification {
 
     private fun showNotification(
         project: Project,
-        updateNotification: Notification
+        updateNotification: Notification,
     ) {
         try {
             val (ideFrame, notificationPosition) = fetchBalloonParameters(project)
-            val balloon = NotificationsManagerImpl.createBalloon(
-                ideFrame,
-                updateNotification,
-                true,
-                false,
-                BalloonLayoutData.fullContent()
-            ) { }
+            val balloon =
+                NotificationsManagerImpl.createBalloon(
+                    ideFrame,
+                    updateNotification,
+                    true,
+                    false,
+                    BalloonLayoutData.fullContent(),
+                ) { }
             balloon.show(notificationPosition, Balloon.Position.atLeft)
         } catch (e: Throwable) {
             updateNotification.notify(project)

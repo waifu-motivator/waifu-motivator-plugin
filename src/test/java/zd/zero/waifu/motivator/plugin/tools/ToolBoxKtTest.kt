@@ -5,40 +5,40 @@ import org.junit.Test
 import java.util.Optional
 
 internal class BestGirl(val name: String)
-class ToolBoxKtTest {
 
+class ToolBoxKtTest {
     @Test
     fun allOfShouldOnlyBePresentIfAllAreThere() {
         Assertions.assertThat(
             allOf(
                 BestGirl("Ryuko").toOptional(),
                 ("Ayy" to "Lmao").toOptional(),
-                { println("Hello World") }.toOptional()
-            ).isPresent
+                { println("Hello World") }.toOptional(),
+            ).isPresent,
         ).isTrue()
 
         Assertions.assertThat(
             allOf(
                 BestGirl("Ryuko").toOptional(),
                 ("Ayy" to "Lmao").toOptional(),
-                Optional.empty<() -> Unit>()
-            ).isPresent
+                Optional.empty<() -> Unit>(),
+            ).isPresent,
         ).isFalse()
 
         Assertions.assertThat(
             allOf(
                 BestGirl("Trash Chan").toOptional().filter { it.name == "Ryuko" },
                 ("Ayy" to "Lmao").toOptional(),
-                { println("Hello World") }.toOptional()
-            ).isPresent
+                { println("Hello World") }.toOptional(),
+            ).isPresent,
         ).isFalse()
 
         Assertions.assertThat(
             allOf(
                 BestGirl("Ryuko").toOptional(),
                 Optional.empty<Pair<String, String>>(),
-                { println("Hello World") }.toOptional()
-            ).isPresent
+                { println("Hello World") }.toOptional(),
+            ).isPresent,
         ).isFalse()
     }
 }

@@ -25,7 +25,7 @@ object LocalStorageService {
 
     fun getLocalAssetDirectory(): Optional<String> {
         return Optional.ofNullable(
-            PathManager.getConfigPath()
+            PathManager.getConfigPath(),
         ).map {
             Paths.get(it, ASSET_DIRECTORY).toAbsolutePath().toString()
         }
@@ -34,7 +34,7 @@ object LocalStorageService {
     fun getLocalAssetDirectoryNoOptional(): String {
         return Paths.get(
             PathManager.getConfigPath(),
-            ASSET_DIRECTORY
+            ASSET_DIRECTORY,
         ).toAbsolutePath().toString()
     }
 
@@ -42,7 +42,7 @@ object LocalStorageService {
         Paths.get(
             PathManager.getConfigPath(),
             "..",
-            ASSET_DIRECTORY
+            ASSET_DIRECTORY,
         ).toAbsolutePath()
             .normalize()
             .toOptional()

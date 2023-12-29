@@ -36,9 +36,10 @@ object RestClient {
     private fun createGetRequest(remoteUrl: String): HttpGet {
         val remoteAssetRequest = HttpGet(remoteUrl)
         remoteAssetRequest.addHeader("User-Agent", "Waifu-Motivation-Plugin")
-        remoteAssetRequest.config = RequestConfig.custom()
-            .setConnectTimeout(TimeUnit.MILLISECONDS.convert(5L, TimeUnit.SECONDS).toInt())
-            .build()
+        remoteAssetRequest.config =
+            RequestConfig.custom()
+                .setConnectTimeout(TimeUnit.MILLISECONDS.convert(5L, TimeUnit.SECONDS).toInt())
+                .build()
         return remoteAssetRequest
     }
 }

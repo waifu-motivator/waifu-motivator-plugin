@@ -16,7 +16,6 @@ val ANI_MEME_PROMOTION_ID: UUID = UUID.fromString("af735f6e-2a63-4c4e-b26d-6fe21
 object PromotionManager : PromotionManagerImpl()
 
 open class PromotionManagerImpl {
-
     private val log = Logger.getInstance(PromotionManager::class.java)
 
     private var initialized = false
@@ -26,7 +25,7 @@ open class PromotionManagerImpl {
     fun registerPromotion(
         newVersion: String,
         forceRegister: Boolean = false,
-        isNewUser: Boolean = false
+        isNewUser: Boolean = false,
     ) {
         if (initialized.not() || forceRegister) {
             promotionRegistry(newVersion, isNewUser)
@@ -34,7 +33,10 @@ open class PromotionManagerImpl {
         }
     }
 
-    private fun promotionRegistry(newVersion: String, isNewUser: Boolean) {
+    private fun promotionRegistry(
+        newVersion: String,
+        isNewUser: Boolean,
+    ) {
         val versionInstallDates = promotionLedger.versionInstallDates
         if (versionInstallDates.containsKey(newVersion).not()) {
             versionInstallDates[newVersion] = Instant.now()
@@ -55,7 +57,7 @@ open class PromotionManagerImpl {
                                 Promotion(ANI_MEME_PROMOTION_ID, Instant.now(), it.status)
                             persistLedger(promotionLedger)
                             releaseLock(id)
-                        }
+                        },
                     ) {
                         releaseLock(id)
                     }
@@ -66,8 +68,7 @@ open class PromotionManagerImpl {
         }
     }
 
-    private fun isAniMemePluginInstalled() =
-        isAmiiInstalled()
+    private fun isAniMemePluginInstalled() = isAmiiInstalled()
 
     private val id: String
         get() = getApplicationName()
@@ -77,5 +78,5 @@ open class PromotionManagerImpl {
             (
                 promotionLedger.seenPromotions.containsKey(ANI_MEME_PROMOTION_ID).not() ||
                     promotionLedger.seenPromotions[ANI_MEME_PROMOTION_ID]?.result == PromotionStatus.ACCEPTED
-                )
+            )
 }

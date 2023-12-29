@@ -246,9 +246,8 @@ public class WaifuOfTheDayDialog extends DialogWrapper {
         return this.rootPanel;
     }
 
-    @NotNull
     @Override
-    protected Action[] createActions() {
+    protected Action @NotNull [] createActions() {
         return new Action[]{ getViewAnimeAction(), getCancelAction() };
     }
 

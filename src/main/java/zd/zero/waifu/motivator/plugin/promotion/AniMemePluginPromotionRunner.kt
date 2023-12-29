@@ -10,19 +10,20 @@ import zd.zero.waifu.motivator.plugin.tools.toOptional
 import java.util.concurrent.TimeUnit
 
 enum class PromotionStatus {
-    ACCEPTED, REJECTED, BLOCKED
+    ACCEPTED,
+    REJECTED,
+    BLOCKED,
 }
 
 data class PromotionResults(
-    val status: PromotionStatus
+    val status: PromotionStatus,
 )
 
 object AniMemePromotionService {
-
     fun runPromotion(
         isNewUser: Boolean,
         onPromotion: (PromotionResults) -> Unit,
-        onReject: () -> Unit
+        onReject: () -> Unit,
     ) {
         AniMemePluginPromotionRunner(isNewUser, onPromotion, onReject)
     }
@@ -31,9 +32,8 @@ object AniMemePromotionService {
 class AniMemePluginPromotionRunner(
     private val isNewUser: Boolean,
     private val onPromotion: (PromotionResults) -> Unit,
-    private val onReject: () -> Unit
+    private val onReject: () -> Unit,
 ) : Runnable {
-
     init {
         run()
     }
@@ -47,7 +47,7 @@ object AniMemePluginPromotion {
     fun runPromotion(
         isNewUser: Boolean,
         onPromotion: (PromotionResults) -> Unit,
-        onReject: () -> Unit
+        onReject: () -> Unit,
     ) {
         ApplicationManager.getApplication().executeOnPooledThread {
             // download assets on non-awt thread
@@ -66,7 +66,7 @@ object AniMemePluginPromotion {
                             window?.let {
                                 Pair(
                                     it,
-                                    project
+                                    project,
                                 )
                             }
                         }
@@ -77,15 +77,15 @@ object AniMemePluginPromotion {
                                         promotionAssets,
                                         it.first,
                                         onPromotion,
-                                        it.second
+                                        it.second,
                                     ).show()
                                 }
                             },
-                            onReject
+                            onReject,
                         )
                 },
                 0,
-                TimeUnit.SECONDS
+                TimeUnit.SECONDS,
             )
         }
     }
