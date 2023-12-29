@@ -12,7 +12,6 @@ plugins {
     id "org.jetbrains.changelog" version "2.2.0"
     id "org.jlleitschuh.gradle.ktlint" version "12.0.3"
     id "org.kordamp.gradle.markdown" version "2.2.0"
-    id 'org.springframework.boot' version '3.2.1'
 }
 
 apply plugin: "org.jetbrains.changelog"
@@ -81,10 +80,6 @@ compileKotlin {
 
 compileTestKotlin {
     kotlinOptions.jvmTarget = "17"
-}
-
-bootJar {
-    enabled = false
 }
 
 tasks.runPluginVerifier {
